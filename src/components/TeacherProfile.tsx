@@ -8,6 +8,7 @@ import { Award, Heart, CheckCircle2, Star, ShieldCheck, Mail, Phone, MapPin } fr
 import { trackDemoClick } from "../lib/analytics";
 
 export default function TeacherProfile() {
+  const [imgFailed, setImgFailed] = React.useState(false);
   const handleConsultClick = () => {
     trackDemoClick("teacher_profile_consult");
   };
@@ -33,18 +34,28 @@ export default function TeacherProfile() {
         <div className="lg:col-span-5 flex flex-col items-center">
           <div className="relative">
             {/* Visual avatar wrapper */}
-            <div className="w-48 h-48 md:w-56 md:h-56 rounded-[32px] bg-vibrant-orange p-1 shadow-md relative overflow-hidden border-2 border-vibrant-dark">
-              <div className="w-full h-full rounded-[26px] bg-white flex flex-col items-center justify-center p-4 text-center">
-                <span className="font-display font-black text-6xl md:text-7xl text-vibrant-orange">
-                  NP
-                </span>
-                <span className="text-vibrant-dark font-black text-lg md:text-xl tracking-tight mt-2 block">
-                  Neha Patil
-                </span>
-                <span className="text-[10px] text-vibrant-teal font-black tracking-widest uppercase block mt-1">
-                  IIVA CERTIFIED MENTOR
-                </span>
-              </div>
+            <div className="w-48 h-48 md:w-56 md:h-56 rounded-[32px] bg-vibrant-orange p-1 shadow-md relative overflow-hidden border-2 border-vibrant-dark flex items-center justify-center">
+              {!imgFailed ? (
+                <img 
+                  src="/teacher-profile.jpg" 
+                  alt="Neha Patil - Master Trainer" 
+                  className="w-full h-full rounded-[26px] object-cover" 
+                  referrerPolicy="no-referrer"
+                  onError={() => setImgFailed(true)}
+                />
+              ) : (
+                <div className="w-full h-full rounded-[26px] bg-white flex flex-col items-center justify-center p-4 text-center">
+                  <span className="font-display font-black text-6xl md:text-7xl text-vibrant-orange">
+                    NP
+                  </span>
+                  <span className="text-vibrant-dark font-black text-lg md:text-xl tracking-tight mt-2 block">
+                    Neha Patil
+                  </span>
+                  <span className="text-[10px] text-vibrant-teal font-black tracking-widest uppercase block mt-1">
+                    IIVA CERTIFIED MENTOR
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Float badge */}

@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, ShieldCheck, Heart } from "lucide-react";
 
 export default function Footer() {
+  const [logoFailed, setLogoFailed] = React.useState(false);
   const currentYear = new Date().getFullYear();
 
   return (
@@ -18,8 +19,20 @@ export default function Footer() {
           {/* Column 1: Company Branding */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-9 h-9 bg-gradient-to-tr from-orange-600 to-amber-500 rounded-lg flex items-center justify-center font-display font-extrabold text-white text-base">
-                AA
+              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center overflow-hidden border border-slate-800 shadow-md group-hover:scale-105 transition-transform shrink-0">
+                {!logoFailed ? (
+                  <img 
+                    src="/logo.png" 
+                    alt="Arnav Abacus Academy" 
+                    className="w-full h-full object-cover" 
+                    referrerPolicy="no-referrer"
+                    onError={() => setLogoFailed(true)}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center font-display font-extrabold text-white text-xs">
+                    AA
+                  </div>
+                )}
               </div>
               <div>
                 <span className="font-display font-black text-white text-sm tracking-tight block leading-tight">

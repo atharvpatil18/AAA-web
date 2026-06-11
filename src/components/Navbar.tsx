@@ -10,6 +10,7 @@ import { trackDemoClick } from "../lib/analytics";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [logoFailed, setLogoFailed] = useState(false);
   const location = useLocation();
 
   const handleBookDemoClick = () => {
@@ -68,8 +69,20 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-3.5 flex justify-between items-center">
           {/* Logo Name */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 bg-vibrant-orange rounded-full flex items-center justify-center text-white font-black text-2xl shadow-md group-hover:scale-105 transition-transform">
-              A
+            <div className="w-11 h-11 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-vibrant-dark shadow-md group-hover:scale-105 transition-transform shrink-0">
+              {!logoFailed ? (
+                <img 
+                  src="/logo.png" 
+                  alt="Arnav Abacus Academy" 
+                  className="w-full h-full object-cover" 
+                  referrerPolicy="no-referrer"
+                  onError={() => setLogoFailed(true)}
+                />
+              ) : (
+                <div className="w-full h-full bg-vibrant-orange flex items-center justify-center text-white font-black text-2xl">
+                  A
+                </div>
+              )}
             </div>
             <div>
               <span className="font-display font-black text-vibrant-dark text-base md:text-lg tracking-tight block group-hover:text-vibrant-orange transition-colors leading-none">
