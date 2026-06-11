@@ -96,31 +96,24 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Quick Info */}
+          {/* Column 3: Academy Schedule */}
           <div>
             <h4 className="font-display font-bold text-sm text-slate-200 uppercase tracking-widest mb-4">
-              Operating Hours
+              Academy Schedule
             </h4>
             <ul className="space-y-3 text-xs">
               <li className="flex items-start gap-2">
                 <Clock className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block font-medium text-slate-300">Mon - Wed, Fri - Sat</span>
-                  <span className="text-slate-500">2:00 PM – 8:00 PM</span>
+                  <span className="block font-medium text-slate-300">Open Every Day</span>
+                  <span className="text-slate-400">Regular Batches &amp; Diagnostics</span>
                 </div>
               </li>
               <li className="flex items-start gap-2">
-                <Clock className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+                <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block font-medium text-slate-300">Sunday</span>
-                  <span className="text-slate-500">10:00 AM – 4:00 PM</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <Clock className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />
-                <div>
-                  <span className="block font-medium text-slate-400">Thursday</span>
-                  <span className="text-slate-500">Weekly Off Day</span>
+                  <span className="block font-medium text-slate-300">Flexible Timings</span>
+                  <span className="text-slate-400">Personalized learning paths</span>
                 </div>
               </li>
             </ul>

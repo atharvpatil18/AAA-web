@@ -126,7 +126,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 7. Wakad Center Address, Google Map & Operating Hours Block */}
+      {/* 7. Wakad Center Address & Google Map Contact Block */}
       <section id="location-contact" className="py-20 md:py-28 bg-white border-t-4 border-vibrant-dark">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">

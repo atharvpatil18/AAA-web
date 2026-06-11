@@ -36,7 +36,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4 text-[11px] text-slate-300">
             <span className="flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-orange-400" />
-              Thu - Wed: 2:00 PM – 8:00 PM
+              Wakad Brain Center • Open Every Day
             </span>
             <span className="hidden sm:inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>

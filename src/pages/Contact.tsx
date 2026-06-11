@@ -46,7 +46,7 @@ export default function Contact() {
                 Reach Neha Patil &amp; Nitin Sir Directly
               </h2>
               <p className="text-gray-500 text-xs md:text-sm font-semibold leading-relaxed">
-                Parents are free to give us a direct call, write an email, or initiate a WhatsApp chat during daily working slots (2:00 PM – 8:00 PM).
+                Parents are free to call us, write an email, or initiate a WhatsApp chat anytime. We are open every day to solve your queries!
               </p>
             </div>
 
@@ -124,10 +124,10 @@ export default function Contact() {
                     Class Timings
                   </h3>
                   <p className="text-xs text-slate-300 leading-relaxed font-semibold">
-                    Thursday - Wednesday ( closed Thursday mornings and Wednesday nights )
+                    Always Open ( All Days of the Week )
                   </p>
                   <p className="text-xs font-black text-vibrant-gold mt-1">
-                    Standard working blocks: 2:00 PM – 8:00 PM
+                    Flexible and customized batches to fit your routine
                   </p>
                 </div>
               </div>

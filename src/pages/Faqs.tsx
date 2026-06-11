@@ -39,7 +39,7 @@ export default function Faqs() {
       id: "faq4",
       category: "General",
       question: "How long is each segment session, and what are the class schedules?",
-      answer: "We offer rolling batch blocks on weekdays and weekends (Thursday - Wednesday, closed Thursday mornings / Wednesday nights). Our primary offline classroom blocks operate from 2:00 PM to 8:00 PM. Each session is designed to last about 1 to 2 hours of visual bead practice and mathematical drills to prevent developmental exhaustion in younger minds."
+      answer: "We are open seven days a week to accommodate busy schedules, offering flexible rolling sessions on both weekdays and weekends. Sessions are arranged based on individual personalized tracks to fit your child's age and focus span without causing academic fatigue."
     },
     {
       id: "faq5",
