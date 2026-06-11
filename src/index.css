@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Vibrant Palette Custom Colors */
+  --color-vibrant-cream: #FFFAF5;
+  --color-vibrant-orange: #FF6321;
+  --color-vibrant-orange-shadow: #B33A00;
+  --color-vibrant-teal: #00BFA5;
+  --color-vibrant-teal-shadow: #00897B;
+  --color-vibrant-dark: #1A2E35;
+  --color-vibrant-gold: #FFD700;
+}
+
+@layer utilities {
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
