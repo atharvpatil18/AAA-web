@@ -20,6 +20,8 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Programs", path: "/programs" },
+    { name: "Success & Gallery", path: "/showcase" },
+    { name: "News & Events", path: "/news" },
     { name: "Meet Mentor", path: "/mentor" },
     { name: "FAQs", path: "/faqs" },
     { name: "Contact", path: "/contact" }
@@ -28,7 +30,18 @@ export default function Navbar() {
   const currentPath = location.pathname;
 
   return (
-    <header id="main-header" className="sticky top-0 z-50 w-full">
+    <header id="main-header" className="sticky top-0 z-50 w-full shadow-md">
+      {/* 0. IIVA Logo Banner Strip (Top alignment) */}
+      <div className="w-full bg-[#FFFDF9] border-b border-gray-200 py-1.5 px-4 md:px-8 flex items-center justify-center">
+        <div className="max-w-7xl w-full flex justify-center items-center">
+          <img 
+            src="/iiva_strip.jpg" 
+            alt="Skill India NSDC IIVA Approved Partner Strip" 
+            className="max-h-[32px] md:max-h-[44px] w-auto object-contain"
+          />
+        </div>
+      </div>
+
       {/* 1. Top Alert Bar */}
       <div className="bg-slate-900 text-slate-100 py-2.5 px-4 md:px-8 text-xs border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
@@ -67,28 +80,38 @@ export default function Navbar() {
       </div>      {/* 2. Main Navbar */}
       <nav id="navbar-body" className="bg-white border-b-4 border-vibrant-orange shadow-sm">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-3.5 flex justify-between items-center">
-          {/* Logo Name */}
+          {/* Logo Name with Smart Kid Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-vibrant-dark shadow-md group-hover:scale-105 transition-transform shrink-0">
-              {!logoFailed ? (
+            <div className="flex items-center gap-1.5 shrink-0">
+              <div className="w-10 h-10 md:w-11 md:h-11 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-vibrant-dark shadow-md group-hover:scale-105 transition-transform shrink-0">
+                {!logoFailed ? (
+                  <img 
+                    src="/logo.png" 
+                    alt="Arnav Abacus Academy" 
+                    className="w-full h-full object-cover" 
+                    referrerPolicy="no-referrer"
+                    onError={() => setLogoFailed(true)}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-vibrant-orange flex items-center justify-center text-white font-black text-2xl">
+                    A
+                  </div>
+                )}
+              </div>
+              <div className="w-10 h-10 md:w-11 md:h-11 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-vibrant-dark shadow-md group-hover:scale-105 transition-transform shrink-0">
                 <img 
-                  src="/logo.png" 
-                  alt="Arnav Abacus Academy" 
-                  className="w-full h-full object-cover" 
+                  src="/smartkids_logo.png" 
+                  alt="Smart Kid Abacus Learning Logo" 
+                  className="w-[90%] h-[90%] object-contain" 
                   referrerPolicy="no-referrer"
-                  onError={() => setLogoFailed(true)}
                 />
-              ) : (
-                <div className="w-full h-full bg-vibrant-orange flex items-center justify-center text-white font-black text-2xl">
-                  A
-                </div>
-              )}
+              </div>
             </div>
             <div>
-              <span className="font-display font-black text-vibrant-dark text-base md:text-lg tracking-tight block group-hover:text-vibrant-orange transition-colors leading-none">
+              <span className="font-display font-black text-vibrant-dark text-sm md:text-lg tracking-tight block group-hover:text-vibrant-orange transition-colors leading-none">
                 ARNAV ABACUS
               </span>
-              <span className="text-[10px] text-vibrant-orange font-bold uppercase tracking-widest block mt-0.5 leading-none">
+              <span className="text-[9px] md:text-[10px] text-vibrant-orange font-bold uppercase tracking-widest block mt-0.5 leading-none">
                 Vedic Maths Academy
               </span>
             </div>

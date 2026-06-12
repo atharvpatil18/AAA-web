@@ -31,19 +31,21 @@ export default function SpeedChallengeWidget() {
   const [ageInput, setAgeInput] = useState<string>("8");
   const [errorText, setErrorText] = useState("");
   
-  const [currentQuestion, setCurrentQuestion] = useState<Question>({ text: "0 + 0", answer: 0 });
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questionIndex, setQuestionIndex] = useState<number>(0);
+  const [correctCount, setCorrectCount] = useState<number>(0);
   const [userAnswer, setUserAnswer] = useState<string>("");
-  const [timeLeft, setTimeLeft] = useState<number>(30); // 30 seconds timer
+  const [timeLeft, setTimeLeft] = useState<number>(45); // 45 seconds total timer for 3 questions
   const [startTime, setStartTime] = useState<number>(0);
+  const [totalTimeTaken, setTotalTimeTaken] = useState<number>(0);
   const [gameResult, setGameResult] = useState<"CORRECT" | "INCORRECT" | "TIMEOUT">("CORRECT");
-  const [previousEquation, setPreviousEquation] = useState<string>("");
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Generate question based on age group
   const generateQuestion = (age: number): Question => {
     if (age < 7) {
-      // Age < 7: Simple single-digit addition (e.g. 5 + 3 = 8 or 4 + 2 = 6)
+      // Age < 7: Simple single-digit addition
       const num1 = Math.floor(Math.random() * 8) + 1; // 1 to 8
       const num2 = Math.floor(Math.random() * 8) + 1; // 1 to 8
       return {
@@ -51,7 +53,7 @@ export default function SpeedChallengeWidget() {
         answer: num1 + num2,
       };
     } else if (age >= 7 && age <= 9) {
-      // Age 7-9: Chain additions or sub-chain operations (e.g. 14 - 6 = 8 or 12 + 5 - 3 = 14)
+      // Age 7-9: Chain additions or subtraction (e.g. 12 + 5 - 3)
       const isChain = Math.random() > 0.5;
       if (isChain) {
         const num1 = Math.floor(Math.random() * 10) + 5; // 5 to 14
@@ -70,10 +72,9 @@ export default function SpeedChallengeWidget() {
         };
       }
     } else {
-      // Age 10+: Mix of multiplication (12 x 4 = ?), division (45 / 5 = ?), or triple-digit addition/subtraction
+      // Age 10+: Multiplication or Division or double digit chain
       const type = Math.floor(Math.random() * 3);
       if (type === 0) {
-        // Multiplications
         const num1 = Math.floor(Math.random() * 12) + 3; // 3 to 14
         const num2 = Math.floor(Math.random() * 8) + 2;  // 2 to 9
         return {
@@ -81,7 +82,6 @@ export default function SpeedChallengeWidget() {
           answer: num1 * num2,
         };
       } else if (type === 1) {
-        // Division
         const num2 = Math.floor(Math.random() * 9) + 2;  // divisor 2 to 10
         const answerVal = Math.floor(Math.random() * 10) + 3; // result 3 to 12
         const num1 = num2 * answerVal;
@@ -90,7 +90,6 @@ export default function SpeedChallengeWidget() {
           answer: answerVal,
         };
       } else {
-        // Triple or double-digit chain
         const num1 = Math.floor(Math.random() * 80) + 20; // 20 to 100
         const num2 = Math.floor(Math.random() * 40) + 10; // 10 to 50
         return {
@@ -110,10 +109,13 @@ export default function SpeedChallengeWidget() {
     }
     setErrorText("");
     
-    const initialQuestion = generateQuestion(age);
-    setCurrentQuestion(initialQuestion);
+    // Generate 3 unique questions back-to-back
+    const qList = [generateQuestion(age), generateQuestion(age), generateQuestion(age)];
+    setQuestions(qList);
+    setQuestionIndex(0);
+    setCorrectCount(0);
     setUserAnswer("");
-    setTimeLeft(30);
+    setTimeLeft(45); // 45 seconds total
     setStartTime(Date.now());
     setStep("PLAY");
   };
@@ -140,30 +142,40 @@ export default function SpeedChallengeWidget() {
   const handleTimeout = () => {
     if (timerRef.current) clearInterval(timerRef.current);
     setGameResult("TIMEOUT");
-    setPreviousEquation(currentQuestion.text);
-    trackQuizCompletion("timeout", parseInt(ageInput, 10), 30);
+    const duration = Math.round((Date.now() - startTime) / 1000);
+    setTotalTimeTaken(duration);
+    trackQuizCompletion("timeout", parseInt(ageInput, 10), duration);
     setStep("RESULT");
   };
 
   const handleAnswerSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (timerRef.current) clearInterval(timerRef.current);
-
+    const age = parseInt(ageInput, 10);
     const numericAnswer = parseFloat(userAnswer.trim());
+    const currentQuestion = questions[questionIndex];
     const isCorrect = numericAnswer === currentQuestion.answer;
     
-    const duration = Math.round((Date.now() - startTime) / 1000);
-
+    let updatedCorrectCount = correctCount;
     if (isCorrect) {
-      setGameResult("CORRECT");
-      trackQuizCompletion("correct", parseInt(ageInput, 10), duration);
-    } else {
-      setGameResult("INCORRECT");
-      trackQuizCompletion("incorrect", parseInt(ageInput, 10), duration);
+      updatedCorrectCount += 1;
+      setCorrectCount(updatedCorrectCount);
     }
-    
-    setPreviousEquation(`${currentQuestion.text} = ${currentQuestion.answer}`);
-    setStep("RESULT");
+
+    if (questionIndex < 2) {
+      // Load next question
+      setQuestionIndex(questionIndex + 1);
+      setUserAnswer("");
+    } else {
+      // Completed all 3 questions
+      if (timerRef.current) clearInterval(timerRef.current);
+      const duration = Math.round((Date.now() - startTime) / 1000);
+      setTotalTimeTaken(duration);
+      
+      const overallResult = updatedCorrectCount === 3 ? "CORRECT" : "INCORRECT";
+      setGameResult(overallResult);
+      trackQuizCompletion(overallResult === "CORRECT" ? "correct" : "incorrect", age, duration);
+      setStep("RESULT");
+    }
   };
 
   const handleTryAgain = () => {
@@ -175,10 +187,12 @@ export default function SpeedChallengeWidget() {
   const initiateDemoBooking = () => {
     trackDemoClick("quiz_result_cta", { ageGroup: ageInput, quizResult: gameResult });
     
-    const message = `Hello Arnav Abacus Academy! My child is ${ageInput} years old. We played your interactive Math Quiz Widget, and the result was: ${gameResult === "CORRECT" ? "Correct" : gameResult === "INCORRECT" ? "Tried Hard" : "Timeout"}. We would love to book a Free Demo Session!`;
+    const message = `Hello Arnav Abacus Academy! My child is ${ageInput} years old. We played your interactive Math Quiz Widget, scoring ${correctCount}/3 correct in ${totalTimeTaken} seconds. We would love to book a Free Demo Session!`;
     const encoded = encodeURIComponent(message);
     window.location.href = `https://wa.me/919021924968?text=${encoded}`;
   };
+
+  const currentQuestion = questions[questionIndex];
 
   return (
     <div 
@@ -222,7 +236,7 @@ export default function SpeedChallengeWidget() {
                 <Sparkles className="w-4 h-4 text-vibrant-gold shrink-0" /> Measure Your Child's Speed!
               </h4>
               <p className="text-xs text-[#A2C4C9] font-medium leading-relaxed">
-                Test calculation speeds. Standard calculators are boring! See if your kid can beat the 30-second countdown using mental visualization.
+                Test calculation speeds. Standard calculators are boring! See if your kid can beat the 45-second countdown across 3 consecutive math equations.
               </p>
             </div>
 
@@ -274,7 +288,7 @@ export default function SpeedChallengeWidget() {
           </motion.div>
         )}
 
-        {step === "PLAY" && (
+        {step === "PLAY" && currentQuestion && (
           <motion.div
             key="play-step"
             initial={{ opacity: 0, scale: 0.98 }}
@@ -285,7 +299,7 @@ export default function SpeedChallengeWidget() {
             {/* Progress indicators & Timer */}
             <div className="flex items-center justify-between">
               <span className="text-[10px] text-[#A2C4C9] uppercase tracking-widest font-black">
-                Level Group: Age {ageInput}
+                Question {questionIndex + 1} of 3 (Age {ageInput})
               </span>
               <div className="flex items-center gap-1.5 text-xs font-black text-vibrant-orange bg-[#FFF0E0]/25 px-3 py-1 rounded-full border border-vibrant-orange/10">
                 <Clock className="w-3.5 h-3.5 animate-pulse text-vibrant-orange" />
@@ -297,7 +311,7 @@ export default function SpeedChallengeWidget() {
             <div className="w-full h-2 bg-[#122429] border border-[#233C45] rounded-full overflow-hidden">
               <div 
                 className="h-full bg-vibrant-orange transition-all duration-1000 ease-linear"
-                style={{ width: `${(timeLeft / 30) * 100}%` }}
+                style={{ width: `${(timeLeft / 45) * 100}%` }}
               />
             </div>
 
@@ -345,40 +359,40 @@ export default function SpeedChallengeWidget() {
             exit={{ opacity: 0 }}
             className="text-center space-y-5"
           >
-            {gameResult === "CORRECT" ? (
+            {gameResult === "TIMEOUT" ? (
+              <div className="space-y-2">
+                <div className="w-16 h-16 bg-[#122429] text-gray-400 rounded-full flex items-center justify-center mx-auto mb-2 border border-[#233C45]">
+                  <Clock className="w-8 h-8 text-[#89B5BC]" />
+                </div>
+                <h4 className="font-display font-black text-xl text-gray-300">
+                  Time's Up! ⏱️
+                </h4>
+                <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
+                  You scored <strong className="text-white">{correctCount}/3 correct</strong> in {totalTimeTaken} seconds before the timer expired. Mental visualization practice will significantly boost speed and accuracy!
+                </p>
+              </div>
+            ) : correctCount === 3 ? (
               <div className="space-y-2">
                 <div className="w-16 h-16 bg-vibrant-teal/10 text-vibrant-teal rounded-full flex items-center justify-center mx-auto mb-2 border border-vibrant-teal/20">
                   <ThumbsUp className="w-8 h-8" />
                 </div>
                 <h4 className="font-display font-black text-xl text-vibrant-teal">
-                  That's Absolutely Correct! 🎉
+                  3/3 Correct! Perfect Score! 🎉
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
-                  Excellent speed! Your kid has great analytical speed. With proper abacus or Vedic math coaching, their speed will skyrocket instantly!
+                  Completed in <strong className="text-white">{totalTimeTaken} seconds</strong>! Your child has amazing numerical agility. With professional guidance, they can excel in national and international competitions.
                 </p>
               </div>
-            ) : gameResult === "INCORRECT" ? (
+            ) : (
               <div className="space-y-2">
                 <div className="w-16 h-16 bg-vibrant-orange/10 text-vibrant-orange rounded-full flex items-center justify-center mx-auto mb-2 border border-vibrant-orange/20">
                   <AlertCircle className="w-8 h-8" />
                 </div>
                 <h4 className="font-display font-black text-xl text-vibrant-orange">
-                  Great Attempt! 👍
+                  Attempt Completed! 👍
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
-                  The correct equation was <strong className="text-white font-mono">{previousEquation}</strong>. Speed maths classes completely eliminate finger-counting and build amazing analytical accuracy!
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                <div className="w-16 h-16 bg-[#122429] text-gray-400 rounded-full flex items-center justify-center mx-auto mb-2 border border-[#233C45]">
-                  <Clock className="w-8 h-8 text-[#89B5BC]" />
-                </div>
-                <h4 className="font-display font-black text-xl text-gray-305">
-                  Time's Up! ⏱️
-                </h4>
-                <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
-                  Mental visualizations are like calculation muscles — they improve with practice. Offline courses help kids count instantly on the go.
+                  You scored <strong className="text-white">{correctCount}/3 correct</strong> in <strong className="text-white">{totalTimeTaken} seconds</strong>. Speed Maths classes completely eliminate calculation errors and finger-counting!
                 </p>
               </div>
             )}
@@ -405,7 +419,7 @@ export default function SpeedChallengeWidget() {
               onClick={handleTryAgain}
               className="inline-flex items-center gap-1 text-[11px] font-bold text-[#89B5BC] hover:text-white underline transition cursor-pointer"
             >
-              <RotateCcw className="w-3.5 h-3.5" /> Practice another question
+              <RotateCcw className="w-3.5 h-3.5" /> Practice another round
             </button>
           </motion.div>
         )}

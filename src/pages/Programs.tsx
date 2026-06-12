@@ -140,7 +140,7 @@ export default function Programs() {
               Unsure which stream fits your child's age?
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              Contact us for a friendly advisory conversation. Neha Ma’am will personally assess your child's math scores, school board structure, and spatial skills to guide you correctly.
+              Contact us for a friendly advisory session. Neha Ma'am and Nitin Sir will personally assess your child's learning curve, number sense, analytical approach, focus, discipline, strengths, and school board needs to guide you correctly.
             </p>
 
             <div className="flex items-center gap-3 pt-2">

@@ -19,8 +19,8 @@ export default function TestimonialCarousel() {
     {
       id: "t2",
       author: "Tejasweeni Zope",
-      role: "Parent",
-      content: "I am truly impressed with the Abacus classes conducted by Neha ma’am. She gives personal attention to each and every student, ensuring that every child learns at their own pace with confidence. Since joining the classes, my son’s calculation speed has improved significantly, and he now approaches maths with much more enthusiasm and accuracy.",
+      role: "Parent of Om",
+      content: "I am truly impressed with the Abacus classes conducted by Neha ma’am. She gives personal attention to each and every student, ensuring that every child learns at their own pace with confidence. Since joining the classes, my son Om's calculation speed has improved significantly, and he now approaches maths with much more enthusiasm and accuracy.",
       rating: 5,
     },
     {
@@ -32,9 +32,51 @@ export default function TestimonialCarousel() {
     },
     {
       id: "t4",
-      author: "Priya Sharma",
-      role: "Parent",
-      content: "Arnav Abacus Academy is the best place for kids to learn Vedic Maths. The teachers are very supportive and the environment is great for learning. Highly recommended!",
+      author: "Rajesh Kumar",
+      role: "Parent of Sneha",
+      content: "We joined the Vedic Maths program for our daughter Sneha who is in 7th grade. The 16 sutras and cross-multiplication shortcuts taught by Nitin Sir are magical. She now completes her school math papers 20 minutes before time.",
+      rating: 5,
+    },
+    {
+      id: "t5",
+      author: "Deepali Shah",
+      role: "Parent of Aarav & Ananya",
+      content: "Both my kids Aarav and Ananya attend Arnav Abacus Academy. The environment is extremely positive. Neha Ma'am and Nitin Sir focus not just on calculations but on overall logical and analytical development. Their confidence has skyrocketed!",
+      rating: 5,
+    },
+    {
+      id: "t6",
+      author: "Vikram Malhotra",
+      role: "Parent of Kabir",
+      content: "Kabir was preparing for the Olympiad and was struggling with time management. Nitin Sir's speed checks and diagnostic worksheets helped him secure a top state rank. Best place for competitive math preparation!",
+      rating: 5,
+    },
+    {
+      id: "t7",
+      author: "Dr. Shalini Deshmukh",
+      role: "Parent of Riya",
+      content: "As a doctor, I wanted a structured brain development program for my daughter. Arnav Abacus's scientific way of teaching has improved Riya's photographic memory, auditory listening capacity, and focus. Very happy with the offline Wakad academy.",
+      rating: 5,
+    },
+    {
+      id: "t8",
+      author: "Amit Joshi",
+      role: "Parent of Parth",
+      content: "Very convenient offline center near Park Street in Wakad. The personal attention, regular assessments, and positive feedback loop keep the kids motivated. Parth actually looks forward to his math sessions now!",
+      rating: 5,
+    },
+    {
+      id: "t9",
+      author: "Shruti Nair",
+      role: "Parent of Meera (Online)",
+      content: "Even though we are based in London, we join their online interactive classroom sessions. The virtual abacus tool and Neha Ma'am's high-energy teaching make Meera feel like she's in a physical class. Her response speed is phenomenal!",
+      rating: 5,
+    },
+    {
+      id: "t10",
+      author: "Sandeep Salunkhe",
+      role: "Parent of Aditya",
+      content: "Special thanks to Nitin Sir for helping Aditya zero down on silly arithmetic mistakes. His number sense and spatial awareness have improved. The focus on discipline and consistency is what sets this academy apart.",
       rating: 5,
     }
   ];
@@ -45,7 +87,7 @@ export default function TestimonialCarousel() {
   useEffect(() => {
     const slideInterval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % testimonials.length);
-    }, 7000); // 7s auto-rotation
+    }, 8000); // 8s auto-rotation
 
     return () => clearInterval(slideInterval);
   }, [testimonials.length]);
@@ -94,7 +136,7 @@ export default function TestimonialCarousel() {
           {/* Review Author credentials */}
           <div className="mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t-2 border-vibrant-dark pt-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-vibrant-orange text-white rounded-full flex items-center justify-center font-display font-black border-2 border-vibrant-dark shadow-sm text-sm">
+              <div className="w-10 h-10 bg-vibrant-orange text-white rounded-full flex items-center justify-center font-display font-black border-2 border-vibrant-dark shadow-sm text-sm shrink-0">
                 {activeTestimonial.author[0]}
               </div>
               <div>
@@ -108,22 +150,32 @@ export default function TestimonialCarousel() {
               </div>
             </div>
 
-            {/* Pagination Controls */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handlePrev}
-                className="w-10 h-10 bg-white border-2 border-vibrant-dark rounded-full flex items-center justify-center text-vibrant-dark shadow-[0_3px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-cream transition-all cursor-pointer"
-                aria-label="Previous testimony Review"
+            {/* Pagination Controls and Google Link */}
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href="https://share.google/fFcUhDGoBJ5M27dX5"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-black text-white bg-vibrant-orange hover:bg-vibrant-orange/95 px-4 py-2 rounded-xl shadow-[0_3px_0_0_#B33A00] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
               >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={handleNext}
-                className="w-10 h-10 bg-white border-2 border-vibrant-dark rounded-full flex items-center justify-center text-vibrant-dark shadow-[0_3px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-cream transition-all cursor-pointer"
-                aria-label="Next testimony Review"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
+                View on Google
+              </a>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={handlePrev}
+                  className="w-10 h-10 bg-white border-2 border-vibrant-dark rounded-full flex items-center justify-center text-vibrant-dark shadow-[0_3px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-cream transition-all cursor-pointer"
+                  aria-label="Previous testimony Review"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="w-10 h-10 bg-white border-2 border-vibrant-dark rounded-full flex items-center justify-center text-vibrant-dark shadow-[0_3px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-cream transition-all cursor-pointer"
+                  aria-label="Next testimony Review"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
         </div>

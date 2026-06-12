@@ -52,23 +52,23 @@ export const PROGRAMS: Program[] = [
   },
   {
     id: "school-math",
-    title: "School Maths Excellence",
-    tagline: "Academic grade score boosters with deep concept clarity",
+    title: "School Maths & Competitive Excellence",
+    tagline: "Academic grade boosters & competitive exam readiness (IPM, Olympiads, Scholarships)",
     targetAge: "Target Grade: Class 1 - 10",
-    description: "Aligned strictly with standard national syllabi (CBSE, ICSE, State Boards), our school math curriculum focuses on conceptual and geometric clarity instead of rote learning. We provide personal attention, homework guidance, and continuous test preparation to secure high grades.",
+    description: "Aligned with CBSE, ICSE, and State Boards, our curriculum blends fundamental school concepts with advanced problem-solving tools. We prepare students for grade-level exams and competitive benchmarks like IPM, Maths Olympiads, and scholarship evaluations.",
     benefits: [
-      "Establishes precise logic and foundational concept comprehension",
-      "Provides personalized test-oriented focus with complete sample sheet practice",
-      "Guarantees daily homework review and continuous assessment reporting",
-      "Encourages active question-asking under a calm, respectful tutor environment",
-      "Fosters regular academic routine and deep score progression"
+      "Establishes precise logic, foundational clarity, and competitive readiness",
+      "Provides specialized prep worksheets for IPM, Olympiad, and Scholarship exams",
+      "Guarantees regular mock-test evaluations and progress metrics",
+      "Encourages analytical thinking beyond standard textbook methodologies",
+      "Fosters numerical agility, eliminating examination anxiety"
     ],
     curriculum: [
-      "Number Systems",
-      "Algebra & Geometry",
-      "Trigonometry",
-      "Mensuration",
-      "Statistics & Probability"
+      "IPM & Olympiad Preparation",
+      "Algebra & Geometry Foundations",
+      "Vedic Calculation Applications",
+      "Scholarship Skill-Check Modules",
+      "Mensuration & Logic Reasoning"
     ],
     imageTheme: "indigo"
   }

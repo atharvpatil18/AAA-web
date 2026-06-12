@@ -12,6 +12,7 @@ import SpeedChallengeWidget from "../components/SpeedChallengeWidget";
 import TeacherProfile from "../components/TeacherProfile";
 import TestimonialCarousel from "../components/TestimonialCarousel";
 import LeadForm from "../components/LeadForm";
+import InteractiveAbacus from "../components/InteractiveAbacus";
 import { PROGRAMS } from "../data";
 import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2 } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
@@ -30,6 +31,24 @@ export default function Home() {
       <div className="px-4 md:px-8">
         <TrustBar />
       </div>
+
+      {/* 2.5. Interactive Abacus Playground */}
+      <section id="interactive-abacus-playground" className="py-16 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-2 border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
+            <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+              TACTILE BRAIN AGILITY
+            </span>
+            <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
+              Interactive Soroban Abacus
+            </h2>
+            <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
+              Let your child slide the virtual beads below. This replicates the tactile movement taught in our offline and online classrooms to activate photographic memory!
+            </p>
+          </div>
+          <InteractiveAbacus />
+        </div>
+      </section>
 
       {/* 3. Core Programs Showcase */}
       <section id="programs-showcase" className="py-20 md:py-28 max-w-7xl mx-auto px-4 md:px-8">
@@ -99,7 +118,7 @@ export default function Home() {
               Professional Mentorial Expertise
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              Arnav Abacus Academy operates under professional, certified, government-registered guidelines. Over 200+ local families have unlocked photographic visual memory with us.
+              Arnav Abacus Academy operates under professional, government-registered guidelines. Over 200+ local &amp; 10 plus international students have unlocked photographic visual memory with us.
             </p>
           </div>
 
@@ -115,10 +134,10 @@ export default function Home() {
               PARENT FELLOWSHIP REVIEWS
             </span>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
-              What Wakad Parents Say
+              From the Parents of Our Champions
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              We focus heavily on logical arithmetic development and self-confidence. Here is genuine feedback shared by families from our offline Wakad academy.
+              Academy focus in structured and scientific way as per Skill India, National Skill Development Center, IIVA and SmartKid Abacus, Vedic Math Techniques on logical arithmetic development and self-confidence. Here is genuine feedback shared by Parents of our champion students from our offline &amp; Online Classes at Wakad Academy.
             </p>
           </div>
 
@@ -140,7 +159,7 @@ export default function Home() {
                 Our Wakad, Pune Academy Center
               </h2>
               <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-                We are conveniently located opposite Creative Cameo, very close to Park Street in Wakad, Pimpri-Chinchwad. Parents are always welcome to check the live offline classroom setup.
+                We are conveniently located opposite Creative Cameo, before Park Street, Wakad, Pune. Parents are always welcome to check the live offline classroom setup.
               </p>
 
               <div className="space-y-4 text-xs md:text-sm text-gray-700">
@@ -149,7 +168,7 @@ export default function Home() {
                   <div>
                     <strong className="block text-vibrant-dark font-black mb-1">Center Address:</strong>
                     <span className="text-xs text-gray-600 font-medium leading-relaxed block">
-                      Flat no. 3, Adv. Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Wakad, Pune, Maharashtra 411057
+                      Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Wakad, Pune, Maharashtra 411057
                     </span>
                   </div>
                 </div>
@@ -211,7 +230,7 @@ export default function Home() {
             ⚡ Admissions Open for New Batches
           </div>
           <h2 className="font-display font-black text-3xl md:text-5xl tracking-tight leading-tight text-white">
-            Give Your Child the Power of Speed
+            Give Your Child the Power of Speed with Accuracy and Consistency
           </h2>
           <p className="text-[#FFF2E0] text-xs md:text-sm max-w-2xl mx-auto leading-relaxed font-bold">
             Every child who joins our starter batches reports an immediate increase in school evaluation scores. Book your complimentary customized center trial today.

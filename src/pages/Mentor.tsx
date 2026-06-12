@@ -121,7 +121,7 @@ export default function Mentor() {
               </div>
               <div className="flex items-center gap-3 text-xs md:text-sm text-gray-750 font-medium">
                 <span className="w-2 h-2 rounded-full bg-orange-500"></span>
-                <span>10% Fee Waiver promo instantly activated</span>
+                <span>Value Added Mental Math: Free 2 Sessions promo activated</span>
               </div>
             </div>
 

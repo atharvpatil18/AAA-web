@@ -14,6 +14,8 @@ import Programs from "./pages/Programs";
 import Contact from "./pages/Contact";
 import Faqs from "./pages/Faqs";
 import CampaignPage from "./pages/CampaignPage";
+import Showcase from "./pages/Showcase";
+import NewsEvents from "./pages/NewsEvents";
 
 // Scroll restorer child to reset window scroll position on route switches
 function ScrollToTop() {
@@ -42,6 +44,8 @@ export default function App() {
             <Route path="/mentor" element={<Mentor />} />
             <Route path="/programs" element={<Programs />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/showcase" element={<Showcase />} />
+            <Route path="/news" element={<NewsEvents />} />
             <Route path="/faqs" element={<Faqs />} />
             <Route path="/campaigns/:slug" element={<CampaignPage />} />
             {/* Fallback routing */}

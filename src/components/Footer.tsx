@@ -49,7 +49,7 @@ export default function Footer() {
             {/* Social handles */}
             <div className="flex items-center gap-3 pt-2">
               <a 
-                href="https://facebook.com" 
+                href="https://www.facebook.com/groups/1031935784445726/?ref=share&mibextid=NSMWBT" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-orange-500 hover:border-orange-500 flex items-center justify-center transition"
@@ -57,7 +57,7 @@ export default function Footer() {
                 <Facebook className="w-4 h-4" />
               </a>
               <a 
-                href="https://instagram.com" 
+                href="https://www.instagram.com/lakshmi_narayan_1303?igsh=cDlwM2ZxNWltYXFr" 
                 target="_blank" 
                 rel="noreferrer" 
                 className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-orange-500 hover:border-orange-500 flex items-center justify-center transition"
@@ -128,7 +128,7 @@ export default function Footer() {
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
                 <span className="leading-relaxed text-slate-400 text-[11px]">
-                  Flat no. 3, Arnav Abacus Academy, Adv. Balaji Sagar Bungalow, Opp. Creative Cameo, Wakad, Pimpri-Chinchwad, Maharashtra 411057
+                  Flat no. 3, 1st Floor, Arnav Abacus Academy, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Wakad, Pune, Maharashtra 411057
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
@@ -150,7 +150,8 @@ export default function Footer() {
 
         {/* Footer bottom */}
         <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
-          <div>
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="Arnav Logo" className="w-5 h-5 object-cover rounded-full shrink-0" />
             <p>&copy; {currentYear} Arnav Abacus Academy and Vedic Maths Classes. All Rights Reserved.</p>
           </div>
           <div className="flex items-center gap-1.5 text-[11px]">

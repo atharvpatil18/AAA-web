@@ -3,12 +3,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Sparkles, Calendar, ArrowRight, ShieldCheck, MapPin } from "lucide-react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 
 export default function Hero() {
+  const punchlines = [
+    "Does your child make silly mistakes? Let's zero them down!",
+    "Already sharp? Let them excel in National & International competitions!",
+    "Give your child the power of speed with accuracy and consistency!"
+  ];
+  const [punchlineIndex, setPunchlineIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPunchlineIndex((prev) => (prev + 1) % punchlines.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, []);
+
   const handleCtaClick = () => {
     trackDemoClick("hero_primary_cta");
   };
@@ -57,14 +71,30 @@ export default function Hero() {
               Into Math <span className="text-vibrant-teal">Fun!</span>
             </motion.h1>
 
+            {/* Dynamic Rotating Subtitle punchline */}
+            <div className="min-h-[48px] flex items-center justify-center lg:justify-start">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={punchlineIndex}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-vibrant-orange font-display font-bold text-base md:text-lg lg:text-xl max-w-2xl leading-normal text-center lg:text-left"
+                >
+                  👉 {punchlines[punchlineIndex]}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+
             {/* Subtitle description */}
             <motion.p 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.25 }}
-              className="text-[#5A5A5A] text-sm md:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0 pr-0 lg:pr-12"
+              className="text-[#5A5A5A] text-sm md:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 pr-0 lg:pr-12"
             >
-              Empower your child with 10x faster calculation speeds and photographic memory. Led by <span className="font-bold text-vibrant-dark">Neha Patil</span> (IIVA Certified Professional) at Wakad, Pune.
+              Empower your child with 10x faster calculation speeds and photographic memory. Led by <span className="font-bold text-vibrant-dark">Neha Patil</span> (IIVA Certified Professional) &amp; <span className="font-bold text-vibrant-dark">Nitin Sir</span> at Wakad, Pune. Online interactive classroom sessions are also conducted.
             </motion.p>
 
             {/* Quick Trust Indicators Card from palette specification */}
@@ -86,10 +116,15 @@ export default function Hero() {
                 <p className="text-2xl font-black text-vibrant-teal">100+</p>
                 <p className="text-[10px] font-black uppercase text-slate-400">Awards</p>
               </div>
-              <div className="text-center border-l border-slate-100">
+              <a 
+                href="https://share.google/fFcUhDGoBJ5M27dX5" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-center border-l border-slate-100 hover:scale-105 transition-transform block"
+              >
                 <p className="text-2xl font-black text-amber-500">5/5</p>
-                <p className="text-[10px] font-black uppercase text-slate-400">Rating</p>
-              </div>
+                <p className="text-[10px] font-black uppercase text-slate-400 underline decoration-amber-500">65+ Reviews</p>
+              </a>
             </motion.div>
 
             {/* Play Button Row */}
@@ -126,9 +161,9 @@ export default function Hero() {
             <div className="relative bg-white border-4 border-vibrant-dark rounded-[40px] p-8 shadow-[12px_12px_0_0_#1A2E35] space-y-6">
               
               {/* Highlight promo badge rotated */}
-              <div className="absolute -top-6 -right-4 bg-vibrant-gold p-3 rounded-2xl rotate-12 border-2 border-vibrant-dark shadow-md text-vibrant-dark text-center leading-none z-10">
-                <p className="font-black text-xs text-vibrant-dark leading-none">10% OFF</p>
-                <p className="text-[8px] font-black tracking-wider uppercase mt-0.5">On Enrollment</p>
+              <div className="absolute -top-6 -right-4 bg-vibrant-gold p-3 rounded-2xl rotate-12 border-2 border-vibrant-dark shadow-md text-vibrant-dark text-center leading-none z-10 max-w-[120px]">
+                <p className="font-black text-xs text-vibrant-dark leading-none">FREE TRIAL</p>
+                <p className="text-[8px] font-black tracking-wider uppercase mt-1">2 Value-Added Sessions</p>
               </div>
 
               {/* Highlight statistics metrics */}

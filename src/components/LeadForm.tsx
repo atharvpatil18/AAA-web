@@ -71,7 +71,7 @@ Program: ${program}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
           Awesome, {parentName}!
         </h3>
         <p className="text-emerald-800/90 max-w-sm leading-relaxed mb-6">
-          Your details are secured! We are now redirecting you to WhatsApp to instantly confirm your slot and activate your <strong className="text-emerald-950">10% discount</strong>.
+          Your details are secured! We are now redirecting you to WhatsApp to instantly confirm your slot and activate your <strong className="text-emerald-950">Free 2 Sessions of Value-Added Mental Math</strong>.
         </p>
         <div className="flex items-center gap-3 bg-emerald-50 text-emerald-800 px-5 py-3 rounded-full text-sm font-medium border border-emerald-100">
           <span className="relative flex h-2.5 w-2.5">
@@ -92,10 +92,10 @@ Program: ${program}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
       id="lead-form-container" 
       className="bg-white rounded-[40px] border-4 border-vibrant-dark p-8 md:p-10 shadow-[12px_12px_0_0_#1A2E35] relative overflow-hidden"
     >
-      {/* 10% OFF sticker rotated element */}
-      <div className="absolute -top-5 -right-5 bg-vibrant-gold p-4 rounded-2xl rotate-12 border-2 border-vibrant-dark shadow-md text-vibrant-dark text-center leading-none z-20">
-        <p className="font-black text-xs leading-none">10% OFF</p>
-        <p className="text-[8px] font-black tracking-wide uppercase mt-0.5">On Enrollment</p>
+      {/* Free 2 Sessions sticker rotated element */}
+      <div className="absolute -top-5 -right-5 bg-vibrant-gold p-4 rounded-2xl rotate-12 border-2 border-vibrant-dark shadow-md text-vibrant-dark text-center leading-none z-20 max-w-[120px]">
+        <p className="font-black text-xs leading-none">FREE TRIAL</p>
+        <p className="text-[8px] font-black tracking-wide uppercase mt-1">2 Mental Math Sessions</p>
       </div>
 
       <div className="relative z-10 space-y-4">
@@ -184,7 +184,7 @@ Program: ${program}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
         </form>
 
         <p className="text-center text-[10px] font-bold uppercase text-gray-400 mt-4 flex items-center justify-center gap-1.5">
-          <Landmark className="w-3.5 h-3.5 shrink-0 text-gray-300" /> Wakad Center opposite Creative Cameo Bungalow
+          <Landmark className="w-3.5 h-3.5 shrink-0 text-gray-300" /> Wakad Center opposite Creative Cameo, before Park Street, Wakad, Pune
         </p>
       </div>
     </div>

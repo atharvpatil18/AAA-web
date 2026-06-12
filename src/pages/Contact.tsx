@@ -62,7 +62,7 @@ export default function Contact() {
                     Academy Center Address
                   </h3>
                   <p className="text-xs text-gray-500 font-bold leading-relaxed">
-                    Flat no. 3, Arnav Abacus Academy, Adv. Balaji Sagar Bungalow, Opp. Creative Cameo, Wakad, Pune, Maharashtra 411057.
+                    Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Wakad, Pune, Maharashtra 411057
                   </p>
                   <span className="block text-[10px] text-vibrant-orange italic mt-1.5 font-black">
                     ★ Near Park Street, Wakad
@@ -121,10 +121,10 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-display font-black text-sm text-white mb-1">
-                    Class Timings
+                    Academy Timings
                   </h3>
                   <p className="text-xs text-slate-300 leading-relaxed font-semibold">
-                    Always Open ( All Days of the Week )
+                    9 AM to 9 PM (All Days)
                   </p>
                   <p className="text-xs font-black text-vibrant-gold mt-1">
                     Flexible and customized batches to fit your routine
@@ -153,7 +153,7 @@ export default function Contact() {
               Locate Our Wakad Classroom Center
             </h2>
             <p className="text-gray-550 text-xs md:text-sm font-semibold">
-              Opposite Creative Cameo, Adv. Balaji Sagar Bungalow, near Park Street Road. Use the interactive map details below to coordinate easy travel directions.
+              Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Wakad, Pune. Use the interactive map details below to coordinate easy travel directions.
             </p>
           </div>
 
