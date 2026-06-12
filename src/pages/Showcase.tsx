@@ -85,7 +85,7 @@ export default function Showcase() {
       id: "gallery-1",
       type: "gallery",
       title: "Annual Abacus Certification Exam",
-      tag: "Wakad Center Event",
+      tag: "Academy Event",
       achievementText: "Snapshots of our young champions sitting for their level-up exams under IIVA guidelines. 100% of our students cleared with distinction!",
       imageAlt: "Students writing certification test",
       colorTheme: "orange",
@@ -146,10 +146,10 @@ export default function Showcase() {
       <section className="pt-12 pb-6 max-w-7xl mx-auto px-4 md:px-8">
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
           {[
-            { id: "all", label: "✨ View All", count: showcaseData.length },
-            { id: "transformation", label: "📈 Success Transformations", count: showcaseData.filter(x => x.type === "transformation").length },
-            { id: "competition", label: "🏆 Competition Trophies", count: showcaseData.filter(x => x.type === "competition").length },
-            { id: "gallery", label: "📸 Activity Gallery", count: showcaseData.filter(x => x.type === "gallery").length },
+            { id: "all", label: "View All", count: showcaseData.length },
+            { id: "transformation", label: "Success Transformations", count: showcaseData.filter(x => x.type === "transformation").length },
+            { id: "competition", label: "Competition Trophies", count: showcaseData.filter(x => x.type === "competition").length },
+            { id: "gallery", label: "Activity Gallery", count: showcaseData.filter(x => x.type === "gallery").length },
           ].map(tab => (
             <button
               key={tab.id}
@@ -221,11 +221,11 @@ export default function Showcase() {
                     {/* Student metadata for story items */}
                     {item.studentName && (
                       <div className="flex items-center gap-3 text-xs font-bold text-gray-500 bg-vibrant-cream border border-gray-200 px-3 py-1.5 rounded-xl w-fit">
-                        <span>👦 {item.studentName}</span>
+                        <span>Student: {item.studentName}</span>
                         <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                        <span>🎂 {item.age}</span>
+                        <span>Age: {item.age}</span>
                         <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                        <span>🏫 {item.grade}</span>
+                        <span>Class: {item.grade}</span>
                       </div>
                     )}
 
@@ -257,7 +257,7 @@ export default function Showcase() {
                     <span className="flex items-center gap-1">
                       <ShieldCheck className="w-3.5 h-3.5 text-vibrant-teal" /> Verified Success
                     </span>
-                    <span>Arnav Abacus Wakad</span>
+                    <span>Arnav Abacus Academy</span>
                   </div>
                 </div>
               </div>
@@ -270,7 +270,7 @@ export default function Showcase() {
       <section className="py-20 md:py-28 bg-[#FF6321] text-white border-t-4 border-vibrant-dark relative">
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center space-y-6 relative z-10">
           <div className="inline-flex items-center gap-1.5 bg-white/20 border border-white/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-            ⚡ Admissions Open for New Batches
+            Admissions Open for New Batches
           </div>
           <h2 className="font-display font-black text-3xl md:text-5xl tracking-tight leading-tight text-white">
             Let Your Child Be Our Next Success Story!

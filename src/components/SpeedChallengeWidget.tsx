@@ -271,17 +271,17 @@ export default function SpeedChallengeWidget() {
                 )}
               </div>
             </form>
-            <div className="pt-3 border-t border-[#233C45] grid grid-cols-3 gap-2 text-center text-[10px] text-[#89B5BC] font-semibold">
+            <div className="pt-3 border-t border-[#233C45] grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-center text-[10px] text-[#89B5BC] font-semibold">
               <div className="bg-[#122429] border border-[#233C45] p-2 rounded-xl leading-snug">
-                <strong className="block text-white">Age 4-6</strong>
+                <strong className="block text-white text-[11px] sm:text-[10px]">Age 4-6</strong>
                 Additions
               </div>
               <div className="bg-[#122429] border border-[#233C45] p-2 rounded-xl leading-snug">
-                <strong className="block text-white">Age 7-9</strong>
+                <strong className="block text-white text-[11px] sm:text-[10px]">Age 7-9</strong>
                 Chains (+ / -)
               </div>
               <div className="bg-[#122429] border border-[#233C45] p-2 rounded-xl leading-snug">
-                <strong className="block text-white">Age 10+</strong>
+                <strong className="block text-white text-[11px] sm:text-[10px]">Age 10+</strong>
                 Mult / Division
               </div>
             </div>
@@ -365,7 +365,7 @@ export default function SpeedChallengeWidget() {
                   <Clock className="w-8 h-8 text-[#89B5BC]" />
                 </div>
                 <h4 className="font-display font-black text-xl text-gray-300">
-                  Time's Up! ⏱️
+                  Time's Up!
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
                   You scored <strong className="text-white">{correctCount}/3 correct</strong> in {totalTimeTaken} seconds before the timer expired. Mental visualization practice will significantly boost speed and accuracy!
@@ -377,7 +377,7 @@ export default function SpeedChallengeWidget() {
                   <ThumbsUp className="w-8 h-8" />
                 </div>
                 <h4 className="font-display font-black text-xl text-vibrant-teal">
-                  3/3 Correct! Perfect Score! 🎉
+                  3/3 Correct! Perfect Score!
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
                   Completed in <strong className="text-white">{totalTimeTaken} seconds</strong>! Your child has amazing numerical agility. With professional guidance, they can excel in national and international competitions.
@@ -389,7 +389,7 @@ export default function SpeedChallengeWidget() {
                   <AlertCircle className="w-8 h-8" />
                 </div>
                 <h4 className="font-display font-black text-xl text-vibrant-orange">
-                  Attempt Completed! 👍
+                  Attempt Completed!
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
                   You scored <strong className="text-white">{correctCount}/3 correct</strong> in <strong className="text-white">{totalTimeTaken} seconds</strong>. Speed Maths classes completely eliminate calculation errors and finger-counting!
@@ -400,7 +400,7 @@ export default function SpeedChallengeWidget() {
             {/* Direct CRM CTA WhatsApp Button */}
             <div className="bg-[#0D1A1E] p-5 rounded-3xl border-2 border-[#233C45] space-y-3 shadow-md">
               <p className="text-[10px] text-vibrant-gold font-black tracking-widest uppercase mb-1">
-                ⚡ EXCLUSIVE TRIAL OFFER
+                EXCLUSIVE TRIAL OFFER
               </p>
               <h5 className="font-display text-sm font-black text-white">
                 Book Free 100% Personal Skill Evaluation

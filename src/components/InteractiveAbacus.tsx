@@ -104,7 +104,7 @@ export default function InteractiveAbacus() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-vibrant-cream border-2 border-vibrant-dark/20 p-4 rounded-2xl text-xs text-vibrant-dark font-medium leading-relaxed space-y-2"
         >
-          <p className="font-bold text-vibrant-orange">📖 Quick Soroban Reading Guide:</p>
+          <p className="font-bold text-vibrant-orange">Quick Soroban Reading Guide:</p>
           <ul className="list-disc list-inside space-y-1 text-gray-650">
             <li>Each vertical column represents a place value (from left: 10000s, 1000s, 100s, 10s, 1s).</li>
             <li>The **Upper Bead** (above divider) is worth **5** when moved down to touch the divider.</li>
@@ -115,16 +115,16 @@ export default function InteractiveAbacus() {
       )}
 
       {/* Visual Abacus Box */}
-      <div className="bg-[#5C3A21] border-8 border-[#3D2513] rounded-3xl p-4 md:p-6 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] relative overflow-hidden">
+      <div className="bg-[#5C3A21] border-4 sm:border-8 border-[#3D2513] rounded-3xl p-2 sm:p-6 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] relative overflow-hidden">
         
         {/* Rods and Frame container */}
-        <div className="relative h-[240px] border-4 border-[#2C190D] bg-[#1E1108] rounded-xl flex justify-around p-1">
+        <div className="relative h-[240px] border-4 border-[#2C190D] bg-[#1E1108] rounded-xl flex justify-around p-0.5 sm:p-1">
           
           {/* Horizontal Beam/Divider */}
           <div className="absolute top-[68px] left-0 right-0 h-4 bg-[#4A2C18] border-y-2 border-[#2C190D] shadow-md z-10 flex items-center justify-around">
             {/* Real-time pinpoint indicators */}
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="w-1.5 h-1.5 rounded-full bg-vibrant-gold opacity-50 z-20" />
+              <div key={i} className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-vibrant-gold opacity-50 z-20" />
             ))}
           </div>
 
@@ -133,21 +133,21 @@ export default function InteractiveAbacus() {
             const val = getRodValue(rod);
 
             return (
-              <div key={rIdx} className="relative w-16 h-full flex flex-col items-center select-none">
+              <div key={rIdx} className="relative w-12 sm:w-16 h-full flex flex-col items-center select-none">
                 
                 {/* Metallic Rod Line */}
-                <div className="absolute top-0 bottom-0 w-1 bg-gradient-to-r from-gray-400 via-gray-100 to-gray-500 rounded-full shadow-sm" />
+                <div className="absolute top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-r from-gray-400 via-gray-100 to-gray-500 rounded-full shadow-sm" />
 
                 {/* --- UPPER DECK --- */}
                 {/* Bead placement area: h-16 (0 to 68px) */}
                 <div 
                   onClick={() => toggleUpper(rIdx)}
-                  className="absolute w-12 h-[60px] top-1 cursor-pointer flex items-center justify-center"
+                  className="absolute w-10 sm:w-12 h-[60px] top-1 cursor-pointer flex items-center justify-center"
                 >
                   <motion.div 
                     animate={{ y: rod.upper ? 20 : -10 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="w-11 h-6 bg-gradient-to-b from-[#B07D3E] via-[#F4C178] to-[#99652B] border border-amber-950 rounded-full shadow-md flex items-center justify-center text-[10px] font-black text-amber-950/70"
+                    className="w-9 sm:w-11 h-6 bg-gradient-to-b from-[#B07D3E] via-[#F4C178] to-[#99652B] border border-amber-950 rounded-full shadow-md flex items-center justify-center text-[10px] font-black text-amber-950/70"
                   >
                     5
                   </motion.div>
@@ -155,14 +155,11 @@ export default function InteractiveAbacus() {
 
                 {/* --- LOWER DECK --- */}
                 {/* Bead placement area: h-36 (84px to 230px) */}
-                <div className="absolute top-[88px] bottom-1 w-12 cursor-pointer flex flex-col justify-end">
+                <div className="absolute top-[88px] bottom-1 w-10 sm:w-12 cursor-pointer flex flex-col justify-end items-center pb-3">
                   {[1, 2, 3, 4].map((idx) => {
                     const isActive = rod.lowerCount >= idx;
-                    // Lower beads are pushed up towards the divider.
-                    // Active beads: moved up. Inactive beads: resting at the bottom.
-                    const yOffset = rod.lowerCount >= idx 
-                      ? -105 + (idx - 1) * 26 // pushed up close to divider
-                      : -10 + (idx - 1) * 26;  // resting down
+                    // Move active beads up to the divider (40px translation)
+                    const yOffset = isActive ? -40 : 0;
 
                     return (
                       <motion.div
@@ -173,7 +170,7 @@ export default function InteractiveAbacus() {
                         }}
                         animate={{ y: yOffset }}
                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        className={`absolute left-0.5 w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
+                        className={`relative w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
                           isActive 
                             ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
                             : "bg-gradient-to-b from-[#A5784A] via-[#E8B682] to-[#8C5D30] text-amber-950/70"
@@ -186,7 +183,7 @@ export default function InteractiveAbacus() {
                 </div>
 
                 {/* Individual Rod Value Badge */}
-                <div className="absolute -bottom-1 bg-[#2C190D] border border-amber-950/50 rounded-md px-2 py-0.5 text-[10px] font-black text-vibrant-gold tracking-tight z-20">
+                <div className="absolute -bottom-1 bg-[#2C190D] border border-amber-950/50 rounded-md px-1 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-black text-vibrant-gold tracking-tight z-20">
                   {val}
                 </div>
 

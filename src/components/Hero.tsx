@@ -57,7 +57,7 @@ export default function Hero() {
               className="inline-flex items-center gap-2 bg-[#FFF0E0] border border-[#FFD8B1] px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange mx-auto lg:mx-0"
             >
               <Sparkles className="w-4 h-4 text-vibrant-orange animate-spin-slow" />
-              <span>🚀 Pune's #1 Skill Development Center</span>
+              <span>Pune's #1 Skill Development Center</span>
             </motion.div>
 
             {/* Main Headline */}
@@ -82,7 +82,7 @@ export default function Hero() {
                   transition={{ duration: 0.3 }}
                   className="text-vibrant-orange font-display font-bold text-base md:text-lg lg:text-xl max-w-2xl leading-normal text-center lg:text-left"
                 >
-                  👉 {punchlines[punchlineIndex]}
+                  {punchlines[punchlineIndex]}
                 </motion.p>
               </AnimatePresence>
             </div>
@@ -94,7 +94,7 @@ export default function Hero() {
               transition={{ duration: 0.4, delay: 0.25 }}
               className="text-[#5A5A5A] text-sm md:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 pr-0 lg:pr-12"
             >
-              Empower your child with 10x faster calculation speeds and photographic memory. Led by <span className="font-bold text-vibrant-dark">Neha Patil</span> (IIVA Certified Professional) &amp; <span className="font-bold text-vibrant-dark">Nitin Sir</span> at Wakad, Pune. Online interactive classroom sessions are also conducted.
+              Empower your child with 10x faster calculation speeds and photographic memory. Led by <span className="font-bold text-vibrant-dark">Neha Patil</span> (IIVA Certified Professional) &amp; <span className="font-bold text-vibrant-dark">Nitin Sir</span>. Online interactive classroom sessions are also conducted.
             </motion.p>
 
             {/* Quick Trust Indicators Card from palette specification */}
@@ -180,7 +180,7 @@ export default function Hero() {
               {/* Special message banner */}
               <div className="space-y-3">
                 <span className="block text-vibrant-dark font-display font-black text-xl leading-tight">
-                  Why local Wakad parents choose us:
+                  Why parents choose us:
                 </span>
                 <p className="text-xs text-gray-600 leading-relaxed">
                   While ordinary tuition centers focus on repetitive paper calculations, Neha Patil’s <strong>Arnav Abacus Academy</strong> incorporates visual beads of abacus and mental shortcuts of Vedic maths, teaching children to solve 10x faster with absolute joy.
@@ -202,11 +202,11 @@ export default function Hero() {
               {/* Promo offer card widget */}
               <div className="bg-vibrant-dark text-white p-4 rounded-2xl flex items-center justify-between gap-4">
                 <div>
-                  <span className="block text-[10px] uppercase font-black text-vibrant-teal">Wakad Center Benefits</span>
+                  <span className="block text-[10px] uppercase font-black text-vibrant-teal">Center Benefits</span>
                   <span className="block font-display text-xs text-slate-300">Located directly opposite Creative Cameo bungalow</span>
                 </div>
                 <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0">
-                  📍
+                  <MapPin className="w-5 h-5 text-vibrant-teal" />
                 </div>
               </div>
             </div>

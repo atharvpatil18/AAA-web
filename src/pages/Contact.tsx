@@ -27,7 +27,7 @@ export default function Contact() {
             Contact Arnav Abacus Academy
           </h1>
           <p className="text-[#A2C4C9] text-xs md:text-sm font-semibold max-w-2xl mx-auto leading-relaxed">
-            Have questions about fees, timetables, or child evaluation classes? Visit our Wakad center or get in touch below.
+            Have questions about fees, timetables, or child evaluation classes? Visit our center or get in touch below.
           </p>
         </div>
       </section>
@@ -65,7 +65,7 @@ export default function Contact() {
                     Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Wakad, Pune, Maharashtra 411057
                   </p>
                   <span className="block text-[10px] text-vibrant-orange italic mt-1.5 font-black">
-                    ★ Near Park Street, Wakad
+                    ★ Near Park Street
                   </span>
                 </div>
               </div>
@@ -150,10 +150,10 @@ export default function Contact() {
               LIVE ACCURATE LOCATION MAPS
             </span>
             <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-              Locate Our Wakad Classroom Center
+              Locate Our Classroom Center
             </h2>
             <p className="text-gray-550 text-xs md:text-sm font-semibold">
-              Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Wakad, Pune. Use the interactive map details below to coordinate easy travel directions.
+              Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Pune. Use the interactive map details below to coordinate easy travel directions.
             </p>
           </div>
 
@@ -165,7 +165,7 @@ export default function Contact() {
               allowFullScreen={true}
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
-              title="Arnav Abacus Academy Map Wakad"
+              title="Arnav Abacus Academy Map"
             />
           </div>
 

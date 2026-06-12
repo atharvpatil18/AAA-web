@@ -95,9 +95,9 @@ export default function TrustBar() {
   return (
     <div 
       id="trust-indicators-bar" 
-      className="bg-white rounded-[32px] border-4 border-vibrant-dark shadow-[8px_8px_0_0_#1A2E35] p-8 max-w-7xl mx-auto -mt-16 md:-mt-20 relative z-30 opacity-100"
+      className="bg-white rounded-[32px] border-4 border-vibrant-dark shadow-[8px_8px_0_0_#1A2E35] p-4 sm:p-8 max-w-7xl mx-auto -mt-16 md:-mt-20 relative z-30 opacity-100"
     >
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 divide-y-2 lg:divide-y-0 lg:divide-x-2 divide-slate-100">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-0">
         {stats.map((stat, idx) => {
           const IconComponent = stat.icon;
           const currentCount = counts[stat.id];
@@ -115,9 +115,12 @@ export default function TrustBar() {
           return (
             <div 
               key={stat.id} 
-              className={`flex flex-col items-center text-center p-4 ${
-                idx > 1 ? "pt-6 lg:pt-4" : ""
-              } ${idx % 2 === 1 ? "lg:border-none" : ""}`}
+              className={`flex flex-col items-center text-center p-4 border-slate-100
+                ${idx % 2 === 0 ? "border-r" : ""}
+                ${idx < 2 ? "border-b" : ""}
+                lg:border-b-0
+                ${idx === 3 ? "lg:border-r-0" : "lg:border-r"}
+              `}
             >
               {/* Stat Icon Circle */}
               <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3.5 border hover:scale-105 transition-transform shadow-sm ${customIconClass}`}>

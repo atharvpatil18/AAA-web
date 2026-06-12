@@ -44,7 +44,7 @@ export default function Programs() {
             Interactive Classroom Streams
           </h2>
           <p className="text-gray-500 text-xs md:text-sm font-semibold">
-            All programs run throughout the year under direct supervision of Master Trainer Neha Patil at our Wakad center.
+            All programs run throughout the year under direct supervision of Master Trainer Neha Patil at our center.
           </p>
         </div>
 
