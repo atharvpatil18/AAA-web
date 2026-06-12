@@ -208,7 +208,7 @@ export default function Home() {
             <div className="lg:col-span-7 h-[350px] md:h-[450px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[12px_12px_0_0_#1A2E35] relative group">
               <iframe 
                 src="https://maps.google.com/maps?q=Arnav%20Abacus%20Academy%20%26%20Vedic%20Maths%20Classes,%20Opp.%20Creative%20Cameo,%2520Pune&t=&z=17&ie=UTF8&iwloc=B&output=embed" 
-                className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500" 
+                className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500 pointer-events-none" 
                 allowFullScreen={true}
                 loading="lazy" 
                 referrerPolicy="no-referrer-when-downgrade"
