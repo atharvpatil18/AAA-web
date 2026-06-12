@@ -21,6 +21,7 @@ interface SuccessItem {
   imageAlt: string;
   tag: string;
   colorTheme: "teal" | "orange" | "gold";
+  imageUrl?: string;
 }
 
 export default function Showcase() {
@@ -134,7 +135,7 @@ export default function Showcase() {
             Proven Results &amp; Memories
           </span>
           <h1 className="font-display font-black text-4xl md:text-5xl tracking-tight leading-tight">
-            Our Achievements &amp; Gallery Showcase
+            Our Achievements and Gallery Showcase
           </h1>
           <p className="text-[#A2C4C9] text-xs md:text-sm font-semibold max-w-2xl mx-auto leading-relaxed">
             See the real transformation of students at Arnav Abacus Academy. From building photographic memory to winning national trophies and enjoying daily classes.
@@ -185,29 +186,39 @@ export default function Showcase() {
                 key={item.id} 
                 className={`bg-[#FFFDF9] border-4 ${borderCol} rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_${shadowCol}] flex flex-col hover:scale-[1.01] transition-transform duration-200`}
               >
-                {/* Visual Header Placeholder - Dynamic CSS Gradients representing classroom concepts */}
+                {/* Visual Header Placeholder - Image or Gradient Icon */}
                 <div className={`h-48 relative overflow-hidden flex items-center justify-center border-b-4 ${borderCol} ${accentBg}/15`}>
-                  {/* Decorative background grid pattern */}
-                  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#1A2E35_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                  {item.imageUrl ? (
+                    <img 
+                      src={item.imageUrl} 
+                      alt={item.imageAlt} 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <>
+                      {/* Decorative background grid pattern */}
+                      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#1A2E35_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                      
+                      {/* Icon representation */}
+                      <div className="z-10 flex flex-col items-center gap-2">
+                        <div className={`w-16 h-16 rounded-2xl bg-white border-2 ${borderCol} flex items-center justify-center shadow-md`}>
+                          {item.type === "transformation" ? (
+                            <Sparkles className="w-8 h-8 text-vibrant-teal" />
+                          ) : item.type === "competition" ? (
+                            <Trophy className="w-8 h-8 text-vibrant-gold fill-current" />
+                          ) : (
+                            <Camera className="w-8 h-8 text-vibrant-orange" />
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
                   
                   {/* Styled visual badges */}
                   <div className="absolute top-4 left-4 z-10">
                     <span className={`text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-vibrant-dark/15 shadow-sm ${badgeBg}`}>
                       {item.tag}
                     </span>
-                  </div>
-
-                  {/* Icon representation in place of standard images to look incredibly premium */}
-                  <div className="z-10 flex flex-col items-center gap-2">
-                    <div className={`w-16 h-16 rounded-2xl bg-white border-2 ${borderCol} flex items-center justify-center shadow-md`}>
-                      {item.type === "transformation" ? (
-                        <Sparkles className="w-8 h-8 text-vibrant-teal" />
-                      ) : item.type === "competition" ? (
-                        <Trophy className="w-8 h-8 text-vibrant-gold fill-current" />
-                      ) : (
-                        <Camera className="w-8 h-8 text-vibrant-orange" />
-                      )}
-                    </div>
                   </div>
                 </div>
 

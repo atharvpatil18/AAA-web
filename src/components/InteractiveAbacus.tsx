@@ -158,8 +158,8 @@ export default function InteractiveAbacus() {
                 <div className="absolute top-[88px] bottom-1 w-10 sm:w-12 cursor-pointer flex flex-col justify-end items-center pb-3">
                   {[1, 2, 3, 4].map((idx) => {
                     const isActive = rod.lowerCount >= idx;
-                    // Move active beads up to the divider (40px translation)
-                    const yOffset = isActive ? -40 : 0;
+                    // Move active beads up to the divider (32px translation to prevent overlapping)
+                    const yOffset = isActive ? -32 : 0;
 
                     return (
                       <motion.div
