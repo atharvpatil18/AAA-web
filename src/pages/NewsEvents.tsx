@@ -239,12 +239,14 @@ export default function NewsEvents() {
             >
               Contact Center
             </a>
-            <Link
-              to="/contact"
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=18.5936735,73.7656606"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs uppercase font-black text-white tracking-widest hover:underline flex items-center gap-1"
             >
               View Center Maps <ArrowRight className="w-4 h-4" />
-            </Link>
+            </a>
           </div>
         </div>
       </section>

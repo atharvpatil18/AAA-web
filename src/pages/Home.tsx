@@ -196,7 +196,7 @@ export default function Home() {
 
               <div>
                 <a
-                  href="https://www.google.com/maps/dir/?api=1&destination=Arnav%20Abacus%20Academy%20%26%20Vedic%20Maths%20Classes%20Pune"
+                  href="https://www.google.com/maps/dir/?api=1&destination=18.5936735,73.7656606"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-black text-vibrant-orange hover:text-vibrant-orange/95 uppercase tracking-widest bg-vibrant-cream border-2 border-vibrant-dark px-4 py-2 rounded-xl text-center shadow-[0_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all"
@@ -209,7 +209,7 @@ export default function Home() {
             {/* Column Right: Map Iframe wrapper */}
             <div className="lg:col-span-7 h-[350px] md:h-[450px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[12px_12px_0_0_#1A2E35] relative group">
               <iframe 
-                src="https://maps.google.com/maps?q=Arnav%20Abacus%20Academy%20%26%20Vedic%20Maths%20Classes%20Pune&t=&z=17&ie=UTF8&iwloc=B&output=embed" 
+                src="https://maps.google.com/maps?q=18.5936735,73.7656606&z=17&output=embed" 
                 className="w-full h-full border-0" 
                 allowFullScreen={true}
                 loading="lazy" 
