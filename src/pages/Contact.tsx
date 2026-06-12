@@ -160,8 +160,8 @@ export default function Contact() {
           {/* Map Frame wrapper */}
           <div className="h-[400px] md:h-[500px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[12px_12px_0_0_#1A2E35] relative">
             <iframe 
-              src="https://maps.google.com/maps?q=Arnav%20Abacus%20Academy%20%26%20Vedic%20Maths%20Classes,%20Opp.%20Creative%20Cameo,%2520Pune&t=&z=17&ie=UTF8&iwloc=B&output=embed" 
-              className="w-full h-full border-0 pointer-events-none" 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.5646394200424!2d73.7656606!3d18.5936735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9beebda0335%3A0xcb13e9a405527f31!2sArnav%20Abacus%20Academy%20%26%20Vedic%20Maths%20Classes!5e0!3m2!1sen!2sin!4v1716500000000!5m2!1sen!2sin" 
+              className="w-full h-full border-0" 
               allowFullScreen={true}
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
