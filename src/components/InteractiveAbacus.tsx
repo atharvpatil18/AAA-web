@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { RotateCcw, HelpCircle, Star } from "lucide-react";
+import { RotateCcw, HelpCircle, Star, Sparkles, Hash } from "lucide-react";
 import { motion } from "motion/react";
 
 interface RodState {
@@ -23,6 +23,7 @@ export default function InteractiveAbacus() {
   ]);
 
   const [showGuide, setShowGuide] = useState(false);
+  const [customInput, setCustomInput] = useState("");
 
   // Toggle upper bead (value 5)
   const toggleUpper = (rodIdx: number) => {
@@ -37,12 +38,23 @@ export default function InteractiveAbacus() {
   const setLowerCount = (rodIdx: number, val: number) => {
     setRods((prev) => {
       const next = [...prev];
-      // If clicking already selected top lower bead, clear it down
       const currentCount = next[rodIdx].lowerCount;
       const nextCount = currentCount === val ? val - 1 : val;
       next[rodIdx] = { ...next[rodIdx], lowerCount: Math.max(0, nextCount) };
       return next;
     });
+  };
+
+  // Set abacus to a specific number
+  const setAbacusNumber = (num: number) => {
+    const clamped = Math.max(0, Math.min(99999, num));
+    const digits = clamped.toString().padStart(5, "0").split("").map(Number);
+    const nextRods = digits.map((digit) => {
+      const upper = digit >= 5;
+      const lowerCount = digit % 5;
+      return { upper, lowerCount };
+    });
+    setRods(nextRods);
   };
 
   // Reset abacus to 0
@@ -54,6 +66,7 @@ export default function InteractiveAbacus() {
       { upper: false, lowerCount: 0 },
       { upper: false, lowerCount: 0 },
     ]);
+    setCustomInput("");
   };
 
   // Calculate values
@@ -66,10 +79,27 @@ export default function InteractiveAbacus() {
     return acc + getRodValue(rod) * Math.pow(10, power);
   }, 0);
 
+  const handleCustomInputSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const val = parseInt(customInput, 10);
+    if (!isNaN(val)) {
+      setAbacusNumber(val);
+    }
+  };
+
+  const examples = [
+    { label: "Number 7", val: 7 },
+    { label: "Number 12", val: 12 },
+    { label: "Number 99", val: 99 },
+    { label: "Number 350", val: 350 },
+    { label: "Number 2,026", val: 2026 },
+    { label: "Number 99,999", val: 99999 },
+  ];
+
   return (
     <div 
       id="interactive-abacus-widget" 
-      className="bg-white border-4 border-vibrant-dark rounded-[36px] p-6 md:p-8 shadow-[8px_8px_0_0_#1A2E35] max-w-2xl mx-auto space-y-6"
+      className="bg-white border-4 border-vibrant-dark rounded-[36px] p-6 md:p-8 shadow-[8px_8px_0_0_#1A2E35] max-w-4xl mx-auto space-y-6"
     >
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-gray-100 pb-4">
         <div className="space-y-1 text-center sm:text-left">
@@ -114,83 +144,141 @@ export default function InteractiveAbacus() {
         </motion.div>
       )}
 
-      {/* Visual Abacus Box */}
-      <div className="bg-[#5C3A21] border-4 sm:border-8 border-[#3D2513] rounded-3xl p-2 sm:p-6 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] relative overflow-hidden">
+      {/* Grid Layout for Abacus and Options */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* Rods and Frame container */}
-        <div className="relative h-[240px] border-4 border-[#2C190D] bg-[#1E1108] rounded-xl flex justify-around p-0.5 sm:p-1">
+        {/* Left Hand: Visual Abacus Box */}
+        <div className="lg:col-span-8 bg-[#5C3A21] border-4 sm:border-8 border-[#3D2513] rounded-3xl p-2 sm:p-6 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] relative overflow-hidden">
           
-          {/* Horizontal Beam/Divider */}
-          <div className="absolute top-[68px] left-0 right-0 h-4 bg-[#4A2C18] border-y-2 border-[#2C190D] shadow-md z-10 flex items-center justify-around">
-            {/* Real-time pinpoint indicators */}
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-vibrant-gold opacity-50 z-20" />
-            ))}
+          {/* Rods and Frame container */}
+          <div className="relative h-[240px] border-4 border-[#2C190D] bg-[#1E1108] rounded-xl flex justify-around p-0.5 sm:p-1">
+            
+            {/* Horizontal Beam/Divider */}
+            <div className="absolute top-[68px] left-0 right-0 h-4 bg-[#4A2C18] border-y-2 border-[#2C190D] shadow-md z-10 flex items-center justify-around">
+              {/* Real-time pinpoint indicators */}
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-vibrant-gold opacity-50 z-20" />
+              ))}
+            </div>
+
+            {/* Render Rods */}
+            {rods.map((rod, rIdx) => {
+              const val = getRodValue(rod);
+
+              return (
+                <div key={rIdx} className="relative w-12 sm:w-16 h-full flex flex-col items-center select-none">
+                  
+                  {/* Metallic Rod Line */}
+                  <div className="absolute top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-r from-gray-400 via-gray-100 to-gray-500 rounded-full shadow-sm" />
+
+                  {/* --- UPPER DECK --- */}
+                  <div 
+                    onClick={() => toggleUpper(rIdx)}
+                    className="absolute w-10 sm:w-12 h-[60px] top-1 cursor-pointer flex items-center justify-center"
+                  >
+                    <motion.div 
+                      animate={{ y: rod.upper ? 20 : -10 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      className={`w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[10px] font-black cursor-pointer ${
+                        rod.upper
+                          ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
+                          : "bg-gradient-to-b from-[#B07D3E] via-[#F4C178] to-[#99652B] text-amber-950/70"
+                      }`}
+                    >
+                      5
+                    </motion.div>
+                  </div>
+
+                  {/* --- LOWER DECK --- */}
+                  <div className="absolute top-[88px] bottom-1 w-10 sm:w-12 cursor-pointer flex flex-col justify-end items-center pb-3">
+                    {[1, 2, 3, 4].map((idx) => {
+                      const isActive = rod.lowerCount >= idx;
+                      // Move active beads up to the divider (32px translation to prevent overlapping)
+                      const yOffset = isActive ? -32 : 0;
+
+                      return (
+                        <motion.div
+                          key={idx}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLowerCount(rIdx, idx);
+                          }}
+                          animate={{ y: yOffset }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                          className={`relative w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
+                            isActive 
+                              ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
+                              : "bg-gradient-to-b from-[#A5784A] via-[#E8B682] to-[#8C5D30] text-amber-950/70"
+                          }`}
+                        >
+                          1
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Individual Rod Value Badge */}
+                  <div className="absolute -bottom-1 bg-[#2C190D] border border-amber-950/50 rounded-md px-1 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-black text-vibrant-gold tracking-tight z-20">
+                    {val}
+                  </div>
+
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Right Hand: Examples & Custom Numbers Panel */}
+        <div className="lg:col-span-4 space-y-6">
+          {/* Example Numbers List */}
+          <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-3 shadow-[4px_4px_0_0_#1A2E35]">
+            <span className="flex items-center gap-1 text-[10px] text-vibrant-orange font-black uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 fill-current" /> Example Numbers
+            </span>
+            <p className="text-[11px] text-gray-500 font-semibold leading-tight">
+              Click any option below to see how standard numbers map onto the Soroban beads.
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              {examples.map((item) => (
+                <button
+                  key={item.val}
+                  onClick={() => setAbacusNumber(item.val)}
+                  className="bg-white hover:bg-orange-50 border-2 border-vibrant-dark/80 px-2.5 py-1.5 rounded-xl text-left text-xs font-black text-vibrant-dark transition-all hover:scale-[1.02] shadow-[2px_2px_0_0_#1A2E35] cursor-pointer"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Render Rods */}
-          {rods.map((rod, rIdx) => {
-            const val = getRodValue(rod);
-
-            return (
-              <div key={rIdx} className="relative w-12 sm:w-16 h-full flex flex-col items-center select-none">
-                
-                {/* Metallic Rod Line */}
-                <div className="absolute top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-r from-gray-400 via-gray-100 to-gray-500 rounded-full shadow-sm" />
-
-                {/* --- UPPER DECK --- */}
-                {/* Bead placement area: h-16 (0 to 68px) */}
-                <div 
-                  onClick={() => toggleUpper(rIdx)}
-                  className="absolute w-10 sm:w-12 h-[60px] top-1 cursor-pointer flex items-center justify-center"
-                >
-                  <motion.div 
-                    animate={{ y: rod.upper ? 20 : -10 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="w-9 sm:w-11 h-6 bg-gradient-to-b from-[#B07D3E] via-[#F4C178] to-[#99652B] border border-amber-950 rounded-full shadow-md flex items-center justify-center text-[10px] font-black text-amber-950/70"
-                  >
-                    5
-                  </motion.div>
-                </div>
-
-                {/* --- LOWER DECK --- */}
-                {/* Bead placement area: h-36 (84px to 230px) */}
-                <div className="absolute top-[88px] bottom-1 w-10 sm:w-12 cursor-pointer flex flex-col justify-end items-center pb-3">
-                  {[1, 2, 3, 4].map((idx) => {
-                    const isActive = rod.lowerCount >= idx;
-                    // Move active beads up to the divider (32px translation to prevent overlapping)
-                    const yOffset = isActive ? -32 : 0;
-
-                    return (
-                      <motion.div
-                        key={idx}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setLowerCount(rIdx, idx);
-                        }}
-                        animate={{ y: yOffset }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        className={`relative w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
-                          isActive 
-                            ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
-                            : "bg-gradient-to-b from-[#A5784A] via-[#E8B682] to-[#8C5D30] text-amber-950/70"
-                        }`}
-                      >
-                        1
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                {/* Individual Rod Value Badge */}
-                <div className="absolute -bottom-1 bg-[#2C190D] border border-amber-950/50 rounded-md px-1 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-black text-vibrant-gold tracking-tight z-20">
-                  {val}
-                </div>
-
-              </div>
-            );
-          })}
+          {/* Custom Number Input */}
+          <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-3 shadow-[4px_4px_0_0_#1A2E35]">
+            <span className="flex items-center gap-1 text-[10px] text-vibrant-teal font-black uppercase tracking-wider">
+              <Hash className="w-3.5 h-3.5" /> Visualize Custom Number
+            </span>
+            <p className="text-[11px] text-gray-500 font-semibold leading-tight">
+              Type any number between 0 and 99,999 to see it represented on the abacus rods.
+            </p>
+            <form onSubmit={handleCustomInputSubmit} className="flex gap-2">
+              <input
+                type="number"
+                min="0"
+                max="99999"
+                placeholder="e.g. 54321"
+                value={customInput}
+                onChange={(e) => setCustomInput(e.target.value)}
+                className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-teal"
+              />
+              <button
+                type="submit"
+                className="bg-vibrant-teal text-white font-black text-xs px-4 py-2 rounded-xl shadow-[0_3px_0_0_#00897B] active:translate-y-0.5 active:shadow-none transition-all hover:brightness-105 cursor-pointer"
+              >
+                Show
+              </button>
+            </form>
+          </div>
         </div>
+
       </div>
 
       {/* Dynamic Calculated Value Display */}
