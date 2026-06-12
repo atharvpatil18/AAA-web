@@ -207,7 +207,7 @@ export default function Home() {
             {/* Column Right: Map Iframe wrapper */}
             <div className="lg:col-span-7 h-[350px] md:h-[450px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[12px_12px_0_0_#1A2E35] relative group">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.5646394200424!2d73.7656606!3d18.5936735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9beebda0335%3A0xcb13e9a405527f31!2sArnav%20Abacus%20Academy%20%26%20Vedic%20Maths%20Classes!5e0!3m2!1sen!2sin!4v1716500000000!5m2!1sen!2sin" 
+                src="https://maps.google.com/maps?q=18.5936735,73.7656606&z=17&output=embed" 
                 className="w-full h-full border-0" 
                 allowFullScreen={true}
                 loading="lazy" 
