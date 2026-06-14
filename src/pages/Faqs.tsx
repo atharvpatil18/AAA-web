@@ -57,7 +57,7 @@ export default function Faqs() {
       id: "faq7",
       category: "General",
       question: "Do you offer online sessions or only offline batches?",
-      answer: "Our primary expertise is in premium hand-guided offline batches at our Wakad bungalow center, opposite Creative Cameo, ensuring child focus, personal tutor safety, and visual bead engagement. For specialized cases or advanced Vedic math segments, online batches are coordinated on request of the parent."
+      answer: "Our primary expertise is in premium hand-guided offline batches at our bungalow center, opposite Creative Cameo, ensuring child focus, personal tutor safety, and visual bead engagement. For specialized cases or advanced Vedic math segments, online batches are coordinated on request of the parent."
     }
   ];
 
@@ -180,7 +180,7 @@ export default function Faqs() {
                 Direct WhatsApp consultation with Neha Ma'am
               </h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                Connect and directly ask Neha Ma’am about customized kid levels, batch fee scales, custom timetables, and our Wakad classroom setup.
+                Connect and directly ask Neha Ma’am about customized kid levels, batch fee scales, custom timetables, and our classroom setup.
               </p>
               <div>
                 <a

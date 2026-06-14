@@ -49,7 +49,7 @@ export default function Mentor() {
             Our Mentors make Math a Joy
           </h1>
           <p className="text-slate-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-            Meet the professional certified educators behind Arnav Abacus Academy, helping children from Wakad unlock logical mental calculation powers.
+            Meet the professional certified educators behind Arnav Abacus Academy, helping children unlock logical mental calculation powers.
           </p>
         </div>
       </section>
@@ -107,7 +107,7 @@ export default function Mentor() {
               Coordinate a free evaluation with Neha Ma'am
             </h2>
             <p className="text-gray-600 text-sm leading-relaxed">
-              Submit a demo request. We will coordinate a quick slot at our Wakad center. Neha Ma’am will personally evaluate your child's counting habits, check for mathematical anxiety, and construct a visualization track specifically for them.
+              Submit a demo request. We will coordinate a quick slot at our center. Neha Ma’am will personally evaluate your child's counting habits, check for mathematical anxiety, and construct a visualization track specifically for them.
             </p>
 
             <div className="space-y-3 pt-2">

@@ -44,7 +44,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-xs text-slate-400 leading-relaxed pt-2">
-              Empowering children aged 4-14 in Wakad with cognitive skills, speed arithmetic, visual calculation, and complete math confidence.
+              Empowering children aged 4-14 with cognitive skills, speed arithmetic, visual calculation, and complete math confidence.
             </p>
             {/* Social handles */}
             <div className="flex items-center gap-3 pt-2">

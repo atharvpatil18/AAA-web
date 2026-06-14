@@ -137,7 +137,7 @@ export default function Home() {
               From the Parents of Our Champions
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              Academy focus in structured and scientific way as per Skill India, National Skill Development Center, IIVA and SmartKid Abacus, Vedic Math Techniques on logical arithmetic development and self-confidence. Here is genuine feedback shared by Parents of our champion students from our offline &amp; Online Classes at Wakad Academy.
+              Academy focus in structured and scientific way as per Skill India, National Skill Development Center, IIVA and SmartKid Abacus, Vedic Math Techniques on logical arithmetic development and self-confidence. Here is genuine feedback shared by Parents of our champion students from our offline &amp; Online Classes at our Academy.
             </p>
           </div>
 
@@ -156,10 +156,10 @@ export default function Home() {
                 VISIT OUR OFFLINE CLASSROOM
               </span>
               <h2 className="font-display font-black text-3.5xl text-vibrant-dark tracking-tight leading-tight">
-                Our Wakad, Pune Academy Center
+                Our Academy Center
               </h2>
               <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-                We are conveniently located opposite Creative Cameo, before Park Street, Wakad, Pune. Parents are always welcome to check the live offline classroom setup.
+                We are conveniently located opposite Creative Cameo, before Park Street, Pune. Parents are always welcome to check the live offline classroom setup.
               </p>
 
               <div className="space-y-4 text-xs md:text-sm text-gray-700">
@@ -195,27 +195,29 @@ export default function Home() {
               </div>
 
               <div>
-                <Link
-                  to="/contact"
+                <a
+                  href="https://www.google.com/maps/dir/?api=1&destination=18.5936735,73.7656606"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-black text-vibrant-orange hover:text-vibrant-orange/95 uppercase tracking-widest bg-vibrant-cream border-2 border-vibrant-dark px-4 py-2 rounded-xl text-center shadow-[0_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all"
                 >
                   View Directions <ArrowRight className="w-4 h-4 text-vibrant-orange" />
-                </Link>
+                </a>
               </div>
             </div>
 
             {/* Column Right: Map Iframe wrapper */}
             <div className="lg:col-span-7 h-[350px] md:h-[450px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[12px_12px_0_0_#1A2E35] relative group">
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.5646394200424!2d73.7656606!3d18.5936735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9beebda0335%3A0xcb13e9a405527f31!2sArnav%20Abacus%20Academy%20%26%20Vedic%20Maths%20Classes!5e0!3m2!1sen!2sin!4v1716500000000!5m2!1sen!2sin" 
-                className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-500" 
+                src="https://maps.google.com/maps?q=18.5936735,73.7656606&z=17&output=embed" 
+                className="w-full h-full border-0" 
                 allowFullScreen={true}
                 loading="lazy" 
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Arnav Abacus Academy Center Location in Wakad"
+                title="Arnav Abacus Academy Center Location"
               />
               <div className="absolute bottom-4 left-4 bg-vibrant-dark text-white text-[10px] font-black px-3.5 py-1.5 rounded-full backdrop-blur-sm tracking-widest uppercase shadow-md border border-slate-700/50">
-                📍 OPP. CREATIVE CAMEO, WAKAD
+                OPP. CREATIVE CAMEO, WAKAD
               </div>
             </div>
 
@@ -227,7 +229,7 @@ export default function Home() {
       <section className="py-20 md:py-28 bg-[#FF6321] text-white border-t-4 border-vibrant-dark relative">
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center space-y-6 relative z-10">
           <div className="inline-flex items-center gap-1.5 bg-white/20 border border-white/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-            ⚡ Admissions Open for New Batches
+            Admissions Open for New Batches
           </div>
           <h2 className="font-display font-black text-3xl md:text-5xl tracking-tight leading-tight text-white">
             Give Your Child the Power of Speed with Accuracy and Consistency

@@ -107,7 +107,7 @@ Program: ${program}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
           Claim Free Demo Slot
         </h3>
         <p className="text-gray-500 text-xs md:text-sm leading-relaxed">
-          Get a personalized evaluation session at our Wakad center. It takes less than a minute.
+          Get a personalized evaluation session at our center. It takes less than a minute.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4 pt-2">
@@ -184,7 +184,7 @@ Program: ${program}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
         </form>
 
         <p className="text-center text-[10px] font-bold uppercase text-gray-400 mt-4 flex items-center justify-center gap-1.5">
-          <Landmark className="w-3.5 h-3.5 shrink-0 text-gray-300" /> Wakad Center opposite Creative Cameo, before Park Street, Wakad, Pune
+          <Landmark className="w-3.5 h-3.5 shrink-0 text-gray-300" /> Center opposite Creative Cameo, before Park Street, Pune
         </p>
       </div>
     </div>

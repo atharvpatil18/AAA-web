@@ -37,14 +37,20 @@ export default function FloatingCTA() {
     <div className="fixed bottom-6 right-6 z-45 flex flex-col items-end gap-3 pointer-events-none">
       {/* Small notification dialog box */}
       {showNotification && (
-        <div className="bg-white text-gray-900 px-4 py-3 rounded-2xl shadow-xl border border-gray-100 flex items-start gap-2.5 max-w-xs animate-fade-in pointer-events-auto">
+        <div 
+          onClick={handleWhatsappClick}
+          className="bg-white text-gray-900 px-4 py-3 rounded-2xl shadow-xl border border-gray-100 flex items-start gap-2.5 max-w-xs animate-fade-in pointer-events-auto cursor-pointer hover:bg-emerald-50/50 transition-colors"
+        >
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mt-1.5 shrink-0" />
           <div className="flex-1">
             <span className="block text-xs font-bold text-gray-900 leading-tight">Neha Patil (Mentor)</span>
             <span className="block text-[11px] text-gray-500 mt-0.5 leading-relaxed">Let's coordinate a free demo schedule over WhatsApp! 🎯</span>
           </div>
           <button 
-            onClick={() => setShowNotification(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowNotification(false);
+            }}
             className="text-gray-400 hover:text-gray-600 p-0.5"
             aria-label="Close message"
           >

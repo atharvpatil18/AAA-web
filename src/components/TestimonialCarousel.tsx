@@ -55,14 +55,14 @@ export default function TestimonialCarousel() {
       id: "t7",
       author: "Dr. Shalini Deshmukh",
       role: "Parent of Riya",
-      content: "As a doctor, I wanted a structured brain development program for my daughter. Arnav Abacus's scientific way of teaching has improved Riya's photographic memory, auditory listening capacity, and focus. Very happy with the offline Wakad academy.",
+      content: "As a doctor, I wanted a structured brain development program for my daughter. Arnav Abacus's scientific way of teaching has improved Riya's photographic memory, auditory listening capacity, and focus. Very happy with the offline academy.",
       rating: 5,
     },
     {
       id: "t8",
       author: "Amit Joshi",
       role: "Parent of Parth",
-      content: "Very convenient offline center near Park Street in Wakad. The personal attention, regular assessments, and positive feedback loop keep the kids motivated. Parth actually looks forward to his math sessions now!",
+      content: "Very convenient offline center near Park Street. The personal attention, regular assessments, and positive feedback loop keep the kids motivated. Parth actually looks forward to his math sessions now!",
       rating: 5,
     },
     {
@@ -151,16 +151,16 @@ export default function TestimonialCarousel() {
             </div>
 
             {/* Pagination Controls and Google Link */}
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
               <a
                 href="https://share.google/fFcUhDGoBJ5M27dX5"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-black text-white bg-vibrant-orange hover:bg-vibrant-orange/95 px-4 py-2 rounded-xl shadow-[0_3px_0_0_#B33A00] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                className="text-xs font-black text-white bg-vibrant-orange hover:bg-vibrant-orange/95 px-4 py-2 rounded-xl shadow-[0_3px_0_0_#B33A00] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer shrink-0"
               >
                 View on Google
               </a>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 shrink-0">
                 <button
                   onClick={handlePrev}
                   className="w-10 h-10 bg-white border-2 border-vibrant-dark rounded-full flex items-center justify-center text-vibrant-dark shadow-[0_3px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-cream transition-all cursor-pointer"

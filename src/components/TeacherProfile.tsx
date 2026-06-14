@@ -16,7 +16,7 @@ export default function TeacherProfile() {
   const certifications = [
     "IIVA Certified Abacus Master & Vedic Math Coach",
     "Expert in Child Psychology & Visualization Practice",
-    "Over 3+ Years of Direct Mentorial Excellence in Wakad, Pune",
+    "Over 3+ Years of Direct Mentorial Excellence",
     "Tailored 1-on-1 Personalized Attention System for Every Student"
   ];
 
@@ -63,7 +63,7 @@ export default function TeacherProfile() {
               <Star className="w-4 h-4 text-vibrant-gold fill-current animate-pulse" />
               <div>
                 <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Top Rated Mentor</span>
-                <span className="block text-xs font-black text-white leading-none mt-0.5">Wakad, Pune</span>
+                <span className="block text-xs font-black text-white leading-none mt-0.5">Pune</span>
               </div>
             </div>
           </div>

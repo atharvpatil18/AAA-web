@@ -46,7 +46,7 @@ export default function NewsEvents() {
       date: "August 24, 2026 • Pune",
       category: "competition",
       tag: "Olympiad Registration",
-      summary: "Registrations are officially open for the Maharashtra State Level Abacus & Vedic Mathematics competition. Over 50+ students from our Wakad center are participating.",
+      summary: "Registrations are officially open for the State Level Abacus & Vedic Mathematics competition. Over 50+ students from our center are participating.",
       details: [
         "Authorized IIVA (Indian Institute of Vedic Maths & Abacus) syllabus.",
         "Categories divided by age and completed training levels.",
@@ -127,7 +127,7 @@ export default function NewsEvents() {
             </div>
 
             <div className="pt-2 text-[10px] text-gray-400 font-bold">
-              * Note: The app will be provided absolutely free for all active Wakad center students.
+              * Note: The app will be provided absolutely free for all active center students.
             </div>
           </div>
 
@@ -136,42 +136,17 @@ export default function NewsEvents() {
             <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#1A2E35_1px,transparent_1px)] [background-size:16px_16px]"></div>
             
             {/* Brutalist Phone frame mockup */}
-            <div className="w-64 h-96 bg-white border-4 border-vibrant-dark rounded-[24px] shadow-[6px_6px_0_0_#1A2E35] p-4 flex flex-col justify-between relative z-10">
+            <div className="w-64 h-96 bg-vibrant-dark border-4 border-vibrant-dark rounded-[24px] shadow-[6px_6px_0_0_#1A2E35] overflow-hidden flex flex-col justify-between relative z-10">
               {/* Phone speaker notch */}
-              <div className="w-24 h-4 bg-vibrant-dark rounded-full mx-auto mb-2"></div>
+              <div className="w-24 h-4 bg-vibrant-dark rounded-full mx-auto my-2 shrink-0 z-20"></div>
               
               {/* App screen mockup content */}
-              <div className="flex-grow flex flex-col justify-between pt-2">
-                <div className="space-y-3">
-                  {/* App Brand Header */}
-                  <div className="flex justify-between items-center pb-2 border-b border-gray-100">
-                    <span className="text-[10px] font-black text-vibrant-dark">ARNAV APP v1.0</span>
-                    <span className="w-2 h-2 rounded-full bg-vibrant-teal animate-pulse"></span>
-                  </div>
-
-                  {/* Child's Profile */}
-                  <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-xl p-2 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-vibrant-orange flex items-center justify-center text-white font-black text-xs">AP</div>
-                    <div>
-                      <h4 className="text-[10px] font-black text-vibrant-dark leading-none">Arnav Patil</h4>
-                      <span className="text-[8px] text-gray-400 font-bold block mt-0.5">Level 3 Completed</span>
-                    </div>
-                  </div>
-
-                  {/* Speed stats */}
-                  <div className="bg-[#E0FAF5] border border-vibrant-teal/20 rounded-xl p-2 text-center">
-                    <span className="text-[7px] text-vibrant-teal font-black uppercase tracking-wider block">Weekly Goal Progress</span>
-                    <strong className="text-sm font-black text-vibrant-dark block mt-0.5">85 / 100 Sums</strong>
-                    <div className="w-full bg-white/60 h-1.5 rounded-full mt-1.5 overflow-hidden">
-                      <div className="bg-vibrant-teal h-full w-[85%]"></div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Simulated Practice Button */}
-                <div className="bg-vibrant-dark text-white text-[10px] font-black py-2.5 rounded-xl text-center cursor-pointer shadow-sm">
-                  Start Abacus Challenge ⚡
-                </div>
+              <div className="flex-grow w-full h-full relative overflow-hidden bg-white">
+                <img 
+                  src="/student_app_ui.png" 
+                  alt="Arnav Abacus Student Practice App Interface" 
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
@@ -254,7 +229,7 @@ export default function NewsEvents() {
             Have Questions About Upcoming Events?
           </h2>
           <p className="text-[#FFF2E0] text-xs md:text-sm max-w-2xl mx-auto leading-relaxed font-bold">
-            We are always here to guide you. Speak to our mentors on the phone or visit the Wakad center directly.
+            We are always here to guide you. Speak to our mentors on the phone or visit our center directly.
           </p>
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
@@ -262,14 +237,16 @@ export default function NewsEvents() {
               onClick={handleCtaClick}
               className="w-full sm:w-auto bg-vibrant-gold text-vibrant-dark border-2 border-vibrant-dark font-black px-8 py-5 rounded-2xl shadow-[0_6px_0_0_#1A2E35] active:translate-y-1 active:shadow-none hover:scale-[1.01] transition-all text-center"
             >
-              Contact Wakad Center
+              Contact Center
             </a>
-            <Link
-              to="/contact"
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=18.5936735,73.7656606"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs uppercase font-black text-white tracking-widest hover:underline flex items-center gap-1"
             >
               View Center Maps <ArrowRight className="w-4 h-4" />
-            </Link>
+            </a>
           </div>
         </div>
       </section>
