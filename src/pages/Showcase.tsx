@@ -24,7 +24,6 @@ interface SuccessItem {
   colorTheme: "teal" | "orange" | "gold";
 }
 
-
 export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
   const [activeTab, setActiveTab] = useState<"all" | "stories" | "gallery">(defaultTab);
 
@@ -38,7 +37,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       type: "competition",
       title: "1st Rank at International Abacus Competition",
       tag: "International Champion",
-      achievementText: "Arnav Patil, the brilliant young brand ambassador of Arnav Abacus Academy, achieved the ultimate glory by securing 1st Rank at the International Abacus Competition on National Mathematics Day 2025. The champion's trophy and certificate were proudly presented by India's iconic former IPS officer and Lt. Governor, Dr. Kiran Bedi, alongside the CEO of IIVA. This monumental victory reflects the academy's commitment to cultivating elite mental arithmetic minds.",
+      achievementText: "<strong>Arnav Patil</strong>, the brilliant young brand ambassador of Arnav Abacus Academy, achieved the ultimate glory by securing <strong>1st Rank</strong> at the International Abacus Competition on National Mathematics Day 2025. The champion's trophy and certificate were proudly presented by India's iconic former IPS officer and Lt. Governor, <strong>Dr. Kiran Bedi</strong>, alongside the CEO of IIVA. This monumental victory reflects the academy's commitment to cultivating elite mental arithmetic minds.",
       imageUrl: "international_abacus_champion.jpg",
       imageAlt: "Arnav Patil receiving the International Abacus Champion Trophy from Hon. Dr. Kiran Bedi and IIVA CEO",
       colorTheme: "gold",
@@ -48,7 +47,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       type: "competition",
       title: "Back-to-Back International Champion: Arnav Patil",
       tag: "Double Champion",
-      achievementText: "Talk about a double victory! Within just one week, Arnav Abacus Academy’s brand ambassador, Arnav Patil, has clinched yet another 1st Rank at the International level (C1 Category - Advanced Level) at the 8th International Abacus Competition 2025 in Pune. Razor-sharp accuracy meets relentless consistency—proving that champions aren't born, they are trained!",
+      achievementText: "Talk about a double victory! Within just one week, Arnav Abacus Academy’s brand ambassador, <strong>Arnav Patil</strong>, has clinched yet another <strong>1st Rank</strong> at the International level (C1 Category - Advanced Level) at the <strong>8th International Abacus Competition 2025</strong> in Pune. Razor-sharp accuracy meets relentless consistency—proving that champions aren't born, they are trained!",
       imageUrl: "arnav_patil_international_1st_2025.jpg",
       imageAlt: "Arnav Patil holding the 1st Rank Trophy with Neha Patil on stage",
       colorTheme: "gold",
@@ -58,7 +57,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       type: "gallery",
       title: "Business Excellence Award 2025",
       tag: "Business Excellence",
-      achievementText: "Arnav Abacus Academy Founder & Director, Neha Patil, was honored with the prestigious Business Excellence Award at the 8th International Abacus Competition 2025. Presented by Mr. Sanjay Kalamkar, CEO of Smart Kid Abacus Learning Pvt Ltd, this accolade celebrates her exceptional leadership, entrepreneurial vision, and dedication to raising mental math education standards globally.",
+      achievementText: "Arnav Abacus Academy Founder & Director, <strong>Neha Patil</strong>, was honored with the prestigious <strong>Business Excellence Award</strong> at the 8th International Abacus Competition 2025. Presented by <strong>Mr. Sanjay Kalamkar</strong>, CEO of Smart Kid Abacus Learning Pvt Ltd, this accolade celebrates her exceptional leadership, entrepreneurial vision, and dedication to raising mental math education standards globally.",
       imageUrl: "business_excellence_award_2025.jpg",
       imageAlt: "Neha Patil receiving the Business Excellence Award 2025 from Sanjay Kalamkar",
       colorTheme: "gold",
@@ -68,7 +67,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       type: "gallery",
       title: "Women’s Achiever Award & Community Recognition (Jan 2026)",
       tag: "Community Honors",
-      achievementText: "Hattrick alert! 🏆 Arnav Abacus Academy’s visionary Founder & Director, Neha Patil, marks a remarkable three-award milestone in just one month! Honored with the prestigious Women’s Achiever Award by the Leva Patidar Bhatru Mandal Wakad (LPBMW), this special tribute celebrates her dual dedication—driving digital excellence at Wisdom World School and fostering mental arithmetic mastery at Arnav Abacus Academy. Awards from home always hit different; this recognition fuels our passion to keep elevating young minds and contributing to society!",
+      achievementText: "Hattrick alert! 🏆 Arnav Abacus Academy’s visionary Founder & Director, <strong>Neha Patil</strong>, marks a remarkable three-award milestone in just one month! Honored with the prestigious <strong>Women’s Achiever Award</strong> by the Leva Patidar Bhatru Mandal Wakad (LPBMW), this special tribute celebrates her dual dedication—driving digital excellence at Wisdom World School and fostering mental arithmetic mastery at Arnav Abacus Academy. Awards from home always hit different; this recognition fuels our passion to keep elevating young minds and contributing to society!",
       imageUrl: "neha_achiever_collage.jpg",
       imageAlt: "Neha Patil receiving the Women's Achiever Award from LPBMW community leaders",
       colorTheme: "gold",
@@ -78,7 +77,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       type: "gallery",
       title: "Best Student of the Year (2025-26)",
       tag: "Star Student",
-      achievementText: "Meet our silent performer and supersonic star, Spriha Kamat—crowned Best Student of the Year! Spriha’s journey is defined by stellar consistency, absolute discipline, timely homework, and flawless math visualization skills. A massive shoutout to her supportive partners-in-success, Supermom Priya Kamat & Superdad Sameer Kamat, for fueling her growth!",
+      achievementText: "Meet our silent performer and supersonic star, <strong>Spriha Kamat</strong>—crowned <strong>Best Student of the Year</strong>! Spriha’s journey is defined by stellar consistency, absolute discipline, timely homework, and flawless math visualization skills. A massive shoutout to her supportive partners-in-success, Supermom <strong>Priya Kamat</strong> & Superdad <strong>Sameer Kamat</strong>, for fueling her growth!",
       imageUrl: "best_student_spriha_kamat_2025_2026.jpg",
       imageAlt: "Spriha Kamat holding the Best Student of the Year Trophy with Neha Patil",
       colorTheme: "teal",
@@ -88,7 +87,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       type: "competition",
       title: "3rd Rank at International Abacus Competition",
       tag: "Bronze Medalist",
-      achievementText: "Huge congratulations to our brilliant high-performer, Hitanshi Agarwal, for securing Rank 3 at the 8th International Abacus Competition 2025 in Pune! Presented by Smart Kid Abacus Learning Pvt Ltd, this outstanding victory celebrates Hitanshi’s mental arithmetic brilliance and unwavering dedication to excellence on the global stage.",
+      achievementText: "Huge congratulations to our brilliant high-performer, <strong>Hitanshi Agarwal</strong>, for securing <strong>Rank 3</strong> at the 8th International Abacus Competition 2025 in Pune! Presented by Smart Kid Abacus Learning Pvt Ltd, this outstanding victory celebrates Hitanshi’s mental arithmetic brilliance and unwavering dedication to excellence on the global stage.",
       imageUrl: "hitanshi_collage.jpg",
       imageAlt: "Hitanshi Agarwal holding her trophy and celebrating her 3rd Rank at the International Abacus Competition",
       colorTheme: "orange",
@@ -98,7 +97,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       type: "competition",
       title: "1st Rank at B1 Level International Abacus Competition",
       tag: "International Champion",
-      achievementText: "A massive congratulations to our stellar math champion, Shreshth Gupta, for clinching 1st Rank (B1 Level) at the 8th International Abacus Competition 2025 in Pune! Presented by Smart Kid Abacus Learning Pvt Ltd, Shreshth’s award-winning mathematical precision and exemplary dedication represent the highest standard of cognitive performance.",
+      achievementText: "A massive congratulations to our stellar math champion, <strong>Shreshth Gupta</strong>, for clinching <strong>1st Rank (B1 Level)</strong> at the 8th International Abacus Competition 2025 in Pune! Presented by Smart Kid Abacus Learning Pvt Ltd, Shreshth’s award-winning mathematical precision and exemplary dedication represent the highest standard of cognitive performance.",
       imageUrl: "shreshth_gupta_champion_2025.jpg",
       imageAlt: "Shreshth Gupta receiving the 1st Rank International Abacus Competition Trophy with Neha Patil",
       colorTheme: "gold",
@@ -108,7 +107,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       type: "competition",
       title: "Runner-Up Trophies for Our Seven Stars",
       tag: "Rising Champions",
-      achievementText: "Proof that confidence and smiles are the ultimate indicators of success! We are thrilled to celebrate our seven rising stars—ranging from Jr. KG to Advanced Levels—who bagged Runner-Up Trophies at the 8th International Abacus Competition 2025 in Pune. Huge congratulations to Prathamesh Zope (C2 Category), Atharva Titave (B2 Level), Hridhaan Bagla, Kriyansh Chhabria, Agastya Patil, Hitansh Agarwal, and Aarav Patil (Z Category). Your dedication makes us proud!",
+      achievementText: "Proof that confidence and smiles are the ultimate indicators of success! We are thrilled to celebrate our <strong>seven rising stars</strong>—ranging from Jr. KG to Advanced Levels—who bagged <strong>Runner-Up Trophies</strong> at the 8th International Abacus Competition 2025 in Pune. Huge congratulations to Prathamesh Zope (C2 Category), Atharva Titave (B2 Level), Hridhaan Bagla, Kriyansh Chhabria, Agastya Patil, Hitansh Agarwal, and Aarav Patil (Z Category). Your dedication makes us proud!",
       imageUrl: "seven_runner_up_stars_2025.jpg",
       imageAlt: "Seven Arnav Abacus Academy students posing with their Runner-Up Trophies on stage",
       colorTheme: "teal",
@@ -128,7 +127,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       type: "gallery",
       title: "Abacus Excellence Camp at Bliss International (Summer 2024)",
       tag: "Summer Agility",
-      achievementText: "Igniting arithmetic genius in real time! 🧠 During our Summer Camp 2024, Arnav Abacus Academy Founder & Director, Neha Patil, mentored brilliant young minds from Bliss International School in the art of Soroban abacus visualization. Don’t just take our word for it—watch their learning breakthroughs and success stories shine through their own video testimonials!",
+      achievementText: "Igniting arithmetic genius in real time! 🧠 During our Summer Camp 2024, Arnav Abacus Academy Founder & Director, <strong>Neha Patil</strong>, mentored brilliant young minds from Bliss International School in the art of Soroban abacus visualization. Don’t just take our word for it—watch their learning breakthroughs and success stories shine through their own video testimonials!",
       imageUrl: "bliss_international_abacus_camp_2024.jpg",
       imageAlt: "Neha Patil teaching abacus to students at Bliss International School summer camp",
       colorTheme: "orange",
@@ -138,7 +137,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       type: "gallery",
       title: "National Entrepreneurship Excellence Award at IIT Delhi",
       tag: "National Recognition",
-      achievementText: "Arnav Abacus Academy’s visionary Founder & Director, Neha Patil, receives the prestigious Entrepreneurship Excellence Award from IIVA & IVAS at IIT Delhi on National Mathematics Day. Handed over by the CEO and CMD of IIVA & IVAS, this national accolade celebrates her transformative impact on 150+ students through innovative Abacus & Vedic Math programs, along with earning a perfect 5-star rating across 47 Google reviews for educational excellence and trusted mentorship.",
+      achievementText: "Arnav Abacus Academy’s visionary Founder & Director, <strong>Neha Patil</strong>, receives the prestigious <strong>Entrepreneurship Excellence Award</strong> from IIVA & IVAS at IIT Delhi on National Mathematics Day. Handed over by the CEO and CMD of IIVA & IVAS, this national accolade celebrates her transformative impact on 150+ students through innovative Abacus & Vedic Math programs, along with earning a perfect 5-star rating across 47 Google reviews for educational excellence and trusted mentorship.",
       imageUrl: "national_math_day_award.jpg",
       imageAlt: "Neha Patil receiving Entrepreneurship Excellence Award at IIT Delhi from IIVA & IVAS",
       colorTheme: "gold",
@@ -231,12 +230,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     }
   ];
 
-  // Helper to filter out gallery items that do not have photos
+  // Filter out any item that does not have a photo (imageUrl)
   const visibleItems = showcaseData.filter(item => {
-    if (item.type === "gallery" && !item.imageUrl) {
-      return false;
-    }
-    return true;
+    return !!item.imageUrl;
   });
 
   const filteredItems = activeTab === "all" 
@@ -259,10 +255,12 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
             Proven Results &amp; Memories
           </span>
           <h1 className="font-display font-black text-4xl md:text-5xl tracking-tight leading-tight">
-            Our Achievements and Gallery Showcase
+            Our Achievements &amp; Gallery
           </h1>
-          <p className="text-[#A2C4C9] text-xs md:text-sm font-semibold max-w-2xl mx-auto leading-relaxed">
-            See the real transformation of students at Arnav Abacus Academy. From building photographic memory to winning national trophies and enjoying daily classes.
+          <p className="text-[#A2C4C9] text-xs md:text-sm font-semibold max-w-3xl mx-auto leading-relaxed">
+            Witness the real, verified milestones of <strong>Arnav Abacus Academy</strong>. 
+            From securing <strong>1st Ranks at International Abacus Competitions</strong> under Dr. Kiran Bedi's honors to receiving 
+            prestigious National &amp; community entrepreneurship awards at IIT Delhi.
           </p>
         </div>
       </section>
@@ -309,20 +307,20 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                 key={item.id} 
                 className={`bg-[#FFFDF9] border-4 ${borderCol} rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_${shadowCol}] flex flex-col hover:scale-[1.01] transition-transform duration-200`}
               >
-                {/* Visual Header Placeholder - Dynamic CSS Gradients representing classroom concepts or Actual Image */}
+                {/* Visual Header Placeholder - Image or Gradient Icon */}
                 <div className={`aspect-[4/3] w-full relative overflow-hidden flex items-center justify-center border-b-4 ${borderCol} ${item.imageUrl ? "" : `${accentBg}/15`}`}>
                   {item.imageUrl ? (
                     <img 
                       src={item.imageUrl} 
                       alt={item.imageAlt} 
-                      className="w-full h-full object-contain bg-slate-100"
+                      className="w-full h-full object-cover"
                     />
                   ) : (
                     <>
                       {/* Decorative background grid pattern */}
                       <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#1A2E35_1px,transparent_1px)] [background-size:16px_16px]"></div>
                       
-                      {/* Icon representation in place of standard images to look incredibly premium */}
+                      {/* Icon representation */}
                       <div className="z-10 flex flex-col items-center gap-2">
                         <div className={`w-16 h-16 rounded-2xl bg-white border-2 ${borderCol} flex items-center justify-center shadow-md`}>
                           {item.type === "transformation" ? (
@@ -380,9 +378,10 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                         </div>
                       </div>
                     ) : (
-                      <p className="text-xs md:text-sm text-gray-650 leading-relaxed font-semibold">
-                        {item.achievementText}
-                      </p>
+                      <p 
+                        className="text-xs md:text-sm text-gray-650 leading-relaxed font-semibold"
+                        dangerouslySetInnerHTML={{ __html: item.achievementText || "" }}
+                      />
                     )}
                   </div>
 
