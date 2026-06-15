@@ -22,12 +22,11 @@ interface SuccessItem {
   imageAlt: string;
   tag: string;
   colorTheme: "teal" | "orange" | "gold";
-  imageUrl?: string;
 }
 
 
-export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "transformation" | "competition" | "gallery" }) {
-  const [activeTab, setActiveTab] = useState<"all" | "transformation" | "competition" | "gallery">(defaultTab);
+export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
+  const [activeTab, setActiveTab] = useState<"all" | "stories" | "gallery">(defaultTab);
 
   const handleCtaClick = () => {
     trackDemoClick("showcase_page_bottom_cta");
@@ -232,9 +231,22 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     }
   ];
 
+  // Helper to filter out gallery items that do not have photos
+  const visibleItems = showcaseData.filter(item => {
+    if (item.type === "gallery" && !item.imageUrl) {
+      return false;
+    }
+    return true;
+  });
+
   const filteredItems = activeTab === "all" 
-    ? showcaseData 
-    : showcaseData.filter(item => item.type === activeTab);
+    ? visibleItems 
+    : activeTab === "stories"
+      ? visibleItems.filter(item => item.type === "transformation" || item.type === "competition")
+      : visibleItems.filter(item => item.type === "gallery");
+
+  const storiesCount = visibleItems.filter(x => x.type === "transformation" || x.type === "competition").length;
+  const galleryCount = visibleItems.filter(x => x.type === "gallery").length;
 
   return (
     <div id="showcase-page-container" className="bg-[#FFFDF9] min-h-screen">
@@ -259,10 +271,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       <section className="pt-12 pb-6 max-w-7xl mx-auto px-4 md:px-8">
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
           {[
-            { id: "all", label: "View All", count: showcaseData.length },
-            { id: "transformation", label: "Success Transformations", count: showcaseData.filter(x => x.type === "transformation").length },
-            { id: "competition", label: "Competition Trophies", count: showcaseData.filter(x => x.type === "competition").length },
-            { id: "gallery", label: "Activity Gallery", count: showcaseData.filter(x => x.type === "gallery").length },
+            { id: "all", label: "View All", count: visibleItems.length },
+            { id: "stories", label: "Success Stories", count: storiesCount },
+            { id: "gallery", label: "Activity Gallery", count: galleryCount },
           ].map(tab => (
             <button
               key={tab.id}
