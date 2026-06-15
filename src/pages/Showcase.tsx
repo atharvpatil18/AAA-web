@@ -378,10 +378,12 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                         </div>
                       </div>
                     ) : (
-                      <p 
-                        className="text-xs md:text-sm text-gray-650 leading-relaxed font-semibold"
-                        dangerouslySetInnerHTML={{ __html: item.achievementText || "" }}
-                      />
+                      <div className={`pl-4 border-l-4 ${isTeal ? 'border-vibrant-teal' : isOrange ? 'border-vibrant-orange' : 'border-vibrant-gold'} py-1 bg-slate-50/50 rounded-r-xl`}>
+                        <p 
+                          className="text-xs md:text-sm text-gray-650 leading-relaxed font-semibold"
+                          dangerouslySetInnerHTML={{ __html: item.achievementText || "" }}
+                        />
+                      </div>
                     )}
                   </div>
 
