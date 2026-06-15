@@ -5,7 +5,8 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Trophy, Award, Sparkles, Star, Heart, Camera, ArrowRight, ShieldCheck } from "lucide-react";
+import { Trophy, Award, Sparkles, Star, Heart, Camera, ArrowRight, ShieldCheck, ChevronDown, ChevronUp } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 
 interface SuccessItem {
@@ -26,6 +27,14 @@ interface SuccessItem {
 
 export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
   const [activeTab, setActiveTab] = useState<"all" | "stories" | "gallery">(defaultTab);
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+
+  const toggleExpand = (id: string) => {
+    setExpandedCards(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   const handleCtaClick = () => {
     trackDemoClick("showcase_page_bottom_cta");
@@ -230,9 +239,12 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     }
   ];
 
-  // Filter out any item that does not have a photo (imageUrl)
+  // Show gallery items only if they have a photo; show stories (transformation/competition) even if they don't have a photo.
   const visibleItems = showcaseData.filter(item => {
-    return !!item.imageUrl;
+    if (item.type === "gallery") {
+      return !!item.imageUrl;
+    }
+    return true; // Keep all transformations and competitions
   });
 
   const filteredItems = activeTab === "all" 
@@ -292,23 +304,28 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       <section className="py-8 pb-24 max-w-7xl mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
           {filteredItems.map((item) => {
+            const isExpanded = !!expandedCards[item.id];
+
             // Pick color theme variables
             const isTeal = item.colorTheme === "teal";
             const isOrange = item.colorTheme === "orange";
             const isGold = item.colorTheme === "gold";
             
-            const badgeBg = isTeal ? "bg-[#E0FAF5] text-vibrant-teal" : isOrange ? "bg-[#FFF0E0] text-vibrant-orange" : "bg-[#FFF5CC] text-amber-700";
+            const badgeBg = isTeal 
+              ? "bg-[#E0FAF5] text-[#00BFA5] border-[#A3F3E4]" 
+              : isOrange 
+                ? "bg-[#FFF0E0] text-[#FF6321] border-[#FFD2B2]" 
+                : "bg-[#FFF5CC] text-amber-700 border-[#FCE69C]";
             const borderCol = "border-vibrant-dark";
             const shadowCol = "#1A2E35";
-            const accentBg = isTeal ? "bg-vibrant-teal" : isOrange ? "bg-vibrant-orange" : "bg-vibrant-gold";
 
             return (
               <div 
                 key={item.id} 
-                className={`bg-[#FFFDF9] border-4 ${borderCol} rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_${shadowCol}] flex flex-col hover:scale-[1.01] transition-transform duration-200`}
+                className={`bg-white border-4 ${borderCol} rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_${shadowCol}] flex flex-col hover:scale-[1.01] transition-transform duration-200`}
               >
-                {/* Visual Header Placeholder - Image or Gradient Icon */}
-                <div className={`aspect-[4/3] w-full relative overflow-hidden flex items-center justify-center border-b-4 ${borderCol} ${item.imageUrl ? "" : `${accentBg}/15`}`}>
+                {/* Visual Header Placeholder - Image or Dotted Grid Background */}
+                <div className={`aspect-[4/3] w-full relative overflow-hidden flex items-center justify-center border-b-4 ${borderCol}`}>
                   {item.imageUrl ? (
                     <img 
                       src={item.imageUrl} 
@@ -317,27 +334,28 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                     />
                   ) : (
                     <>
-                      {/* Decorative background grid pattern */}
-                      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#1A2E35_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                      {/* Dotted Grid Background Pattern */}
+                      <div className="absolute inset-0 bg-[#F8F9FA]" />
+                      <div className="absolute inset-0 opacity-[0.12] bg-[radial-gradient(#1A2E35_1.5px,transparent_1.5px)] [background-size:16px_16px]" />
                       
-                      {/* Icon representation */}
-                      <div className="z-10 flex flex-col items-center gap-2">
-                        <div className={`w-16 h-16 rounded-2xl bg-white border-2 ${borderCol} flex items-center justify-center shadow-md`}>
+                      {/* Centered Styled Icon Container */}
+                      <div className="z-10 flex flex-col items-center justify-center">
+                        <div className={`w-20 h-20 rounded-[24px] bg-white border-2 ${borderCol} flex items-center justify-center shadow-sm`}>
                           {item.type === "transformation" ? (
-                            <Sparkles className="w-8 h-8 text-vibrant-teal" />
+                            <Sparkles className="w-10 h-10 text-vibrant-teal" />
                           ) : item.type === "competition" ? (
-                            <Trophy className="w-8 h-8 text-vibrant-gold fill-current" />
+                            <Trophy className="w-10 h-10 text-vibrant-gold fill-current" />
                           ) : (
-                            <Camera className="w-8 h-8 text-vibrant-orange" />
+                            <Camera className="w-10 h-10 text-vibrant-orange" />
                           )}
                         </div>
                       </div>
                     </>
                   )}
                   
-                  {/* Styled visual badges */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className={`text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full border border-vibrant-dark/15 shadow-sm ${badgeBg}`}>
+                  {/* Category Tag Badge in Top Left */}
+                  <div className="absolute top-5 left-5 z-10">
+                    <span className={`text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full border ${badgeBg} shadow-sm`}>
                       {item.tag}
                     </span>
                   </div>
@@ -345,54 +363,91 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
 
                 {/* Card details */}
                 <div className="p-6 md:p-8 flex-grow flex flex-col justify-between space-y-4">
-                  <div className="space-y-3">
-                    <h3 className="font-display font-black text-xl text-vibrant-dark tracking-tight leading-tight">
+                  <div className="space-y-4">
+                    <h3 className="font-display font-black text-xl md:text-2xl text-vibrant-dark tracking-tight leading-tight">
                       {item.title}
                     </h3>
 
                     {/* Student metadata for story items */}
                     {item.studentName && (
-                      <div className="flex items-center gap-3 text-xs font-bold text-gray-500 bg-vibrant-cream border border-gray-200 px-3 py-1.5 rounded-xl w-fit">
+                      <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-gray-500 bg-[#F8F9FA] border border-gray-200 px-4 py-2 rounded-full w-fit">
                         <span>Student: {item.studentName}</span>
-                        <span className="w-1 h-1 rounded-full bg-gray-300"></span>
+                        <span className="text-gray-300">•</span>
                         <span>Age: {item.age}</span>
-                        <span className="w-1 h-1 rounded-full bg-gray-300"></span>
+                        <span className="text-gray-300">•</span>
                         <span>Class: {item.grade}</span>
                       </div>
                     )}
 
-                    {/* Main content body */}
-                    {item.type === "transformation" ? (
-                      <div className="space-y-3.5 pt-1">
-                        <div className="bg-red-50/50 border border-red-100 rounded-2xl p-4">
-                          <span className="text-[10px] font-black uppercase text-red-500 tracking-wider block mb-1">Before AAA Classes:</span>
-                          <p className="text-xs text-gray-600 font-medium leading-relaxed">
-                            {item.beforeText}
-                          </p>
-                        </div>
-                        <div className="bg-[#E0FAF5]/30 border border-vibrant-teal/10 rounded-2xl p-4">
-                          <span className="text-[10px] font-black uppercase text-vibrant-teal tracking-wider block mb-1">After Mental Math:</span>
-                          <p className="text-xs text-vibrant-dark font-semibold leading-relaxed">
-                            {item.afterText}
-                          </p>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className={`pl-4 border-l-4 ${isTeal ? 'border-vibrant-teal' : isOrange ? 'border-vibrant-orange' : 'border-vibrant-gold'} py-1 bg-slate-50/50 rounded-r-xl`}>
-                        <p 
-                          className="text-xs md:text-sm text-gray-650 leading-relaxed font-semibold"
-                          dangerouslySetInnerHTML={{ __html: item.achievementText || "" }}
-                        />
-                      </div>
-                    )}
+                    {/* Collapsible Section for Story / Achievement Details */}
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
+                          <div className="pt-2 pb-2 space-y-4">
+                            {item.type === "transformation" ? (
+                              <div className="space-y-3.5">
+                                <div className="bg-[#FFF5F5] border border-red-100 rounded-2xl p-4">
+                                  <span className="text-[10px] font-black uppercase text-red-500 tracking-wider block mb-1">
+                                    Before AAA Classes:
+                                  </span>
+                                  <p className="text-xs text-gray-650 font-medium leading-relaxed">
+                                    {item.beforeText}
+                                  </p>
+                                </div>
+                                <div className="bg-[#E0FAF5]/30 border border-vibrant-teal/20 rounded-2xl p-4">
+                                  <span className="text-[10px] font-black uppercase text-vibrant-teal tracking-wider block mb-1">
+                                    After Mental Math:
+                                  </span>
+                                  <p className="text-xs text-vibrant-dark font-semibold leading-relaxed">
+                                    {item.afterText}
+                                  </p>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className={`pl-4 border-l-4 ${isTeal ? 'border-vibrant-teal' : isOrange ? 'border-vibrant-orange' : 'border-vibrant-gold'} py-1 bg-[#F8F9FA] rounded-r-xl`}>
+                                <p 
+                                  className="text-xs md:text-sm text-gray-650 leading-relaxed font-semibold"
+                                  dangerouslySetInnerHTML={{ __html: item.achievementText || "" }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
 
-                  {/* Trust Footer mark */}
-                  <div className="pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] font-bold text-gray-400">
-                    <span className="flex items-center gap-1">
-                      <ShieldCheck className="w-3.5 h-3.5 text-vibrant-teal" /> Verified Success
-                    </span>
-                    <span>Arnav Abacus Academy</span>
+                  {/* Read More / Toggle Expand Button & Trust Footer */}
+                  <div className="space-y-4 pt-2">
+                    <button
+                      onClick={() => toggleExpand(item.id)}
+                      className="w-full flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl text-xs font-black uppercase tracking-wider border-2 border-vibrant-dark bg-white text-vibrant-dark hover:bg-vibrant-cream transition-all duration-150 shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none cursor-pointer"
+                    >
+                      {isExpanded ? (
+                        <>
+                          <span>Hide Details</span>
+                          <ChevronUp className="w-4 h-4" />
+                        </>
+                      ) : (
+                        <>
+                          <span>Read Full Story</span>
+                          <ChevronDown className="w-4 h-4" />
+                        </>
+                      )}
+                    </button>
+
+                    <div className="pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] font-bold text-gray-400">
+                      <span className="flex items-center gap-1">
+                        <ShieldCheck className="w-3.5 h-3.5 text-vibrant-teal" /> Verified Success
+                      </span>
+                      <span>Arnav Abacus Academy</span>
+                    </div>
                   </div>
                 </div>
               </div>
