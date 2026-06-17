@@ -61,6 +61,12 @@ export default function Faqs() {
       category: "General",
       question: t("faq7Question"),
       answer: t("faq7Answer")
+    },
+    {
+      id: "faq8",
+      category: "General",
+      question: t("faq8Question"),
+      answer: t("faq8Answer")
     }
   ];
 
