@@ -17,6 +17,8 @@ import CampaignPage from "./pages/CampaignPage";
 import Showcase from "./pages/Showcase";
 import NewsEvents from "./pages/NewsEvents";
 
+import { LanguageProvider } from "./lib/LanguageContext";
+
 // Scroll restorer child to reset window scroll position on route switches
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -30,9 +32,10 @@ function ScrollToTop() {
 
 export default function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="flex flex-col min-h-screen bg-slate-50 font-sans antialiased text-gray-800">
+    <LanguageProvider>
+      <Router>
+        <ScrollToTop />
+        <div className="flex flex-col min-h-screen bg-slate-50 font-sans antialiased text-gray-800">
         
         {/* Sticky Header with alert bar and links */}
         <Navbar />
@@ -62,6 +65,7 @@ export default function App() {
 
       </div>
     </Router>
+  </LanguageProvider>
   );
 }
 

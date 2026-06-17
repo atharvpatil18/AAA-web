@@ -5,10 +5,13 @@
 
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Phone, Mail, Clock, Menu, X, ArrowRight, MessageCircle } from "lucide-react";
+import { Phone, Mail, Clock, Menu, X, ArrowRight, MessageCircle, Globe } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
+import { Language } from "../lib/translations";
 
 export default function Navbar() {
+  const { language, setLanguage, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
   const location = useLocation();
@@ -18,13 +21,13 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Programs", path: "/programs" },
-    { name: "Success Stories & Gallery", path: "/showcase" },
-    { name: "News & Events", path: "/news" },
-    { name: "Meet Mentor", path: "/mentor" },
-    { name: "FAQs", path: "/faqs" },
-    { name: "Contact", path: "/contact" }
+    { name: t("navHome"), path: "/" },
+    { name: t("navPrograms"), path: "/programs" },
+    { name: t("navSuccess"), path: "/showcase" },
+    { name: t("navNews"), path: "/news" },
+    { name: t("navMentor"), path: "/mentor" },
+    { name: t("navFaqs"), path: "/faqs" },
+    { name: t("navContact"), path: "/contact" }
   ];
 
   const currentPath = location.pathname;
@@ -40,16 +43,16 @@ export default function Navbar() {
           <div className="flex items-center gap-4 text-[11px] text-slate-300">
             <span className="flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-orange-400" />
-              Brain Center • Open Every Day
+              {t("workingCenter")}
             </span>
             <span className="hidden sm:inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              Batches Ongoing
+              {t("batchesOngoing")}
             </span>
           </div>
 
-          {/* Social Handles / Contact info */}
-          <div className="flex items-center gap-4 font-medium text-slate-200">
+          {/* Social Handles / Contact info & Language Toggle */}
+          <div className="flex items-center gap-4 font-medium text-slate-200 flex-wrap justify-center">
             <a 
               href="mailto:nehaatharv@gmail.com" 
               className="flex items-center gap-1.5 hover:text-orange-400 transition-colors"
@@ -66,6 +69,20 @@ export default function Navbar() {
               <MessageCircle className="w-3.5 h-3.5 fill-current" />
               +91 90219 24968
             </a>
+            
+            {/* Language Selector Dropdown */}
+            <div className="flex items-center gap-1.5 bg-slate-800 border border-slate-700 rounded px-2 py-0.5 text-slate-200 hover:border-vibrant-orange transition-colors">
+              <Globe className="w-3 h-3 text-slate-400" />
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value as Language)}
+                className="bg-transparent border-none text-[10px] font-black focus:outline-none cursor-pointer text-slate-200 py-0.5"
+              >
+                <option value="en" className="bg-slate-900 text-slate-200">English</option>
+                <option value="hi" className="bg-slate-900 text-slate-200">हिन्दी</option>
+                <option value="mr" className="bg-slate-900 text-slate-200">मराठी</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>      {/* 2. Main Navbar */}
@@ -130,7 +147,7 @@ export default function Navbar() {
               rel="noopener noreferrer"
               className="bg-vibrant-teal text-white px-6 py-2.5 rounded-full font-black text-sm shadow-[0_4px_0_0_#00897B] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all inline-flex items-center gap-1.5 cursor-pointer"
             >
-              Book Free Demo
+              {t("bookFreeDemo")}
               <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -183,7 +200,7 @@ export default function Navbar() {
                 rel="noopener noreferrer"
                 className="w-full bg-vibrant-teal text-white py-3 rounded-xl font-bold shadow-[0_4px_0_0_#00897B] active:translate-y-0.5 active:shadow-none text-center text-xs md:text-sm flex items-center justify-center gap-1.5"
               >
-                Book Free Demo Now
+                {t("bookTrial")}
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>

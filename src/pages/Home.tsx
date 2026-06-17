@@ -13,11 +13,15 @@ import TeacherProfile from "../components/TeacherProfile";
 import TestimonialCarousel from "../components/TestimonialCarousel";
 import LeadForm from "../components/LeadForm";
 import InteractiveAbacus from "../components/InteractiveAbacus";
+import VedicMathDemo from "../components/VedicMathDemo";
+import MathComparisonDemo from "../components/MathComparisonDemo";
+import { useLanguage } from "../lib/LanguageContext";
 import { PROGRAMS } from "../data";
 import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2 } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
 
 export default function Home() {
+  const { t } = useLanguage();
   const handleMapCtaClick = () => {
     trackDemoClick("home_map_nav_cta");
   };
@@ -37,16 +41,34 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
             <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              TACTILE BRAIN AGILITY
+              {t("abacusBadge")}
             </span>
             <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-              Interactive Soroban Abacus
+              {t("abacusTitle")}
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              Let your child slide the virtual beads below. This replicates the tactile movement taught in our offline and online classrooms to activate photographic memory!
+              {t("abacusSubtitle")}
             </p>
           </div>
           <InteractiveAbacus />
+        </div>
+      </section>
+
+      {/* 2.6. Interactive Vedic Math Playground */}
+      <section id="interactive-vedic-playground" className="py-16 md:py-20 bg-white border-t-2 border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+              VEDIC MATH AGILITY
+            </span>
+            <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
+              Interactive Speed Math Simulator
+            </h2>
+            <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
+              Calculate in seconds using Vedic math secrets! Switch tabs below to experience rapid squaring and cross-multiplication vector calculations.
+            </p>
+          </div>
+          <VedicMathDemo />
         </div>
       </section>
 
@@ -54,13 +76,13 @@ export default function Home() {
       <section id="programs-showcase" className="py-20 md:py-28 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
           <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            ACADEMIC STREAM PATHS
+            {t("programsBadge")}
           </span>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
-            Nurturing Logic Through Math
+            {t("programsTitle")}
           </h2>
           <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-            From cognitive visualization using physical abacus beads to solving high school algebra in seconds, select the track suited for your child's age.
+            {t("programsSubtitle")}
           </p>
         </div>
 
@@ -69,6 +91,13 @@ export default function Home() {
           {PROGRAMS.map((prog) => (
             <ProgramCard key={prog.id} program={prog} />
           ))}
+        </div>
+      </section>
+
+      {/* 3.5. Interactive Math Synergy System (Comparison) */}
+      <section id="math-synergy-comparison" className="py-20 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-4 border-vibrant-dark">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <MathComparisonDemo />
         </div>
       </section>
 
@@ -84,13 +113,13 @@ export default function Home() {
             <div className="lg:col-span-6 space-y-6">
               <div className="space-y-3">
                 <div className="inline-flex items-center gap-1.5 text-[10px] text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider font-bold">
-                  <Star className="w-3.5 h-3.5 fill-current text-vibrant-orange animate-spin-slow" /> Diagnostic Evaluation Game
+                  <Star className="w-3.5 h-3.5 fill-current text-vibrant-orange animate-spin-slow" /> {t("quizBadge")}
                 </div>
                 <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark tracking-tight leading-tight">
-                  Calculate Faster Than A Calculator!
+                  {t("quizTitle")}
                 </h2>
                 <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-                  Math counts are like basic software; once you wire the pictorial neural pathways, kids calculate with photographic speed. Let them play our 30s challenge!
+                  {t("quizSubtitle")}
                 </p>
               </div>
 
@@ -112,13 +141,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
             <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              MEET YOUR MAIN MENTOR
+              {t("mentorBadge")}
             </span>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
-              Professional Mentorial Expertise
+              {t("mentorTitle")}
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              Arnav Abacus Academy operates under professional, government-registered guidelines. Over 200+ local &amp; 10 plus international students have unlocked photographic visual memory with us.
+              {t("mentorSubtitle")}
             </p>
           </div>
 
@@ -131,13 +160,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
             <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              PARENT FELLOWSHIP REVIEWS
+              {t("testimonialsBadge")}
             </span>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
-              From the Parents of Our Champions
+              {t("testimonialsTitle")}
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              Academy focus in structured and scientific way as per Skill India, National Skill Development Center, IIVA and SmartKid Abacus, Vedic Math Techniques on logical arithmetic development and self-confidence. Here is genuine feedback shared by Parents of our champion students from our offline &amp; Online Classes at our Academy.
+              {t("testimonialsSubtitle")}
             </p>
           </div>
 
@@ -153,13 +182,13 @@ export default function Home() {
             {/* Column Left: Map Details */}
             <div className="lg:col-span-5 space-y-6">
               <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-                VISIT OUR OFFLINE CLASSROOM
+                {t("locationBadge")}
               </span>
               <h2 className="font-display font-black text-3.5xl text-vibrant-dark tracking-tight leading-tight">
-                Our Academy Center
+                {t("locationTitle")}
               </h2>
               <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-                We are conveniently located opposite Creative Cameo, before Park Street, Pune. Parents are always welcome to check the live offline classroom setup.
+                {t("locationSubtitle")}
               </p>
 
               <div className="space-y-4 text-xs md:text-sm text-gray-700">
@@ -168,7 +197,7 @@ export default function Home() {
                   <div>
                     <strong className="block text-vibrant-dark font-black mb-1">Center Address:</strong>
                     <span className="text-xs text-gray-600 font-medium leading-relaxed block">
-                      Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Wakad, Pune, Maharashtra 411057
+                      {t("footerAddress")}
                     </span>
                   </div>
                 </div>
@@ -229,13 +258,13 @@ export default function Home() {
       <section className="py-20 md:py-28 bg-[#FF6321] text-white border-t-4 border-vibrant-dark relative">
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center space-y-6 relative z-10">
           <div className="inline-flex items-center gap-1.5 bg-white/20 border border-white/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-            Admissions Open for New Batches
+            {t("heroBadge").replace("⚡", "").trim()}
           </div>
           <h2 className="font-display font-black text-3xl md:text-5xl tracking-tight leading-tight text-white">
-            Give Your Child the Power of Speed with Accuracy and Consistency
+            {t("ctaTitle")}
           </h2>
           <p className="text-[#FFF2E0] text-xs md:text-sm max-w-2xl mx-auto leading-relaxed font-bold">
-            Every child who joins our starter batches reports an immediate increase in school evaluation scores. Book your complimentary customized center trial today.
+            {t("ctaSubtitle")}
           </p>
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a

@@ -7,8 +7,10 @@ import React, { useState, useEffect } from "react";
 import { Sparkles, Calendar, ArrowRight, ShieldCheck, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function Hero() {
+  const { t } = useLanguage();
   const punchlines = [
     "Does your child make silly mistakes? Let's zero them down!",
     "Already sharp? Let them excel in National & International competitions!",
@@ -57,7 +59,7 @@ export default function Hero() {
               className="inline-flex items-center gap-2 bg-[#FFF0E0] border border-[#FFD8B1] px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange mx-auto lg:mx-0"
             >
               <Sparkles className="w-4 h-4 text-vibrant-orange animate-spin-slow" />
-              <span>Pune's #1 Skill Development Center</span>
+              <span>{t("heroBadge")}</span>
             </motion.div>
 
             {/* Main Headline */}
@@ -67,8 +69,8 @@ export default function Hero() {
               transition={{ duration: 0.4, delay: 0.15 }}
               className="font-display font-black text-5xl sm:text-6xl lg:text-7xl text-vibrant-dark tracking-tight leading-[1.1] mb-2"
             >
-              Turn Math <span className="text-vibrant-orange">Fear</span> <br />
-              Into Math <span className="text-vibrant-teal">Fun!</span>
+              {t("heroTitleStart")}<span className="text-vibrant-orange">{t("heroTitleFear")}</span> <br />
+              {t("heroTitleInto")}<span className="text-vibrant-teal">{t("heroTitleFun")}</span>
             </motion.h1>
 
             {/* Dynamic Rotating Subtitle punchline */}
@@ -94,7 +96,7 @@ export default function Hero() {
               transition={{ duration: 0.4, delay: 0.25 }}
               className="text-[#5A5A5A] text-sm md:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 pr-0 lg:pr-12"
             >
-              Empower your child with 10x faster calculation speeds and photographic memory. Led by <span className="font-bold text-vibrant-dark">Neha Patil</span> (IIVA Certified Professional) &amp; <span className="font-bold text-vibrant-dark">Nitin Sir</span>. Online interactive classroom sessions are also conducted.
+              {t("heroSubtitle")}
             </motion.p>
 
             {/* Quick Trust Indicators Card from palette specification */}
@@ -141,7 +143,7 @@ export default function Hero() {
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto bg-vibrant-orange text-white font-black text-sm px-8 py-4.5 rounded-2xl shadow-[0_6px_0_0_#B33A00] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
               >
-                Book Free Demo Class
+                {t("heroCta")}
                 <ArrowRight className="w-4 h-4 text-orange-100" />
               </a>
 
