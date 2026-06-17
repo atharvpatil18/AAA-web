@@ -1,12 +1,7 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Program } from "../types";
-import { Check, Sparkles, Flame, GraduationCap, ArrowRight } from "lucide-react";
+import { Check, Sparkles, Flame, GraduationCap, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
@@ -16,7 +11,8 @@ interface ProgramCardProps {
 }
 
 export default function ProgramCard({ program }: ProgramCardProps) {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const prefix = program.id === "abacus" ? "Abacus" : program.id === "vedic-math" ? "Vedic" : "School";
   
@@ -87,6 +83,12 @@ export default function ProgramCard({ program }: ProgramCardProps) {
     trackDemoClick("program_card_cta", { programName: program.title });
   };
 
+  const readMoreText = language === "hi" ? "और पढ़ें" : language === "mr" ? "अधिक वाचा" : "Read More";
+  const readLessText = language === "hi" ? "कम पढ़ें" : language === "mr" ? "कमी वाचा" : "Read Less";
+
+  // Get a short description (up to the first period/sentence boundary)
+  const shortDescription = description.split(/[.।]/)[0] + (language === "hi" || language === "mr" ? "।" : ".");
+
   return (
     <div 
       className={`bg-white rounded-[32px] border-4 ${currentTheme.border} p-6 md:p-8 flex flex-col justify-between transition-all duration-300 ${currentTheme.shadow} group hover:-translate-y-1`}
@@ -109,52 +111,72 @@ export default function ProgramCard({ program }: ProgramCardProps) {
         <h3 className="font-display font-black text-2xl text-vibrant-dark group-hover:text-vibrant-orange transition-colors leading-tight mb-2">
           {title}
         </h3>
-        <p className="text-gray-500 text-xs md:text-sm font-semibold mb-6 italic leading-relaxed">
+        <p className="text-gray-500 text-xs md:text-sm font-semibold mb-4 italic leading-relaxed">
           "{tagline}"
         </p>
 
         {/* Core Description */}
-        <p className="text-gray-600 text-xs md:text-sm leading-relaxed mb-6">
-          {description}
+        <p className="text-gray-600 text-xs md:text-sm leading-relaxed mb-4">
+          {isExpanded ? description : shortDescription}
         </p>
 
-        {/* Benefits Segment */}
-        <div className="mb-6">
-          <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
-            {t("progKeyBenefits")}:
-          </span>
-          <ul className="space-y-2.5">
-            {benefits.map((benefit, idx) => (
-              <li key={idx} className="flex items-start gap-2 text-xs md:text-sm text-gray-700">
-                <div className={`p-0.5 rounded-full ${currentTheme.bullet} shrink-0 mt-0.5 border border-slate-100`}>
-                  <Check className="w-3.5 h-3.5" />
-                </div>
-                <span className="font-medium text-gray-755">{benefit}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-xs font-black text-vibrant-orange hover:text-vibrant-orange/80 transition-colors mb-6 cursor-pointer flex items-center gap-1 focus:outline-none"
+        >
+          {isExpanded ? (
+            <>
+              {readLessText} <ChevronUp className="w-4 h-4 shrink-0" />
+            </>
+          ) : (
+            <>
+              {readMoreText} <ChevronDown className="w-4 h-4 shrink-0" />
+            </>
+          )}
+        </button>
 
-        {/* Divider */}
-        <hr className="border-slate-100 my-6" />
-
-        {/* Curriculum Checkpoints */}
-        <div className="mb-8">
-          <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
-            {t("progCurriculum")}:
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {curriculum.map((item, idx) => (
-              <span 
-                key={idx} 
-                className="bg-vibrant-cream border-2 border-vibrant-dark/10 text-vibrant-dark text-[10.5px] md:text-xs px-3 py-1.5 rounded-xl font-bold hover:border-vibrant-dark/30 transition shadow-sm flex items-center gap-1.5 shrink-0"
-              >
-                <span className={`w-2 h-2 rounded-full ${currentTheme.bulletCol}`}></span>
-                {item}
+        {isExpanded && (
+          <div className="transition-all duration-300">
+            {/* Benefits Segment */}
+            <div className="mb-6">
+              <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
+                {t("progKeyBenefits")}:
               </span>
-            ))}
+              <ul className="space-y-2.5">
+                {benefits.map((benefit, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-xs md:text-sm text-gray-700">
+                    <div className={`p-0.5 rounded-full ${currentTheme.bullet} shrink-0 mt-0.5 border border-slate-100`}>
+                      <Check className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="font-medium text-gray-755">{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Divider */}
+            <hr className="border-slate-100 my-6" />
+
+            {/* Curriculum Checkpoints */}
+            <div className="mb-8">
+              <span className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
+                {t("progCurriculum")}:
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {curriculum.map((item, idx) => (
+                  <span 
+                    key={idx} 
+                    className="bg-vibrant-cream border-2 border-vibrant-dark/10 text-vibrant-dark text-[10.5px] md:text-xs px-3 py-1.5 rounded-xl font-bold hover:border-vibrant-dark/30 transition shadow-sm flex items-center gap-1.5 shrink-0"
+                  >
+                    <span className={`w-2 h-2 rounded-full ${currentTheme.bulletCol}`}></span>
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Button Action footer */}
