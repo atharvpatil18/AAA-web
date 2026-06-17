@@ -81,6 +81,48 @@ export default function TestimonialCarousel() {
       role: t("t10Role"),
       content: t("t10Content"),
       rating: 5,
+    },
+    {
+      id: "t11",
+      author: t("t11Author"),
+      role: t("t11Role"),
+      content: t("t11Content"),
+      rating: 5,
+    },
+    {
+      id: "t12",
+      author: t("t12Author"),
+      role: t("t12Role"),
+      content: t("t12Content"),
+      rating: 5,
+    },
+    {
+      id: "t13",
+      author: t("t13Author"),
+      role: t("t13Role"),
+      content: t("t13Content"),
+      rating: 5,
+    },
+    {
+      id: "t14",
+      author: t("t14Author"),
+      role: t("t14Role"),
+      content: t("t14Content"),
+      rating: 5,
+    },
+    {
+      id: "t15",
+      author: t("t15Author"),
+      role: t("t15Role"),
+      content: t("t15Content"),
+      rating: 5,
+    },
+    {
+      id: "t16",
+      author: t("t16Author"),
+      role: t("t16Role"),
+      content: t("t16Content"),
+      rating: 5,
     }
   ];
 
