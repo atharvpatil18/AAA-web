@@ -8,28 +8,30 @@ import TeacherProfile from "../components/TeacherProfile";
 import LeadForm from "../components/LeadForm";
 import { Award, ShieldAlert, Sparkles, BookOpen, GraduationCap, Star, UserCheck } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function Mentor() {
+  const { t } = useLanguage();
   const handleMentorshipCta = () => {
     trackDemoClick("mentor_page_whatsapp_consult");
   };
 
   const corePillars = [
     {
-      title: "Friendly Classroom Spirit",
-      desc: "We strictly avoid high-pressure testing environments. Neha Ma’am creates a warm, calm, and playful environment so kids feel comfortable making errors and learning from them.",
+      title: t("mentorPillar1Title"),
+      desc: t("mentorPillar1Desc"),
       icon: Sparkles,
       color: "text-orange-600 bg-orange-50",
     },
     {
-      title: "Personalized Progress (1-on-1)",
-      desc: "No two kids visualize counts at the same speed. That's why Neha Ma’am and Nitin Sir map individual progress sheets, ensuring every child learns confidently and at their own pace.",
+      title: t("mentorPillar2Title"),
+      desc: t("mentorPillar2Desc"),
       icon: UserCheck,
       color: "text-amber-500 bg-amber-50",
     },
     {
-      title: "Certified Professionalism",
-      desc: "Our systems run on IIVA (Indian Institute of Vedic Maths & Abacus) guidelines, giving your child internationally accepted mathematical skills.",
+      title: t("mentorPillar3Title"),
+      desc: t("mentorPillar3Desc"),
       icon: GraduationCap,
       color: "text-indigo-600 bg-indigo-50",
     }
@@ -43,13 +45,13 @@ export default function Mentor() {
         <div className="absolute inset-0 bg-radial from-orange-500/10 to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center space-y-4 relative z-10">
           <span className="text-xs uppercase font-bold text-orange-400 bg-orange-450/10 px-3.5 py-1 rounded-full tracking-widest">
-            Expert Faculty Guidance
+            {t("mentorPageBadge")}
           </span>
           <h1 className="font-display font-black text-4xl md:text-5xl tracking-tight leading-tight">
-            Our Mentors make Math a Joy
+            {t("mentorPageTitle")}
           </h1>
           <p className="text-slate-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
-            Meet the professional certified educators behind Arnav Abacus Academy, helping children unlock logical mental calculation powers.
+            {t("mentorPageSubtitle")}
           </p>
         </div>
       </section>
@@ -64,13 +66,13 @@ export default function Mentor() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-16">
             <span className="text-[11px] font-bold text-orange-600 bg-orange-50 px-3.5 py-1 rounded-full uppercase tracking-widest inline-block">
-              MENTORIAL CONVICTION &amp; CHARACTERS
+              {t("mentorPagePillarsBadge")}
             </span>
             <h2 className="font-display font-bold text-3xl text-gray-900 leading-tight">
-              Our 3 Pillars of Student Welfare
+              {t("mentorPillarsTitle")}
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed">
-              We look past mere mechanical digit calculations. Neha Patil and Nitin Sir structure learning modules to feed spatial visual memory, auditory recall, and absolute performance confidence.
+              {t("mentorPillarsDesc")}
             </p>
           </div>
 
@@ -85,7 +87,7 @@ export default function Mentor() {
                   <h3 className="font-display font-bold text-lg text-gray-950">
                     {pillar.title}
                   </h3>
-                  <p className="text-xs md:text-sm text-gray-650 leading-relaxed">
+                  <p className="text-xs md:text-sm text-gray-655 leading-relaxed">
                     {pillar.desc}
                   </p>
                 </div>
@@ -101,27 +103,27 @@ export default function Mentor() {
           
           <div className="lg:col-span-6 space-y-6">
             <span className="text-[11px] font-bold text-indigo-600 bg-indigo-50 px-3.5 py-1 rounded-full uppercase tracking-widest inline-block">
-              BOOK A 1-ON-1 DEMO
+              {t("mentorPageBookBadge")}
             </span>
             <h2 className="font-display font-extrabold text-3xl text-gray-900 leading-tight">
-              Coordinate a free evaluation with Neha Ma'am
+              {t("mentorConsultTitle")}
             </h2>
             <p className="text-gray-600 text-sm leading-relaxed">
-              Submit a demo request. We will coordinate a quick slot at our center. Neha Ma’am will personally evaluate your child's counting habits, check for mathematical anxiety, and construct a visualization track specifically for them.
+              {t("mentorConsultDesc")}
             </p>
 
             <div className="space-y-3 pt-2">
               <div className="flex items-center gap-3 text-xs md:text-sm text-gray-700 font-medium">
                 <span className="w-2 h-2 rounded-full bg-orange-500"></span>
-                <span>Active evaluation checks for math phobia</span>
+                <span>{t("mentorPageBullet1")}</span>
               </div>
               <div className="flex items-center gap-3 text-xs md:text-sm text-gray-750 font-medium">
                 <span className="w-2 h-2 rounded-full bg-orange-500"></span>
-                <span>Includes a complete mental calculation assessment sheet</span>
+                <span>{t("mentorPageBullet2")}</span>
               </div>
               <div className="flex items-center gap-3 text-xs md:text-sm text-gray-750 font-medium">
                 <span className="w-2 h-2 rounded-full bg-orange-500"></span>
-                <span>Value Added Mental Math: Free 2 Sessions promo activated</span>
+                <span>{t("mentorPageBullet3")}</span>
               </div>
             </div>
 
@@ -133,7 +135,7 @@ export default function Mentor() {
                 rel="noreferrer"
                 className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs md:text-sm px-6 py-4 rounded-xl inline-flex items-center gap-2"
               >
-                Book Consultation Now
+                {t("mentorPageCta")}
               </a>
             </div>
           </div>

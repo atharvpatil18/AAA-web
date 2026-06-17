@@ -6,6 +6,7 @@
 import React, { useState } from "react";
 import { RotateCcw, HelpCircle, Star, Sparkles, Hash } from "lucide-react";
 import { motion } from "motion/react";
+import { useLanguage } from "../lib/LanguageContext";
 
 interface RodState {
   upper: boolean; // true if active (slid down to divider)
@@ -13,6 +14,7 @@ interface RodState {
 }
 
 export default function InteractiveAbacus() {
+  const { t } = useLanguage();
   // 5 rods: Indices 0 (ten-thousands) to 4 (ones) from left to right
   const [rods, setRods] = useState<RodState[]>([
     { upper: false, lowerCount: 0 },
@@ -88,12 +90,12 @@ export default function InteractiveAbacus() {
   };
 
   const examples = [
-    { label: "Number 7", val: 7 },
-    { label: "Number 12", val: 12 },
-    { label: "Number 99", val: 99 },
-    { label: "Number 350", val: 350 },
-    { label: "Number 2,026", val: 2026 },
-    { label: "Number 99,999", val: 99999 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ७" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ७" : "Number 7"}`, val: 7 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या १२" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या १२" : "Number 12"}`, val: 12 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९९" : "Number 99"}`, val: 99 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ३५०" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ३५०" : "Number 350"}`, val: 350 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या २,०२६" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या २,०२६" : "Number 2,026"}`, val: 2026 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९९,९९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९९,९९९" : "Number 99,999"}`, val: 99999 },
   ];
 
   return (
@@ -104,10 +106,10 @@ export default function InteractiveAbacus() {
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-gray-100 pb-4">
         <div className="space-y-1 text-center sm:text-left">
           <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3 py-1 rounded-full uppercase tracking-wider font-black">
-            <Star className="w-3.5 h-3.5 fill-current" /> Interactive Soroban Tool
+            <Star className="w-3.5 h-3.5 fill-current" /> {t("abacusBadge")}
           </span>
           <h3 className="font-display font-black text-2xl text-vibrant-dark">
-            Try Moving the Beads!
+            {t("abacusTryBeads")}
           </h3>
         </div>
         <div className="flex items-center gap-3">
@@ -116,14 +118,14 @@ export default function InteractiveAbacus() {
             className="flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-vibrant-teal transition cursor-pointer"
           >
             <HelpCircle className="w-4 h-4" />
-            <span>{showGuide ? "Hide Guide" : "How to use?"}</span>
+            <span>{showGuide ? t("abacusHideGuide") : t("abacusHowToUse")}</span>
           </button>
           <button
             onClick={resetAbacus}
             className="flex items-center gap-1.5 text-xs font-black text-vibrant-orange hover:text-vibrant-orange/90 transition bg-orange-50 border border-orange-100 px-3 py-2 rounded-xl cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset</span>
+            <span>{t("abacusReset")}</span>
           </button>
         </div>
       </div>
@@ -134,12 +136,12 @@ export default function InteractiveAbacus() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-vibrant-cream border-2 border-vibrant-dark/20 p-4 rounded-2xl text-xs text-vibrant-dark font-medium leading-relaxed space-y-2"
         >
-          <p className="font-bold text-vibrant-orange">Quick Soroban Reading Guide:</p>
+          <p className="font-bold text-vibrant-orange">{t("abacusGuideTitle")}</p>
           <ul className="list-disc list-inside space-y-1 text-gray-650">
-            <li>Each vertical column represents a place value (from left: 10000s, 1000s, 100s, 10s, 1s).</li>
-            <li>The **Upper Bead** (above divider) is worth **5** when moved down to touch the divider.</li>
-            <li>Each **Lower Bead** (below divider) is worth **1** when moved up to touch the divider.</li>
-            <li>Tap any bead to change its value. Tap the Reset button to clear all rods.</li>
+            <li>{t("abacusGuideStep1")}</li>
+            <li>{t("abacusGuideStep2")}</li>
+            <li>{t("abacusGuideStep3")}</li>
+            <li>{t("abacusGuideStep4")}</li>
           </ul>
         </motion.div>
       )}
@@ -166,7 +168,7 @@ export default function InteractiveAbacus() {
               const val = getRodValue(rod);
 
               return (
-                <div key={rIdx} className="relative w-12 sm:w-16 h-full flex flex-col items-center select-none">
+                <div key={rIdx} className="relative w-9 xs:w-12 sm:w-16 h-full flex flex-col items-center select-none">
                   
                   {/* Metallic Rod Line */}
                   <div className="absolute top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-r from-gray-400 via-gray-100 to-gray-500 rounded-full shadow-sm" />
@@ -174,12 +176,12 @@ export default function InteractiveAbacus() {
                   {/* --- UPPER DECK --- */}
                   <div 
                     onClick={() => toggleUpper(rIdx)}
-                    className="absolute w-10 sm:w-12 h-[60px] top-1 cursor-pointer flex items-center justify-center"
+                    className="absolute w-8 xs:w-10 sm:w-12 h-[60px] top-1 cursor-pointer flex items-center justify-center"
                   >
                     <motion.div 
                       animate={{ y: rod.upper ? 20 : -10 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                      className={`w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[10px] font-black cursor-pointer ${
+                      className={`w-7 xs:w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[10px] font-black cursor-pointer ${
                         rod.upper
                           ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
                           : "bg-gradient-to-b from-[#B07D3E] via-[#F4C178] to-[#99652B] text-amber-950/70"
@@ -190,7 +192,7 @@ export default function InteractiveAbacus() {
                   </div>
 
                   {/* --- LOWER DECK --- */}
-                  <div className="absolute top-[88px] bottom-1 w-10 sm:w-12 cursor-pointer flex flex-col justify-end items-center pb-3">
+                  <div className="absolute top-[88px] bottom-1 w-8 xs:w-10 sm:w-12 cursor-pointer flex flex-col justify-end items-center pb-3">
                     {[1, 2, 3, 4].map((idx) => {
                       const isActive = rod.lowerCount >= idx;
                       // Move active beads up to the divider (32px translation to prevent overlapping)
@@ -205,7 +207,7 @@ export default function InteractiveAbacus() {
                           }}
                           animate={{ y: yOffset }}
                           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                          className={`relative w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
+                          className={`relative w-7 xs:w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
                             isActive 
                               ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
                               : "bg-gradient-to-b from-[#A5784A] via-[#E8B682] to-[#8C5D30] text-amber-950/70"
@@ -233,10 +235,10 @@ export default function InteractiveAbacus() {
           {/* Example Numbers List */}
           <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-3 shadow-[4px_4px_0_0_#1A2E35]">
             <span className="flex items-center gap-1 text-[10px] text-vibrant-orange font-black uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 fill-current" /> Example Numbers
+              <Sparkles className="w-3.5 h-3.5 fill-current" /> {t("abacusExamplesTitle")}
             </span>
             <p className="text-[11px] text-gray-500 font-semibold leading-tight">
-              Click any option below to see how standard numbers map onto the Soroban beads.
+              {t("abacusExamplesSubtitle")}
             </p>
             <div className="grid grid-cols-2 gap-2">
               {examples.map((item) => (
@@ -254,10 +256,10 @@ export default function InteractiveAbacus() {
           {/* Custom Number Input */}
           <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-3 shadow-[4px_4px_0_0_#1A2E35]">
             <span className="flex items-center gap-1 text-[10px] text-vibrant-teal font-black uppercase tracking-wider">
-              <Hash className="w-3.5 h-3.5" /> Visualize Custom Number
+              <Hash className="w-3.5 h-3.5" /> {t("abacusCustomTitle")}
             </span>
             <p className="text-[11px] text-gray-500 font-semibold leading-tight">
-              Type any number between 0 and 99,999 to see it represented on the abacus rods.
+              {t("abacusCustomSubtitle")}
             </p>
             <form onSubmit={handleCustomInputSubmit} className="flex gap-2">
               <input
@@ -273,7 +275,7 @@ export default function InteractiveAbacus() {
                 type="submit"
                 className="bg-vibrant-teal text-white font-black text-xs px-4 py-2 rounded-xl shadow-[0_3px_0_0_#00897B] active:translate-y-0.5 active:shadow-none transition-all hover:brightness-105 cursor-pointer"
               >
-                Show
+                {t("abacusShow")}
               </button>
             </form>
           </div>
@@ -284,13 +286,13 @@ export default function InteractiveAbacus() {
       {/* Dynamic Calculated Value Display */}
       <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 text-center">
         <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-widest">
-          Computed Abacus Value
+          {t("abacusComputedTitle")}
         </span>
         <span className="font-display font-black text-4xl md:text-5xl text-vibrant-dark block tracking-tight my-1">
           {totalValue.toLocaleString("en-IN")}
         </span>
         <p className="text-xs text-gray-400 font-semibold leading-relaxed">
-          Matches place values (Ten Thousands • Thousands • Hundreds • Tens • Ones)
+          {t("abacusComputedSubtitle")}
         </p>
       </div>
     </div>

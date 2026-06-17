@@ -5,9 +5,10 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Trophy, Award, Sparkles, Star, Heart, Camera, ArrowRight, ShieldCheck, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 
 interface SuccessItem {
   id: string;
@@ -26,8 +27,10 @@ interface SuccessItem {
 }
 
 export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState<"all" | "stories" | "gallery">(defaultTab);
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+  const [selectedItem, setSelectedItem] = useState<SuccessItem | null>(null);
 
   const toggleExpand = (id: string) => {
     setExpandedCards(prev => ({
@@ -44,9 +47,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-champion-arnav",
       type: "competition",
-      title: "1st Rank at International Abacus Competition",
-      tag: "International Champion",
-      achievementText: "<strong>Arnav Patil</strong>, the brilliant young brand ambassador of Arnav Abacus Academy, achieved the ultimate glory by securing <strong>1st Rank</strong> at the International Abacus Competition on National Mathematics Day 2025. The champion's trophy and certificate were proudly presented by India's iconic former IPS officer and Lt. Governor, <strong>Dr. Kiran Bedi</strong>, alongside the CEO of IIVA. This monumental victory reflects the academy's commitment to cultivating elite mental arithmetic minds.",
+      title: t("showcaseItem1Title"),
+      tag: t("showcaseTag1"),
+      achievementText: t("showcaseItem1Text"),
       imageUrl: "international_abacus_champion.webp",
       imageAlt: "Arnav Patil receiving the International Abacus Champion Trophy from Hon. Dr. Kiran Bedi and IIVA CEO",
       colorTheme: "gold",
@@ -54,9 +57,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-double-champion-arnav",
       type: "competition",
-      title: "Back-to-Back International Champion: Arnav Patil",
-      tag: "Double Champion",
-      achievementText: "Talk about a double victory! Within just one week, Arnav Abacus Academy’s brand ambassador, <strong>Arnav Patil</strong>, has clinched yet another <strong>1st Rank</strong> at the International level (C1 Category - Advanced Level) at the <strong>8th International Abacus Competition 2025</strong> in Pune. Razor-sharp accuracy meets relentless consistency—proving that champions aren't born, they are trained!",
+      title: t("showcaseItem2Title"),
+      tag: t("showcaseTag2"),
+      achievementText: t("showcaseItem2Text"),
       imageUrl: "arnav_patil_international_1st_2025.webp",
       imageAlt: "Arnav Patil holding the 1st Rank Trophy with Neha Patil on stage",
       colorTheme: "gold",
@@ -64,9 +67,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-business-excellence",
       type: "gallery",
-      title: "Business Excellence Award 2025",
-      tag: "Business Excellence",
-      achievementText: "Arnav Abacus Academy Founder & Director, <strong>Neha Patil</strong>, was honored with the prestigious <strong>Business Excellence Award</strong> at the 8th International Abacus Competition 2025. Presented by <strong>Mr. Sanjay Kalamkar</strong>, CEO of Smart Kid Abacus Learning Pvt Ltd, this accolade celebrates her exceptional leadership, entrepreneurial vision, and dedication to raising mental math education standards globally.",
+      title: t("showcaseItem3Title"),
+      tag: t("showcaseTag3"),
+      achievementText: t("showcaseItem3Text"),
       imageUrl: "business_excellence_award_2025.webp",
       imageAlt: "Neha Patil receiving the Business Excellence Award 2025 from Sanjay Kalamkar",
       colorTheme: "gold",
@@ -74,9 +77,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-womens-achiever",
       type: "gallery",
-      title: "Women’s Achiever Award & Community Recognition (Jan 2026)",
-      tag: "Community Honors",
-      achievementText: "Hattrick alert! 🏆 Arnav Abacus Academy’s visionary Founder & Director, <strong>Neha Patil</strong>, marks a remarkable three-award milestone in just one month! Honored with the prestigious <strong>Women’s Achiever Award</strong> by the Leva Patidar Bhatru Mandal Wakad (LPBMW), this special tribute celebrates her dual dedication—driving digital excellence at Wisdom World School and fostering mental arithmetic mastery at Arnav Abacus Academy. Awards from home always hit different; this recognition fuels our passion to keep elevating young minds and contributing to society!",
+      title: t("showcaseItem4Title"),
+      tag: t("showcaseTag4"),
+      achievementText: t("showcaseItem4Text"),
       imageUrl: "neha_achiever_collage.webp",
       imageAlt: "Neha Patil receiving the Women's Achiever Award from LPBMW community leaders",
       colorTheme: "gold",
@@ -84,9 +87,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-best-student",
       type: "gallery",
-      title: "Best Student of the Year (2025-26)",
-      tag: "Star Student",
-      achievementText: "Meet our silent performer and supersonic star, <strong>Spriha Kamat</strong>—crowned <strong>Best Student of the Year</strong>! Spriha’s journey is defined by stellar consistency, absolute discipline, timely homework, and flawless math visualization skills. A massive shoutout to her supportive partners-in-success, Supermom <strong>Priya Kamat</strong> & Superdad <strong>Sameer Kamat</strong>, for fueling her growth!",
+      title: t("showcaseItem5Title"),
+      tag: t("showcaseTag5"),
+      achievementText: t("showcaseItem5Text"),
       imageUrl: "best_student_spriha_kamat_2025_2026.webp",
       imageAlt: "Spriha Kamat holding the Best Student of the Year Trophy with Neha Patil",
       colorTheme: "teal",
@@ -94,9 +97,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-hitanshi-bronze",
       type: "competition",
-      title: "3rd Rank at International Abacus Competition",
-      tag: "Bronze Medalist",
-      achievementText: "Huge congratulations to our brilliant high-performer, <strong>Hitanshi Agarwal</strong>, for securing <strong>Rank 3</strong> at the 8th International Abacus Competition 2025 in Pune! Presented by Smart Kid Abacus Learning Pvt Ltd, this outstanding victory celebrates Hitanshi’s mental arithmetic brilliance and unwavering dedication to excellence on the global stage.",
+      title: t("showcaseItem6Title"),
+      tag: t("showcaseTag6"),
+      achievementText: t("showcaseItem6Text"),
       imageUrl: "hitanshi_collage.webp",
       imageAlt: "Hitanshi Agarwal holding her trophy and celebrating her 3rd Rank at the International Abacus Competition",
       colorTheme: "orange",
@@ -104,9 +107,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-shreshth-champion",
       type: "competition",
-      title: "1st Rank at B1 Level International Abacus Competition",
-      tag: "International Champion",
-      achievementText: "A massive congratulations to our stellar math champion, <strong>Shreshth Gupta</strong>, for clinching <strong>1st Rank (B1 Level)</strong> at the 8th International Abacus Competition 2025 in Pune! Presented by Smart Kid Abacus Learning Pvt Ltd, Shreshth’s award-winning mathematical precision and exemplary dedication represent the highest standard of cognitive performance.",
+      title: t("showcaseItem7Title"),
+      tag: t("showcaseTag7"),
+      achievementText: t("showcaseItem7Text"),
       imageUrl: "shreshth_gupta_champion_2025.webp",
       imageAlt: "Shreshth Gupta receiving the 1st Rank International Abacus Competition Trophy with Neha Patil",
       colorTheme: "gold",
@@ -114,9 +117,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-seven-runnerups",
       type: "competition",
-      title: "Runner-Up Trophies for Our Seven Stars",
-      tag: "Rising Champions",
-      achievementText: "Proof that confidence and smiles are the ultimate indicators of success! We are thrilled to celebrate our <strong>seven rising stars</strong>—ranging from Jr. KG to Advanced Levels—who bagged <strong>Runner-Up Trophies</strong> at the 8th International Abacus Competition 2025 in Pune. Huge congratulations to Prathamesh Zope (C2 Category), Atharva Titave (B2 Level), Hridhaan Bagla, Kriyansh Chhabria, Agastya Patil, Hitansh Agarwal, and Aarav Patil (Z Category). Your dedication makes us proud!",
+      title: t("showcaseItem8Title"),
+      tag: t("showcaseTag8"),
+      achievementText: t("showcaseItem8Text"),
       imageUrl: "seven_runner_up_stars_2025.webp",
       imageAlt: "Seven Arnav Abacus Academy students posing with their Runner-Up Trophies on stage",
       colorTheme: "teal",
@@ -124,9 +127,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-competition-glimpses",
       type: "gallery",
-      title: "Glimpses of Glory: Competition Highlights (2023-2025)",
-      tag: "Proud Moments",
-      achievementText: "The secret behind our success? We do what we love, and we love what we do—especially when we see those priceless, confident smiles on our students' faces! 🌟 Take a look at these proud highlights from our active participation and stellar achievements across State, National, and International Abacus Competitions from 2023 to 2025. A massive congratulations to our young champions and a heartfelt thank you to our passionate, supportive parents for partnering in this beautiful journey!",
+      title: t("showcaseItem9Title"),
+      tag: t("showcaseTag9"),
+      achievementText: t("showcaseItem9Text"),
       imageUrl: "competition_glimpses_collage.webp",
       imageAlt: "Collage of students participating and celebrating awards at various abacus competitions from 2023 to 2025",
       colorTheme: "teal",
@@ -134,9 +137,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-bliss-camp",
       type: "gallery",
-      title: "Abacus Excellence Camp at Bliss International (Summer 2024)",
-      tag: "Summer Agility",
-      achievementText: "Igniting arithmetic genius in real time! 🧠 During our Summer Camp 2024, Arnav Abacus Academy Founder & Director, <strong>Neha Patil</strong>, mentored brilliant young minds from Bliss International School in the art of Soroban abacus visualization. Don’t just take our word for it—watch their learning breakthroughs and success stories shine through their own video testimonials!",
+      title: t("showcaseItem10Title"),
+      tag: t("showcaseTag10"),
+      achievementText: t("showcaseItem10Text"),
       imageUrl: "bliss_international_abacus_camp_2024.webp",
       imageAlt: "Neha Patil teaching abacus to students at Bliss International School summer camp",
       colorTheme: "orange",
@@ -144,9 +147,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     {
       id: "gallery-award",
       type: "gallery",
-      title: "National Entrepreneurship Excellence Award at IIT Delhi",
-      tag: "National Recognition",
-      achievementText: "Arnav Abacus Academy’s visionary Founder & Director, <strong>Neha Patil</strong>, receives the prestigious <strong>Entrepreneurship Excellence Award</strong> from IIVA & IVAS at IIT Delhi on National Mathematics Day. Handed over by the CEO and CMD of IIVA & IVAS, this national accolade celebrates her transformative impact on 150+ students through innovative Abacus & Vedic Math programs, along with earning a perfect 5-star rating across 47 Google reviews for educational excellence and trusted mentorship.",
+      title: t("showcaseItem11Title"),
+      tag: t("showcaseTag11"),
+      achievementText: t("showcaseItem11Text"),
       imageUrl: "national_math_day_award.webp",
       imageAlt: "Neha Patil receiving Entrepreneurship Excellence Award at IIT Delhi from IIVA & IVAS",
       colorTheme: "gold",
@@ -239,13 +242,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     }
   ];
 
-  // Show gallery items only if they have a photo; show stories (transformation/competition) even if they don't have a photo.
-  const visibleItems = showcaseData.filter(item => {
-    if (item.type === "gallery") {
-      return !!item.imageUrl;
-    }
-    return true; // Keep all transformations and competitions
-  });
+  // Only show items that have a photo. Remove the cards without images or having only icon as image.
+  const visibleItems = showcaseData.filter(item => !!item.imageUrl);
 
   const filteredItems = activeTab === "all" 
     ? visibleItems 
@@ -264,15 +262,13 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
         <div className="absolute inset-0 bg-radial from-vibrant-teal/10 to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center space-y-4 relative z-10">
           <span className="text-[10px] font-black text-vibrant-gold bg-[#FFF5CC]/15 border border-vibrant-gold/30 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Proven Results &amp; Memories
+            {t("showcaseBadge")}
           </span>
           <h1 className="font-display font-black text-4xl md:text-5xl tracking-tight leading-tight">
-            Our Achievements &amp; Gallery
+            {t("showcaseTitle")}
           </h1>
           <p className="text-[#A2C4C9] text-xs md:text-sm font-semibold max-w-3xl mx-auto leading-relaxed">
-            Witness the real, verified milestones of <strong>Arnav Abacus Academy</strong>. 
-            From securing <strong>1st Ranks at International Abacus Competitions</strong> under Dr. Kiran Bedi's honors to receiving 
-            prestigious National &amp; community entrepreneurship awards at IIT Delhi.
+            {t("showcaseSubtitle")}
           </p>
         </div>
       </section>
@@ -281,9 +277,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       <section className="pt-12 pb-6 max-w-7xl mx-auto px-4 md:px-8">
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
           {[
-            { id: "all", label: "View All", count: visibleItems.length },
-            { id: "stories", label: "Success Stories", count: storiesCount },
-            { id: "gallery", label: "Activity Gallery", count: galleryCount },
+            { id: "all", label: t("showcaseTabAll"), count: visibleItems.length },
+            { id: "stories", label: t("showcaseTabStories"), count: storiesCount },
+            { id: "gallery", label: t("showcaseTabGallery"), count: galleryCount },
           ].map(tab => (
             <button
               key={tab.id}
@@ -309,7 +305,6 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
             // Pick color theme variables
             const isTeal = item.colorTheme === "teal";
             const isOrange = item.colorTheme === "orange";
-            const isGold = item.colorTheme === "gold";
             
             const badgeBg = isTeal 
               ? "bg-[#E0FAF5] text-[#00BFA5] border-[#A3F3E4]" 
@@ -324,39 +319,30 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                 key={item.id} 
                 className={`bg-white border-4 ${borderCol} rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_${shadowCol}] flex flex-col hover:scale-[1.01] transition-transform duration-200`}
               >
-                {/* Visual Header Placeholder - Image or Dotted Grid Background */}
-                <div className={`aspect-[4/3] w-full relative overflow-hidden flex items-center justify-center border-b-4 ${borderCol}`}>
-                  {item.imageUrl ? (
+                {/* Visual Header Placeholder - Clickable Image */}
+                <div 
+                  className={`aspect-[4/3] w-full relative overflow-hidden flex items-center justify-center border-b-4 ${borderCol} bg-[#F3F1EC] cursor-pointer group`}
+                  onClick={() => setSelectedItem(item)}
+                >
+                  {item.imageUrl && (
                     <img 
                       src={item.imageUrl} 
                       alt={item.imageAlt} 
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain p-3 transition-transform duration-300 group-hover:scale-[1.03]"
                     />
-                  ) : (
-                    <>
-                      {/* Dotted Grid Background Pattern */}
-                      <div className="absolute inset-0 bg-[#F8F9FA]" />
-                      <div className="absolute inset-0 opacity-[0.12] bg-[radial-gradient(#1A2E35_1.5px,transparent_1.5px)] [background-size:16px_16px]" />
-                      
-                      {/* Centered Styled Icon Container */}
-                      <div className="z-10 flex flex-col items-center justify-center">
-                        <div className={`w-20 h-20 rounded-[24px] bg-white border-2 ${borderCol} flex items-center justify-center shadow-sm`}>
-                          {item.type === "transformation" ? (
-                            <Sparkles className="w-10 h-10 text-vibrant-teal" />
-                          ) : item.type === "competition" ? (
-                            <Trophy className="w-10 h-10 text-vibrant-gold fill-current" />
-                          ) : (
-                            <Camera className="w-10 h-10 text-vibrant-orange" />
-                          )}
-                        </div>
-                      </div>
-                    </>
                   )}
                   
                   {/* Category Tag Badge in Top Left */}
-                  <div className="absolute top-5 left-5 z-10">
+                  <div className="absolute top-5 left-5 z-10 pointer-events-none">
                     <span className={`text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full border ${badgeBg} shadow-sm`}>
                       {item.tag}
+                    </span>
+                  </div>
+
+                  {/* Click to zoom overlay hint */}
+                  <div className="absolute inset-0 bg-vibrant-dark/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                    <span className="bg-white/95 text-vibrant-dark text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-xl border-2 border-vibrant-dark shadow-sm">
+                      {t("showcaseClickToExpand")}
                     </span>
                   </div>
                 </div>
@@ -370,7 +356,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
 
                     {/* Student metadata for story items */}
                     {item.studentName && (
-                      <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-gray-500 bg-[#F8F9FA] border border-gray-200 px-4 py-2 rounded-full w-fit">
+                      <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-gray-550 bg-[#F8F9FA] border border-gray-200 px-4 py-2 rounded-full w-fit">
                         <span>Student: {item.studentName}</span>
                         <span className="text-gray-300">•</span>
                         <span>Age: {item.age}</span>
@@ -396,7 +382,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                                   <span className="text-[10px] font-black uppercase text-red-500 tracking-wider block mb-1">
                                     Before AAA Classes:
                                   </span>
-                                  <p className="text-xs text-gray-650 font-medium leading-relaxed">
+                                  <p className="text-xs text-gray-655 font-medium leading-relaxed">
                                     {item.beforeText}
                                   </p>
                                 </div>
@@ -412,7 +398,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                             ) : (
                               <div className={`pl-4 border-l-4 ${isTeal ? 'border-vibrant-teal' : isOrange ? 'border-vibrant-orange' : 'border-vibrant-gold'} py-1 bg-[#F8F9FA] rounded-r-xl`}>
                                 <p 
-                                  className="text-xs md:text-sm text-gray-650 leading-relaxed font-semibold"
+                                  className="text-xs md:text-sm text-gray-655 leading-relaxed font-semibold"
                                   dangerouslySetInnerHTML={{ __html: item.achievementText || "" }}
                                 />
                               </div>
@@ -431,12 +417,12 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                     >
                       {isExpanded ? (
                         <>
-                          <span>Hide Details</span>
+                          <span>{t("showcaseHideStory")}</span>
                           <ChevronUp className="w-4 h-4" />
                         </>
                       ) : (
                         <>
-                          <span>Read Full Story</span>
+                          <span>{t("showcaseReadStory")}</span>
                           <ChevronDown className="w-4 h-4" />
                         </>
                       )}
@@ -444,7 +430,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
 
                     <div className="pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] font-bold text-gray-400">
                       <span className="flex items-center gap-1">
-                        <ShieldCheck className="w-3.5 h-3.5 text-vibrant-teal" /> Verified Success
+                        <ShieldCheck className="w-3.5 h-3.5 text-vibrant-teal" /> {t("showcaseVerified")}
                       </span>
                       <span>Arnav Abacus Academy</span>
                     </div>
@@ -460,13 +446,13 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       <section className="py-20 md:py-28 bg-[#FF6321] text-white border-t-4 border-vibrant-dark relative">
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center space-y-6 relative z-10">
           <div className="inline-flex items-center gap-1.5 bg-white/20 border border-white/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-            Admissions Open for New Batches
+            {t("newsCtaBadge")}
           </div>
           <h2 className="font-display font-black text-3xl md:text-5xl tracking-tight leading-tight text-white">
-            Let Your Child Be Our Next Success Story!
+            {t("showcaseBottomTitle")}
           </h2>
           <p className="text-[#FFF2E0] text-xs md:text-sm max-w-2xl mx-auto leading-relaxed font-bold">
-            Every child has the innate power to calculate at photographic speeds. Give them a complimentary learning assessment.
+            {t("showcaseBottomSubtitle")}
           </p>
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
@@ -474,17 +460,129 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
               onClick={handleCtaClick}
               className="w-full sm:w-auto bg-vibrant-gold text-vibrant-dark border-2 border-vibrant-dark font-black px-8 py-5 rounded-2xl shadow-[0_6px_0_0_#1A2E35] active:translate-y-1 active:shadow-none hover:scale-[1.01] transition-all text-center"
             >
-              Book Complimentary Trial
+              {t("bookTrial")}
             </a>
             <Link
               to="/programs"
               className="text-xs uppercase font-black text-white tracking-widest hover:underline flex items-center gap-1"
             >
-              Explore Course Outlines <ArrowRight className="w-4 h-4" />
+              {t("homeExamineCourses")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
+
+      {/* 5. Image Lightbox / Description Popup Modal */}
+      <AnimatePresence>
+        {selectedItem && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-vibrant-dark/85 backdrop-blur-sm p-4 md:p-6"
+            onClick={() => setSelectedItem(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              transition={{ type: "spring", duration: 0.5 }}
+              className="bg-[#FFFDF9] border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] max-w-3xl w-full max-h-[90vh] flex flex-col relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedItem(null)}
+                className="absolute top-4 right-4 z-30 bg-white hover:bg-vibrant-cream border-2 border-vibrant-dark p-2 rounded-full shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5 text-vibrant-dark" />
+              </button>
+
+              {/* Main Content Scrollable Area */}
+              <div className="overflow-y-auto flex-grow">
+                {/* Image Frame */}
+                <div className="aspect-[16/10] w-full bg-[#F3F1EC] flex items-center justify-center border-b-4 border-vibrant-dark relative">
+                  <img
+                     src={selectedItem.imageUrl}
+                     alt={selectedItem.imageAlt}
+                     className="w-full h-full object-contain p-4"
+                  />
+                  
+                  {/* Badge */}
+                  <div className="absolute bottom-4 left-4 z-10">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full border bg-white border-vibrant-dark shadow-sm text-vibrant-dark">
+                      {selectedItem.tag}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Info & Description Area */}
+                <div className="p-6 md:p-8 space-y-4">
+                  <h3 className="font-display font-black text-2xl md:text-3xl text-vibrant-dark tracking-tight leading-tight">
+                    {selectedItem.title}
+                  </h3>
+
+                  {/* Student details if available */}
+                  {selectedItem.studentName && (
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-gray-550 bg-[#F8F9FA] border border-gray-200 px-4 py-2 rounded-full w-fit">
+                      <span>Student: {selectedItem.studentName}</span>
+                      <span className="text-gray-300">•</span>
+                      <span>Age: {selectedItem.age}</span>
+                      <span className="text-gray-300">•</span>
+                      <span>Class: {selectedItem.grade}</span>
+                    </div>
+                  )}
+
+                  {/* Full Description text */}
+                  <div className="pt-2">
+                    {selectedItem.type === "transformation" ? (
+                      <div className="space-y-4">
+                        <div className="bg-[#FFF5F5] border border-red-100 rounded-2xl p-4">
+                          <span className="text-[10px] font-black uppercase text-red-500 tracking-wider block mb-1">
+                            Before AAA Classes:
+                          </span>
+                          <p className="text-sm text-gray-750 font-medium leading-relaxed">
+                            {selectedItem.beforeText}
+                          </p>
+                        </div>
+                        <div className="bg-[#E0FAF5]/30 border border-vibrant-teal/20 rounded-2xl p-4">
+                          <span className="text-[10px] font-black uppercase text-vibrant-teal tracking-wider block mb-1">
+                            After Mental Math:
+                          </span>
+                          <p className="text-sm text-vibrant-dark font-semibold leading-relaxed">
+                            {selectedItem.afterText}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="pl-4 border-l-4 border-vibrant-teal py-1 bg-[#F8F9FA] rounded-r-xl p-4">
+                        <p
+                          className="text-sm md:text-base text-gray-700 leading-relaxed font-semibold"
+                          dangerouslySetInnerHTML={{ __html: selectedItem.achievementText || "" }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Action/Footer */}
+              <div className="p-4 bg-vibrant-cream border-t-2 border-vibrant-dark flex justify-between items-center text-xs font-bold text-gray-500">
+                <span className="flex items-center gap-1">
+                  <ShieldCheck className="w-4 h-4 text-vibrant-teal" /> {t("showcaseVerified")}
+                </span>
+                <button
+                  onClick={() => setSelectedItem(null)}
+                  className="bg-vibrant-dark text-white px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-vibrant-dark/95 transition-all cursor-pointer"
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -37,42 +37,45 @@ export default function Navbar() {
 
 
       {/* 1. Top Alert Bar */}
-      <div className="bg-slate-900 text-slate-100 py-2.5 px-4 md:px-8 text-xs border-b border-slate-800">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-2">
-          {/* Working Details */}
-          <div className="flex items-center gap-4 text-[11px] text-slate-300">
+      <div className="bg-slate-900 text-slate-100 py-1.5 px-3 md:px-8 text-[11px] border-b border-slate-800">
+        <div className="max-w-7xl mx-auto flex justify-between items-center gap-2">
+          {/* Working Details (Hidden on smaller screens to save space) */}
+          <div className="hidden md:flex items-center gap-4 text-slate-300 shrink-0">
             <span className="flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-orange-400" />
               {t("workingCenter")}
             </span>
-            <span className="hidden sm:inline-flex items-center gap-1.5">
+            <span className="hidden lg:inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
               {t("batchesOngoing")}
             </span>
           </div>
 
           {/* Social Handles / Contact info & Language Toggle */}
-          <div className="flex items-center gap-4 font-medium text-slate-200 flex-wrap justify-center">
-            <a 
-              href="mailto:nehaatharv@gmail.com" 
-              className="flex items-center gap-1.5 hover:text-orange-400 transition-colors"
-            >
-              <Mail className="w-3.5 h-3.5" />
-              nehaatharv@gmail.com
-            </a>
-            <a 
-              href="https://wa.me/919021924968" 
-              className="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle className="w-3.5 h-3.5 fill-current" />
-              +91 90219 24968
-            </a>
+          <div className="flex items-center justify-between md:justify-end gap-3 w-full md:w-auto font-medium text-slate-200">
+            <div className="flex items-center gap-3">
+              <a 
+                href="mailto:nehaatharv@gmail.com" 
+                className="flex items-center gap-1 hover:text-orange-400 transition-colors"
+                title="Email nehaatharv@gmail.com"
+              >
+                <Mail className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">nehaatharv@gmail.com</span>
+              </a>
+              <a 
+                href="https://wa.me/919021924968" 
+                className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <MessageCircle className="w-3.5 h-3.5 fill-current" />
+                <span>+91 90219 24968</span>
+              </a>
+            </div>
             
             {/* Language Selector Dropdown */}
-            <div className="flex items-center gap-1.5 bg-slate-800 border border-slate-700 rounded px-2 py-0.5 text-slate-200 hover:border-vibrant-orange transition-colors">
-              <Globe className="w-3 h-3 text-slate-400" />
+            <div className="flex items-center gap-1 bg-slate-800 border border-slate-700 rounded px-1.5 py-0.5 text-slate-200 hover:border-vibrant-orange transition-colors">
+              <Globe className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value as Language)}

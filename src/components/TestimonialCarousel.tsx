@@ -6,77 +6,80 @@
 import React, { useState, useEffect } from "react";
 import { Testimonial } from "../types";
 import { Star, ChevronLeft, ChevronRight, Quote, CheckCircle2 } from "lucide-react";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function TestimonialCarousel() {
+  const { language, t } = useLanguage();
+
   const testimonials: Testimonial[] = [
     {
       id: "t1",
-      author: "Chandra Gupta",
-      role: "Parent of Vedant",
-      content: "When we joined the abacus class, it was more of an experiment. But over time, it has become something really special. Thanks to Neha Ma’am and Nitin Sir, who take such good care of him, he has developed a genuine interest in learning. Their patience and creative way of teaching have helped Vedant improve his focus and confidence.",
+      author: t("t1Author"),
+      role: t("t1Role"),
+      content: t("t1Content"),
       rating: 5,
     },
     {
       id: "t2",
-      author: "Tejasweeni Zope",
-      role: "Parent of Om",
-      content: "I am truly impressed with the Abacus classes conducted by Neha ma’am. She gives personal attention to each and every student, ensuring that every child learns at their own pace with confidence. Since joining the classes, my son Om's calculation speed has improved significantly, and he now approaches maths with much more enthusiasm and accuracy.",
+      author: t("t2Author"),
+      role: t("t2Role"),
+      content: t("t2Content"),
       rating: 5,
     },
     {
       id: "t3",
-      author: "Khushbu Desai",
-      role: "Supermom of Dhyan & Dyana",
-      content: "I would like to share my genuine feedback for Neha Ma’am and Nitin Sir from Arnav Abacus Academy. They create such a positive and friendly learning environment that children feel completely at ease as soon as they enter the class. Their calm approach, clear communication, and the way they connect with every child truly make a difference.",
+      author: t("t3Author"),
+      role: t("t3Role"),
+      content: t("t3Content"),
       rating: 5,
     },
     {
       id: "t4",
-      author: "Rajesh Kumar",
-      role: "Parent of Sneha",
-      content: "We joined the Vedic Maths program for our daughter Sneha who is in 7th grade. The 16 sutras and cross-multiplication shortcuts taught by Nitin Sir are magical. She now completes her school math papers 20 minutes before time.",
+      author: t("t4Author"),
+      role: t("t4Role"),
+      content: t("t4Content"),
       rating: 5,
     },
     {
       id: "t5",
-      author: "Deepali Shah",
-      role: "Parent of Aarav & Ananya",
-      content: "Both my kids Aarav and Ananya attend Arnav Abacus Academy. The environment is extremely positive. Neha Ma'am and Nitin Sir focus not just on calculations but on overall logical and analytical development. Their confidence has skyrocketed!",
+      author: t("t5Author"),
+      role: t("t5Role"),
+      content: t("t5Content"),
       rating: 5,
     },
     {
       id: "t6",
-      author: "Vikram Malhotra",
-      role: "Parent of Kabir",
-      content: "Kabir was preparing for the Olympiad and was struggling with time management. Nitin Sir's speed checks and diagnostic worksheets helped him secure a top state rank. Best place for competitive math preparation!",
+      author: t("t6Author"),
+      role: t("t6Role"),
+      content: t("t6Content"),
       rating: 5,
     },
     {
       id: "t7",
-      author: "Dr. Shalini Deshmukh",
-      role: "Parent of Riya",
-      content: "As a doctor, I wanted a structured brain development program for my daughter. Arnav Abacus's scientific way of teaching has improved Riya's photographic memory, auditory listening capacity, and focus. Very happy with the offline academy.",
+      author: t("t7Author"),
+      role: t("t7Role"),
+      content: t("t7Content"),
       rating: 5,
     },
     {
       id: "t8",
-      author: "Amit Joshi",
-      role: "Parent of Parth",
-      content: "Very convenient offline center near Park Street. The personal attention, regular assessments, and positive feedback loop keep the kids motivated. Parth actually looks forward to his math sessions now!",
+      author: t("t8Author"),
+      role: t("t8Role"),
+      content: t("t8Content"),
       rating: 5,
     },
     {
       id: "t9",
-      author: "Shruti Nair",
-      role: "Parent of Meera (Online)",
-      content: "Even though we are based in London, we join their online interactive classroom sessions. The virtual abacus tool and Neha Ma'am's high-energy teaching make Meera feel like she's in a physical class. Her response speed is phenomenal!",
+      author: t("t9Author"),
+      role: t("t9Role"),
+      content: t("t9Content"),
       rating: 5,
     },
     {
       id: "t10",
-      author: "Sandeep Salunkhe",
-      role: "Parent of Aditya",
-      content: "Special thanks to Nitin Sir for helping Aditya zero down on silly arithmetic mistakes. His number sense and spatial awareness have improved. The focus on discipline and consistency is what sets this academy apart.",
+      author: t("t10Author"),
+      role: t("t10Role"),
+      content: t("t10Content"),
       rating: 5,
     }
   ];
@@ -108,7 +111,7 @@ export default function TestimonialCarousel() {
       className="bg-transparent max-w-4xl mx-auto px-4 relative"
     >
       {/* Testimonial card bubble */}
-      <div className="bg-[#FFFDF9] border-4 border-vibrant-dark rounded-[32px] p-8 md:p-12 shadow-[12px_12px_0_0_#1A2E35] relative overflow-hidden">
+      <div className="bg-[#FFFDF9] border-4 border-vibrant-dark rounded-[32px] p-6 md:p-12 shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] relative overflow-hidden">
         
         {/* Floating background quotation marks */}
         <Quote className="absolute -top-4 -right-4 w-40 h-40 text-vibrant-orange/10 rotate-185 pointer-events-none" />
@@ -121,7 +124,7 @@ export default function TestimonialCarousel() {
                 <Star key={i} className="w-5 h-5 text-vibrant-gold fill-current" />
               ))}
               <span className="text-xs text-vibrant-dark font-black uppercase tracking-wider ml-2">
-                VERIFIED GOOGLE REVIEW
+                {language === "hi" ? "सत्यापित गूगल समीक्षा" : language === "mr" ? "अधिकृत गुगल रिव्ह्यू" : "VERIFIED GOOGLE REVIEW"}
               </span>
             </div>
 
@@ -158,20 +161,20 @@ export default function TestimonialCarousel() {
                 rel="noopener noreferrer"
                 className="text-xs font-black text-white bg-vibrant-orange hover:bg-vibrant-orange/95 px-4 py-2 rounded-xl shadow-[0_3px_0_0_#B33A00] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer shrink-0"
               >
-                View on Google
+                {language === "hi" ? "गूगल पर देखें" : language === "mr" ? "गुगलवर पहा" : "View on Google"}
               </a>
               <div className="flex items-center gap-1.5 shrink-0">
                 <button
                   onClick={handlePrev}
                   className="w-10 h-10 bg-white border-2 border-vibrant-dark rounded-full flex items-center justify-center text-vibrant-dark shadow-[0_3px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-cream transition-all cursor-pointer"
-                  aria-label="Previous testimony Review"
+                  aria-label={language === "hi" ? "पिछली समीक्षा" : language === "mr" ? "मागील रिव्ह्यू" : "Previous testimony Review"}
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                   onClick={handleNext}
                   className="w-10 h-10 bg-white border-2 border-vibrant-dark rounded-full flex items-center justify-center text-vibrant-dark shadow-[0_3px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-cream transition-all cursor-pointer"
-                  aria-label="Next testimony Review"
+                  aria-label={language === "hi" ? "अगली समीक्षा" : language === "mr" ? "पुढील रिव्ह्यू" : "Next testimony Review"}
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>

@@ -59,13 +59,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
             <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              VEDIC MATH AGILITY
+              {t("homeVedicBadge")}
             </span>
             <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-              Interactive Speed Math Simulator
+              {t("homeVedicTitle")}
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              Calculate in seconds using Vedic math secrets! Switch tabs below to experience rapid squaring and cross-multiplication vector calculations.
+              {t("homeVedicSubtitle")}
             </p>
           </div>
           <VedicMathDemo />
@@ -76,13 +76,13 @@ export default function Home() {
       <section id="programs-showcase" className="py-20 md:py-28 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
           <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            {t("programsBadge")}
+            {t("progBadge")}
           </span>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
-            {t("programsTitle")}
+            {t("progTitle")}
           </h2>
           <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-            {t("programsSubtitle")}
+            {t("progSubtitle")}
           </p>
         </div>
 
@@ -195,7 +195,7 @@ export default function Home() {
                 <div className="flex items-start gap-3 bg-vibrant-cream p-5 rounded-2xl border-2 border-vibrant-dark">
                   <MapPin className="w-5 h-5 text-vibrant-orange shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-vibrant-dark font-black mb-1">Center Address:</strong>
+                    <strong className="block text-vibrant-dark font-black mb-1">{t("homeCenterAddress")}</strong>
                     <span className="text-xs text-gray-600 font-medium leading-relaxed block">
                       {t("footerAddress")}
                     </span>
@@ -205,7 +205,7 @@ export default function Home() {
                 <div className="flex items-center gap-3 bg-vibrant-cream p-4.5 py-3.5 rounded-2xl border-2 border-vibrant-dark">
                   <Phone className="w-5 h-5 text-vibrant-teal shrink-0" />
                   <div>
-                    <span className="text-xs text-gray-400 font-bold block">Call Support:</span>
+                    <span className="text-xs text-gray-400 font-bold block">{t("homeCallSupport")}</span>
                     <a href="tel:+919021924968" onClick={handleMapCtaClick} className="font-black text-vibrant-dark hover:text-vibrant-orange block text-sm">
                       +91 90219 24968
                     </a>
@@ -215,7 +215,7 @@ export default function Home() {
                 <div className="flex items-center gap-3 bg-vibrant-cream p-4.5 py-3.5 rounded-2xl border-2 border-vibrant-dark">
                   <Mail className="w-5 h-5 text-vibrant-orange shrink-0" />
                   <div>
-                    <span className="text-xs text-gray-400 font-bold block">Email Inquiries:</span>
+                    <span className="text-xs text-gray-400 font-bold block">{t("homeEmailInquiries")}</span>
                     <a href="mailto:nehaatharv@gmail.com" className="font-black text-vibrant-dark hover:text-vibrant-orange block text-sm">
                       nehaatharv@gmail.com
                     </a>
@@ -230,13 +230,13 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-black text-vibrant-orange hover:text-vibrant-orange/95 uppercase tracking-widest bg-vibrant-cream border-2 border-vibrant-dark px-4 py-2 rounded-xl text-center shadow-[0_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all"
                 >
-                  View Directions <ArrowRight className="w-4 h-4 text-vibrant-orange" />
+                  {t("homeViewDirections")} <ArrowRight className="w-4 h-4 text-vibrant-orange" />
                 </a>
               </div>
             </div>
 
             {/* Column Right: Map Iframe wrapper */}
-            <div className="lg:col-span-7 h-[350px] md:h-[450px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[12px_12px_0_0_#1A2E35] relative group">
+            <div className="lg:col-span-7 h-[350px] md:h-[450px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] relative group">
               <iframe 
                 src="https://maps.google.com/maps?q=18.5936735,73.7656606&z=17&output=embed" 
                 className="w-full h-full border-0" 
@@ -246,7 +246,7 @@ export default function Home() {
                 title="Arnav Abacus Academy Center Location"
               />
               <div className="absolute bottom-4 left-4 bg-vibrant-dark text-white text-[10px] font-black px-3.5 py-1.5 rounded-full backdrop-blur-sm tracking-widest uppercase shadow-md border border-slate-700/50">
-                OPP. CREATIVE CAMEO, WAKAD
+                {t("homeOppCreativeCameo")}
               </div>
             </div>
 
@@ -272,13 +272,13 @@ export default function Home() {
               onClick={() => trackDemoClick("home_bottom_cta_wa")}
               className="w-full sm:w-auto bg-vibrant-gold text-vibrant-dark border-2 border-vibrant-dark font-black px-8 py-5 rounded-2xl shadow-[0_6px_0_0_#1A2E35] active:translate-y-1 active:shadow-none hover:scale-[1.01] transition-all text-center"
             >
-              Book Trial on WhatsApp
+              {t("homeBookTrialWhatsapp")}
             </a>
             <Link
               to="/programs"
               className="text-xs uppercase font-black text-white tracking-widest hover:underline flex items-center gap-1"
             >
-              Examine Course Outlines <ArrowRight className="w-4 h-4" />
+              {t("homeExamineCourses")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

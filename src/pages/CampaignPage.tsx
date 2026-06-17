@@ -8,10 +8,12 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import LeadForm from "../components/LeadForm";
 import TrustBar from "../components/TrustBar";
 import { CAMPAIGNS } from "../data";
-import { Sparkles, CheckCircle2, ArrowLeft, MessageSquare, PhoneCall, Award } from "lucide-react";
+import { Sparkles, CheckCircle2, ArrowLeft, MessageSquare, Award } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function CampaignPage() {
+  const { t } = useLanguage();
   const { slug } = useParams<{ slug: string }>();
 
   // Fail-safe redirect if campaign doesn't exist
@@ -20,6 +22,31 @@ export default function CampaignPage() {
   }
 
   const campaign = CAMPAIGNS[slug];
+
+  // Map campaign properties dynamically based on the current language
+  const campaignData = {
+    ...campaign,
+    title: slug === "math-phobia" 
+      ? t("campPhobiaTitle") 
+      : slug === "competitive-exam" 
+        ? t("campExamTitle") 
+        : t("campBrainTitle"),
+    subtitle: slug === "math-phobia" 
+      ? t("campPhobiaSubtitle") 
+      : slug === "competitive-exam" 
+        ? t("campExamSubtitle") 
+        : t("campBrainSubtitle"),
+    ctaText: slug === "math-phobia" 
+      ? t("campPhobiaCta") 
+      : slug === "competitive-exam" 
+        ? t("campExamCta") 
+        : t("campBrainCta"),
+    features: slug === "math-phobia" 
+      ? [t("campPhobiaFeat1"), t("campPhobiaFeat2"), t("campPhobiaFeat3"), t("campPhobiaFeat4")]
+      : slug === "competitive-exam"
+        ? [t("campExamFeat1"), t("campExamFeat2"), t("campExamFeat3"), t("campExamFeat4")]
+        : [t("campBrainFeat1"), t("campBrainFeat2"), t("campBrainFeat3"), t("campBrainFeat4")]
+  };
 
   const handleCampaignCta = () => {
     trackDemoClick("campaign_landing_page_direct_cta", { campaignSlug: slug });
@@ -51,7 +78,7 @@ export default function CampaignPage() {
     <div id="campaign-landing-wrapper" className="bg-slate-50 min-h-screen">
       
       {/* 1. Header Hero Banner matching theme parameters */}
-      <section className={`bg-gradient-to-r ${campaign.gradient} text-white py-16 md:py-24 relative overflow-hidden`}>
+      <section className={`bg-gradient-to-r ${campaignData.gradient} text-white py-16 md:py-24 relative overflow-hidden`}>
         {/* Particle circles */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-black/5 rounded-full blur-2xl pointer-events-none" />
@@ -59,15 +86,15 @@ export default function CampaignPage() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10 text-center space-y-6">
           
           <div className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" /> High-impact trial campaign
+            <Sparkles className="w-3.5 h-3.5" /> {t("campTrialBadge")}
           </div>
 
           <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight max-w-4xl mx-auto">
-            {campaign.title}
+            {campaignData.title}
           </h1>
 
-          <p className="text-white/90 text-sm md:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
-            {campaign.subtitle}
+          <p className="text-white/90 text-sm md:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
+            {campaignData.subtitle}
           </p>
 
           <div className="pt-2">
@@ -76,7 +103,7 @@ export default function CampaignPage() {
               className="bg-white hover:bg-slate-100 text-gray-900 font-bold px-8 py-4 px-6 rounded-2xl shadow-xl hover:scale-101 active:scale-95 transition-all text-xs md:text-sm uppercase tracking-wider inline-flex items-center gap-2 cursor-pointer"
             >
               <MessageSquare className="w-4 h-4 text-orange-600 fill-current shrink-0" />
-              {campaign.ctaText}
+              {campaignData.ctaText}
             </button>
           </div>
 
@@ -96,23 +123,23 @@ export default function CampaignPage() {
           <div className="lg:col-span-6 space-y-8">
             <div className="space-y-4">
               <span className="text-[11px] font-bold text-orange-600 bg-orange-50 px-3.5 py-1 rounded-full uppercase tracking-widest inline-block">
-                Exclusive Parental Program Benefits
+                {t("campBenefitsBadge")}
               </span>
               <h2 className="font-display font-bold text-2xl md:text-3xl text-gray-900 leading-tight">
-                Designed to secure immediate academic milestones
+                {t("campBenefitsTitle")}
               </h2>
               <p className="text-gray-650 text-xs md:text-sm leading-relaxed">
-                Unlock double digit evaluations, photographic memorization structure, and complete peace of mind. Neha Patil (IIVA Certified) coordinates our Wakad center, giving attention to child confidence progression.
+                {t("campBenefitsDesc")}
               </p>
             </div>
 
             {/* Checklist Box */}
             <div className="bg-white border border-gray-150 rounded-3xl p-6 md:p-8 space-y-5 shadow-sm">
               <h3 className="font-display font-bold text-sm text-gray-950 uppercase tracking-wider flex items-center gap-2">
-                <Award className="w-5 h-5 text-orange-500 shrink-0" /> Why this works:
+                <Award className="w-5 h-5 text-orange-500 shrink-0" /> {t("campWhyWorks")}
               </h3>
               <div className="space-y-4.5">
-                {campaign.features.map((feat, idx) => (
+                {campaignData.features.map((feat, idx) => (
                   <div key={idx} className="flex items-start gap-3.5">
                     <div className="p-0.5 rounded-full bg-emerald-50 text-emerald-500 shrink-0 mt-0.5 border border-emerald-100">
                       <CheckCircle2 className="w-4 h-4" />
@@ -122,7 +149,7 @@ export default function CampaignPage() {
                         {feat}
                       </span>
                       <span className="text-[11px] text-gray-400 block mt-0.5">
-                        Aligned with certified child educational milestones
+                        {t("campFeatureSub")}
                       </span>
                     </div>
                   </div>
@@ -136,7 +163,7 @@ export default function CampaignPage() {
                 to="/"
                 className="inline-flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-orange-600 transition"
               >
-                <ArrowLeft className="w-4 h-4" /> Back to Arnav Academy Homepage
+                <ArrowLeft className="w-4 h-4" /> {t("campBackHome")}
               </Link>
             </div>
           </div>
@@ -144,7 +171,7 @@ export default function CampaignPage() {
           {/* Column Right: Responsive Lead Form */}
           <div className="lg:col-span-6 bg-white rounded-3xl border border-gray-50 p-1 shadow-2xl">
             <LeadForm 
-              sourceCampaign={`Campaign: ${campaign.title}`} 
+              sourceCampaign={`Campaign: ${campaignData.title}`} 
               defaultProgram={getDefaultProgram(slug)} 
             />
           </div>
@@ -157,10 +184,10 @@ export default function CampaignPage() {
         <div className="max-w-4xl mx-auto px-4 space-y-3">
           <span className="block font-bold text-slate-200">Arnav Abacus Academy and Vedic Maths Classes</span>
           <span className="block text-slate-500 leading-relaxed text-[11px] lg:text-xs">
-            Flat no. 3, Adv. Balaji Sagar Bungalow, Opp. Creative Cameo, Wakad, Pimpri-Chinchwad, Maharashtra 411057 (Near Park Street, Wakad).
+            {t("footerAddress")}
           </span>
           <span className="block text-[10px] text-orange-400/80 font-medium">
-            Contact phone: +91 90219 24968 | Founder Neha Patil (IIVA Certified)
+            {t("campFooterContact")}
           </span>
         </div>
       </section>

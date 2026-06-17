@@ -6,8 +6,10 @@
 import React, { useState, useEffect } from "react";
 import { MessageSquare, X, PhoneCall } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function FloatingCTA() {
+  const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
 
@@ -27,7 +29,7 @@ export default function FloatingCTA() {
 
   const handleWhatsappClick = () => {
     trackDemoClick("floating_whatsapp_bubble");
-    const message = encodeURIComponent("Hello! I visited your website and would like to inquire about your Abacus/Vedic Maths batches.");
+    const message = encodeURIComponent(t("floatWhatsappMessage"));
     window.open(`https://wa.me/919021924968?text=${message}`, "_blank");
   };
 
@@ -43,8 +45,8 @@ export default function FloatingCTA() {
         >
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mt-1.5 shrink-0" />
           <div className="flex-1">
-            <span className="block text-xs font-bold text-gray-900 leading-tight">Neha Patil (Mentor)</span>
-            <span className="block text-[11px] text-gray-500 mt-0.5 leading-relaxed">Let's coordinate a free demo schedule over WhatsApp! 🎯</span>
+            <span className="block text-xs font-bold text-gray-900 leading-tight">{t("floatMentorName")}</span>
+            <span className="block text-[11px] text-gray-500 mt-0.5 leading-relaxed">{t("floatTooltip")}</span>
           </div>
           <button 
             onClick={(e) => {
@@ -69,7 +71,7 @@ export default function FloatingCTA() {
         
         {/* Hover label for desktop users */}
         <span className="absolute right-14 bg-emerald-500 text-white font-bold text-xs py-2 px-3 rounded-xl opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all origin-right pointer-events-none whitespace-nowrap shadow-md">
-          Chat with Us
+          {t("floatChatWithUs")}
         </span>
       </button>
     </div>

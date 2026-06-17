@@ -9,8 +9,10 @@ import LeadForm from "../components/LeadForm";
 import { PROGRAMS } from "../data";
 import { BookOpen, Sparkles, Trophy, CheckCircle, HelpCircle, ShieldCheck } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function Programs() {
+  const { t } = useLanguage();
   const handleConsult = () => {
     trackDemoClick("programs_directory_consult_button");
   };
@@ -23,13 +25,13 @@ export default function Programs() {
         <div className="absolute inset-0 bg-radial from-vibrant-teal/10 to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center space-y-4 relative z-10">
           <span className="text-[10px] font-black text-vibrant-gold bg-[#FFF5CC]/15 border border-vibrant-gold/30 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Comprehensive Curriculums
+            {t("progPageBadge")}
           </span>
           <h1 className="font-display font-black text-4xl md:text-5xl tracking-tight leading-tight">
-            Math Programs Crafted For Kids
+            {t("progPageTitle")}
           </h1>
           <p className="text-[#A2C4C9] text-xs md:text-sm font-semibold max-w-2xl mx-auto leading-relaxed">
-            From playful bead manipulation on physical Abacus tools to super-speed Vedic algebra shortcuts and systematic school exam readiness.
+            {t("progPageSubtitle")}
           </p>
         </div>
       </section>
@@ -38,13 +40,13 @@ export default function Programs() {
       <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-16">
           <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            EXPLORE OUR PROGRAMS
+            {t("progPageExploreBadge")}
           </span>
           <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-            Interactive Classroom Streams
+            {t("progPageExploreTitle")}
           </h2>
           <p className="text-gray-500 text-xs md:text-sm font-semibold">
-            All programs run throughout the year under direct supervision of Master Trainer Neha Patil at our center.
+            {t("progPageExploreSubtitle")}
           </p>
         </div>
 
@@ -60,13 +62,13 @@ export default function Programs() {
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
             <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              CURRICULUM BENCHMARKS
+              {t("progPageBenchmarkBadge")}
             </span>
             <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-              Arithmetic vs. Mind Visualization
+              {t("progPageBenchmarkTitle")}
             </h2>
             <p className="text-gray-500 text-xs md:text-sm font-semibold">
-              Standard tutoring focuses purely on repetitive school homework. Our systems build cognitive brain agility.
+              {t("progPageBenchmarkSubtitle")}
             </p>
           </div>
 
@@ -77,23 +79,23 @@ export default function Programs() {
                 AB
               </div>
               <h3 className="font-display font-black text-lg text-vibrant-dark">
-                Cognitive Milestones of Abacus Learning
+                {t("progPageMilestoneAbTitle")}
               </h3>
               <p className="text-xs md:text-sm text-gray-500 font-semibold leading-relaxed">
-                By sliding beads, students construct a virtual "pictorial abacus" in their minds. Instead of reading boring digits, they see visual shapes to calculate.
+                {t("progPageMilestoneAbDesc")}
               </p>
               <ul className="space-y-2.5 text-xs text-vibrant-dark font-black">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-vibrant-teal shrink-0" />
-                  Photographic recall of multidigit counts
+                  {t("progPageMilestoneAbBullet1")}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-vibrant-teal shrink-0" />
-                  Increased auditory storage and split-second focus
+                  {t("progPageMilestoneAbBullet2")}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-vibrant-teal shrink-0" />
-                  Active Left &amp; Right cerebral brain synchronization
+                  {t("progPageMilestoneAbBullet3")}
                 </li>
               </ul>
             </div>
@@ -104,23 +106,23 @@ export default function Programs() {
                 VD
               </div>
               <h3 className="font-display font-black text-lg text-vibrant-dark">
-                Strategic Benchmarks of Vedic Maths
+                {t("progPageMilestoneVeTitle")}
               </h3>
               <p className="text-xs md:text-sm text-gray-500 font-semibold leading-relaxed">
-                Vedic Maths empowers kids to calculate up to 10-15x faster than school methods, executing high-tier complex calculations without draft work.
+                {t("progPageMilestoneVeDesc")}
               </p>
               <ul className="space-y-2.5 text-xs text-vibrant-dark font-black">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-vibrant-orange shrink-0" />
-                  Total elimination of calculations phobia
+                  {t("progPageMilestoneVeBullet1")}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-vibrant-orange shrink-0" />
-                  Amazing speeds on Olympiads, scholarships and school papers
+                  {t("progPageMilestoneVeBullet2")}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-vibrant-orange shrink-0" />
-                  High visual intuition for algebra, squares &amp; roots
+                  {t("progPageMilestoneVeBullet3")}
                 </li>
               </ul>
             </div>
@@ -134,13 +136,13 @@ export default function Programs() {
           
           <div className="lg:col-span-6 space-y-6">
             <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              INQUIRE ADVISORY SLOTS
+              {t("progPageAdvisoryBadge")}
             </span>
             <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-              Unsure which stream fits your child's age?
+              {t("progPageAdvisoryTitle")}
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              Contact us for a friendly advisory session. Neha Ma'am and Nitin Sir will personally assess your child's learning curve, number sense, analytical approach, focus, discipline, strengths, and school board needs to guide you correctly.
+              {t("progPageAdvisorySubtitle")}
             </p>
 
             <div className="flex items-center gap-3 pt-2">
@@ -149,10 +151,10 @@ export default function Programs() {
               </div>
               <div>
                 <cite className="not-italic font-black text-vibrant-dark text-sm leading-none block">
-                  Neha Patil (IIVA Certified)
+                  {t("progPageMentorName")}
                 </cite>
                 <span className="text-xs text-gray-405 font-bold block mt-1 leading-none">
-                  Founder &amp; Certified Professional
+                  {t("progPageMentorRole")}
                 </span>
               </div>
             </div>
@@ -163,7 +165,7 @@ export default function Programs() {
                 onClick={handleConsult}
                 className="bg-vibrant-teal text-white font-black text-xs md:text-sm px-6 py-4 rounded-xl inline-flex items-center gap-1.5 shadow-[0_4px_0_0_#00897B] active:translate-y-1 active:shadow-none hover:brightness-105 duration-100 transition-all cursor-pointer"
               >
-                Schedule Consultation Chat
+                {t("progPageConsultCta")}
               </a>
             </div>
           </div>

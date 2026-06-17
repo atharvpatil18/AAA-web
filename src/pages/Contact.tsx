@@ -5,10 +5,13 @@
 
 import React from "react";
 import LeadForm from "../components/LeadForm";
-import { MapPin, Phone, Mail, Clock, MessageSquare, ShieldCheck, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, CheckCircle } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function Contact() {
+  const { t } = useLanguage();
+
   const handleSupportClick = (source: string) => {
     trackDemoClick(`contact_page_${source}`);
   };
@@ -21,13 +24,13 @@ export default function Contact() {
         <div className="absolute inset-0 bg-radial from-vibrant-teal/10 to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center space-y-4 relative z-10">
           <span className="text-[10px] font-black text-vibrant-gold bg-[#FFF5CC]/15 border border-vibrant-gold/30 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Connect With Our Center
+            {t("contactPageBadge")}
           </span>
           <h1 className="font-display font-black text-4xl md:text-5xl tracking-tight leading-tight">
-            Contact Arnav Abacus Academy
+            {t("contactPageTitle")}
           </h1>
           <p className="text-[#A2C4C9] text-xs md:text-sm font-semibold max-w-2xl mx-auto leading-relaxed">
-            Have questions about fees, timetables, or child evaluation classes? Visit our center or get in touch below.
+            {t("contactPageSubtitle")}
           </p>
         </div>
       </section>
@@ -40,13 +43,13 @@ export default function Contact() {
           <div className="lg:col-span-6 space-y-8">
             <div className="space-y-4">
               <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-                DIRECT CONTACT DETAILS
+                {t("contactPageDetailsBadge")}
               </span>
               <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-                Reach Neha Patil &amp; Nitin Sir Directly
+                {t("contactPageDetailsTitle")}
               </h2>
-              <p className="text-gray-500 text-xs md:text-sm font-semibold leading-relaxed">
-                Parents are free to call us, write an email, or initiate a WhatsApp chat anytime. We are open every day to solve your queries!
+              <p className="text-gray-550 text-xs md:text-sm font-semibold leading-relaxed">
+                {t("contactPageDetailsSubtitle")}
               </p>
             </div>
 
@@ -59,13 +62,13 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-display font-black text-sm text-vibrant-dark mb-1">
-                    Academy Center Address
+                    {t("contactPageAddrLabel")}
                   </h3>
-                  <p className="text-xs text-gray-500 font-bold leading-relaxed">
-                    Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Wakad, Pune, Maharashtra 411057
+                  <p className="text-xs text-gray-550 font-bold leading-relaxed">
+                    {t("footerAddress")}
                   </p>
                   <span className="block text-[10px] text-vibrant-orange italic mt-1.5 font-black">
-                    ★ Near Park Street
+                    {t("contactPageAddrNear")}
                   </span>
                 </div>
               </div>
@@ -77,7 +80,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-display font-black text-sm text-vibrant-dark mb-1">
-                    Phone Support
+                    {t("contactPagePhoneLabel")}
                   </h3>
                   <a 
                     href="tel:+919021924968" 
@@ -87,7 +90,7 @@ export default function Contact() {
                     +91 90219 24968
                   </a>
                   <span className="text-[10px] text-gray-400 font-bold block mt-0.5">
-                    Call Neha Patil (Mentor/Founder)
+                    {t("contactPagePhoneSub")}
                   </span>
                 </div>
               </div>
@@ -99,7 +102,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-display font-black text-sm text-vibrant-dark mb-1">
-                    Email Inquiries
+                    {t("contactPageEmailLabel")}
                   </h3>
                   <a 
                     href="mailto:nehaatharv@gmail.com" 
@@ -109,7 +112,7 @@ export default function Contact() {
                     nehaatharv@gmail.com
                   </a>
                   <span className="text-[10px] text-gray-400 font-bold block mt-0.5">
-                    Usually replies within 24 hours
+                    {t("contactPageEmailSub")}
                   </span>
                 </div>
               </div>
@@ -121,13 +124,13 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="font-display font-black text-sm text-white mb-1">
-                    Academy Timings
+                    {t("contactTimings")}
                   </h3>
                   <p className="text-xs text-slate-300 leading-relaxed font-semibold">
-                    9 AM to 9 PM (All Days)
+                    {t("contactTimingsDesc")}
                   </p>
                   <p className="text-xs font-black text-vibrant-gold mt-1">
-                    Flexible and customized batches to fit your routine
+                    {t("contactPageTimingsNote")}
                   </p>
                 </div>
               </div>
@@ -147,18 +150,18 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
             <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              LIVE ACCURATE LOCATION MAPS
+              {t("contactPageMapBadge")}
             </span>
             <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-              Locate Our Classroom Center
+              {t("contactPageMapTitle")}
             </h2>
             <p className="text-gray-550 text-xs md:text-sm font-semibold">
-              Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Pune. Use the interactive map details below to coordinate easy travel directions.
+              {t("contactPageMapDesc")}
             </p>
           </div>
 
           {/* Map Frame wrapper */}
-          <div className="h-[400px] md:h-[500px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[12px_12px_0_0_#1A2E35] relative">
+          <div className="h-[400px] md:h-[500px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] relative">
             <iframe 
               src="https://maps.google.com/maps?q=18.5936735,73.7656606&z=17&output=embed" 
               className="w-full h-full border-0" 
@@ -173,15 +176,15 @@ export default function Contact() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 text-xs text-vibrant-dark font-black">
             <div className="flex items-start gap-2.5">
               <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
-              <span><strong>Parking:</strong> Free street parking for two-wheelers &amp; family cars outside Adv. Balaji Sagar Bungalow gates.</span>
+              <span>{t("contactPageTravel1")}</span>
             </div>
             <div className="flex items-start gap-2.5">
               <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
-              <span><strong>Landmarks:</strong> Right across from Creative Cameo, and just a fast 2-minute drive from Park Street housing gates.</span>
+              <span>{t("contactPageTravel2")}</span>
             </div>
             <div className="flex items-start gap-2.5">
               <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
-              <span><strong>Security:</strong> Secure residential street ensuring excellent child safety rules before and after tuition slots.</span>
+              <span>{t("contactPageTravel3")}</span>
             </div>
           </div>
         </div>

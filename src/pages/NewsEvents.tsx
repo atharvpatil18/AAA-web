@@ -7,6 +7,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Calendar, Phone, ArrowRight, Smartphone, Compass, Sparkles, BookOpen, Star } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 
 interface NewsItem {
   id: string;
@@ -20,6 +21,7 @@ interface NewsItem {
 }
 
 export default function NewsEvents() {
+  const { t } = useLanguage();
   const handleCtaClick = () => {
     trackDemoClick("news_page_bottom_cta");
   };
@@ -27,46 +29,46 @@ export default function NewsEvents() {
   const newsData: NewsItem[] = [
     {
       id: "news-1",
-      title: "Launching Our Parent-Student Mobile App!",
-      date: "Rolling Out July 2026",
+      title: t("news1Title"),
+      date: t("news1Date"),
       category: "app",
-      tag: "Digital Ecosystem",
-      summary: "We are excited to announce the official Arnav Abacus Academy mobile app for Android and iOS, designed to digitize practice sheets and track child progression in real time.",
+      tag: t("news1Tag"),
+      summary: t("news1Summary"),
       details: [
-        "Interactive virtual Soroban abacus for home practice.",
-        "Weekly digital worksheets with speed tracking timers.",
-        "Instant progress report sheets uploaded by Neha Ma'am & Nitin Sir.",
-        "Gamified reward badges for consistency and homework completion."
+        t("news1Detail1"),
+        t("news1Detail2"),
+        t("news1Detail3"),
+        t("news1Detail4")
       ],
       colorTheme: "teal",
     },
     {
       id: "news-2",
-      title: "Annual IIVA State Abacus Championship 2026",
-      date: "August 24, 2026 • Pune",
+      title: t("news2Title"),
+      date: t("news2Date"),
       category: "competition",
-      tag: "Olympiad Registration",
-      summary: "Registrations are officially open for the State Level Abacus & Vedic Mathematics competition. Over 50+ students from our center are participating.",
+      tag: t("news2Tag"),
+      summary: t("news2Summary"),
       details: [
-        "Authorized IIVA (Indian Institute of Vedic Maths & Abacus) syllabus.",
-        "Categories divided by age and completed training levels.",
-        "Customized mock challenge worksheets will be solved in center daily.",
-        "Medals, certificates, and state-wide rank honors for qualifiers."
+        t("news2Detail1"),
+        t("news2Detail2"),
+        t("news2Detail3"),
+        t("news2Detail4")
       ],
       colorTheme: "gold",
     },
     {
       id: "news-3",
-      title: "Vedic Maths Intensive: Speed Calculators Batch",
-      date: "New Batches Starting Weekly",
+      title: t("news3Title"),
+      date: t("news3Date"),
       category: "batch",
-      tag: "Course Enrollment",
-      summary: "A specialized 3-month course for school students of Grade 5 to 10. Master high-speed mental calculations, division shortcuts, fractions, and algebra.",
+      tag: t("news3Tag"),
+      summary: t("news3Summary"),
       details: [
-        "Completely eliminates math phobia before school examinations.",
-        "Useful for Olympiads, Scholarship exams, and competitive papers.",
-        "Teaches 16 sutras for speed calculation with 100% accuracy.",
-        "Limited to 8 students per batch for customized focus."
+        t("news3Detail1"),
+        t("news3Detail2"),
+        t("news3Detail3"),
+        t("news3Detail4")
       ],
       colorTheme: "orange",
     }
@@ -80,54 +82,54 @@ export default function NewsEvents() {
         <div className="absolute inset-0 bg-radial from-vibrant-teal/10 to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center space-y-4 relative z-10">
           <span className="text-[10px] font-black text-vibrant-gold bg-[#FFF5CC]/15 border border-vibrant-gold/30 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Academy Announcements
+            {t("newsPageBadge")}
           </span>
           <h1 className="font-display font-black text-4xl md:text-5xl tracking-tight leading-tight">
-            News &amp; Upcoming Events
+            {t("newsPageTitle")}
           </h1>
           <p className="text-[#A2C4C9] text-xs md:text-sm font-semibold max-w-2xl mx-auto leading-relaxed">
-            Stay updated with our latest student opportunities, competition calendars, and the digital rollout of our parent-student portal app.
+            {t("newsPageSubtitle")}
           </p>
         </div>
       </section>
 
       {/* 2. App Rollout Highlight Feature Card (Full Width) */}
       <section className="py-16 max-w-7xl mx-auto px-4 md:px-8">
-        <div className="bg-[#FFFDF9] border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[12px_12px_0_0_#1A2E35] grid grid-cols-1 lg:grid-cols-12">
+        <div className="bg-[#FFFDF9] border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] grid grid-cols-1 lg:grid-cols-12">
           {/* Left panel */}
           <div className="p-8 md:p-12 lg:col-span-7 space-y-6 flex flex-col justify-center">
             <div className="inline-flex items-center gap-1.5 text-[10px] text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider font-bold w-fit">
-              <Smartphone className="w-3.5 h-3.5" /> COMING SOON IN JULY 2026
+              <Smartphone className="w-3.5 h-3.5" /> {t("newsAppComingSoon")}
             </div>
             <h2 className="font-display font-black text-3xl md:text-4xl text-vibrant-dark tracking-tight leading-tight">
-              Arnav Abacus Student Practice App
+              {t("newsAppTitle")}
             </h2>
             <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              We are introducing a dedicated mobile application for our registered families. This bridges the classroom learning with tactile home practice, giving parents full transparency over their child's progression.
+              {t("newsAppDesc")}
             </p>
 
             {/* Checklist of app features */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-vibrant-dark font-black pt-2">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-vibrant-teal/10 flex items-center justify-center border border-vibrant-teal/20">✓</div>
-                <span>Real-time Speed Analytics</span>
+                <span>{t("newsAppFeat1")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-vibrant-teal/10 flex items-center justify-center border border-vibrant-teal/20">✓</div>
-                <span>Virtual Abacus Beads Game</span>
+                <span>{t("newsAppFeat2")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-vibrant-teal/10 flex items-center justify-center border border-vibrant-teal/20">✓</div>
-                <span>Homework Progress Sheets</span>
+                <span>{t("newsAppFeat3")}</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-vibrant-teal/10 flex items-center justify-center border border-vibrant-teal/20">✓</div>
-                <span>Badges &amp; Trophies Rewards</span>
+                <span>{t("newsAppFeat4")}</span>
               </div>
             </div>
 
             <div className="pt-2 text-[10px] text-gray-400 font-bold">
-              * Note: The app will be provided absolutely free for all active center students.
+              {t("newsAppNote")}
             </div>
           </div>
 
@@ -157,13 +159,13 @@ export default function NewsEvents() {
       <section className="py-8 pb-24 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-16">
           <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            ACTIVE NOTICE BOARD
+            {t("newsBoardBadge")}
           </span>
           <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-            Academy Notice Board &amp; Calendars
+            {t("newsBoardTitle")}
           </h2>
           <p className="text-gray-550 text-xs md:text-sm font-semibold">
-            Please check the event timetables below. For registration confirmations or syllabus updates, contact Neha Ma'am directly.
+            {t("newsBoardSubtitle")}
           </p>
         </div>
 
@@ -223,13 +225,13 @@ export default function NewsEvents() {
       <section className="py-20 md:py-28 bg-[#FF6321] text-white border-t-4 border-vibrant-dark relative">
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center space-y-6 relative z-10">
           <div className="inline-flex items-center gap-1.5 bg-white/20 border border-white/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-            ⚡ Admissions Open for New Batches
+            {t("newsCtaBadge")}
           </div>
           <h2 className="font-display font-black text-3xl md:text-5xl tracking-tight leading-tight text-white">
-            Have Questions About Upcoming Events?
+            {t("newsCtaTitle")}
           </h2>
           <p className="text-[#FFF2E0] text-xs md:text-sm max-w-2xl mx-auto leading-relaxed font-bold">
-            We are always here to guide you. Speak to our mentors on the phone or visit our center directly.
+            {t("newsCtaSubtitle")}
           </p>
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
@@ -237,7 +239,7 @@ export default function NewsEvents() {
               onClick={handleCtaClick}
               className="w-full sm:w-auto bg-vibrant-gold text-vibrant-dark border-2 border-vibrant-dark font-black px-8 py-5 rounded-2xl shadow-[0_6px_0_0_#1A2E35] active:translate-y-1 active:shadow-none hover:scale-[1.01] transition-all text-center"
             >
-              Contact Center
+              {t("newsContactCta")}
             </a>
             <a
               href="https://www.google.com/maps/dir/?api=1&destination=18.5936735,73.7656606"
@@ -245,7 +247,7 @@ export default function NewsEvents() {
               rel="noopener noreferrer"
               className="text-xs uppercase font-black text-white tracking-widest hover:underline flex items-center gap-1"
             >
-              View Center Maps <ArrowRight className="w-4 h-4" />
+              {t("newsMapsCta")} <ArrowRight className="w-4 h-4" />
             </a>
           </div>
         </div>

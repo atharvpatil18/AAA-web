@@ -6,6 +6,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { trackQuizCompletion, trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 import { 
   Trophy, 
   Clock, 
@@ -27,6 +28,7 @@ interface Question {
 }
 
 export default function SpeedChallengeWidget() {
+  const { language, t } = useLanguage();
   const [step, setStep] = useState<QuizStep>("AGE");
   const [ageInput, setAgeInput] = useState<string>("8");
   const [errorText, setErrorText] = useState("");
@@ -104,7 +106,7 @@ export default function SpeedChallengeWidget() {
     e.preventDefault();
     const age = parseInt(ageInput, 10);
     if (!age || age < 4 || age > 16) {
-      setErrorText("Please enter a valid age between 4 and 16.");
+      setErrorText(t("quizAgeError"));
       return;
     }
     setErrorText("");
@@ -187,7 +189,13 @@ export default function SpeedChallengeWidget() {
   const initiateDemoBooking = () => {
     trackDemoClick("quiz_result_cta", { ageGroup: ageInput, quizResult: gameResult });
     
-    const message = `Hello Arnav Abacus Academy! My child is ${ageInput} years old. We played your interactive Math Quiz Widget, scoring ${correctCount}/3 correct in ${totalTimeTaken} seconds. We would love to book a Free Demo Session!`;
+    let message = `Hello Arnav Abacus Academy! My child is ${ageInput} years old. We played your interactive Math Quiz Widget, scoring ${correctCount}/3 correct in ${totalTimeTaken} seconds. We would love to book a Free Demo Session!`;
+    if (language === "hi") {
+      message = `नमस्ते अर्णव एबाकस एकेडमी! मेरा बच्चा ${ageInput} साल का है। हमने आपका इंटरैक्टिव मैथ क्विज़ खेला, जिसमें ${totalTimeTaken} सेकंड में ${correctCount}/3 सही उत्तर दिए। हम एक फ्री डेमो सेशन बुक करना चाहते हैं!`;
+    } else if (language === "mr") {
+      message = `नमस्कार अर्णव ॲबॅकस अकॅडमी! माझे मूल ${ageInput} वर्षांचे आहे. आम्ही तुमचे गणित क्विझ खेळलो आणि ${totalTimeTaken} सेकंदात ${correctCount}/३ अचूक उत्तरे दिली. आम्हाला मोफत डेमो क्लास बुक करायचा आहे!`;
+    }
+    
     const encoded = encodeURIComponent(message);
     window.location.href = `https://wa.me/919021924968?text=${encoded}`;
   };
@@ -197,7 +205,7 @@ export default function SpeedChallengeWidget() {
   return (
     <div 
       id="speed-challenge-widget" 
-      className="bg-vibrant-dark text-white rounded-[32px] border-4 border-vibrant-dark shadow-[12px_12px_0_0_#00897B] p-6 md:p-8 relative overflow-hidden"
+      className="bg-vibrant-dark text-white rounded-[32px] border-4 border-vibrant-dark shadow-[6px_6px_0_0_#00897B] md:shadow-[12px_12px_0_0_#00897B] p-6 md:p-8 relative overflow-hidden"
     >
       {/* Absolute Aesthetic Particles */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-vibrant-teal/10 rounded-full blur-2xl pointer-events-none" />
@@ -211,7 +219,7 @@ export default function SpeedChallengeWidget() {
           </div>
           <div>
             <span className="font-display font-black text-sm block tracking-wide text-white">Arnav Speed Challenge</span>
-            <span className="text-[9px] text-[#9ACAC1] font-bold block tracking-widest uppercase">Mental Math Power test</span>
+            <span className="text-[9px] text-[#9ACAC1] font-bold block tracking-widest uppercase">{t("quizMentalPowerTest")}</span>
           </div>
         </div>
         <div className="text-right">
@@ -233,17 +241,17 @@ export default function SpeedChallengeWidget() {
           >
             <div className="space-y-2">
               <h4 className="font-display font-black text-lg text-white flex items-center gap-1.5 animate-pulse">
-                <Sparkles className="w-4 h-4 text-vibrant-gold shrink-0" /> Measure Your Child's Speed!
+                <Sparkles className="w-4 h-4 text-vibrant-gold shrink-0" /> {t("quizMeasureSpeed")}
               </h4>
               <p className="text-xs text-[#A2C4C9] font-medium leading-relaxed">
-                Test calculation speeds. Standard calculators are boring! See if your kid can beat the 45-second countdown across 3 consecutive math equations.
+                {t("quizSubtitle")}
               </p>
             </div>
 
             <form onSubmit={handleStartGame} className="space-y-4 pt-1">
               <div>
                 <label className="block text-[10px] font-black text-[#89B5BC] uppercase tracking-wider mb-2 ml-1">
-                  Enter Your Child's Age (Years)
+                  {t("quizAgePrompt")}
                 </label>
                 <div className="flex gap-2.5">
                   <input
@@ -254,13 +262,13 @@ export default function SpeedChallengeWidget() {
                     value={ageInput}
                     onChange={(e) => setAgeInput(e.target.value)}
                     className="flex-1 bg-[#102227] border-2 border-[#233C45] focus:border-vibrant-orange rounded-2xl px-4 py-3 text-sm text-white outline-none transition-all duration-200"
-                    placeholder="e.g., 8"
+                    placeholder={language === "hi" ? "जैसे: 8" : language === "mr" ? "उदा. ८" : "e.g., 8"}
                   />
                   <button
                     type="submit"
                     className="bg-vibrant-orange text-white font-black text-xs md:text-sm px-6 rounded-2xl shadow-[0_4px_0_0_#B33A00] active:translate-y-1 active:shadow-none hover:brightness-105 duration-100 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
                   >
-                    <span>Start Challenge</span> <ArrowRight className="w-4 h-4" />
+                    <span>{t("quizStartBtn")}</span> <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
                 {errorText && (
@@ -273,16 +281,16 @@ export default function SpeedChallengeWidget() {
             </form>
             <div className="pt-3 border-t border-[#233C45] grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-center text-[10px] text-[#89B5BC] font-semibold">
               <div className="bg-[#122429] border border-[#233C45] p-2 rounded-xl leading-snug">
-                <strong className="block text-white text-[11px] sm:text-[10px]">Age 4-6</strong>
-                Additions
+                <strong className="block text-white text-[11px] sm:text-[10px]">{t("quizAge4to6")}</strong>
+                {t("quizAdditions")}
               </div>
               <div className="bg-[#122429] border border-[#233C45] p-2 rounded-xl leading-snug">
-                <strong className="block text-white text-[11px] sm:text-[10px]">Age 7-9</strong>
-                Chains (+ / -)
+                <strong className="block text-white text-[11px] sm:text-[10px]">{t("quizAge7to9")}</strong>
+                {t("quizChains")}
               </div>
               <div className="bg-[#122429] border border-[#233C45] p-2 rounded-xl leading-snug">
-                <strong className="block text-white text-[11px] sm:text-[10px]">Age 10+</strong>
-                Mult / Division
+                <strong className="block text-white text-[11px] sm:text-[10px]">{t("quizAge10plus")}</strong>
+                {t("quizMultDiv")}
               </div>
             </div>
           </motion.div>
@@ -299,11 +307,11 @@ export default function SpeedChallengeWidget() {
             {/* Progress indicators & Timer */}
             <div className="flex items-center justify-between">
               <span className="text-[10px] text-[#A2C4C9] uppercase tracking-widest font-black">
-                Question {questionIndex + 1} of 3 (Age {ageInput})
+                {t("quizQuestionOf").replace("{num}", String(questionIndex + 1)).replace("{age}", ageInput)}
               </span>
               <div className="flex items-center gap-1.5 text-xs font-black text-vibrant-orange bg-[#FFF0E0]/25 px-3 py-1 rounded-full border border-vibrant-orange/10">
                 <Clock className="w-3.5 h-3.5 animate-pulse text-vibrant-orange" />
-                <span>{timeLeft}s remaining</span>
+                <span>{timeLeft}{t("quizTimerRemaining")}</span>
               </div>
             </div>
 
@@ -318,13 +326,13 @@ export default function SpeedChallengeWidget() {
             {/* Question Display */}
             <div className="bg-[#0D1A1E] border-2 border-[#233C45] rounded-3xl py-10 text-center relative overflow-hidden">
               <div className="absolute top-1.5 left-0 right-0 text-[8px] font-black text-[#89B5BC] tracking-widest uppercase">
-                CALCULATE WITHOUT FINGERS
+                {t("quizNoFingers")}
               </div>
               <span className="font-display font-black text-5xl lg:text-6xl text-white tracking-wide block mb-1">
                 {currentQuestion.text}
               </span>
               <span className="text-[9px] text-[#89B5BC] font-bold select-none block">
-                Visualize the abacus beads mentally!
+                {language === "hi" ? "मोतियों की कल्पना मन में करें!" : language === "mr" ? "मनातल्या मनात मण्यांची विजुअलाइज करा!" : "Visualize the abacus beads mentally!"}
               </span>
             </div>
 
@@ -335,7 +343,7 @@ export default function SpeedChallengeWidget() {
                   type="number"
                   required
                   autoFocus
-                  placeholder="Type answer here..."
+                  placeholder={t("quizTypeAnswer")}
                   value={userAnswer}
                   onChange={(e) => setUserAnswer(e.target.value)}
                   className="flex-1 bg-[#102227] border-2 border-[#233C45] focus:border-vibrant-teal rounded-2xl px-4 py-3 text-sm text-white outline-none transition-all duration-150 font-black"
@@ -344,7 +352,7 @@ export default function SpeedChallengeWidget() {
                   type="submit"
                   className="bg-vibrant-teal text-white font-black text-xs md:text-sm px-6 rounded-[16px] shadow-[0_4px_0_0_#00897B] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all duration-150 flex items-center justify-center cursor-pointer shrink-0"
                 >
-                  Confirm
+                  {t("quizConfirm")}
                 </button>
               </div>
             </form>
@@ -365,10 +373,10 @@ export default function SpeedChallengeWidget() {
                   <Clock className="w-8 h-8 text-[#89B5BC]" />
                 </div>
                 <h4 className="font-display font-black text-xl text-gray-300">
-                  Time's Up!
+                  {t("quizTimesUp")}
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
-                  You scored <strong className="text-white">{correctCount}/3 correct</strong> in {totalTimeTaken} seconds before the timer expired. Mental visualization practice will significantly boost speed and accuracy!
+                  {t("quizResultTimeout").replace("{correctCount}", String(correctCount)).replace("{totalTime}", String(totalTimeTaken))}
                 </p>
               </div>
             ) : correctCount === 3 ? (
@@ -377,10 +385,10 @@ export default function SpeedChallengeWidget() {
                   <ThumbsUp className="w-8 h-8" />
                 </div>
                 <h4 className="font-display font-black text-xl text-vibrant-teal">
-                  3/3 Correct! Perfect Score!
+                  {t("quizPerfectScore")}
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
-                  Completed in <strong className="text-white">{totalTimeTaken} seconds</strong>! Your child has amazing numerical agility. With professional guidance, they can excel in national and international competitions.
+                  {t("quizResultPerfect").replace("{totalTime}", String(totalTimeTaken))}
                 </p>
               </div>
             ) : (
@@ -389,10 +397,10 @@ export default function SpeedChallengeWidget() {
                   <AlertCircle className="w-8 h-8" />
                 </div>
                 <h4 className="font-display font-black text-xl text-vibrant-orange">
-                  Attempt Completed!
+                  {t("quizAttemptCompleted")}
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
-                  You scored <strong className="text-white">{correctCount}/3 correct</strong> in <strong className="text-white">{totalTimeTaken} seconds</strong>. Speed Maths classes completely eliminate calculation errors and finger-counting!
+                  {t("quizResultAttempt").replace("{correctCount}", String(correctCount)).replace("{totalTime}", String(totalTimeTaken))}
                 </p>
               </div>
             )}
@@ -400,17 +408,17 @@ export default function SpeedChallengeWidget() {
             {/* Direct CRM CTA WhatsApp Button */}
             <div className="bg-[#0D1A1E] p-5 rounded-3xl border-2 border-[#233C45] space-y-3 shadow-md">
               <p className="text-[10px] text-vibrant-gold font-black tracking-widest uppercase mb-1">
-                EXCLUSIVE TRIAL OFFER
+                {t("quizExclusiveOffer")}
               </p>
               <h5 className="font-display text-sm font-black text-white">
-                Book Free 100% Personal Skill Evaluation
+                {t("quizBookConsult")}
               </h5>
               <button
                 onClick={initiateDemoBooking}
                 className="w-full bg-vibrant-orange text-white font-black py-4 rounded-2xl text-xs md:text-sm shadow-[0_4px_0_0_#B33A00] active:translate-y-1 active:shadow-none hover:brightness-105 duration-100 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <MessageSquare className="w-4 h-4 shrink-0" />
-                Secure Free Slot on WhatsApp
+                {t("quizSecureSlot")}
               </button>
             </div>
 
@@ -419,7 +427,7 @@ export default function SpeedChallengeWidget() {
               onClick={handleTryAgain}
               className="inline-flex items-center gap-1 text-[11px] font-bold text-[#89B5BC] hover:text-white underline transition cursor-pointer"
             >
-              <RotateCcw className="w-3.5 h-3.5" /> Practice another round
+              <RotateCcw className="w-3.5 h-3.5" /> {t("quizPracticeRound")}
             </button>
           </motion.div>
         )}

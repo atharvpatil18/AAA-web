@@ -6,24 +6,26 @@
 import React from "react";
 import { Award, Heart, CheckCircle2, Star, ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function TeacherProfile() {
+  const { language, t } = useLanguage();
   const [imgFailed, setImgFailed] = React.useState(false);
   const handleConsultClick = () => {
     trackDemoClick("teacher_profile_consult");
   };
 
   const certifications = [
-    "IIVA Certified Abacus Master & Vedic Math Coach",
-    "Expert in Child Psychology & Visualization Practice",
-    "Over 3+ Years of Direct Mentorial Excellence",
-    "Tailored 1-on-1 Personalized Attention System for Every Student"
+    t("teacherCert1"),
+    t("teacherCert2"),
+    t("teacherCert3"),
+    t("teacherCert4")
   ];
 
   return (
     <div 
       id="teacher-profile-card" 
-      className="bg-white border-4 border-vibrant-dark rounded-[40px] p-6 md:p-8 lg:p-12 shadow-[12px_12px_0_0_#1A2E35] max-w-5xl mx-auto overflow-hidden relative"
+      className="bg-white border-4 border-vibrant-dark rounded-[40px] p-6 md:p-8 lg:p-12 shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] max-w-5xl mx-auto overflow-hidden relative"
     >
       {/* Visual background badges */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-radial from-orange-100/40 to-transparent rounded-full -mr-24 -mt-24 pointer-events-none" />
@@ -38,7 +40,7 @@ export default function TeacherProfile() {
               {!imgFailed ? (
                 <img 
                   src="/teacher-profile.jpg" 
-                  alt="Neha Patil - Master Trainer" 
+                  alt={language === "hi" ? "नेहा पाटिल - मास्टर ट्रेनर" : language === "mr" ? "नेहा पाटील - मास्टर ट्रेनर" : "Neha Patil - Master Trainer"} 
                   className="w-full h-full rounded-[26px] object-cover" 
                   referrerPolicy="no-referrer"
                   onError={() => setImgFailed(true)}
@@ -52,7 +54,7 @@ export default function TeacherProfile() {
                     Neha Patil
                   </span>
                   <span className="text-[10px] text-vibrant-teal font-black tracking-widest uppercase block mt-1">
-                    IIVA CERTIFIED MENTOR
+                    {language === "hi" ? "IIVA प्रमाणित मेंटर" : language === "mr" ? "IIVA प्रमाणित मार्गदर्शक" : "IIVA CERTIFIED MENTOR"}
                   </span>
                 </div>
               )}
@@ -62,18 +64,18 @@ export default function TeacherProfile() {
             <div className="absolute -bottom-3 -right-3 bg-vibrant-dark text-white p-3 rounded-2xl shadow-xl flex items-center gap-1.5 border-2 border-vibrant-dark">
               <Star className="w-4 h-4 text-vibrant-gold fill-current animate-pulse" />
               <div>
-                <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Top Rated Mentor</span>
-                <span className="block text-xs font-black text-white leading-none mt-0.5">Pune</span>
+                <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{t("teacherTopRated")}</span>
+                <span className="block text-xs font-black text-white leading-none mt-0.5">{t("teacherPune")}</span>
               </div>
             </div>
           </div>
 
           <div className="mt-8 text-center sm:text-left bg-vibrant-cream border-2 border-vibrant-dark p-4 rounded-2xl max-w-xs shadow-sm">
             <span className="block text-[11px] font-black text-vibrant-orange uppercase tracking-widest text-center mb-1.5">
-              Academy Partners
+              {language === "hi" ? "अकादमी पार्टनर्स" : language === "mr" ? "अकॅडमी पार्टनर्स" : "Academy Partners"}
             </span>
             <p className="text-xs text-gray-500 font-medium leading-relaxed text-center">
-              Co-mentored by <strong className="text-vibrant-dark">Nitin Sir</strong> to ensure continuous personalized care, discipline, and visual development.
+              {t("teacherCoMentored")}
             </p>
           </div>
         </div>
@@ -82,22 +84,22 @@ export default function TeacherProfile() {
         <div className="lg:col-span-7 space-y-6">
           <div className="space-y-2">
             <span className="inline-flex items-center gap-1.5 text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider">
-              <Award className="w-4 h-4" /> Founder &amp; Academic Director
+              <Award className="w-4 h-4" /> {language === "hi" ? "संस्थापक और शैक्षणिक निदेशक" : language === "mr" ? "संस्थापक आणि शैक्षणिक संचालिका" : "Founder & Academic Director"}
             </span>
             <h3 className="font-display font-black text-3xl md:text-4xl text-vibrant-dark tracking-tight leading-tight">
-              Meet Neha Patil
+              {language === "hi" ? "नेहा पाटिल से मिलें" : language === "mr" ? "नेहा पाटील यांना भेटा" : "Meet Neha Patil"}
             </h3>
             <p className="font-display font-bold text-sm md:text-base text-gray-500 italic">
-              "Every child calculates differently; our program respects their unique pace and overcomes fear of numbers with fun beads."
+              "{t("mentorBioQuote")}"
             </p>
           </div>
 
-          <div className="text-gray-600 text-xs md:text-sm leading-relaxed space-y-4 font-medium">
+          <div className="text-gray-650 text-xs md:text-sm leading-relaxed space-y-4 font-medium">
             <p>
-              As an internationally recognized <strong>IIVA Certified Professional</strong>, Neha Patil has dedicated her academic career to helping children overcome finger-counting limits. Through visualization beads, mental abacus triggers, and speed calculation sutras, her students construct strong neural pathways for focus, visual storage, and active retention.
+              {t("mentorBioP1")}
             </p>
             <p>
-              Neha's teaching philosophy revolves around a <strong>calm approach, clear communication, and a highly positive learning environment</strong> where children feel safe and respected from the very first minute.
+              {t("mentorBioP2")}
             </p>
           </div>
 
@@ -120,11 +122,11 @@ export default function TeacherProfile() {
               rel="noopener noreferrer"
               className="bg-vibrant-teal text-white font-black text-xs md:text-sm px-6 py-4 rounded-xl flex items-center justify-center gap-2 shadow-[0_4px_0_0_#00897B] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all cursor-pointer shrink-0"
             >
-              Consult Neha Ma'am on WhatsApp
+              {t("teacherConsultNeha")}
             </a>
             <div className="text-gray-400 text-xs font-semibold flex items-center gap-1 text-center font-sans">
               <ShieldCheck className="w-4 h-4 text-vibrant-teal shrink-0" />
-              100% Free Consultation. No Commitments required.
+              {t("teacherFreeCheck")}
             </div>
           </div>
         </div>

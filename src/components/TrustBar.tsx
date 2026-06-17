@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Users, Calendar, Award, Star } from "lucide-react";
+import { useLanguage } from "../lib/LanguageContext";
 
 interface StatItem {
   id: string;
@@ -17,40 +18,41 @@ interface StatItem {
 }
 
 export default function TrustBar() {
+  const { t } = useLanguage();
   const stats: StatItem[] = [
     {
       id: "students",
-      label: "Students Trained",
+      label: t("trustTrainedLabel"),
       target: 200,
       suffix: "+",
-      subtext: "Nurturing logical minds",
+      subtext: t("trustTrainedSub"),
       icon: Users,
       iconColor: "text-orange-500 bg-orange-50",
     },
     {
       id: "experience",
-      label: "Years of Experience",
+      label: t("trustExpLabel"),
       target: 3,
       suffix: "+",
-      subtext: "Professional teaching",
+      subtext: t("trustExpSub"),
       icon: Calendar,
       iconColor: "text-amber-500 bg-amber-50",
     },
     {
       id: "achievements",
-      label: "Achievements Won",
+      label: t("trustAwardsLabel"),
       target: 100,
       suffix: "+",
-      subtext: "Academic trophies & awards",
+      subtext: t("trustAwardsSub"),
       icon: Award,
       iconColor: "text-indigo-500 bg-indigo-50",
     },
     {
       id: "satisfaction",
-      label: "Parent Satisfaction",
+      label: t("trustRatingLabel"),
       target: 100,
       suffix: "%",
-      subtext: "Verified Google reviews",
+      subtext: t("trustRatingSub"),
       icon: Star,
       iconColor: "text-emerald-500 bg-emerald-50",
     }

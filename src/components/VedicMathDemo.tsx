@@ -5,8 +5,10 @@
 
 import React, { useState } from "react";
 import { Sparkles, Calculator, HelpCircle, ChevronRight, ChevronLeft, RefreshCw } from "lucide-react";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function VedicMathDemo() {
+  const { language, t } = useLanguage();
   const [activeSutra, setActiveSutra] = useState<"square" | "cross">("square");
 
   // Sutra 1 State
@@ -15,17 +17,81 @@ export default function VedicMathDemo() {
   // Sutra 2 (Cross Multiplication 3x2) State
   const [crossStep, setCrossStep] = useState<number>(0);
   const numA = 123;
-  const numB = 45; // represented as 045 for 3x3 general logic, or simple steps for 3x2.
-  // 3x2: (123) * (45)
-  // Digits: A2 A1 A0 (1 2 3) and B2 B1 B0 (0 4 5)
-  // Step 0: Initial state
-  // Step 1: Unit digits vertical: 3 * 5 = 15 (5, carry 1)
-  // Step 2: Cross tens/units: (2*5) + (3*4) = 10 + 12 = 22 (+ carry 1 = 23 -> 3, carry 2)
-  // Step 3: Cross hundreds/units + tens: (1*5) + (2*4) + (3*0) = 5 + 8 + 0 = 13 (+ carry 2 = 15 -> 5, carry 1)
-  // Step 4: Cross hundreds/tens: (1*4) + (2*0) = 4 + 0 = 4 (+ carry 1 = 5 -> 5, carry 0)
-  // Step 5: Final Result: 5535
+  const numB = 45;
 
-  const steps3x2 = [
+  const steps3x2 = language === "hi" ? [
+    {
+      title: "चरण १: इकाइयों को सीधा गुणा करें",
+      formula: "3 × 5 = 15",
+      explain: "दाहिनी ओर के अंकों को गुणा करें। 5 लिखें, 1 को आगे बढ़ाएं (हासिल)।",
+      highlight: "units",
+      result: "उत्तर: ...5 (हासिल: 1)"
+    },
+    {
+      title: "चरण २: दहाई और इकाई को तिरछा गुणा करें",
+      formula: "(2 × 5) + (3 × 4) = 10 + 12 = 22",
+      explain: "दहाई और इकाई को तिरछा गुणा करें, फिर पिछला हासिल (1) जोड़ें = 23। 3 लिखें, 2 आगे बढ़ाएं।",
+      highlight: "tens-units",
+      result: "उत्तर: ..35 (हासिल: 2)"
+    },
+    {
+      title: "चरण ३: सैकड़ा और इकाई + दहाई को तिरछा गुणा करें",
+      formula: "(1 × 5) + (2 × 4) = 5 + 8 = 13",
+      explain: "सैकड़ा/इकाई और दहाई/दहाई को तिरछा गुणा करें, फिर पिछला हासिल (2) जोड़ें = 15। 5 लिखें, 1 आगे बढ़ाएं।",
+      highlight: "hundreds-tens-units",
+      result: "उत्तर: .535 (हासिल: 1)"
+    },
+    {
+      title: "चरण ४: सैकड़ा और दहाई को तिरछा गुणा करें",
+      formula: "(1 × 4) = 4",
+      explain: "सबसे बाईं ओर के अंकों को तिरछा गुणा करें, फिर पिछला हासिल (1) जोड़ें = 5। 5 लिखें।",
+      highlight: "hundreds-tens",
+      result: "उत्तर: 5535 (हासिल: 0)"
+    },
+    {
+      title: "चरण ५: सही अंतिम उत्तर!",
+      formula: "123 × 45 = 5535",
+      explain: "सभी चरण पूरे हुए! देखें कि आपने केवल एक पंक्ति में 3-अंकीय और 2-अंकीय गुणा कितनी तेजी से हल किया।",
+      highlight: "all",
+      result: "उत्तर: 5535 ✅"
+    }
+  ] : language === "mr" ? [
+    {
+      title: "पायरी १: एकक स्थानाचा उभा गुणाकार",
+      formula: "3 × 5 = 15",
+      explain: "उजवीकडील एकक स्थानच्या अंकांचा उभा गुणाकार करा. ५ खाली लिहा, १ हातचा ठेवा.",
+      highlight: "units",
+      result: "उत्तर: ...५ (हातचा: १)"
+    },
+    {
+      title: "पायरी २: दशक आणि एकक अंकांचा तिरपा गुणाकार",
+      formula: "(2 × 5) + (3 × 4) = 10 + 12 = 22",
+      explain: "दशक आणि एकक अंकांचा तिरपा गुणाकार करा आणि पूर्वीचा हातचा (१) जोडा = २३. ३ खाली लिहा, २ हातचा ठेवा.",
+      highlight: "tens-units",
+      result: "उत्तर: ..३५ (हातचा: २)"
+    },
+    {
+      title: "पायरी ३: शतक-एकक आणि दशक-दशक गुणाकार",
+      formula: "(1 × 5) + (2 × 4) = 5 + 8 = 13",
+      explain: "शतक आणि एकक, आणि दशक आणि दशक यांचा गुणाकार करून हातचा (२) जोडा = १५. ५ खाली लिहा, १ हातचा ठेवा.",
+      highlight: "hundreds-tens-units",
+      result: "उत्तर: .५३५ (हातचा: १)"
+    },
+    {
+      title: "पायरी ४: शतक आणि दशक अंकांचा तिरपा गुणाकार",
+      formula: "(1 × 4) = 4",
+      explain: "शतक आणि दशक अंकांचा गुणाकार करा आणि हातचा (१) जोडा = ५. ५ खाली लिहा.",
+      highlight: "hundreds-tens",
+      result: "उत्तर: ५५३५ (हातचा: ०)"
+    },
+    {
+      title: "पायरी ५: अचूक अंतिम उत्तर!",
+      formula: "123 × 45 = 5535",
+      explain: "सर्व पायऱ्या पूर्ण झाल्या! केवळ एका ओळीत तुम्ही ३-अंकी आणि २-अंकी गुणाकार किती जलद सोडवला ते पहा.",
+      highlight: "all",
+      result: "उत्तर: ५५३५ ✅"
+    }
+  ] : [
     {
       title: "Step 1: Multiply Units Vertically",
       formula: "3 × 5 = 15",
@@ -76,17 +142,17 @@ export default function VedicMathDemo() {
       <div className="flex border-b-4 border-vibrant-dark bg-vibrant-cream font-bold text-xs uppercase tracking-wider">
         <button
           onClick={() => { setActiveSutra("square"); setCrossStep(0); }}
-          className={`flex-1 py-4 text-center border-r-4 border-vibrant-dark transition-all flex items-center justify-center gap-2 ${activeSutra === "square" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
+          className={`flex-1 py-4 text-center border-r-4 border-vibrant-dark transition-all flex items-center justify-center gap-2 cursor-pointer ${activeSutra === "square" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
         >
           <Sparkles className="w-4 h-4" />
-          Sutra 1: Fast Square (90-99)
+          {t("vedicTabSquaring")}
         </button>
         <button
           onClick={() => setActiveSutra("cross")}
-          className={`flex-1 py-4 text-center transition-all flex items-center justify-center gap-2 ${activeSutra === "cross" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
+          className={`flex-1 py-4 text-center transition-all flex items-center justify-center gap-2 cursor-pointer ${activeSutra === "cross" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
         >
           <Calculator className="w-4 h-4" />
-          Sutra 2: 3x2 Fast Multiplication
+          {t("vedicTabMult")}
         </button>
       </div>
 
@@ -96,17 +162,19 @@ export default function VedicMathDemo() {
           <div className="space-y-6">
             <div className="space-y-2">
               <h3 className="font-display font-black text-xl text-vibrant-dark">
-                Sutra: Nikhilam Navatashcaramam Dashatah
+                {t("vedicTitle")}
               </h3>
               <p className="text-xs text-gray-500 font-semibold leading-relaxed">
-                Find the square of any number close to base 100 in just 3 seconds by evaluating its deficiency. Try changing the input slider below!
+                {t("vedicSubtitle")}
               </p>
             </div>
 
             {/* Slider control */}
             <div className="bg-slate-50 p-5 rounded-2xl border-2 border-dashed border-slate-200 space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-xs font-bold text-gray-650">Select Number:</span>
+                <span className="text-xs font-bold text-gray-650">
+                  {language === "hi" ? "संख्या चुनें:" : language === "mr" ? "संख्या निवडा:" : "Select Number:"}
+                </span>
                 <span className="bg-vibrant-teal text-white text-lg font-black px-4.5 py-1.5 rounded-xl border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35]">
                   {squareNum}²
                 </span>
@@ -129,34 +197,48 @@ export default function VedicMathDemo() {
             {/* Step Visualization Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-[#FFF8F0] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
-                <span className="text-[10px] font-black text-vibrant-orange uppercase tracking-wider block">Step 1: Deficiency</span>
+                <span className="text-[10px] font-black text-vibrant-orange uppercase tracking-wider block">
+                  {language === "hi" ? "चरण १: विचलन" : language === "mr" ? "पायरी १: विचलन" : "Step 1: Deficiency"}
+                </span>
                 <div className="font-display font-black text-xl text-vibrant-dark">
                   100 - {squareNum} = <span className="text-vibrant-orange">{deviation}</span>
                 </div>
-                <p className="text-[10px] text-gray-400 font-medium">Find how much the number is below 100</p>
+                <p className="text-[10px] text-gray-400 font-medium">
+                  {language === "hi" ? "संख्या १०० से कितनी कम है ज्ञात करें" : language === "mr" ? "दिलेली संख्या १०० पेक्षा किती कमी आहे ते काढा" : "Find how much the number is below 100"}
+                </p>
               </div>
 
               <div className="bg-[#E0FAF5] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
-                <span className="text-[10px] font-black text-vibrant-teal uppercase tracking-wider block">Step 2: Left Half</span>
+                <span className="text-[10px] font-black text-vibrant-teal uppercase tracking-wider block">
+                  {language === "hi" ? "चरण २: बायाँ भाग" : language === "mr" ? "पायरी २: डावा भाग" : "Step 2: Left Half"}
+                </span>
                 <div className="font-display font-black text-xl text-vibrant-dark">
                   {squareNum} - {deviation} = <span className="text-vibrant-teal">{leftHalf}</span>
                 </div>
-                <p className="text-[10px] text-gray-400 font-medium">Subtract deviation from the number</p>
+                <p className="text-[10px] text-gray-400 font-medium">
+                  {language === "hi" ? "संख्या में से विचलन घटाएं" : language === "mr" ? "संख्येतून विचलन वजा करा" : "Subtract deviation from the number"}
+                </p>
               </div>
 
               <div className="bg-[#FFFCE0] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
-                <span className="text-[10px] font-black text-amber-700 uppercase tracking-wider block">Step 3: Right Half</span>
+                <span className="text-[10px] font-black text-amber-700 uppercase tracking-wider block">
+                  {language === "hi" ? "चरण ३: दायाँ भाग" : language === "mr" ? "पायरी ३: उजवा भाग" : "Step 3: Right Half"}
+                </span>
                 <div className="font-display font-black text-xl text-vibrant-dark">
                   {deviation}² = <span className="text-amber-700">{rightHalfStr}</span>
                 </div>
-                <p className="text-[10px] text-gray-400 font-medium">Square the deficiency (keep as 2 digits)</p>
+                <p className="text-[10px] text-gray-400 font-medium">
+                  {language === "hi" ? "विचलन का वर्ग करें (२ अंकों में रखें)" : language === "mr" ? "विचलनाचा वर्ग करा (२ अंकी ठेवा)" : "Square the deficiency (keep as 2 digits)"}
+                </p>
               </div>
             </div>
 
             {/* Formula Block */}
             <div className="bg-vibrant-dark text-white p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 border-2 border-vibrant-dark shadow-md">
               <div className="space-y-1">
-                <span className="text-[10px] font-black text-vibrant-gold uppercase tracking-wider block">Combine Parts</span>
+                <span className="text-[10px] font-black text-vibrant-gold uppercase tracking-wider block">
+                  {language === "hi" ? "भागों को मिलाएं" : language === "mr" ? "भाग एकत्र करा" : "Combine Parts"}
+                </span>
                 <div className="font-display font-black text-2.5xl leading-none">
                   <span className="text-vibrant-teal">{leftHalf}</span>
                   <span className="text-vibrant-gold"> | </span>
@@ -164,7 +246,9 @@ export default function VedicMathDemo() {
                 </div>
               </div>
               <div className="text-center md:text-right">
-                <span className="text-[10px] text-slate-400 uppercase font-black tracking-wider block">Final Answer</span>
+                <span className="text-[10px] text-slate-400 uppercase font-black tracking-wider block">
+                  {language === "hi" ? "अंतिम उत्तर" : language === "mr" ? "अंतिम उत्तर" : "Final Answer"}
+                </span>
                 <div className="font-display font-black text-3xl text-vibrant-gold">
                   {finalSquare}
                 </div>
@@ -181,7 +265,11 @@ export default function VedicMathDemo() {
                 Sutra: Urdhva Tiryagbhyam (Vertically and Crosswise)
               </h3>
               <p className="text-xs text-gray-500 font-semibold leading-relaxed">
-                Multiply any 3-digit number by a 2-digit number (e.g. <span className="text-vibrant-orange font-black">123 × 45</span>) step-by-step using cross-multiplication vector pathways!
+                {language === "hi"
+                  ? "क्रॉस-गुणा वेक्टर पथों का उपयोग करके किसी भी ३-अंकीय संख्या को २-अंकीय संख्या (जैसे १२३ × ४५) से चरण-दर-चरण गुणा करें!"
+                  : language === "mr"
+                  ? "क्रॉस-गुणा पद्धत वापरून ३-अंकी संख्येला २-अंकी संख्येने (उदा. १२३ × ४५) सोप्या टप्प्यात गुणाकार करा!"
+                  : "Multiply any 3-digit number by a 2-digit number (e.g. 123 × 45) step-by-step using cross-multiplication vector pathways!"}
               </p>
             </div>
 
@@ -190,7 +278,7 @@ export default function VedicMathDemo() {
               {/* Digit Alignments */}
               <div className="space-y-3 font-mono font-black text-2xl text-vibrant-dark tracking-widest text-center select-none bg-white p-5 rounded-xl border border-slate-200 shadow-sm min-w-[150px]">
                 <div className="flex justify-center gap-4">
-                  <span className={steps3x2[crossStep].highlight.includes("hundreds") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-300"}>1</span>
+                  <span className={steps3x2[crossStep].highlight.includes("hundreds") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-350"}>1</span>
                   <span className={steps3x2[crossStep].highlight.includes("tens") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-400"}>2</span>
                   <span className={steps3x2[crossStep].highlight.includes("units") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-400"}>3</span>
                 </div>
@@ -202,11 +290,11 @@ export default function VedicMathDemo() {
                 </div>
                 {/* Visual Math Vector Indicators */}
                 <div className="text-xs text-slate-400 font-bold select-none h-6 flex items-center justify-center font-sans tracking-normal mt-1">
-                  {crossStep === 0 && "↑ Units Only"}
-                  {crossStep === 1 && "↖ Cross Tens/Units ↗"}
-                  {crossStep === 2 && "↖ Cross Hundreds/Units & Tens ↗"}
-                  {crossStep === 3 && "↖ Cross Hundreds/Tens ↗"}
-                  {crossStep === 4 && "✅ Done!"}
+                  {crossStep === 0 && (language === "hi" ? "↑ केवल इकाइयां" : language === "mr" ? "↑ फक्त एकक स्थान" : "↑ Units Only")}
+                  {crossStep === 1 && (language === "hi" ? "↖ दहाई/इकाई का तिरछा गुणा ↗" : language === "mr" ? "↖ दशक/एकक तिरपा गुणाकार ↗" : "↖ Cross Tens/Units ↗")}
+                  {crossStep === 2 && (language === "hi" ? "↖ सैकड़ा/इकाई और दहाई का तिरछा गुणा ↗" : language === "mr" ? "↖ शतक/एकक आणि दशक तिरपा गुणाकार ↗" : "↖ Cross Hundreds/Units & Tens ↗")}
+                  {crossStep === 3 && (language === "hi" ? "↖ सैकड़ा/दहाई का तिरछा गुणा ↗" : language === "mr" ? "↖ शतक/दशक तिरपा गुणाकार ↗" : "↖ Cross Hundreds/Tens ↗")}
+                  {crossStep === 4 && (language === "hi" ? "✅ हो गया!" : language === "mr" ? "✅ पूर्ण!" : "✅ Done!")}
                 </div>
               </div>
 
@@ -214,7 +302,7 @@ export default function VedicMathDemo() {
               <div className="flex-grow space-y-3.5">
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] bg-vibrant-orange/15 text-vibrant-orange px-2.5 py-1 rounded-full font-black uppercase tracking-wider">
-                    Step {crossStep + 1} of 5
+                    {language === "hi" ? `चरण ${crossStep + 1}/5` : language === "mr" ? `पायरी ${crossStep + 1} पैकी ५` : `Step ${crossStep + 1} of 5`}
                   </span>
                   <span className="text-xs font-bold text-gray-400">
                     {steps3x2[crossStep].title}
@@ -237,14 +325,14 @@ export default function VedicMathDemo() {
               <button
                 disabled={crossStep === 0}
                 onClick={() => setCrossStep((prev) => prev - 1)}
-                className="px-4 py-2.5 rounded-xl border-2 border-vibrant-dark text-xs font-black uppercase tracking-wider bg-white shadow-[2px_2px_0_0_#1A2E35] disabled:opacity-40 disabled:pointer-events-none active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-1"
+                className="px-4 py-2.5 rounded-xl border-2 border-vibrant-dark text-xs font-black uppercase tracking-wider bg-white shadow-[2px_2px_0_0_#1A2E35] disabled:opacity-40 disabled:pointer-events-none active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-1 cursor-pointer"
               >
-                <ChevronLeft className="w-4 h-4" /> Prev
+                <ChevronLeft className="w-4 h-4" /> {language === "hi" ? "पिछला" : language === "mr" ? "मागे" : "Prev"}
               </button>
 
               <button
                 onClick={() => setCrossStep(0)}
-                className="p-2.5 rounded-xl border-2 border-vibrant-dark text-xs font-black bg-white hover:bg-slate-50 transition-colors"
+                className="p-2.5 rounded-xl border-2 border-vibrant-dark text-xs font-black bg-white hover:bg-slate-50 transition-colors cursor-pointer"
                 title="Reset steps"
               >
                 <RefreshCw className="w-4.5 h-4.5 text-gray-500" />
@@ -253,9 +341,9 @@ export default function VedicMathDemo() {
               <button
                 disabled={crossStep === steps3x2.length - 1}
                 onClick={() => setCrossStep((prev) => prev + 1)}
-                className="px-5 py-2.5 rounded-xl border-2 border-vibrant-dark text-xs font-black uppercase tracking-wider bg-vibrant-teal text-white shadow-[2px_2px_0_0_#1A2E35] disabled:opacity-40 disabled:pointer-events-none active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-1"
+                className="px-5 py-2.5 rounded-xl border-2 border-vibrant-dark text-xs font-black uppercase tracking-wider bg-vibrant-teal text-white shadow-[2px_2px_0_0_#1A2E35] disabled:opacity-40 disabled:pointer-events-none active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-1 cursor-pointer"
               >
-                Next <ChevronRight className="w-4 h-4" />
+                {language === "hi" ? "अगला" : language === "mr" ? "पुढे" : "Next"} <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>

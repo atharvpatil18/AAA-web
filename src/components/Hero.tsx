@@ -4,17 +4,18 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Sparkles, Calendar, ArrowRight, ShieldCheck, MapPin } from "lucide-react";
+import { Sparkles, Calendar, ArrowRight, ShieldCheck, MapPin, Trophy, Star } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   const { t } = useLanguage();
   const punchlines = [
-    "Does your child make silly mistakes? Let's zero them down!",
-    "Already sharp? Let them excel in National & International competitions!",
-    "Give your child the power of speed with accuracy and consistency!"
+    t("heroPunchline1"),
+    t("heroPunchline2"),
+    t("heroPunchline3")
   ];
   const [punchlineIndex, setPunchlineIndex] = useState(0);
 
@@ -23,7 +24,7 @@ export default function Hero() {
       setPunchlineIndex((prev) => (prev + 1) % punchlines.length);
     }, 4500);
     return () => clearInterval(interval);
-  }, []);
+  }, [punchlines.length]);
 
   const handleCtaClick = () => {
     trackDemoClick("hero_primary_cta");
@@ -67,10 +68,10 @@ export default function Hero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.15 }}
-              className="font-display font-black text-5xl sm:text-6xl lg:text-7xl text-vibrant-dark tracking-tight leading-[1.1] mb-2"
+              className="font-display font-black text-5xl sm:text-6xl lg:text-7xl text-vibrant-dark tracking-tight leading-[1.1] mb-10"
             >
-              {t("heroTitleStart")}<span className="text-vibrant-orange">{t("heroTitleFear")}</span> <br />
-              {t("heroTitleInto")}<span className="text-vibrant-teal">{t("heroTitleFun")}</span>
+              {t("heroTitleStart")}<span className="text-vibrant-orange">{t("heroTitleFear")}</span>{" "} <br />
+              {t("heroTitleInto")}<span className="text-vibrant-teal">{t("heroTitleFun")}</span>{" "}
             </motion.h1>
 
             {/* Dynamic Rotating Subtitle punchline */}
@@ -107,16 +108,16 @@ export default function Hero() {
               className="grid grid-cols-4 gap-4 bg-white p-6 rounded-3xl border-2 border-slate-150 shadow-sm"
             >
               <div className="text-center">
-                <p className="text-2xl font-black text-vibrant-orange">200+</p>
-                <p className="text-[10px] font-black uppercase text-slate-400">Students</p>
+                <p className="text-2xl font-black text-vibrant-orange">{t("trustTrained").split(" ")[0]}</p>
+                <p className="text-[10px] font-black uppercase text-slate-400">{t("trustTrained").split(" ").slice(1).join(" ")}</p>
               </div>
               <div className="text-center border-l border-slate-100">
-                <p className="text-2xl font-black text-vibrant-dark">3+</p>
-                <p className="text-[10px] font-black uppercase text-slate-400">Years Exp</p>
+                <p className="text-2xl font-black text-vibrant-dark">{t("trustExp").split(" ")[0]}</p>
+                <p className="text-[10px] font-black uppercase text-slate-400">{t("trustExp").split(" ").slice(1).join(" ")}</p>
               </div>
               <div className="text-center border-l border-slate-100">
-                <p className="text-2xl font-black text-vibrant-teal">100+</p>
-                <p className="text-[10px] font-black uppercase text-slate-400">Awards</p>
+                <p className="text-2xl font-black text-vibrant-teal">{t("trustAwards").split(" ")[0]}</p>
+                <p className="text-[10px] font-black uppercase text-slate-400">{t("trustAwards").split(" ").slice(1).join(" ")}</p>
               </div>
               <a 
                 href="https://share.google/fFcUhDGoBJ5M27dX5" 
@@ -124,8 +125,8 @@ export default function Hero() {
                 rel="noopener noreferrer" 
                 className="text-center border-l border-slate-100 hover:scale-105 transition-transform block"
               >
-                <p className="text-2xl font-black text-amber-500">5/5</p>
-                <p className="text-[10px] font-black uppercase text-slate-400 underline decoration-amber-500">65+ Reviews</p>
+                <p className="text-2xl font-black text-amber-500">{t("trustRating").split(" ")[0]}</p>
+                <p className="text-[10px] font-black uppercase text-slate-400 underline decoration-amber-500">{t("trustRating").split(" ").slice(1).join(" ")}</p>
               </a>
             </motion.div>
 
@@ -151,7 +152,7 @@ export default function Hero() {
                 onClick={handleGameScroll}
                 className="w-full sm:w-auto bg-white hover:bg-vibrant-cream text-vibrant-dark border-2 border-vibrant-dark font-black text-sm px-7 py-4 rounded-2xl shadow-[0_4px_0_0_#1A2E35] active:translate-y-1 active:shadow-none transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
               >
-                Try Math Quiz Widget
+                {t("heroBtnQuiz")}
               </button>
             </motion.div>
 
@@ -160,56 +161,65 @@ export default function Hero() {
           {/* Right Hero App Card Column with Comic Heavy Shadow Theme */}
           <div className="lg:col-span-5 relative mt-8 lg:mt-0">
             
-            <div className="relative bg-white border-4 border-vibrant-dark rounded-[40px] p-8 shadow-[12px_12px_0_0_#1A2E35] space-y-6">
+            <div className="relative bg-white border-4 border-vibrant-dark rounded-[40px] p-6 sm:p-8 shadow-[6px_6px_0_0_#1A2E35] sm:shadow-[12px_12px_0_0_#1A2E35] space-y-6">
               
               {/* Highlight promo badge rotated */}
               <div className="absolute -top-6 -right-4 bg-vibrant-gold p-3 rounded-2xl rotate-12 border-2 border-vibrant-dark shadow-md text-vibrant-dark text-center leading-none z-10 max-w-[120px]">
-                <p className="font-black text-xs text-vibrant-dark leading-none">FREE TRIAL</p>
-                <p className="text-[8px] font-black tracking-wider uppercase mt-1">2 Value-Added Sessions</p>
+                <p className="font-black text-xs text-vibrant-dark leading-none">{t("heroFreeTrial")}</p>
+                <p className="text-[8px] font-black tracking-wider uppercase mt-1">{t("heroTwoSessions")}</p>
               </div>
 
               {/* Highlight statistics metrics */}
               <div className="flex items-center justify-between border-b border-gray-100 pb-4">
                 <span className="text-xs text-gray-400 font-bold tracking-widest uppercase">
-                  Batch Enrollment Status
+                  {t("heroEnrollmentStatus")}
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-emerald-600 font-bold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                  Admissions Open
+                  {t("heroAdmissionsOpen")}
                 </span>
               </div>
 
               {/* Special message banner */}
               <div className="space-y-3">
                 <span className="block text-vibrant-dark font-display font-black text-xl leading-tight">
-                  Why parents choose us:
+                  {t("heroWhyParentsChooseUs")}
                 </span>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  While ordinary tuition centers focus on repetitive paper calculations, Neha Patil’s <strong>Arnav Abacus Academy</strong> incorporates visual beads of abacus and mental shortcuts of Vedic maths, teaching children to solve 10x faster with absolute joy.
+                  {t("heroParentsDesc")}
                 </p>
               </div>
 
               {/* Bullet highlights with check circle */}
               <div className="grid grid-cols-2 gap-3 pb-2">
                 <div className="bg-vibrant-cream p-3 rounded-xl border border-gray-200">
-                  <span className="block font-black text-vibrant-orange text-sm md:text-base">10-15x</span>
-                  <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Arithmetical Speed</span>
+                  <span className="block font-black text-vibrant-orange text-sm md:text-base">{t("heroStatSpeed")}</span>
+                  <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">{t("heroStatSpeedLabel")}</span>
                 </div>
                 <div className="bg-vibrant-cream p-3 rounded-xl border border-gray-200">
-                  <span className="block font-black text-vibrant-teal text-sm md:text-base">4-14 Yrs</span>
-                  <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Age Scale Window</span>
+                  <span className="block font-black text-vibrant-teal text-sm md:text-base">{t("heroStatAge")}</span>
+                  <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">{t("heroStatAgeLabel")}</span>
                 </div>
               </div>
 
-              {/* Promo offer card widget */}
-              <div className="bg-vibrant-dark text-white p-4 rounded-2xl flex items-center justify-between gap-4">
-                <div>
-                  <span className="block text-[10px] uppercase font-black text-vibrant-teal">Center Benefits</span>
-                  <span className="block font-display text-xs text-slate-300">Located directly opposite Creative Cameo bungalow</span>
-                </div>
-                <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0">
-                  <MapPin className="w-5 h-5 text-vibrant-teal" />
-                </div>
+              {/* Redirect Options: Success Stories & Google Reviews */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                <Link
+                  to="/showcase"
+                  className="flex-1 bg-vibrant-teal text-white border-2 border-vibrant-dark font-black text-xs px-4 py-3.5 rounded-xl shadow-[4px_4px_0_0_#1A2E35] hover:scale-[1.02] active:translate-y-0.5 active:shadow-none transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Trophy className="w-4 h-4 text-white shrink-0" />
+                  <span>{t("heroBtnStories")}</span>
+                </Link>
+                <a
+                  href="https://share.google/fFcUhDGoBJ5M27dX5"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 bg-vibrant-gold text-vibrant-dark border-2 border-vibrant-dark font-black text-xs px-4 py-3.5 rounded-xl shadow-[4px_4px_0_0_#1A2E35] hover:scale-[1.02] active:translate-y-0.5 active:shadow-none transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Star className="w-4 h-4 fill-current text-vibrant-dark shrink-0" />
+                  <span>{t("heroBtnReviews")}</span>
+                </a>
               </div>
             </div>
           </div>
