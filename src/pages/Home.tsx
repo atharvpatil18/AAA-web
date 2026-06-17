@@ -24,6 +24,7 @@ export default function Home() {
   const { language, t } = useLanguage();
   const [showAbacus, setShowAbacus] = useState(false);
   const [showVedic, setShowVedic] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
 
   const handleMapCtaClick = () => {
     trackDemoClick("home_map_nav_cta");
@@ -36,6 +37,10 @@ export default function Home() {
   const vedicBtnText = showVedic
     ? (language === "hi" ? "स्पीड मैथ सिम्युलेटर छिपाएं" : language === "mr" ? "स्पीड मॅथ सिम्युलेटर लपवा" : "Hide Speed Math Simulator")
     : (language === "hi" ? "स्पीड मैथ सिम्युलेटर आज़माएं" : language === "mr" ? "स्पीड मॅथ सिम्युलेटर वापरून पहा" : "Try Speed Math Simulator");
+
+  const quizBtnText = showQuiz
+    ? (language === "hi" ? "क्विज़ चुनौती छिपाएं" : language === "mr" ? "क्विझ आव्हान लपवा" : "Hide Quiz Challenge")
+    : (language === "hi" ? "गणित क्विज़ चुनौती शुरू करें" : language === "mr" ? "गणित क्विझ आव्हान सुरू करा" : "Try Math Quiz Challenge");
 
   return (
     <div id="home-page-container" className="bg-[#FFFDF9] min-h-screen">
@@ -149,8 +154,8 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center lg:items-start">
             
             {/* Left Hand: Interactive Widget */}
-            <div className="lg:col-span-6 space-y-6">
-              <div className="space-y-3">
+            <div className="lg:col-span-6 space-y-6 flex flex-col items-start">
+              <div className="space-y-3 w-full">
                 <div className="inline-flex items-center gap-1.5 text-[10px] text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider font-bold">
                   <Star className="w-3.5 h-3.5 fill-current text-vibrant-orange animate-spin-slow" /> {t("quizBadge")}
                 </div>
@@ -162,8 +167,21 @@ export default function Home() {
                 </p>
               </div>
 
+              {/* Toggle Button */}
+              <button
+                onClick={() => setShowQuiz(!showQuiz)}
+                className="flex items-center gap-2 bg-vibrant-orange text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/95 transition-all text-xs md:text-sm uppercase tracking-wider cursor-pointer mt-2"
+              >
+                {quizBtnText}
+                {showQuiz ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+
               {/* Game Element */}
-              <SpeedChallengeWidget />
+              {showQuiz && (
+                <div className="w-full transition-all duration-300">
+                  <SpeedChallengeWidget />
+                </div>
+              )}
             </div>
 
             {/* Right Hand: Lead Generation Form */}
