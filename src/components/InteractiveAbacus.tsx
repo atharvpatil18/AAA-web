@@ -14,7 +14,7 @@ interface RodState {
 }
 
 export default function InteractiveAbacus() {
-  const { t } = useLanguage();
+  const { t, formatNumber } = useLanguage();
   // 5 rods: Indices 0 (ten-thousands) to 4 (ones) from left to right
   const [rods, setRods] = useState<RodState[]>([
     { upper: false, lowerCount: 0 },
@@ -221,7 +221,7 @@ export default function InteractiveAbacus() {
 
                   {/* Individual Rod Value Badge */}
                   <div className="absolute -bottom-1 bg-[#2C190D] border border-amber-950/50 rounded-md px-1 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-black text-vibrant-gold tracking-tight z-20">
-                    {val}
+                    {formatNumber(val)}
                   </div>
 
                 </div>
@@ -289,7 +289,7 @@ export default function InteractiveAbacus() {
           {t("abacusComputedTitle")}
         </span>
         <span className="font-display font-black text-4xl md:text-5xl text-vibrant-dark block tracking-tight my-1">
-          {totalValue.toLocaleString("en-IN")}
+          {formatNumber(totalValue.toLocaleString("en-IN"))}
         </span>
         <p className="text-xs text-gray-400 font-semibold leading-relaxed">
           {t("abacusComputedSubtitle")}

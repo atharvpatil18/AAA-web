@@ -8,7 +8,7 @@ import { Sparkles, Calculator, HelpCircle, ChevronRight, ChevronLeft, RefreshCw 
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function VedicMathDemo() {
-  const { language, t } = useLanguage();
+  const { language, t, formatNumber } = useLanguage();
   const [activeSutra, setActiveSutra] = useState<"square" | "cross">("square");
 
   // Sutra 1 State
@@ -176,7 +176,7 @@ export default function VedicMathDemo() {
                   {language === "hi" ? "संख्या चुनें:" : language === "mr" ? "संख्या निवडा:" : "Select Number:"}
                 </span>
                 <span className="bg-vibrant-teal text-white text-lg font-black px-4.5 py-1.5 rounded-xl border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35]">
-                  {squareNum}²
+                  {formatNumber(squareNum)}²
                 </span>
               </div>
               <input
@@ -188,9 +188,9 @@ export default function VedicMathDemo() {
                 className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-vibrant-teal"
               />
               <div className="flex justify-between text-[10px] text-gray-400 font-bold">
-                <span>90</span>
-                <span>95</span>
-                <span>99</span>
+                <span>{formatNumber(90)}</span>
+                <span>{formatNumber(95)}</span>
+                <span>{formatNumber(99)}</span>
               </div>
             </div>
 
@@ -201,7 +201,7 @@ export default function VedicMathDemo() {
                   {language === "hi" ? "चरण १: विचलन" : language === "mr" ? "पायरी १: विचलन" : "Step 1: Deficiency"}
                 </span>
                 <div className="font-display font-black text-xl text-vibrant-dark">
-                  100 - {squareNum} = <span className="text-vibrant-orange">{deviation}</span>
+                  {formatNumber(100)} - {formatNumber(squareNum)} = <span className="text-vibrant-orange">{formatNumber(deviation)}</span>
                 </div>
                 <p className="text-[10px] text-gray-400 font-medium">
                   {language === "hi" ? "संख्या १०० से कितनी कम है ज्ञात करें" : language === "mr" ? "दिलेली संख्या १०० पेक्षा किती कमी आहे ते काढा" : "Find how much the number is below 100"}
@@ -213,7 +213,7 @@ export default function VedicMathDemo() {
                   {language === "hi" ? "चरण २: बायाँ भाग" : language === "mr" ? "पायरी २: डावा भाग" : "Step 2: Left Half"}
                 </span>
                 <div className="font-display font-black text-xl text-vibrant-dark">
-                  {squareNum} - {deviation} = <span className="text-vibrant-teal">{leftHalf}</span>
+                  {formatNumber(squareNum)} - {formatNumber(deviation)} = <span className="text-vibrant-teal">{formatNumber(leftHalf)}</span>
                 </div>
                 <p className="text-[10px] text-gray-400 font-medium">
                   {language === "hi" ? "संख्या में से विचलन घटाएं" : language === "mr" ? "संख्येतून विचलन वजा करा" : "Subtract deviation from the number"}
@@ -225,7 +225,7 @@ export default function VedicMathDemo() {
                   {language === "hi" ? "चरण ३: दायाँ भाग" : language === "mr" ? "पायरी ३: उजवा भाग" : "Step 3: Right Half"}
                 </span>
                 <div className="font-display font-black text-xl text-vibrant-dark">
-                  {deviation}² = <span className="text-amber-700">{rightHalfStr}</span>
+                  {formatNumber(deviation)}² = <span className="text-amber-700">{formatNumber(rightHalfStr)}</span>
                 </div>
                 <p className="text-[10px] text-gray-400 font-medium">
                   {language === "hi" ? "विचलन का वर्ग करें (२ अंकों में रखें)" : language === "mr" ? "विचलनाचा वर्ग करा (२ अंकी ठेवा)" : "Square the deficiency (keep as 2 digits)"}
@@ -240,9 +240,9 @@ export default function VedicMathDemo() {
                   {language === "hi" ? "भागों को मिलाएं" : language === "mr" ? "भाग एकत्र करा" : "Combine Parts"}
                 </span>
                 <div className="font-display font-black text-2.5xl leading-none">
-                  <span className="text-vibrant-teal">{leftHalf}</span>
+                  <span className="text-vibrant-teal">{formatNumber(leftHalf)}</span>
                   <span className="text-vibrant-gold"> | </span>
-                  <span className="text-vibrant-orange">{rightHalfStr}</span>
+                  <span className="text-vibrant-orange">{formatNumber(rightHalfStr)}</span>
                 </div>
               </div>
               <div className="text-center md:text-right">
@@ -250,7 +250,7 @@ export default function VedicMathDemo() {
                   {language === "hi" ? "अंतिम उत्तर" : language === "mr" ? "अंतिम उत्तर" : "Final Answer"}
                 </span>
                 <div className="font-display font-black text-3xl text-vibrant-gold">
-                  {finalSquare}
+                  {formatNumber(finalSquare)}
                 </div>
               </div>
             </div>
@@ -278,15 +278,15 @@ export default function VedicMathDemo() {
               {/* Digit Alignments */}
               <div className="space-y-3 font-mono font-black text-2xl text-vibrant-dark tracking-widest text-center select-none bg-white p-5 rounded-xl border border-slate-200 shadow-sm min-w-[150px]">
                 <div className="flex justify-center gap-4">
-                  <span className={steps3x2[crossStep].highlight.includes("hundreds") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-350"}>1</span>
-                  <span className={steps3x2[crossStep].highlight.includes("tens") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-400"}>2</span>
-                  <span className={steps3x2[crossStep].highlight.includes("units") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-400"}>3</span>
+                  <span className={steps3x2[crossStep].highlight.includes("hundreds") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-350"}>{formatNumber(1)}</span>
+                  <span className={steps3x2[crossStep].highlight.includes("tens") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-400"}>{formatNumber(2)}</span>
+                  <span className={steps3x2[crossStep].highlight.includes("units") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-400"}>{formatNumber(3)}</span>
                 </div>
                 <div className="border-b-4 border-vibrant-dark pb-1 flex justify-center gap-4">
                   <span className="text-gray-200">×</span>
-                  <span className="text-gray-200">0</span>
-                  <span className={steps3x2[crossStep].highlight.includes("tens") ? "text-vibrant-teal scale-110 transition-all" : "text-gray-400"}>4</span>
-                  <span className={steps3x2[crossStep].highlight.includes("units") ? "text-vibrant-teal scale-110 transition-all" : "text-gray-400"}>5</span>
+                  <span className="text-gray-200">{formatNumber(0)}</span>
+                  <span className={steps3x2[crossStep].highlight.includes("tens") ? "text-vibrant-teal scale-110 transition-all" : "text-gray-400"}>{formatNumber(4)}</span>
+                  <span className={steps3x2[crossStep].highlight.includes("units") ? "text-vibrant-teal scale-110 transition-all" : "text-gray-400"}>{formatNumber(5)}</span>
                 </div>
                 {/* Visual Math Vector Indicators */}
                 <div className="text-xs text-slate-400 font-bold select-none h-6 flex items-center justify-center font-sans tracking-normal mt-1">
@@ -302,20 +302,20 @@ export default function VedicMathDemo() {
               <div className="flex-grow space-y-3.5">
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] bg-vibrant-orange/15 text-vibrant-orange px-2.5 py-1 rounded-full font-black uppercase tracking-wider">
-                    {language === "hi" ? `चरण ${crossStep + 1}/5` : language === "mr" ? `पायरी ${crossStep + 1} पैकी ५` : `Step ${crossStep + 1} of 5`}
+                    {formatNumber(language === "hi" ? `चरण ${crossStep + 1}/5` : language === "mr" ? `पायरी ${crossStep + 1} पैकी ५` : `Step ${crossStep + 1} of 5`)}
                   </span>
                   <span className="text-xs font-bold text-gray-400">
                     {steps3x2[crossStep].title}
                   </span>
                 </div>
                 <div className="font-display font-black text-lg text-vibrant-dark">
-                  {steps3x2[crossStep].formula}
+                  {formatNumber(steps3x2[crossStep].formula)}
                 </div>
                 <p className="text-xs text-gray-600 font-semibold leading-relaxed">
-                  {steps3x2[crossStep].explain}
+                  {formatNumber(steps3x2[crossStep].explain)}
                 </p>
                 <div className="bg-vibrant-dark text-vibrant-gold font-mono font-black text-sm p-3 rounded-lg w-fit">
-                  {steps3x2[crossStep].result}
+                  {formatNumber(steps3x2[crossStep].result)}
                 </div>
               </div>
             </div>

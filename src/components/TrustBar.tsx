@@ -18,7 +18,7 @@ interface StatItem {
 }
 
 export default function TrustBar() {
-  const { t } = useLanguage();
+  const { t, formatNumber } = useLanguage();
   const stats: StatItem[] = [
     {
       id: "students",
@@ -131,7 +131,7 @@ export default function TrustBar() {
 
               {/* Dynamic Number Counter */}
               <span className="font-display font-black text-3xl md:text-4xl text-vibrant-dark tracking-tight block">
-                {currentCount}
+                {formatNumber(currentCount)}
                 <span className="text-vibrant-orange">{stat.suffix}</span>
               </span>
 

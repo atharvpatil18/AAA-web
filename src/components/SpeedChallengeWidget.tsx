@@ -28,7 +28,7 @@ interface Question {
 }
 
 export default function SpeedChallengeWidget() {
-  const { language, t } = useLanguage();
+  const { language, t, formatNumber } = useLanguage();
   const [step, setStep] = useState<QuizStep>("AGE");
   const [ageInput, setAgeInput] = useState<string>("8");
   const [errorText, setErrorText] = useState("");
@@ -307,11 +307,11 @@ export default function SpeedChallengeWidget() {
             {/* Progress indicators & Timer */}
             <div className="flex items-center justify-between">
               <span className="text-[10px] text-[#A2C4C9] uppercase tracking-widest font-black">
-                {t("quizQuestionOf").replace("{num}", String(questionIndex + 1)).replace("{age}", ageInput)}
+                {t("quizQuestionOf").replace("{num}", formatNumber(questionIndex + 1)).replace("{age}", formatNumber(ageInput))}
               </span>
               <div className="flex items-center gap-1.5 text-xs font-black text-vibrant-orange bg-[#FFF0E0]/25 px-3 py-1 rounded-full border border-vibrant-orange/10">
                 <Clock className="w-3.5 h-3.5 animate-pulse text-vibrant-orange" />
-                <span>{timeLeft}{t("quizTimerRemaining")}</span>
+                <span>{formatNumber(timeLeft)}{t("quizTimerRemaining")}</span>
               </div>
             </div>
 
@@ -329,7 +329,7 @@ export default function SpeedChallengeWidget() {
                 {t("quizNoFingers")}
               </div>
               <span className="font-display font-black text-5xl lg:text-6xl text-white tracking-wide block mb-1">
-                {currentQuestion.text}
+                {formatNumber(currentQuestion.text)}
               </span>
               <span className="text-[9px] text-[#89B5BC] font-bold select-none block">
                 {language === "hi" ? "मोतियों की कल्पना मन में करें!" : language === "mr" ? "मनातल्या मनात मण्यांची विजुअलाइज करा!" : "Visualize the abacus beads mentally!"}
@@ -376,7 +376,7 @@ export default function SpeedChallengeWidget() {
                   {t("quizTimesUp")}
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
-                  {t("quizResultTimeout").replace("{correctCount}", String(correctCount)).replace("{totalTime}", String(totalTimeTaken))}
+                  {t("quizResultTimeout").replace("{correctCount}", formatNumber(correctCount)).replace("{totalTime}", formatNumber(totalTimeTaken))}
                 </p>
               </div>
             ) : correctCount === 3 ? (
@@ -388,7 +388,7 @@ export default function SpeedChallengeWidget() {
                   {t("quizPerfectScore")}
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
-                  {t("quizResultPerfect").replace("{totalTime}", String(totalTimeTaken))}
+                  {t("quizResultPerfect").replace("{totalTime}", formatNumber(totalTimeTaken))}
                 </p>
               </div>
             ) : (
@@ -400,7 +400,7 @@ export default function SpeedChallengeWidget() {
                   {t("quizAttemptCompleted")}
                 </h4>
                 <p className="text-xs text-[#A2C4C9] max-w-sm mx-auto leading-relaxed font-semibold">
-                  {t("quizResultAttempt").replace("{correctCount}", String(correctCount)).replace("{totalTime}", String(totalTimeTaken))}
+                  {t("quizResultAttempt").replace("{correctCount}", formatNumber(correctCount)).replace("{totalTime}", formatNumber(totalTimeTaken))}
                 </p>
               </div>
             )}
