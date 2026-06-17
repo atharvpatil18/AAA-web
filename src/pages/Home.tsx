@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Hero from "../components/Hero";
 import TrustBar from "../components/TrustBar";
@@ -17,14 +17,25 @@ import VedicMathDemo from "../components/VedicMathDemo";
 import MathComparisonDemo from "../components/MathComparisonDemo";
 import { useLanguage } from "../lib/LanguageContext";
 import { PROGRAMS } from "../data";
-import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2 } from "lucide-react";
+import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const [showAbacus, setShowAbacus] = useState(false);
+  const [showVedic, setShowVedic] = useState(false);
+
   const handleMapCtaClick = () => {
     trackDemoClick("home_map_nav_cta");
   };
+
+  const abacusBtnText = showAbacus
+    ? (language === "hi" ? "एबाकस सिम्युलेटर छिपाएं" : language === "mr" ? "ॲबॅकस सिम्युलेटर लपवा" : "Hide Interactive Abacus")
+    : (language === "hi" ? "इंटरएक्टिव एबाकस आज़माएं" : language === "mr" ? "इंटरएक्टिव्ह ॲबॅकस वापरून पहा" : "Try Interactive Abacus");
+
+  const vedicBtnText = showVedic
+    ? (language === "hi" ? "स्पीड मैथ सिम्युलेटर छिपाएं" : language === "mr" ? "स्पीड मॅथ सिम्युलेटर लपवा" : "Hide Speed Math Simulator")
+    : (language === "hi" ? "स्पीड मैथ सिम्युलेटर आज़माएं" : language === "mr" ? "स्पीड मॅथ सिम्युलेटर वापरून पहा" : "Try Speed Math Simulator");
 
   return (
     <div id="home-page-container" className="bg-[#FFFDF9] min-h-screen">
@@ -38,8 +49,8 @@ export default function Home() {
 
       {/* 2.5. Interactive Abacus Playground */}
       <section id="interactive-abacus-playground" className="py-16 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-2 border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col items-center">
+          <div className="text-center space-y-3 max-w-2xl mx-auto mb-6">
             <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
               {t("abacusBadge")}
             </span>
@@ -50,13 +61,27 @@ export default function Home() {
               {t("abacusSubtitle")}
             </p>
           </div>
-          <InteractiveAbacus />
+
+          {/* Toggle Button */}
+          <button
+            onClick={() => setShowAbacus(!showAbacus)}
+            className="flex items-center gap-2 bg-vibrant-teal text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-teal/95 transition-all text-xs md:text-sm uppercase tracking-wider mb-8 cursor-pointer"
+          >
+            {abacusBtnText}
+            {showAbacus ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+
+          {showAbacus && (
+            <div className="w-full transition-all duration-300">
+              <InteractiveAbacus />
+            </div>
+          )}
         </div>
       </section>
 
       {/* 2.6. Interactive Vedic Math Playground */}
       <section id="interactive-vedic-playground" className="py-16 md:py-20 bg-white border-t-2 border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-6 flex flex-col items-center">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
             <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
               {t("homeVedicBadge")}
@@ -68,7 +93,21 @@ export default function Home() {
               {t("homeVedicSubtitle")}
             </p>
           </div>
-          <VedicMathDemo />
+
+          {/* Toggle Button */}
+          <button
+            onClick={() => setShowVedic(!showVedic)}
+            className="flex items-center gap-2 bg-vibrant-orange text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/95 transition-all text-xs md:text-sm uppercase tracking-wider mb-8 cursor-pointer"
+          >
+            {vedicBtnText}
+            {showVedic ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+
+          {showVedic && (
+            <div className="w-full transition-all duration-300">
+              <VedicMathDemo />
+            </div>
+          )}
         </div>
       </section>
 

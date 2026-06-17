@@ -4,13 +4,14 @@
  */
 
 import React, { useState } from "react";
-import { Brain, Star, CheckCircle2, ChevronRight, HelpCircle, Layers } from "lucide-react";
+import { Brain, Star, CheckCircle2, ChevronRight, HelpCircle, Layers, ChevronDown, ChevronUp } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function MathComparisonDemo() {
   const { language, t } = useLanguage();
   const [activeTab, setActiveTab] = useState<"abacus" | "vedic" | "school">("abacus");
   const [compStep, setCompStep] = useState<number>(0);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const data = {
     abacus: {
@@ -110,9 +111,24 @@ export default function MathComparisonDemo() {
         <Layers className="w-12 h-12 text-vibrant-teal hidden sm:block shrink-0 animate-pulse" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12">
-        {/* Left column: Tab selector & comparison */}
-        <div className="lg:col-span-7 p-6 md:p-8 border-b-4 lg:border-b-0 lg:border-r-4 border-vibrant-dark space-y-6">
+      {/* Toggle Button */}
+      <div className="p-6 md:p-8 flex justify-center bg-vibrant-cream/25 border-b-4 border-vibrant-dark">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex items-center gap-2 bg-vibrant-orange text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/95 transition-all text-xs md:text-sm uppercase tracking-wider cursor-pointer"
+        >
+          {isExpanded 
+            ? (language === "hi" ? "तुलना मैट्रिक्स छिपाएं" : language === "mr" ? "तुलना मॅट्रिक्स लपवा" : "Hide Comparison Matrix")
+            : (language === "hi" ? "तुलना मैट्रिक्स देखें" : language === "mr" ? "तुलना मॅट्रिक्स पहा" : "Explore Math Comparison Matrix")
+          }
+          {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        </button>
+      </div>
+
+      {isExpanded && (
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          {/* Left column: Tab selector & comparison */}
+          <div className="lg:col-span-7 p-6 md:p-8 border-b-4 lg:border-b-0 lg:border-r-4 border-vibrant-dark space-y-6">
           <span className="text-[10px] text-vibrant-orange font-black uppercase tracking-wider block">
             {language === "hi" ? "चुनें और तुलना करें:" : language === "mr" ? "निवडा आणि फरक तपासा:" : "Select & Compare Methodology:"}
           </span>
@@ -215,6 +231,7 @@ export default function MathComparisonDemo() {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }
