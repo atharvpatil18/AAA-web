@@ -91,7 +91,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       tag: t("showcaseTag5"),
       achievementText: t("showcaseItem5Text"),
       imageUrl: "best_student_spriha_kamat_2025_2026.webp",
-      imageAlt: "Spriha Kamat holding the Best Student of the Year Trophy with Neha Patil",
+      imageAlt: "Spriha Kamath holding the Best Student of the Year Trophy with Neha Patil",
       colorTheme: "teal",
     },
     {
