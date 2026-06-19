@@ -91,11 +91,20 @@ export default function ProgramCard({ program }: ProgramCardProps) {
 
   return (
     <div 
-      className={`bg-white rounded-[32px] border-4 ${currentTheme.border} p-6 md:p-8 flex flex-col justify-between transition-all duration-300 ${currentTheme.shadow} group hover:-translate-y-1`}
+      className={`bg-white rounded-[32px] border-4 ${currentTheme.border} p-6 md:p-8 flex flex-col justify-between transition-all duration-300 ${currentTheme.shadow} group hover:-translate-y-1 relative`}
     >
       <div>
+        {/* Student Group image at top right corner */}
+        <div className="absolute top-4 right-4 w-12 h-12 rounded-full overflow-hidden border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] bg-white group-hover:scale-105 transition-transform duration-300 shrink-0 z-20">
+          <img 
+            src={program.id === "abacus" ? "/abacus_stream_students.png" : program.id === "vedic-math" ? "/vedic_stream_students.png" : "/school_stream_students.png"} 
+            alt="Academy Students" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+
         {/* Card Header & Badge */}
-        <div className="flex justify-between items-start gap-4 mb-4">
+        <div className="flex justify-between items-start gap-4 mb-4 pr-14">
           <span className={`inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full ${currentTheme.badge}`}>
             {program.id === "abacus" && <Sparkles className="w-3.5 h-3.5 text-vibrant-dark" />}
             {program.id === "vedic-math" && <Flame className="w-3.5 h-3.5 text-white" />}
