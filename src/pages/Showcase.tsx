@@ -155,6 +155,16 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       colorTheme: "gold",
     },
     {
+      id: "gallery-devaansh-perfect-100",
+      type: "competition",
+      title: t("showcaseItem12Title"),
+      tag: t("showcaseTag12"),
+      achievementText: t("showcaseItem12Text"),
+      imageUrl: "devaansh_runner_level_1.webp",
+      imageAlt: "Devaansh Ganjoo holding his 100/100 Runner Level 1 trophy at Arnav Abacus Academy",
+      colorTheme: "gold",
+    },
+    {
       id: "story-1",
       type: "transformation",
       title: "Zeroing Down Silly Mistakes",

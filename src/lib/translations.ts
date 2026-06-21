@@ -345,6 +345,8 @@ export const translations = {
     showcaseItem10Text: "During our Summer Camp 2024, Arnav Abacus Academy Founder & Director, Neha Patil, mentored brilliant young minds from Bliss International School in the art of Soroban abacus visualization. Watch their learning breakthroughs and video testimonials!",
     showcaseItem11Title: "National Entrepreneurship Excellence Award at IIT Delhi",
     showcaseItem11Text: "Neha Patil receives the prestigious Entrepreneurship Excellence Award from IIVA & IVAS at IIT Delhi on National Mathematics Day. Handed over by the CEO and CMD of IIVA & IVAS, this national accolade celebrates her transformative impact on 150+ students.",
+    showcaseItem12Title: "⚡ Unlocked: The \"Perfect 100\" Achievement! Meet Devaansh! ⚡",
+    showcaseItem12Text: "Devaansh Ganjoo rewrote the rulebook with a perfect 100/100 in Abacus Runner Level 1 at 2.2x speed and excellent handwriting! Driven by laser focus and a heart of gold, he shines in class. We also honor his super support squad—Happy Father's Day to his dad and Happy Birthday to his mom! Next stop: National & International stages! 🏆",
 
     showcaseTag1: "International Champion",
     showcaseTag2: "Double Champion",
@@ -357,6 +359,7 @@ export const translations = {
     showcaseTag9: "Proud Moments",
     showcaseTag10: "Summer Agility",
     showcaseTag11: "National Recognition",
+    showcaseTag12: "Perfect 100 Score",
 
     // Contact
     contactTitle: "Reach Out to Arnav Abacus Academy",
@@ -955,6 +958,8 @@ export const translations = {
     showcaseItem10Text: "समर कैंप 2024 के दौरान, एकेडमी की संस्थापक नेहा पाटिल ने ब्लिस इंटरनेशनल स्कूल के छात्रों को सोरोबान एबाकस विज़ुअलाइज़ेशन की कला में प्रशिक्षित किया। उनके सीखने के अनुभव और वीडियो टेस्टीमोनियल्स देखें !",
     showcaseItem11Title: "IIT दिल्ली में राष्ट्रीय उद्यमिता उत्कृष्टता पुरस्कार",
     showcaseItem11Text: "राष्ट्रीय गणित दिवस पर IIT दिल्ली में IIVA और IVAS द्वारा नेहा पाटिल को प्रतिष्ठित उद्यमिता उत्कृष्टता पुरस्कार से सम्मानित किया गया। यह राष्ट्रीय पुरस्कार 150+ छात्रों के जीवन में उनके द्वारा लाए गए सकारात्मक बदलावों की सराहना करता है।",
+    showcaseItem12Title: "⚡ 'परफेक्ट 100' की उपलब्धि: मिलिए देवांश से! ⚡",
+    showcaseItem12Text: "देवांश गंजू ने शानदार २.२ गुना गति और बेहतरीन लिखावट के साथ एबाकस रनर लेवल १ में १००/१०० का परफेक्ट स्कोर बनाया है ! लेज़र फोकस और दयालु दिल के साथ क्लास में चमकने वाले देवांश के सुपर परिवार (पापा को फादर्स डे और मम्मी को जन्मदिन) को भी बधाई। अगला पड़ाव: राष्ट्रीय और अंतर्राष्ट्रीय मंच ! 🏆",
 
     showcaseTag1: "अंतर्राष्ट्रीय चैंपियन",
     showcaseTag2: "डबल चैंपियन",
@@ -967,6 +972,7 @@ export const translations = {
     showcaseTag9: "गर्व के क्षण",
     showcaseTag10: "समर कैंप कौशल",
     showcaseTag11: "राष्ट्रीय सम्मान",
+    showcaseTag12: "परफेक्ट 100 स्कोर",
 
     // Contact
     contactTitle: "अर्णव एबाकस एकेडमी से संपर्क करें",
@@ -1564,7 +1570,9 @@ export const translations = {
     showcaseItem10Title: "ब्लिस इंटरनॅशनल स्कूल समर कॅम्प (उन्हाळा २०२४)",
     showcaseItem10Text: "समर कॅम्प २०२४ दरम्यान नेहा पाटील यांनी ब्लिस इंटरनॅशनल स्कूलच्या विद्यार्थ्यांना सोरोबान ॲबॅकस विजुअलायझेशनचे धडे दिले. त्यांचे अभिप्राय आणि व्हिडिओ आवर्जून पहा !",
     showcaseItem11Title: "IIT दिल्ली येथे राष्ट्रीय उद्योजकता उत्कृष्टता पुरस्कार",
-    showcaseItem11Text: "राष्ट्रीय गणित दिनानिमित्त IIT दिल्ली येथे IIVA आणि IVAS द्वारे नेहा पाटील यांना राष्ट्रीय उद्योजकता उत्कृष्टता पुरस्काराने गौरवण्यात आले.",
+    showcaseItem11Text: "राष्ट्रीय गणित दिनानिमित्त IIT दिल्ली येथे IIVA आणि IVAS द्वारे नेहा पाटील यांना राष्ट्रीय उद्योजकता उत्कृष्टता पुरस्काराने गौरवण्यात आले।",
+    showcaseItem12Title: "⚡ 'परफेक्ट 100' यश संपादन: भेटा देवांशला! ⚡",
+    showcaseItem12Text: "देवांश गंजू याने उत्कृष्ट हस्ताक्षरासह आणि २.२ पट वेगवान गतीने ॲबॅकस रनर लेव्हल १ मध्ये १००/१०० मिळवून इतिहास रचला आहे ! लेझर फोकस आणि दयाळू वृत्तीने सर्वांचे मन जिंकणाऱ्या देवांशच्या पालकांना (वडिलांना फादर्स डे आणि आईला वाढदिवस) मनःपूर्वक शुभेच्छा। पुढील लक्ष्य: राष्ट्रीय व आंतरराष्ट्रीय स्तरावरील यश ! 🏆",
 
     showcaseTag1: "आंतरराष्ट्रीय विजेता",
     showcaseTag2: "सलग दोनदा विजेता",
@@ -1577,6 +1585,7 @@ export const translations = {
     showcaseTag9: "अभिमानास्पद क्षण",
     showcaseTag10: "समर कॅम्प",
     showcaseTag11: "राष्ट्रीय गौरव",
+    showcaseTag12: "परफेक्ट 100 गुण",
 
     // Contact
     contactTitle: "अर्णव ॲबॅकस अकॅडमीशी संपर्क साधा",
