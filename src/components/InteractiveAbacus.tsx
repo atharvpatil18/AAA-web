@@ -34,6 +34,8 @@ export default function InteractiveAbacus() {
   const [flashcardGuess, setFlashcardGuess] = useState<string>("");
   const [flashcardFeedback, setFlashcardFeedback] = useState<string>("");
   const [isCountingDown, setIsCountingDown] = useState<boolean>(false);
+  const [flashcardAttempts, setFlashcardAttempts] = useState<number>(0);
+  const [flashcardScore, setFlashcardScore] = useState<number>(0);
 
   // Toggle upper bead (value 5)
   const toggleUpper = (rodIdx: number) => {
@@ -79,6 +81,14 @@ export default function InteractiveAbacus() {
     setCustomInput("");
   };
 
+  // Reset Flashcard Session
+  const resetFlashcardSession = () => {
+    setFlashcardAttempts(0);
+    setFlashcardScore(0);
+    setFlashcardTarget(null);
+    setFlashcardFeedback("");
+  };
+
   // Calculate values
   const getRodValue = (rod: RodState) => {
     return (rod.upper ? 5 : 0) + rod.lowerCount;
@@ -99,6 +109,9 @@ export default function InteractiveAbacus() {
 
   // Start the photographic memory game loop
   const startFlashcardChallenge = () => {
+    // Increment attempts
+    setFlashcardAttempts((prev) => prev + 1);
+
     // Generate random target number (limited to 99 for standard testing)
     const target = Math.floor(Math.random() * 99) + 1;
     setFlashcardTarget(target);
@@ -140,6 +153,7 @@ export default function InteractiveAbacus() {
 
     if (guessVal === flashcardTarget) {
       setFlashcardFeedback("correct");
+      setFlashcardScore((prev) => prev + 1);
     } else {
       setFlashcardFeedback("wrong");
     }
@@ -177,7 +191,7 @@ export default function InteractiveAbacus() {
             <span>{showGuide ? t("abacusHideGuide") : t("abacusHowToUse")}</span>
           </button>
           <button
-            onClick={resetAbacus}
+            onClick={() => { resetAbacus(); resetFlashcardSession(); }}
             className="flex items-center gap-1.5 text-xs font-black text-vibrant-orange hover:text-vibrant-orange/90 transition bg-orange-50 border border-orange-100 px-3 py-2 rounded-xl cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -189,7 +203,7 @@ export default function InteractiveAbacus() {
       {/* Mode Selector Switch */}
       <div className="flex border-2 border-vibrant-dark rounded-2xl overflow-hidden max-w-sm">
         <button
-          onClick={() => { setIsFlashcardMode(false); resetAbacus(); }}
+          onClick={() => { setIsFlashcardMode(false); resetAbacus(); resetFlashcardSession(); }}
           className={`flex-1 py-2 text-xs font-black uppercase tracking-wider transition-colors cursor-pointer ${
             !isFlashcardMode ? "bg-vibrant-teal text-white" : "bg-vibrant-cream text-vibrant-dark hover:bg-vibrant-cream/80"
           }`}
@@ -197,7 +211,7 @@ export default function InteractiveAbacus() {
           {t("abacusExploreModeBtn")}
         </button>
         <button
-          onClick={() => { setIsFlashcardMode(true); resetAbacus(); setFlashcardTarget(null); setFlashcardFeedback(""); }}
+          onClick={() => { setIsFlashcardMode(true); resetAbacus(); resetFlashcardSession(); }}
           className={`flex-1 py-2 text-xs font-black uppercase tracking-wider transition-colors cursor-pointer ${
             isFlashcardMode ? "bg-vibrant-orange text-white" : "bg-vibrant-cream text-vibrant-dark hover:bg-vibrant-cream/80"
           }`}
@@ -310,20 +324,30 @@ export default function InteractiveAbacus() {
           {/* Overlay for Flashcard Mode when beads are hidden */}
           {isFlashcardMode && !showFlashcardBeads && (
             <div className="absolute inset-0 bg-[#FFFDF9]/95 z-30 flex flex-col items-center justify-center p-6 text-center animate-fade-in pointer-events-auto">
-              <div className="text-5xl mb-3">📸</div>
+              <div className="text-5xl mb-3">
+                {flashcardAttempts === 5 && flashcardFeedback !== "" ? "🏆" : "📸"}
+              </div>
               <h4 className="font-display font-black text-lg text-vibrant-dark mb-1">
-                {flashcardTarget === null 
+                {flashcardAttempts === 0 
                   ? (language === "hi" ? "फोटोग्राफिक मेमोरी टेस्ट" : language === "mr" ? "फोटोग्राफिक मेमरी चाचणी" : "Photographic Memory Test")
+                  : flashcardAttempts === 5 && flashcardFeedback !== ""
+                  ? (language === "hi" ? "सत्र पूर्ण हुआ!" : language === "mr" ? "सत्र पूर्ण झाले!" : "Session Completed!")
                   : (language === "hi" ? "मोतियाँ छिपी हुई हैं!" : language === "mr" ? "मणी लपविलेले आहेत!" : "Beads Hidden!")
                 }
               </h4>
               <p className="text-xs text-gray-550 font-semibold max-w-md">
-                {flashcardTarget === null 
+                {flashcardAttempts === 0 
                   ? (language === "hi" 
                       ? "क्या आप गिल्टियों का मान याद रखकर सही संख्या का अनुमान लगा सकते हैं? चुनौती शुरू करने के लिए दाएँ पैनल का उपयोग करें।" 
                       : language === "mr" 
                       ? "तुम्ही मणी लक्षात ठेवून अचूक संख्या ओळखू शकता का? चाचणी सुरू करण्यासाठी उजवे पॅनेल वापरा." 
                       : "Can you memorize the beads and guess the correct value? Use the right panel to start the challenge.")
+                  : flashcardAttempts === 5 && flashcardFeedback !== ""
+                  ? (language === "hi"
+                      ? `आपने 5 में से ${flashcardScore} सही उत्तर दिए। नया सेट खेलने के लिए दाएँ पैनल का उपयोग करें।`
+                      : language === "mr"
+                      ? `तुम्ही 5 पैकी ${flashcardScore} अचूक उत्तरे दिली. नवीन संच सुरू करण्यासाठी उजवे पॅनेल वापरा.`
+                      : `You got ${flashcardScore} out of 5 correct. Use the right panel to start the next set of challenges!`)
                   : (language === "hi"
                       ? "दाएँ पैनल में अपना अनुमान सबमिट करें!"
                       : language === "mr"
@@ -390,17 +414,17 @@ export default function InteractiveAbacus() {
           ) : (
             /* Flashcard Controls Panel */
             <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-4 shadow-[4px_4px_0_0_#1A2E35]">
-              {flashcardTarget === null ? (
+              {flashcardAttempts === 0 ? (
                 <div className="text-center py-2 space-y-3">
                   <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-orange bg-[#FFEEE5] border border-vibrant-orange/20 px-3 py-1 rounded-full uppercase tracking-wider font-black">
                     {language === "hi" ? "मेमोरी गेम" : language === "mr" ? "मेमरी गेम" : "Memory Game"}
                   </span>
                   <p className="text-[11px] text-gray-500 font-semibold leading-relaxed">
                     {language === "hi"
-                      ? "एबाकस की गिल्टियाँ १.५ सेकंड के लिए फ्लैश होंगी। क्या आप उनका मान याद रखकर सही संख्या का अनुमान लगा सकते हैं ?"
+                      ? "एबाकस की गिल्टियाँ १.५ सेकंड के लिए फ्लैश होंगी। ५ चुनौतियों के इस सत्र में क्या आप सही संख्या का अनुमान लगा सकते हैं ?"
                       : language === "mr"
-                      ? "ॲबॅकस मणी १.५ सेकंदांसाठी दिसतील. तुम्ही ते लक्षात ठेवून अचूक संख्या ओळखू शकता का ?"
-                      : "Abacus beads will flash for exactly 1.5 seconds. Can you memorize them and guess the correct value ?"}
+                      ? "ॲबॅकस मणी १.५ सेकंदांसाठी दिसतील. ५ आव्हानांच्या या सत्रात तुम्ही अचूक संख्या ओळखू शकता का ?"
+                      : "Abacus beads will flash for exactly 1.5 seconds. Can you memorize them and guess the correct value in a session of 5 challenges ?"}
                   </p>
                   <button
                     onClick={startFlashcardChallenge}
@@ -412,7 +436,7 @@ export default function InteractiveAbacus() {
               ) : isCountingDown && showFlashcardBeads ? (
                 <div className="text-center py-6 space-y-3 animate-pulse">
                   <span className="inline-flex bg-vibrant-orange text-white font-mono font-black text-xs px-4 py-1.5 rounded-full uppercase tracking-wider border-2 border-vibrant-dark">
-                    {language === "hi" ? "स्मरण करें...!" : language === "mr" ? "मणी लक्षात ठेवा...!" : "Memorize beads!"}
+                    {language === "hi" ? `चुनौती ${formatNumber(flashcardAttempts)} / ५` : language === "mr" ? `चाचणी ${formatNumber(flashcardAttempts)} / ५` : `Challenge ${flashcardAttempts} / 5`}
                   </span>
                   <p className="text-xs font-bold text-vibrant-dark">
                     {language === "hi" ? "समय सीमित है!" : language === "mr" ? "वेळ मर्यादित आहे!" : "Look at the abacus!"}
@@ -421,29 +445,33 @@ export default function InteractiveAbacus() {
               ) : (
                 /* Guess Submission / Feedback */
                 <div className="space-y-4">
-                  <div className="text-center">
+                  <div className="text-center flex justify-between items-center px-1">
                     <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3 py-1 rounded-full uppercase tracking-wider font-black">
-                      {language === "hi" ? "अनुमान लगाएँ" : language === "mr" ? "उत्तर द्या" : "Your Guess"}
+                      {language === "hi" ? `चुनौती ${formatNumber(flashcardAttempts)} / ५` : language === "mr" ? `चाचणी ${formatNumber(flashcardAttempts)} / ५` : `Challenge ${flashcardAttempts} / 5`}
+                    </span>
+                    <span className="text-[10px] font-black text-vibrant-dark">
+                      {language === "hi" ? `स्कोर: ${formatNumber(flashcardScore)}` : language === "mr" ? `स्कोअर: ${formatNumber(flashcardScore)}` : `Score: ${flashcardScore}`}
                     </span>
                   </div>
                   
-                  <form onSubmit={handleGuessSubmit} className="flex gap-2">
-                    <input
-                      type="number"
-                      placeholder="e.g. 42"
-                      value={flashcardGuess}
-                      disabled={flashcardFeedback !== ""}
-                      onChange={(e) => setFlashcardGuess(e.target.value)}
-                      className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-orange disabled:opacity-60"
-                    />
-                    <button
-                      type="submit"
-                      disabled={flashcardFeedback !== ""}
-                      className="bg-vibrant-orange text-white font-black text-xs px-4 py-2 rounded-xl shadow-[0_3px_0_0_#D35400] active:translate-y-0.5 active:shadow-none transition-all disabled:opacity-50 cursor-pointer"
-                    >
-                      {language === "hi" ? "जांचें" : language === "mr" ? "तपासा" : "Submit"}
-                    </button>
-                  </form>
+                  {/* Guess Input Form (Only if not feedback stage yet) */}
+                  {flashcardFeedback === "" && (
+                    <form onSubmit={handleGuessSubmit} className="flex gap-2">
+                      <input
+                        type="number"
+                        placeholder="e.g. 42"
+                        value={flashcardGuess}
+                        onChange={(e) => setFlashcardGuess(e.target.value)}
+                        className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-orange"
+                      />
+                      <button
+                        type="submit"
+                        className="bg-vibrant-orange text-white font-black text-xs px-4 py-2 rounded-xl shadow-[0_3px_0_0_#D35400] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                      >
+                        {language === "hi" ? "जांचें" : language === "mr" ? "तपासा" : "Submit"}
+                      </button>
+                    </form>
+                  )}
 
                   {/* Feedback status */}
                   {flashcardFeedback !== "" && (
@@ -453,27 +481,54 @@ export default function InteractiveAbacus() {
                         : "bg-red-50 text-red-700 border-red-600 shadow-[2px_2px_0_0_#721c24]"
                     }`}>
                       {flashcardFeedback === "correct" ? (
-                        <span>🎯 {language === "hi" ? "सही जवाब! आपकी मेमोरी सक्रिय है!" : language === "mr" ? "अचूक उत्तर! तुमची मेमरी सक्रिय आहे!" : "Correct! Memory Active!"}</span>
+                        <span>🎯 {language === "hi" ? "सही जवाब!" : language === "mr" ? "अचूक उत्तर!" : "Correct!"}</span>
                       ) : (
                         <span>❌ {language === "hi" ? `गलत! सही ${flashcardTarget} था।` : language === "mr" ? `चूक! अचूक ${flashcardTarget} होते.` : `Wrong! Target was ${flashcardTarget}.`}</span>
                       )}
                     </div>
                   )}
 
-                  <div className="flex gap-2 pt-2">
-                    <button
-                      onClick={startFlashcardChallenge}
-                      className="flex-1 bg-vibrant-teal text-white border-2 border-vibrant-dark font-black py-2 rounded-xl shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all text-xs cursor-pointer text-center"
-                    >
-                      {language === "hi" ? "अगला" : language === "mr" ? "पुढचे" : "Next"}
-                    </button>
-                    <button
-                      onClick={() => { setFlashcardTarget(null); setFlashcardFeedback(""); }}
-                      className="flex-1 bg-white text-vibrant-dark border-2 border-vibrant-dark/20 font-black py-2 rounded-xl hover:border-vibrant-dark transition-all text-xs cursor-pointer text-center"
-                    >
-                      {language === "hi" ? "रीसेट" : language === "mr" ? "रीसेट" : "Reset"}
-                    </button>
-                  </div>
+                  {/* Post-submit buttons */}
+                  {flashcardFeedback !== "" && (
+                    <div className="space-y-2">
+                      {flashcardAttempts < 5 ? (
+                        <div className="flex gap-2 pt-2">
+                          <button
+                            onClick={startFlashcardChallenge}
+                            className="flex-1 bg-vibrant-teal text-white border-2 border-vibrant-dark font-black py-2 rounded-xl shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all text-xs cursor-pointer text-center"
+                          >
+                            {language === "hi" ? "अगली चुनौती" : language === "mr" ? "पुढचे आव्हान" : "Next Challenge"}
+                          </button>
+                          <button
+                            onClick={resetFlashcardSession}
+                            className="flex-1 bg-white text-vibrant-dark border-2 border-vibrant-dark/20 font-black py-2 rounded-xl hover:border-vibrant-dark transition-all text-xs cursor-pointer text-center"
+                          >
+                            {language === "hi" ? "रीसेट सत्र" : language === "mr" ? "रीसेट सत्र" : "Reset Session"}
+                          </button>
+                        </div>
+                      ) : (
+                        /* Session complete results card */
+                        <div className="bg-white border-2 border-vibrant-dark rounded-xl p-3 text-center space-y-3 shadow-[2px_2px_0_0_#1A2E35] animate-fade-in">
+                          <p className="text-xs font-black text-vibrant-dark uppercase tracking-wider">
+                            {language === "hi" ? "🏆 सत्र समाप्त 🏆" : language === "mr" ? "🏆 सत्र पूर्ण झाले 🏆" : "🏆 Session Finished 🏆"}
+                          </p>
+                          <p className="text-xs text-gray-550 font-bold leading-normal">
+                            {language === "hi"
+                              ? `परिणाम: आपने ५ में से ${formatNumber(flashcardScore)} सही अनुमान लगाए!`
+                              : language === "mr"
+                              ? `निकाल: तुम्ही ५ पैकी ${formatNumber(flashcardScore)} अचूक अंदाज लावले!`
+                              : `Result: You guessed ${flashcardScore} / 5 challenges correctly!`}
+                          </p>
+                          <button
+                            onClick={resetFlashcardSession}
+                            className="w-full text-center text-xs font-black text-vibrant-orange hover:text-vibrant-orange/80 transition cursor-pointer underline block"
+                          >
+                            {language === "hi" ? "→ अगला सेट खेलें" : language === "mr" ? "→ नवीन संच सुरू करा" : "→ Play Next Set of Challenges"}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
