@@ -199,6 +199,57 @@ Program: ${program}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
               </>
             )}
           </button>
+
+          {/* Diagnostic Worksheet Download Button */}
+          <button
+            type="button"
+            onClick={() => {
+              const textContent = `ARNAV ABACUS ACADEMY - DIAGNOSTIC MATH WORKSHEET (AGES 4-14)
+=============================================================
+This diagnostic helps assess your child's arithmetic speed, focus, and visual photographic agility.
+
+SECTION 1: ABACUS VISUALIZATION (AGES 4-8)
+------------------------------------------
+Have your child visualize abacus beads to solve these mentally.
+1) 2 + 2 - 1 = [ ]
+2) 5 + 3 - 2 = [ ]
+3) 10 + 5 - 5 = [ ]
+4) 22 + 11 - 3 = [ ]
+5) 50 + 20 - 10 = [ ]
+
+SECTION 2: SPEED MATH & SUTRAS (AGES 9-14)
+-------------------------------------------
+Solve these equations as fast as possible. Record the time taken.
+1) Square of 98 = [ ]     (Hint: Use Nikhilam Sutra deviation check!)
+2) Square of 45 = [ ]     (Hint: Use Ending in 5 formula: 4 * 5 | 25!)
+3) 123 x 5 = [ ]
+4) 99 x 9 = [ ]
+5) 300 - 145 = [ ]
+
+PARENTS DIAGNOSTICS LOG:
+- Total Time Taken: ______ seconds
+- Silly Mistakes Count: ______
+- Focus Scale (1-10): ______ / 10
+
+Need answers or a detailed cognitive score assessment?
+Book your free offline assessment trial class at Arnav Abacus Academy, Wakad, Pune!
+Contact: +91 9021924968 / Neha Patil (IIVA Certified Mentor)`;
+
+              const blob = new Blob([textContent], { type: "text/plain" });
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement("a");
+              link.href = url;
+              link.download = "arnav_abacus_diagnostic_worksheet.txt";
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              URL.revokeObjectURL(url);
+            }}
+            className="w-full bg-white hover:bg-slate-50 text-vibrant-dark border-2 border-vibrant-dark py-3.5 rounded-2xl font-black text-sm shadow-[0_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center gap-2 mt-3 cursor-pointer"
+          >
+            <Gift className="w-4 h-4 text-vibrant-teal" />
+            <span>{language === "hi" ? "फ्री गणितीय वर्कशीट डाउनलोड करें" : language === "mr" ? "मोफत गणितीय वर्कशीट डाउनलोड करा" : "Download Free Diagnostic Worksheet"}</span>
+          </button>
         </form>
 
         <p className="text-center text-[10px] font-bold uppercase text-gray-400 mt-4 flex items-center justify-center gap-1.5">

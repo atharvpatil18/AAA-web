@@ -9,7 +9,7 @@ import { useLanguage } from "../lib/LanguageContext";
 
 export default function VedicMathDemo() {
   const { language, t, formatNumber } = useLanguage();
-  const [activeSutra, setActiveSutra] = useState<"square" | "cross">("square");
+  const [activeSutra, setActiveSutra] = useState<"square" | "cross" | "ekadhikena">("square");
 
   // Sutra 1 State
   const [squareNum, setSquareNum] = useState<number>(98);
@@ -18,6 +18,9 @@ export default function VedicMathDemo() {
   const [crossStep, setCrossStep] = useState<number>(0);
   const numA = 123;
   const numB = 45;
+
+  // Sutra 3 (Ekadhikena Purvena) State
+  const [fiveNum, setFiveNum] = useState<number>(35);
 
   const steps3x2 = language === "hi" ? [
     {
@@ -139,20 +142,27 @@ export default function VedicMathDemo() {
   return (
     <div className="bg-white border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_#1A2E35] max-w-3xl mx-auto">
       {/* Tab Selector */}
-      <div className="flex border-b-4 border-vibrant-dark bg-vibrant-cream font-bold text-xs uppercase tracking-wider">
+      <div className="flex flex-col sm:flex-row border-b-4 border-vibrant-dark bg-vibrant-cream font-bold text-xs uppercase tracking-wider divide-y-4 sm:divide-y-0 sm:divide-x-4 divide-vibrant-dark">
         <button
           onClick={() => { setActiveSutra("square"); setCrossStep(0); }}
-          className={`flex-1 py-4 text-center border-r-4 border-vibrant-dark transition-all flex items-center justify-center gap-2 cursor-pointer ${activeSutra === "square" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
+          className={`flex-1 py-4 text-center transition-all flex items-center justify-center gap-2 cursor-pointer ${activeSutra === "square" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
         >
           <Sparkles className="w-4 h-4" />
           {t("vedicTabSquaring")}
         </button>
         <button
-          onClick={() => setActiveSutra("cross")}
+          onClick={() => { setActiveSutra("cross"); }}
           className={`flex-1 py-4 text-center transition-all flex items-center justify-center gap-2 cursor-pointer ${activeSutra === "cross" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
         >
           <Calculator className="w-4 h-4" />
           {t("vedicTabMult")}
+        </button>
+        <button
+          onClick={() => { setActiveSutra("ekadhikena"); }}
+          className={`flex-1 py-4 text-center transition-all flex items-center justify-center gap-2 cursor-pointer ${activeSutra === "ekadhikena" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
+        >
+          <Sparkles className="w-4 h-4 text-vibrant-gold" />
+          {t("vedicTabEndingFive")}
         </button>
       </div>
 
@@ -346,6 +356,117 @@ export default function VedicMathDemo() {
                 {language === "hi" ? "अगला" : language === "mr" ? "पुढे" : "Next"} <ChevronRight className="w-4 h-4" />
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Sutra 3 Interface */}
+        {activeSutra === "ekadhikena" && (
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h3 className="font-display font-black text-xl text-vibrant-dark">
+                {language === "hi" ? "सूत्र: एकाधिकेन पूर्वेण (५ पर समाप्त होने वाली संख्याएं)" : language === "mr" ? "सूत्र: एकाधिकेन पूर्वेण (५ ने शेवट होणाऱ्या संख्या)" : "Sutra: Ekadhikena Purvena (Numbers ending in 5)"}
+              </h3>
+              <p className="text-xs text-gray-500 font-semibold leading-relaxed">
+                {language === "hi"
+                  ? "५ पर समाप्त होने वाली किसी भी संख्या का वर्ग (जैसे ३५²) केवल ३ आसान चरणों में तुरंत ज्ञात करें!"
+                  : language === "mr"
+                  ? "५ ने शेवट होणाऱ्या कोणत्याही संख्येचा वर्ग (उदा. ३५²) अवघ्या ३ सोप्या टप्प्यात त्वरित काढा!"
+                  : "Square any number ending in 5 (e.g. 35²) instantly in 3 simple steps!"}
+              </p>
+            </div>
+
+            {/* Quick Picker */}
+            <div className="bg-slate-50 p-5 rounded-2xl border-2 border-dashed border-slate-200 space-y-3">
+              <span className="text-xs font-bold text-gray-655 block">
+                {language === "hi" ? "संख्या चुनें:" : language === "mr" ? "संख्या निवडा:" : "Choose Number:"}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {[15, 25, 35, 45, 55, 65, 75, 85, 95].map((n) => (
+                  <button
+                    key={n}
+                    onClick={() => setFiveNum(n)}
+                    className={`px-4 py-2 rounded-xl text-xs font-black border-2 transition-all cursor-pointer ${
+                      fiveNum === n
+                        ? "bg-vibrant-orange text-white border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35]"
+                        : "bg-white text-vibrant-dark border-vibrant-dark/15 hover:border-vibrant-dark shadow-[1px_1px_0_0_#1A2E35]"
+                    }`}
+                  >
+                    {formatNumber(n)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Step computations */}
+            {(() => {
+              const firstDigit = Math.floor(fiveNum / 10);
+              const leftPart = firstDigit * (firstDigit + 1);
+              const finalSquare = fiveNum * fiveNum;
+
+              return (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="bg-[#FFF8F0] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
+                      <span className="text-[10px] font-black text-vibrant-orange uppercase tracking-wider block">
+                        {language === "hi" ? "चरण १: पहला अंक" : language === "mr" ? "पायरी १: पहिला अंक" : "Step 1: First Digit"}
+                      </span>
+                      <div className="font-display font-black text-xl text-vibrant-dark">
+                        {formatNumber(firstDigit)}
+                      </div>
+                      <p className="text-[10px] text-gray-400 font-medium">
+                        {language === "hi" ? "अंतिम '५' को छोड़कर पहला अंक लें" : language === "mr" ? "शेवटचा '५' वगळता पहिला अंक घ्या" : "Take the digit before the ending 5"}
+                      </p>
+                    </div>
+
+                    <div className="bg-[#E0FAF5] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
+                      <span className="text-[10px] font-black text-vibrant-teal uppercase tracking-wider block">
+                        {language === "hi" ? "चरण २: बायाँ भाग" : language === "mr" ? "पायरी २: डावा भाग" : "Step 2: Left Half"}
+                      </span>
+                      <div className="font-display font-black text-xl text-vibrant-dark text-center">
+                        {formatNumber(firstDigit)} × ({formatNumber(firstDigit)} + {formatNumber(1)}) = <span className="text-vibrant-teal">{formatNumber(leftPart)}</span>
+                      </div>
+                      <p className="text-[10px] text-gray-400 font-medium">
+                        {language === "hi" ? "अंक को (अंक + १) से गुणा करें" : language === "mr" ? "पहिल्या अंकाला (अंक + १) ने गुणा" : "Multiply digit by (digit + 1)"}
+                      </p>
+                    </div>
+
+                    <div className="bg-[#FFFCE0] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
+                      <span className="text-[10px] font-black text-amber-700 uppercase tracking-wider block">
+                        {language === "hi" ? "चरण ३: दायाँ भाग" : language === "mr" ? "पायरी ३: उजवा भाग" : "Step 3: Right Half"}
+                      </span>
+                      <div className="font-display font-black text-xl text-amber-700">
+                        ५² = २५
+                      </div>
+                      <p className="text-[10px] text-gray-400 font-medium">
+                        {language === "hi" ? "अंतिम भाग हमेशा २५ होता है" : language === "mr" ? "शेवटचा भाग नेहमी २५ असतो" : "The right half is always 25"}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Combined Results */}
+                  <div className="bg-vibrant-dark text-white p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 border-2 border-vibrant-dark shadow-md">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-black text-vibrant-gold uppercase tracking-wider block">
+                        {language === "hi" ? "भागों को मिलाएं" : language === "mr" ? "भाग एकत्र करा" : "Combine Parts"}
+                      </span>
+                      <div className="font-display font-black text-2.5xl leading-none">
+                        <span className="text-vibrant-teal">{formatNumber(leftPart)}</span>
+                        <span className="text-vibrant-gold"> | </span>
+                        <span className="text-vibrant-orange">{formatNumber(25)}</span>
+                      </div>
+                    </div>
+                    <div className="text-center md:text-right">
+                      <span className="text-[10px] text-slate-400 uppercase font-black tracking-wider block">
+                        {language === "hi" ? "अंतिम उत्तर" : language === "mr" ? "अंतिम उत्तर" : "Final Answer"}
+                      </span>
+                      <div className="font-display font-black text-3xl text-vibrant-gold">
+                        {formatNumber(fiveNum)}² = {formatNumber(finalSquare)}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         )}
       </div>
