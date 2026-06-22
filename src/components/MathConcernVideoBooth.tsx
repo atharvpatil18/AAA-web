@@ -192,58 +192,56 @@ export default function MathConcernVideoBooth() {
           </p>
         </div>
 
-        {/* Core Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left panel: Top 5 concerns buttons (scannable options) */}
-          <div className="lg:col-span-5 space-y-4">
-            <h4 className="text-xs uppercase font-black tracking-widest text-gray-400 pl-2">
-              {t("boothLeftHeader")}
-            </h4>
-            <div className="space-y-3">
-              {concerns.map(concern => {
-                const isActive = concern.id === activeConcernId;
-                return (
-                  <button
-                    key={concern.id}
-                    onClick={() => setActiveConcernId(concern.id)}
-                    className={`w-full text-left p-4 rounded-2xl border-2 transition-all duration-150 flex items-center gap-4 ${
-                      isActive 
-                        ? "bg-vibrant-dark text-white border-vibrant-dark shadow-[4px_4px_0_0_#FF6321]"
-                        : "bg-white text-vibrant-dark border-vibrant-dark/15 hover:border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] hover:bg-vibrant-cream"
-                    }`}
-                  >
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center border shrink-0 text-xl ${concern.avatarBg}`}>
-                      {concern.avatar}
-                    </div>
-                    <div className="flex-grow space-y-1">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-black uppercase opacity-75">
-                          {concern.parentName}
-                        </span>
-                        <span className="text-[9px] font-black bg-black/10 text-current px-2 py-0.5 rounded-full">
-                          {concern.studentName} ({concern.age})
-                        </span>
-                      </div>
-                      <h3 className="font-bold text-xs md:text-sm leading-snug">
-                        {t(concern.concernTitleKey)}
-                      </h3>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Right panel: Brutalist Video Simulation Area */}
-          <div className="lg:col-span-7 space-y-6">
+        {/* Unified Diagnostic Dashboard Frame */}
+        <div className="border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_#1A2E35] bg-white">
+          <div className="grid grid-cols-1 lg:grid-cols-12 divide-y-4 lg:divide-y-0 lg:divide-x-4 divide-vibrant-dark">
             
-            {/* Interactive Video Player Shell */}
-            <div className="border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_#1A2E35] bg-vibrant-dark flex flex-col relative min-h-[350px] sm:min-h-0 sm:aspect-[16/10] md:aspect-[16/9]">
+            {/* Subsection 1: Goal or Challenge Path Selector (Left Column) */}
+            <div className="lg:col-span-5 p-5 md:p-6 bg-vibrant-cream/30 space-y-4">
+              <h4 className="text-xs uppercase font-black tracking-widest text-vibrant-dark flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-vibrant-orange inline-block"></span>
+                {t("boothLeftHeader")}
+              </h4>
+              <div className="space-y-3 max-h-[350px] lg:max-h-[500px] overflow-y-auto pr-1">
+                {concerns.map(concern => {
+                  const isActive = concern.id === activeConcernId;
+                  return (
+                    <button
+                      key={concern.id}
+                      onClick={() => setActiveConcernId(concern.id)}
+                      className={`w-full text-left p-4 rounded-2xl border-2 transition-all duration-150 flex items-center gap-4 ${
+                        isActive 
+                          ? "bg-vibrant-dark text-white border-vibrant-dark shadow-[4px_4px_0_0_#FF6321]"
+                          : "bg-white text-vibrant-dark border-vibrant-dark/15 hover:border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] hover:bg-vibrant-cream"
+                      }`}
+                    >
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center border shrink-0 text-xl ${concern.avatarBg}`}>
+                        {concern.avatar}
+                      </div>
+                      <div className="flex-grow space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-black uppercase opacity-75">
+                            {concern.parentName}
+                          </span>
+                          <span className="text-[9px] font-black bg-black/10 text-current px-2 py-0.5 rounded-full">
+                            {concern.studentName} ({concern.age})
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-xs md:text-sm leading-snug">
+                          {t(concern.concernTitleKey)}
+                        </h3>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Subsection 2 & 3: Video Player Screen & Solution Panel (Right Column) */}
+            <div className="lg:col-span-7 flex flex-col divide-y-4 divide-vibrant-dark">
               
-              {/* Simulated Video Feed Area */}
-              <div className="flex-grow w-full relative flex flex-col justify-between overflow-hidden bg-slate-950 p-6 select-none">
-                
+              {/* Subsection 2: Interactive Video screen */}
+              <div className="bg-slate-950 p-6 flex flex-col justify-between overflow-hidden relative min-h-[320px] aspect-[16/10] sm:aspect-[16/9]">
                 {/* Simulated scanlines/CRT overlay */}
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[size:100%_4px,3px_100%] pointer-events-none z-10 opacity-40" />
 
@@ -328,7 +326,7 @@ export default function MathConcernVideoBooth() {
               </div>
 
               {/* Player Bottom Control Deck */}
-              <div className="bg-[#1A2E35] border-t-2 border-vibrant-dark/25 p-4 flex items-center gap-4 shrink-0 z-20">
+              <div className="bg-[#1A2E35] p-4 flex items-center gap-4 shrink-0 z-20">
                 <button
                   onClick={() => setIsPlaying(!isPlaying)}
                   className="w-10 h-10 rounded-xl bg-white hover:bg-vibrant-cream border border-vibrant-dark flex items-center justify-center shrink-0 shadow-[2px_2px_0_0_#0D171A]"
@@ -351,100 +349,100 @@ export default function MathConcernVideoBooth() {
                   <span className="text-[10px] font-mono font-bold text-white/50">0:20</span>
                 </div>
               </div>
-            </div>
 
-            {/* Scientific Mapping Panel */}
-            <div className="bg-white border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_#1A2E35] p-6 md:p-8 space-y-5">
-              
-              {/* Brief Solution Mapping - Always Visible */}
-              <div className="bg-orange-50 text-vibrant-dark border-2 border-[#FFD8B1] rounded-2xl p-4 flex gap-3">
-                <div className="text-xl shrink-0 mt-0.5">🌟</div>
-                <div className="space-y-1">
-                  <span className="text-[9px] font-black uppercase tracking-wider text-vibrant-orange">
-                    {t("boothAbacusSolutionHeader")}
-                  </span>
-                  <p className="text-xs md:text-sm font-bold leading-relaxed">
-                    {t(activeConcern.abacusSolutionKey)}
-                  </p>
+              {/* Subsection 3: Solution Mapping (Brief + Collapsible Details) */}
+              <div className="p-5 md:p-6 bg-white space-y-4">
+                
+                {/* Brief Solution Mapping - Always Visible */}
+                <div className="bg-orange-50 text-vibrant-dark border-2 border-[#FFD8B1] rounded-2xl p-4 flex gap-3">
+                  <div className="text-xl shrink-0 mt-0.5">🌟</div>
+                  <div className="space-y-1">
+                    <span className="text-[9px] font-black uppercase tracking-wider text-vibrant-orange">
+                      {t("boothAbacusSolutionHeader")}
+                    </span>
+                    <p className="text-xs md:text-sm font-bold leading-relaxed">
+                      {t(activeConcern.abacusSolutionKey)}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              {/* View Science & Framework Toggle Button */}
-              <div className="flex justify-center">
-                <button
-                  onClick={() => setShowDetails(!showDetails)}
-                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider border-2 border-vibrant-dark transition-all duration-150 shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none ${
-                    showDetails
-                      ? "bg-vibrant-orange text-white shadow-none translate-y-0.5"
-                      : "bg-white text-vibrant-dark hover:bg-vibrant-cream"
-                  }`}
-                >
-                  <span>{showDetails ? t("boothHideDetails") : t("boothViewDetails")}</span>
-                  {showDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                </button>
-              </div>
-
-              {/* Detailed scientific / framework mapping */}
-              <AnimatePresence initial={false}>
-                {showDetails && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
+                {/* View Science & Framework Toggle Button */}
+                <div className="flex justify-center">
+                  <button
+                    onClick={() => setShowDetails(!showDetails)}
+                    className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider border-2 border-vibrant-dark transition-all duration-150 shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none ${
+                      showDetails
+                        ? "bg-vibrant-orange text-white shadow-none translate-y-0.5"
+                        : "bg-white text-vibrant-dark hover:bg-vibrant-cream"
+                    }`}
                   >
-                    <div className="border-2 border-vibrant-dark rounded-[24px] overflow-hidden mt-2 bg-slate-50">
-                      {/* Tab Headers */}
-                      <div className="flex border-b-2 border-vibrant-dark bg-[#F3F1EC]">
-                        <button
-                          onClick={() => setActiveDetailTab("science")}
-                          className={`flex-1 py-3.5 text-xs font-black uppercase tracking-wider border-r-2 border-vibrant-dark flex items-center justify-center gap-2 ${
-                            activeDetailTab === "science" ? "bg-white text-vibrant-dark" : "bg-transparent text-gray-500 hover:text-vibrant-dark"
-                          }`}
-                        >
-                          <Brain className="w-4 h-4 text-vibrant-teal" /> {t("boothTabScience")}
-                        </button>
-                        <button
-                          onClick={() => setActiveDetailTab("academy")}
-                          className={`flex-1 py-3.5 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 ${
-                            activeDetailTab === "academy" ? "bg-white text-vibrant-dark" : "bg-transparent text-gray-500 hover:text-vibrant-dark"
-                          }`}
-                        >
-                          <Target className="w-4 h-4 text-vibrant-orange" /> {t("boothTabAcademy")}
-                        </button>
-                      </div>
+                    <span>{showDetails ? t("boothHideDetails") : t("boothViewDetails")}</span>
+                    {showDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                </div>
 
-                      {/* Tab Pane details */}
-                      <div className="p-5 space-y-4">
-                        {activeDetailTab === "science" ? (
-                          <div className="space-y-2">
-                            <span className="text-[10px] font-black uppercase text-vibrant-teal tracking-widest flex items-center gap-1.5">
-                              <Brain className="w-3.5 h-3.5" /> {t("boothScienceHeader")}
-                            </span>
-                            <p className="text-xs md:text-sm text-gray-655 font-medium leading-relaxed">
-                              {t(activeConcern.scienceKey)}
-                            </p>
-                          </div>
-                        ) : (
-                          <div className="space-y-2">
-                            <span className="text-[10px] font-black uppercase text-vibrant-orange tracking-widest flex items-center gap-1.5">
-                              <ShieldCheck className="w-3.5 h-3.5" /> {t("boothAcademyHeader")}
-                            </span>
-                            <p className="text-xs md:text-sm text-gray-655 font-medium leading-relaxed">
-                              {t(activeConcern.academyWayKey)}
-                            </p>
-                          </div>
-                        )}
+                {/* Detailed scientific / framework mapping */}
+                <AnimatePresence initial={false}>
+                  {showDetails && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="border-2 border-vibrant-dark rounded-[24px] overflow-hidden mt-2 bg-slate-50">
+                        {/* Tab Headers */}
+                        <div className="flex border-b-2 border-vibrant-dark bg-[#F3F1EC]">
+                          <button
+                            onClick={() => setActiveDetailTab("science")}
+                            className={`flex-1 py-3.5 text-xs font-black uppercase tracking-wider border-r-2 border-vibrant-dark flex items-center justify-center gap-2 ${
+                              activeDetailTab === "science" ? "bg-white text-vibrant-dark" : "bg-transparent text-gray-500 hover:text-vibrant-dark"
+                            }`}
+                          >
+                            <Brain className="w-4 h-4 text-vibrant-teal" /> {t("boothTabScience")}
+                          </button>
+                          <button
+                            onClick={() => setActiveDetailTab("academy")}
+                            className={`flex-1 py-3.5 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 ${
+                              activeDetailTab === "academy" ? "bg-white text-vibrant-dark" : "bg-transparent text-gray-500 hover:text-vibrant-dark"
+                            }`}
+                          >
+                            <Target className="w-4 h-4 text-vibrant-orange" /> {t("boothTabAcademy")}
+                          </button>
+                        </div>
+
+                        {/* Tab Pane details */}
+                        <div className="p-5 space-y-4">
+                          {activeDetailTab === "science" ? (
+                            <div className="space-y-2">
+                              <span className="text-[10px] font-black uppercase text-vibrant-teal tracking-widest flex items-center gap-1.5">
+                                <Brain className="w-3.5 h-3.5" /> {t("boothScienceHeader")}
+                              </span>
+                              <p className="text-xs md:text-sm text-gray-655 font-medium leading-relaxed">
+                                {t(activeConcern.scienceKey)}
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="space-y-2">
+                              <span className="text-[10px] font-black uppercase text-vibrant-orange tracking-widest flex items-center gap-1.5">
+                                <ShieldCheck className="w-3.5 h-3.5" /> {t("boothAcademyHeader")}
+                              </span>
+                              <p className="text-xs md:text-sm text-gray-655 font-medium leading-relaxed">
+                                {t(activeConcern.academyWayKey)}
+                              </p>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
             </div>
 
           </div>
-
         </div>
 
       </div>

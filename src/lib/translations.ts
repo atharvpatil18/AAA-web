@@ -581,9 +581,9 @@ export const translations = {
 
     // Interactive Booth
     boothBadge: "Interactive Consultation",
-    boothTitle: "The 'Big 5' Math Hurdles : Real Concerns Reported by Parents",
-    boothSubtitle: "As a parent, do you agree with these challenges ? Select a math concern on the left to see the mapped abacus solutions and explore the scientific brain mapping behind them.",
-    boothLeftHeader: "Select a Math Concern",
+    boothTitle: "The 'Big 5' Math Hurdles",
+    boothSubtitle: "Do you agree with these parent concerns ? Arnav Abacus Academy turns math fear into focus and mental speed using whole-brain diagnostics.",
+    boothLeftHeader: "Diagnose Goal or Challenge",
     boothTabScience: "Brain Science Behind It",
     boothTabAcademy: "Arnav Academy Way",
     boothAbacusSolutionHeader: "Abacus Math Solution Mapping",
@@ -1276,9 +1276,9 @@ export const translations = {
 
     // Interactive Booth
     boothBadge: "इंटरएक्टिव परामर्श",
-    boothTitle: "मुख्य ५ गणितीय चिंताएं : माता-पिता द्वारा रिपोर्ट की गई वास्तविक समस्याएं",
-    boothSubtitle: "यदि आप एक माता-पिता हैं, तो क्या आप भी इन चुनौतियों से सहमत हैं ? एबाकस समाधान और उसके पीछे के विज्ञान को समझने के लिए किसी एक समस्या पर क्लिक करें।",
-    boothLeftHeader: "एक गणितीय चिंता चुनें",
+    boothTitle: "मुख्य ५ गणितीय चिंताएं",
+    boothSubtitle: "क्या आप इन माता-पिता की चिंताओं से सहमत हैं ? अर्णव एबाकस एकेडमी संपूर्ण-मस्तिष्क निदान द्वारा गणित के डर को एकाग्रता और मानसिक गति में बदलती है।",
+    boothLeftHeader: "लक्ष्य या चुनौती चुनें",
     boothTabScience: "इसके पीछे का मस्तिष्क विज्ञान",
     boothTabAcademy: "अर्णव एकेडमी का दृष्टिकोण",
     boothAbacusSolutionHeader: "एबाकस गणित समाधान मैपिंग",
@@ -1971,9 +1971,9 @@ export const translations = {
 
     // Interactive Booth
     boothBadge: "इंटरएक्टिव्ह मार्गदर्शन",
-    boothTitle: "५ मुख्य गणितीय चिंता : पालकांनी मांडलेल्या वास्तविक समस्या",
-    boothSubtitle: "एक पालक म्हणून, तुम्ही देखील या आव्हानांशी सहमत आहात का ? ॲबॅकसचे थेट उपाय आणि त्यामागील मेंदूचे विज्ञान जाणून घेण्यासाठी कोणत्याही एका समस्येवर क्लिक करा।",
-    boothLeftHeader: "एक गणितीय आव्हान निवडा",
+    boothTitle: "५ मुख्य गणितीय चिंता",
+    boothSubtitle: "तुम्ही या पालकांच्या चिंतेशी सहमत आहात का ? अर्णव ॲबॅकस अकॅडमी संपूर्ण-मेंदूच्या निदानाद्वारे गणिताची भीती एकाग्रता आणि मानसिक वेगात बदलते.",
+    boothLeftHeader: "ध्येय किंवा आव्हान निवडा",
     boothTabScience: "यामागील मेंदूचे विज्ञान",
     boothTabAcademy: "अर्णव अकॅडमीची शिकवण्याची पद्धत",
     boothAbacusSolutionHeader: "ॲबॅकस मॅथ सोल्युशन मॅपिंग",
