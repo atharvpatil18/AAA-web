@@ -581,8 +581,8 @@ export const translations = {
 
     // Interactive Booth
     boothBadge: "Interactive Consultation",
-    boothTitle: "Top 5 Math Problems Faced by Parents",
-    boothSubtitle: "Hear direct concerns from parents about their child's arithmetic learning curves. Click on any concern on the left to see how Abacus math science solves them.",
+    boothTitle: "The 'Big 5' Math Hurdles : Real Concerns Reported by Parents",
+    boothSubtitle: "As a parent, do you agree with these challenges ? Select a math concern on the left to see the mapped abacus solutions and explore the scientific brain mapping behind them.",
     boothLeftHeader: "Select a Math Concern",
     boothTabScience: "Brain Science Behind It",
     boothTabAcademy: "Arnav Academy Way",
@@ -1276,8 +1276,8 @@ export const translations = {
 
     // Interactive Booth
     boothBadge: "इंटरएक्टिव परामर्श",
-    boothTitle: "माता-पिता द्वारा सामना की जाने वाली शीर्ष 5 गणित की समस्याएं",
-    boothSubtitle: "बच्चों के गणित सीखने के बारे में माता-पिता की चिंताओं को सीधे सुनें। बाईं ओर किसी भी चिंता पर क्लिक करें और देखें कि एबाकस विज्ञान उन्हें कैसे हल करता है।",
+    boothTitle: "मुख्य ५ गणितीय चिंताएं : माता-पिता द्वारा रिपोर्ट की गई वास्तविक समस्याएं",
+    boothSubtitle: "यदि आप एक माता-पिता हैं, तो क्या आप भी इन चुनौतियों से सहमत हैं ? एबाकस समाधान और उसके पीछे के विज्ञान को समझने के लिए किसी एक समस्या पर क्लिक करें।",
     boothLeftHeader: "एक गणितीय चिंता चुनें",
     boothTabScience: "इसके पीछे का मस्तिष्क विज्ञान",
     boothTabAcademy: "अर्णव एकेडमी का दृष्टिकोण",
@@ -1971,8 +1971,8 @@ export const translations = {
 
     // Interactive Booth
     boothBadge: "इंटरएक्टिव्ह मार्गदर्शन",
-    boothTitle: "पालकांसमोरील ५ प्रमुख गणितीय आव्हाने",
-    boothSubtitle: "मुलांच्या गणितीय आकडेमोडीच्या अडचणींबद्दल पालकांच्या चिंता थेट ऐका. ॲबॅकसचे विज्ञान त्या कशा सोडवते हे पाहण्यासाठी डावीकडील कोणत्याही समस्येवर क्लिक करा.",
+    boothTitle: "५ मुख्य गणितीय चिंता : पालकांनी मांडलेल्या वास्तविक समस्या",
+    boothSubtitle: "एक पालक म्हणून, तुम्ही देखील या आव्हानांशी सहमत आहात का ? ॲबॅकसचे थेट उपाय आणि त्यामागील मेंदूचे विज्ञान जाणून घेण्यासाठी कोणत्याही एका समस्येवर क्लिक करा।",
     boothLeftHeader: "एक गणितीय आव्हान निवडा",
     boothTabScience: "यामागील मेंदूचे विज्ञान",
     boothTabAcademy: "अर्णव अकॅडमीची शिकवण्याची पद्धत",
