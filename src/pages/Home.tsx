@@ -5,6 +5,7 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "motion/react";
 import Hero from "../components/Hero";
 import TrustBar from "../components/TrustBar";
 import ProgramCard from "../components/ProgramCard";
@@ -27,6 +28,7 @@ export default function Home() {
   const [showVedic, setShowVedic] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [showCompareTable, setShowCompareTable] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState("abacus");
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
   const handleMapCtaClick = () => {
@@ -61,7 +63,7 @@ export default function Home() {
 
       {/* 3. Core Programs Showcase */}
       <section id="programs-showcase" className="py-20 md:py-28 max-w-7xl mx-auto px-4 md:px-8">
-        <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
+        <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
           <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
             {t("progBadge")}
           </span>
@@ -73,11 +75,45 @@ export default function Home() {
           </p>
         </div>
 
-        {/* 3 Columns Program Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {PROGRAMS.map((prog) => (
-            <ProgramCard key={prog.id} program={prog} />
-          ))}
+        {/* Tab Selection Headings */}
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-center gap-3 md:gap-6 mb-10 pb-6 max-w-4xl mx-auto border-b border-slate-200">
+          {PROGRAMS.map((prog) => {
+            const prefix = prog.id === "abacus" ? "Abacus" : prog.id === "vedic-math" ? "Vedic" : "School";
+            const progTitle = t(`prog${prefix}Title` as any) || prog.title;
+            const isSelected = selectedProgram === prog.id;
+
+            return (
+              <button
+                key={prog.id}
+                onClick={() => setSelectedProgram(prog.id)}
+                className={`flex-1 py-3 px-4 rounded-2xl text-xs md:text-sm font-black uppercase tracking-wider transition-all duration-200 cursor-pointer border-2 shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none text-center ${
+                  isSelected
+                    ? "bg-vibrant-orange text-white border-vibrant-dark"
+                    : "bg-white text-vibrant-dark hover:bg-vibrant-cream border-vibrant-dark/20"
+                }`}
+              >
+                {progTitle}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Selected Program Card Display */}
+        <div className="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto transition-all duration-300">
+          {PROGRAMS.map((prog) => {
+            if (prog.id !== selectedProgram) return null;
+            return (
+              <motion.div
+                key={prog.id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+              >
+                <ProgramCard program={prog} />
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
