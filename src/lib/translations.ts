@@ -72,9 +72,9 @@ export const translations = {
     abacusExamplesTitle: "Example Numbers",
     abacusExamplesSubtitle: "Click any option below to see how standard numbers map onto the Soroban beads.",
     abacusCustomTitle: "Visualize Custom Number",
-    abacusCustomSubtitle: "Type any number between 0 and 9,999.99 to see it represented on the abacus rods.",
+    abacusCustomSubtitle: "Type any number between 0 and 9,999.999 to see it represented on the abacus rods.",
     abacusComputedTitle: "Computed Abacus Value",
-    abacusComputedSubtitle: "Matches place values (Thousands • Hundreds • Tens • Ones • Tenths • Hundredths)",
+    abacusComputedSubtitle: "Matches place values (Thousands • Hundreds • Tens • Ones • Tenths • Hundredths • Thousandths)",
     abacusShow: "Show",
 
     // VedicMathDemo
@@ -797,9 +797,9 @@ export const translations = {
     abacusExamplesTitle: "उदाहरण संख्याएँ",
     abacusExamplesSubtitle: "यह देखने के लिए नीचे दिए गए किसी भी विकल्प पर क्लिक करें कि मानक संख्याएँ सोरोबान मोतियों पर कैसे दिखाई देती हैं।",
     abacusCustomTitle: "कस्टम संख्या की कल्पना करें",
-    abacusCustomSubtitle: "एबाकस छड़ों पर प्रदर्शित करने के लिए 0 और 9,999.99 के बीच कोई भी संख्या टाइप करें।",
+    abacusCustomSubtitle: "एबाकस छड़ों पर प्रदर्शित करने के लिए 0 और 9,999.999 के बीच कोई भी संख्या टाइप करें।",
     abacusComputedTitle: "परिकलित एबाकस मान",
-    abacusComputedSubtitle: "स्थानीय मानों से मेल खाता है (हजार • सैकड़ा • दहाई • इकाई • दशांश • शतांश)",
+    abacusComputedSubtitle: "स्थानीय मानों से मेल खाता है (हजार • सैकड़ा • दहाई • इकाई • दशांश • शतांश • हजारवां)",
     abacusShow: "दिखाएं",
 
     // VedicMathDemo
@@ -1522,9 +1522,9 @@ export const translations = {
     abacusExamplesTitle: "उदाहरणे",
     abacusExamplesSubtitle: "नेमकी संख्या ॲबॅकसवर कशी दिसते हे पाहण्यासाठी खालील संख्यांवर क्लिक करा.",
     abacusCustomTitle: "तुमची स्वतःची संख्या पहा",
-    abacusCustomSubtitle: "ॲबॅकस कॉलमवर पाहण्यासाठी ० ते ९,९९९.९९ मधील कोणतीही संख्या टाईप करा.",
+    abacusCustomSubtitle: "ॲबॅकस कॉलमवर पाहण्यासाठी ० ते ९,९९९.९९९ मधील कोणतीही संख्या टाईप करा.",
     abacusComputedTitle: "ॲबॅकसवरील संख्या",
-    abacusComputedSubtitle: "स्थानिक किमतीनुसार (सहस्र • शतक • दशक • एकक • दशांश • शतांश)",
+    abacusComputedSubtitle: "स्थानिक किमतीनुसार (सहस्र • शतक • दशक • एकक • दशांश • शतांश • हजारवा)",
     abacusShow: "दाखवा",
 
     // VedicMathDemo

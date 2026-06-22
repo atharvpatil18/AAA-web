@@ -15,8 +15,9 @@ interface RodState {
 
 export default function InteractiveAbacus() {
   const { language, t, formatNumber } = useLanguage();
-  // 6 rods: Indices 0 (hundred-thousands) to 5 (ones) from left to right
+  // 7 rods: Indices 0 (Thousands) to 6 (Thousandths) from left to right
   const [rods, setRods] = useState<RodState[]>([
+    { upper: false, lowerCount: 0 },
     { upper: false, lowerCount: 0 },
     { upper: false, lowerCount: 0 },
     { upper: false, lowerCount: 0 },
@@ -58,17 +59,18 @@ export default function InteractiveAbacus() {
     });
   };
 
-  // Set abacus to a specific number supporting decimals up to 9999.99
+  // Set abacus to a specific number supporting decimals up to 9999.999
   const setAbacusNumber = (num: number) => {
-    const clamped = Math.max(0, Math.min(9999.99, num));
+    const clamped = Math.max(0, Math.min(9999.999, num));
     const d0 = Math.floor(clamped / 1000) % 10;
     const d1 = Math.floor(clamped / 100) % 10;
     const d2 = Math.floor(clamped / 10) % 10;
     const d3 = Math.floor(clamped) % 10;
     const d4 = Math.floor(clamped * 10) % 10;
-    const d5 = Math.round(clamped * 100) % 10;
+    const d5 = Math.floor(clamped * 100) % 10;
+    const d6 = Math.round(clamped * 1000) % 10;
 
-    const digits = [d0, d1, d2, d3, d4, d5];
+    const digits = [d0, d1, d2, d3, d4, d5, d6];
     const nextRods = digits.map((digit) => {
       const upper = digit >= 5;
       const lowerCount = digit % 5;
@@ -80,6 +82,7 @@ export default function InteractiveAbacus() {
   // Reset abacus to 0
   const resetAbacus = () => {
     setRods([
+      { upper: false, lowerCount: 0 },
       { upper: false, lowerCount: 0 },
       { upper: false, lowerCount: 0 },
       { upper: false, lowerCount: 0 },
@@ -111,10 +114,11 @@ export default function InteractiveAbacus() {
     else if (idx === 3) multiplier = 1;
     else if (idx === 4) multiplier = 0.1;
     else if (idx === 5) multiplier = 0.01;
+    else if (idx === 6) multiplier = 0.001;
     return acc + getRodValue(rod) * multiplier;
   }, 0);
 
-  const displayTotal = parseFloat(totalValue.toFixed(2));
+  const displayTotal = parseFloat(totalValue.toFixed(3));
 
   const handleCustomInputSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -137,15 +141,16 @@ export default function InteractiveAbacus() {
     setIsCountingDown(true);
 
     // Set abacus to represent target number
-    const clamped = Math.max(0, Math.min(9999.99, target));
+    const clamped = Math.max(0, Math.min(9999.999, target));
     const d0 = Math.floor(clamped / 1000) % 10;
     const d1 = Math.floor(clamped / 100) % 10;
     const d2 = Math.floor(clamped / 10) % 10;
     const d3 = Math.floor(clamped) % 10;
     const d4 = Math.floor(clamped * 10) % 10;
-    const d5 = Math.round(clamped * 100) % 10;
+    const d5 = Math.floor(clamped * 100) % 10;
+    const d6 = Math.round(clamped * 1000) % 10;
 
-    const digits = [d0, d1, d2, d3, d4, d5];
+    const digits = [d0, d1, d2, d3, d4, d5, d6];
     const nextRods = digits.map((digit) => {
       const upper = digit >= 5;
       const lowerCount = digit % 5;
@@ -160,6 +165,7 @@ export default function InteractiveAbacus() {
       setIsCountingDown(false);
       // Reset abacus rods so player cannot read/count them
       setRods([
+        { upper: false, lowerCount: 0 },
         { upper: false, lowerCount: 0 },
         { upper: false, lowerCount: 0 },
         { upper: false, lowerCount: 0 },
@@ -190,8 +196,44 @@ export default function InteractiveAbacus() {
     { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या १२.३४" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या १२.३४" : "Number 12.34"}`, val: 12.34 },
     { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ३५०.१" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ३५०.१" : "Number 350.1"}`, val: 350.1 },
     { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या २,०२६" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या २,०२६" : "Number 2,026"}`, val: 2026 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९,९९९.९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९,९९९.९९" : "Number 9,999.99"}`, val: 9999.99 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९,९९९.९९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९,९९९.९९९" : "Number 9,999.999"}`, val: 9999.999 },
   ];
+
+  // Helper for rod-specific colors as requested: 1st=pink, 2nd=red, 3rd=green, 4th=yellow, 5th=orange, 6th=blue, 7th=white
+  const getBeadColor = (rIdx: number, isActive: boolean) => {
+    const configs = [
+      { // Rod 1: Pink
+        active: "bg-pink-500 text-white border-pink-700",
+        inactive: "bg-pink-100 text-pink-700/50 border-pink-300"
+      },
+      { // Rod 2: Red
+        active: "bg-red-600 text-white border-red-800",
+        inactive: "bg-red-100 text-red-700/50 border-red-300"
+      },
+      { // Rod 3: Green
+        active: "bg-green-600 text-white border-green-800",
+        inactive: "bg-green-100 text-green-700/50 border-green-300"
+      },
+      { // Rod 4: Yellow
+        active: "bg-yellow-400 text-vibrant-dark border-yellow-600",
+        inactive: "bg-yellow-100 text-yellow-800/50 border-yellow-300"
+      },
+      { // Rod 5: Orange
+        active: "bg-orange-500 text-white border-orange-700",
+        inactive: "bg-orange-100 text-orange-700/50 border-orange-300"
+      },
+      { // Rod 6: Blue
+        active: "bg-blue-600 text-white border-blue-800",
+        inactive: "bg-blue-100 text-blue-700/50 border-blue-300"
+      },
+      { // Rod 7: White
+        active: "bg-white text-vibrant-dark border-gray-600",
+        inactive: "bg-gray-100 text-gray-400 border-gray-300"
+      }
+    ];
+    const conf = configs[rIdx] || configs[6];
+    return isActive ? conf.active : conf.inactive;
+  };
 
   return (
     <div 
@@ -265,31 +307,36 @@ export default function InteractiveAbacus() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* Left Hand: Visual Abacus Box */}
-        <div className={`lg:col-span-8 bg-[#5C3A21] border-4 sm:border-8 border-[#3D2513] rounded-3xl p-2 sm:p-6 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] relative overflow-hidden ${
+        <div className={`lg:col-span-8 bg-black border-4 sm:border-8 border-black rounded-3xl p-3 sm:p-6 shadow-[8px_8px_0_0_#1A2E35] relative overflow-hidden ${
           isFlashcardMode ? "pointer-events-none" : ""
         }`}>
+          {/* Header Name on tool */}
+          <div className="text-center font-display font-black text-white text-xs sm:text-sm tracking-wider uppercase mb-3">
+            Arnav Abacus Academy
+          </div>
           
           {/* Column Place Value Labels */}
-          <div className="w-full flex justify-around mb-2 px-1 text-center font-black select-none text-[#FFFDF9]/60">
-            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider">{language === "hi" ? "हजार" : language === "mr" ? "हजार" : "Th"}</div>
-            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider">{language === "hi" ? "सैकड़ा" : language === "mr" ? "शतक" : "H"}</div>
-            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider">{language === "hi" ? "दहाई" : language === "mr" ? "दशक" : "T"}</div>
-            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider text-vibrant-gold">{language === "hi" ? "इकाई •" : language === "mr" ? "एकक •" : "O •"}</div>
-            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider text-[#FFFDF9]/40">{language === "hi" ? "दशांश" : language === "mr" ? "दशांश" : "t"}</div>
-            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider text-[#FFFDF9]/40">{language === "hi" ? "शतांश" : language === "mr" ? "शतांश" : "h"}</div>
+          <div className="w-full flex justify-around mb-2 px-1 text-center font-black select-none text-white/70">
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider">{language === "hi" ? "हजार" : language === "mr" ? "हजार" : "Th"}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider">{language === "hi" ? "सैकड़ा" : language === "mr" ? "शतक" : "H"}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider">{language === "hi" ? "दहाई" : language === "mr" ? "दशक" : "T"}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-vibrant-gold">{language === "hi" ? "इकाई •" : language === "mr" ? "एकक •" : "O •"}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-white/50">{language === "hi" ? "दशांश" : language === "mr" ? "दशांश" : "t"}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-white/50">{language === "hi" ? "शतांश" : language === "mr" ? "शतांश" : "h"}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-vibrant-gold">{language === "hi" ? "हजारवां •" : language === "mr" ? "हजारवा •" : "th •"}</div>
           </div>
 
-          {/* Rods and Frame container */}
-          <div className="relative h-[240px] border-4 border-[#2C190D] bg-[#1E1108] rounded-xl flex justify-around p-0.5 sm:p-1">
+          {/* Rods and Frame container with White Background */}
+          <div className="relative h-[240px] border-4 border-black bg-white rounded-xl flex justify-around p-0.5 sm:p-1">
             
-            {/* Horizontal Beam/Divider */}
-            <div className="absolute top-[68px] left-0 right-0 h-4 bg-[#4A2C18] border-y-2 border-[#2C190D] shadow-md z-10 flex items-center justify-around">
-              {/* Real-time pinpoint indicators (only in 1st and 4th columns: indices 0 and 3) */}
-              {[...Array(6)].map((_, i) => (
+            {/* Horizontal Beam/Divider in Black */}
+            <div className="absolute top-[68px] left-0 right-0 h-4 bg-black border-y border-black shadow-md z-10 flex items-center justify-around">
+              {/* Real-time pinpoint indicators (indices 0, 3, and 6) */}
+              {[...Array(7)].map((_, i) => (
                 <div 
                   key={i} 
-                  className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-vibrant-gold z-20 ${
-                    i === 0 || i === 3 ? "opacity-75" : "opacity-0"
+                  className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-white z-20 ${
+                    i === 0 || i === 3 || i === 6 ? "opacity-90" : "opacity-0"
                   }`} 
                 />
               ))}
@@ -298,12 +345,14 @@ export default function InteractiveAbacus() {
             {/* Render Rods */}
             {rods.map((rod, rIdx) => {
               const val = getRodValue(rod);
+              const beadStyle = getBeadColor(rIdx, true);
+              const inactiveBeadStyle = getBeadColor(rIdx, false);
 
               return (
-                <div key={rIdx} className="relative w-9 xs:w-12 sm:w-16 h-full flex flex-col items-center select-none">
+                <div key={rIdx} className="relative w-9 xs:w-11 sm:w-14 h-full flex flex-col items-center select-none">
                   
-                  {/* Metallic Rod Line */}
-                  <div className="absolute top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-r from-gray-400 via-gray-100 to-gray-500 rounded-full shadow-sm" />
+                  {/* Black Rod Line */}
+                  <div className="absolute top-0 bottom-0 w-0.5 sm:w-1 bg-black rounded-full shadow-sm" />
 
                   {/* --- UPPER DECK --- */}
                   <div 
@@ -315,10 +364,8 @@ export default function InteractiveAbacus() {
                       whileHover={{ scale: 1.08 }}
                       whileTap={{ scale: 0.90 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                      className={`w-7 xs:w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[10px] font-black cursor-pointer ${
-                        rod.upper
-                          ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
-                          : "bg-gradient-to-b from-[#B07D3E] via-[#F4C178] to-[#99652B] text-amber-950/70"
+                      className={`w-7 xs:w-9 sm:w-11 h-6 rounded-full border shadow-md flex items-center justify-center text-[10px] font-black cursor-pointer ${
+                        rod.upper ? beadStyle : inactiveBeadStyle
                       }`}
                     >
                       5
@@ -335,17 +382,15 @@ export default function InteractiveAbacus() {
                         <motion.div
                           key={idx}
                           onClick={(e) => {
-                            e.stopPropagation();
-                            setLowerCount(rIdx, idx);
+                             e.stopPropagation();
+                             setLowerCount(rIdx, idx);
                           }}
                           animate={{ y: yOffset }}
                           whileHover={{ scale: 1.08 }}
                           whileTap={{ scale: 0.90 }}
                           transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                          className={`relative w-7 xs:w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
-                            isActive 
-                              ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
-                              : "bg-gradient-to-b from-[#A5784A] via-[#E8B682] to-[#8C5D30] text-amber-950/70"
+                          className={`relative w-7 xs:w-9 sm:w-11 h-6 rounded-full border shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
+                            isActive ? beadStyle : inactiveBeadStyle
                           }`}
                         >
                           1
@@ -354,8 +399,8 @@ export default function InteractiveAbacus() {
                     })}
                   </div>
 
-                  {/* Individual Rod Value Badge */}
-                  <div className="absolute -bottom-1 bg-[#2C190D] border border-amber-950/50 rounded-md px-1 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-black text-vibrant-gold tracking-tight z-20">
+                  {/* Individual Rod Value Badge (Black style) */}
+                  <div className="absolute -bottom-1 bg-black border border-black rounded-md px-1 sm:px-1.5 py-0.5 text-[8px] sm:text-[9px] font-black text-white tracking-tight z-20">
                     {formatNumber(val)}
                   </div>
 
@@ -438,10 +483,10 @@ export default function InteractiveAbacus() {
                 <form onSubmit={handleCustomInputSubmit} className="flex gap-2">
                   <input
                     type="number"
-                    step="0.01"
+                    step="0.001"
                     min="0"
-                    max="9999.99"
-                    placeholder="e.g. 1234.56"
+                    max="9999.999"
+                    placeholder="e.g. 1234.567"
                     value={customInput}
                     onChange={(e) => setCustomInput(e.target.value)}
                     className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-teal"
