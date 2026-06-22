@@ -203,8 +203,8 @@ export default function InteractiveAbacus() {
   const getBeadColor = (rIdx: number, isActive: boolean) => {
     const configs = [
       { // Rod 1: Pink
-        active: "bg-pink-700 text-white border-pink-900",
-        inactive: "bg-pink-900/30 text-pink-300 border-pink-950"
+        active: "bg-pink-600 text-white border-pink-800",
+        inactive: "bg-pink-600/30 text-pink-500 border-pink-600/50"
       },
       { // Rod 2: Red
         active: "bg-red-800 text-white border-red-950",
