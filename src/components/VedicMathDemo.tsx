@@ -435,7 +435,7 @@ export default function VedicMathDemo() {
                         {language === "hi" ? "चरण ३: दायाँ भाग" : language === "mr" ? "पायरी ३: उजवा भाग" : "Step 3: Right Half"}
                       </span>
                       <div className="font-display font-black text-xl text-amber-700">
-                        ५² = २५
+                        {formatNumber(5)}² = {formatNumber(25)}
                       </div>
                       <p className="text-[10px] text-gray-400 font-medium">
                         {language === "hi" ? "अंतिम भाग हमेशा २५ होता है" : language === "mr" ? "शेवटचा भाग नेहमी २५ असतो" : "The right half is always 25"}
