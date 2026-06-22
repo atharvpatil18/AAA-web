@@ -36,6 +36,7 @@ export default function MathConcernVideoBooth() {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [activeDetailTab, setActiveDetailTab] = useState<"science" | "academy">("science");
   const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [showDashboard, setShowDashboard] = useState<boolean>(false);
 
   const concerns: ConcernCase[] = [
     {
@@ -192,8 +193,19 @@ export default function MathConcernVideoBooth() {
           </p>
         </div>
 
-        {/* Unified Diagnostic Dashboard Frame */}
-        <div className="border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_#1A2E35] bg-white">
+        {/* Toggle Button for entire Diagnostic Dashboard */}
+        <div className="flex justify-center">
+          <button
+            onClick={() => setShowDashboard(!showDashboard)}
+            className="flex items-center gap-2 bg-vibrant-orange text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/95 transition-all text-xs md:text-sm uppercase tracking-wider cursor-pointer"
+          >
+            <span>{showDashboard ? t("boothCloseCta") : t("boothExploreCta")}</span>
+            {showDashboard ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </button>
+        </div>
+
+        {showDashboard && (
+          <div className="border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_#1A2E35] bg-white">
           <div className="grid grid-cols-1 lg:grid-cols-12 divide-y-4 lg:divide-y-0 lg:divide-x-4 divide-vibrant-dark">
             
             {/* Subsection 1: Goal or Challenge Path Selector (Left Column) */}
@@ -444,6 +456,7 @@ export default function MathConcernVideoBooth() {
 
           </div>
         </div>
+        )}
 
       </div>
     </section>
