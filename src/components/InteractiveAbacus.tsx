@@ -357,6 +357,7 @@ export default function InteractiveAbacus() {
             </form>
           </div>
         </div>
+      </div>
       ) : (
         /* Flashcard Challenge UI */
         <div className="bg-[#FFFDF9] border-2 border-vibrant-dark rounded-[24px] p-6 text-center space-y-6 animate-fade-in relative min-h-[300px] flex flex-col justify-center items-center">
