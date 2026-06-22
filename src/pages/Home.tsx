@@ -16,6 +16,7 @@ import InteractiveAbacus from "../components/InteractiveAbacus";
 import VedicMathDemo from "../components/VedicMathDemo";
 import MathComparisonDemo from "../components/MathComparisonDemo";
 import { useLanguage } from "../lib/LanguageContext";
+import MathConcernVideoBooth from "../components/MathConcernVideoBooth";
 import { PROGRAMS } from "../data";
 import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
@@ -51,6 +52,9 @@ export default function Home() {
       <div className="px-4 md:px-8">
         <TrustBar />
       </div>
+
+      {/* 2.2. Interactive Parent Consultation Booth */}
+      <MathConcernVideoBooth />
 
       {/* 2.5. Interactive Abacus Playground */}
       <section id="interactive-abacus-playground" className="py-16 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-2 border-slate-100">
