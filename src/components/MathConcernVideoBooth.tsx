@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Play, Pause, AlertCircle, Brain, Target, ShieldCheck, HelpCircle, Sparkles, Volume2, VolumeX, Quote } from "lucide-react";
+import { Play, Pause, AlertCircle, Brain, Target, ShieldCheck, HelpCircle, Sparkles, Quote, ChevronDown, ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useLanguage } from "../lib/LanguageContext";
 
@@ -35,7 +35,7 @@ export default function MathConcernVideoBooth() {
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [activeDetailTab, setActiveDetailTab] = useState<"science" | "academy">("science");
-  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
 
   const concerns: ConcernCase[] = [
     {
@@ -164,17 +164,6 @@ export default function MathConcernVideoBooth() {
     setIsPlaying(true);
   }, [activeConcernId]);
 
-  // Load voices when they change (critical for Chrome/Webkit speech init)
-  useEffect(() => {
-    const handleVoicesChanged = () => {
-      window.speechSynthesis?.getVoices();
-    };
-    window.speechSynthesis?.addEventListener("voiceschanged", handleVoicesChanged);
-    return () => {
-      window.speechSynthesis?.removeEventListener("voiceschanged", handleVoicesChanged);
-    };
-  }, []);
-
   // Determine current subtitle index
   const getCurrentSubtitle = () => {
     if (currentTime < 5) return activeConcern.subtitles[0];
@@ -184,62 +173,6 @@ export default function MathConcernVideoBooth() {
   };
 
   const currentSub = getCurrentSubtitle();
-
-  // Web Speech API text-to-speech integration
-  useEffect(() => {
-    if (!isPlaying || isMuted || !currentSub) {
-      window.speechSynthesis?.cancel();
-      return;
-    }
-
-    const textToSpeak = t(currentSub.textKey);
-    if (!textToSpeak) return;
-
-    window.speechSynthesis?.cancel();
-    window.speechSynthesis?.resume();
-
-    const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    
-    if (language === "hi") {
-      utterance.lang = "hi-IN";
-    } else if (language === "mr") {
-      utterance.lang = "mr-IN";
-    } else {
-      utterance.lang = "en-US";
-    }
-
-    const voices = window.speechSynthesis?.getVoices() || [];
-    let selectedVoice = null;
-    
-    if (utterance.lang.startsWith("hi")) {
-      selectedVoice = voices.find(v => v.lang.includes("hi-IN") && v.name.toLowerCase().includes("google")) ||
-                      voices.find(v => v.lang.includes("hi-IN"));
-    } else if (utterance.lang.startsWith("mr")) {
-      selectedVoice = voices.find(v => v.lang.includes("mr-IN")) || 
-                      voices.find(v => v.lang.includes("hi-IN"));
-    } else {
-      const isMale = currentSub.speaker === "parent" && 
-                     (activeConcern.parentName.includes("Sanjay") || activeConcern.parentName.includes("Rajesh"));
-      
-      selectedVoice = voices.find(v => v.lang.includes("en-US") && v.name.toLowerCase().includes(isMale ? "male" : "female") && v.name.toLowerCase().includes("natural")) ||
-                      voices.find(v => v.lang.includes("en-US") && v.name.toLowerCase().includes(isMale ? "david" : "zira")) ||
-                      voices.find(v => v.lang.includes("en") && v.name.toLowerCase().includes(isMale ? "male" : "female")) ||
-                      voices.find(v => v.lang.startsWith("en"));
-    }
-    
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-    }
-
-    utterance.rate = 0.92;
-    utterance.pitch = 1.0;
-    
-    window.speechSynthesis?.speak(utterance);
-
-    return () => {
-      window.speechSynthesis?.cancel();
-    };
-  }, [currentSub, isPlaying, isMuted, language, activeConcernId]);
 
   return (
     <section className="py-20 md:py-24 bg-[#FFFDF9] border-t-4 border-vibrant-dark relative">
@@ -318,10 +251,7 @@ export default function MathConcernVideoBooth() {
                 <div className="flex justify-between items-center z-15">
                   <div className="flex items-center gap-2 bg-red-600/90 text-white font-bold text-[9px] px-2.5 py-1 rounded-full uppercase tracking-widest animate-pulse border border-red-500">
                     <span className="w-1.5 h-1.5 rounded-full bg-white inline-block"></span>
-                    REC: CONSULTATION
-                  </div>
-                  <div className="flex items-center gap-1.5 text-white/60 font-mono text-[10px] bg-black/45 px-3 py-1 rounded-full border border-white/10">
-                    <Volume2 className="w-3.5 h-3.5" /> AUDIO FEED ACTIVE
+                    REC: INTERACTIVE CONSULTATION
                   </div>
                 </div>
 
@@ -406,22 +336,6 @@ export default function MathConcernVideoBooth() {
                   {isPlaying ? <Pause className="w-5 h-5 text-vibrant-dark fill-vibrant-dark" /> : <Play className="w-5 h-5 text-vibrant-dark fill-vibrant-dark ml-0.5" />}
                 </button>
 
-                <button
-                  onClick={() => setIsMuted(!isMuted)}
-                  className={`w-10 h-10 rounded-xl border border-vibrant-dark flex items-center justify-center shrink-0 shadow-[2px_2px_0_0_#0D171A] transition-colors ${
-                    isMuted 
-                      ? "bg-red-100 hover:bg-red-200 border-red-400" 
-                      : "bg-white hover:bg-vibrant-cream"
-                  }`}
-                  title={isMuted ? "Unmute Audio" : "Mute Audio"}
-                >
-                  {isMuted ? (
-                    <VolumeX className="w-5 h-5 text-red-650" />
-                  ) : (
-                    <Volume2 className="w-5 h-5 text-vibrant-dark" />
-                  )}
-                </button>
-
                 {/* Custom Seek Bar */}
                 <div className="flex-grow flex items-center gap-2.5">
                   <span className="text-[10px] font-mono font-bold text-white/50">
@@ -439,65 +353,94 @@ export default function MathConcernVideoBooth() {
               </div>
             </div>
 
-            {/* Scientific Mapping Tabs Section */}
-            <div className="bg-white border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_#1A2E35] flex flex-col">
+            {/* Scientific Mapping Panel */}
+            <div className="bg-white border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_#1A2E35] p-6 md:p-8 space-y-5">
               
-              {/* Tab Selector Headers */}
-              <div className="flex border-b-4 border-vibrant-dark bg-[#F3F1EC]">
+              {/* Brief Solution Mapping - Always Visible */}
+              <div className="bg-orange-50 text-vibrant-dark border-2 border-[#FFD8B1] rounded-2xl p-4 flex gap-3">
+                <div className="text-xl shrink-0 mt-0.5">🌟</div>
+                <div className="space-y-1">
+                  <span className="text-[9px] font-black uppercase tracking-wider text-vibrant-orange">
+                    {t("boothAbacusSolutionHeader")}
+                  </span>
+                  <p className="text-xs md:text-sm font-bold leading-relaxed">
+                    {t(activeConcern.abacusSolutionKey)}
+                  </p>
+                </div>
+              </div>
+
+              {/* View Science & Framework Toggle Button */}
+              <div className="flex justify-center">
                 <button
-                  onClick={() => setActiveDetailTab("science")}
-                  className={`flex-1 py-4 text-xs font-black uppercase tracking-wider border-r-4 border-vibrant-dark flex items-center justify-center gap-2 ${
-                    activeDetailTab === "science" ? "bg-white text-vibrant-dark" : "bg-transparent text-gray-500 hover:text-vibrant-dark"
+                  onClick={() => setShowDetails(!showDetails)}
+                  className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider border-2 border-vibrant-dark transition-all duration-150 shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none ${
+                    showDetails
+                      ? "bg-vibrant-orange text-white shadow-none translate-y-0.5"
+                      : "bg-white text-vibrant-dark hover:bg-vibrant-cream"
                   }`}
                 >
-                  <Brain className="w-4 h-4 text-vibrant-teal" /> {t("boothTabScience")}
-                </button>
-                <button
-                  onClick={() => setActiveDetailTab("academy")}
-                  className={`flex-1 py-4 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 ${
-                    activeDetailTab === "academy" ? "bg-white text-vibrant-dark" : "bg-transparent text-gray-500 hover:text-vibrant-dark"
-                  }`}
-                >
-                  <Target className="w-4 h-4 text-vibrant-orange" /> {t("boothTabAcademy")}
+                  <span>{showDetails ? t("boothHideDetails") : t("boothViewDetails")}</span>
+                  {showDetails ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                 </button>
               </div>
 
-              {/* Tab Details Pane */}
-              <div className="p-6 md:p-8 space-y-4">
-                <div className="bg-orange-50 text-vibrant-dark border-2 border-[#FFD8B1] rounded-2xl p-4 flex gap-3">
-                  <div className="text-xl shrink-0 mt-0.5">🌟</div>
-                  <div className="space-y-1">
-                    <span className="text-[9px] font-black uppercase tracking-wider text-vibrant-orange">
-                      {t("boothAbacusSolutionHeader")}
-                    </span>
-                    <p className="text-xs md:text-sm font-bold leading-relaxed">
-                      {t(activeConcern.abacusSolutionKey)}
-                    </p>
-                  </div>
-                </div>
+              {/* Detailed scientific / framework mapping */}
+              <AnimatePresence initial={false}>
+                {showDetails && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="border-2 border-vibrant-dark rounded-[24px] overflow-hidden mt-2 bg-slate-50">
+                      {/* Tab Headers */}
+                      <div className="flex border-b-2 border-vibrant-dark bg-[#F3F1EC]">
+                        <button
+                          onClick={() => setActiveDetailTab("science")}
+                          className={`flex-1 py-3.5 text-xs font-black uppercase tracking-wider border-r-2 border-vibrant-dark flex items-center justify-center gap-2 ${
+                            activeDetailTab === "science" ? "bg-white text-vibrant-dark" : "bg-transparent text-gray-500 hover:text-vibrant-dark"
+                          }`}
+                        >
+                          <Brain className="w-4 h-4 text-vibrant-teal" /> {t("boothTabScience")}
+                        </button>
+                        <button
+                          onClick={() => setActiveDetailTab("academy")}
+                          className={`flex-1 py-3.5 text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 ${
+                            activeDetailTab === "academy" ? "bg-white text-vibrant-dark" : "bg-transparent text-gray-500 hover:text-vibrant-dark"
+                          }`}
+                        >
+                          <Target className="w-4 h-4 text-vibrant-orange" /> {t("boothTabAcademy")}
+                        </button>
+                      </div>
 
-                <div className="space-y-2">
-                  {activeDetailTab === "science" ? (
-                    <div className="space-y-2">
-                      <span className="text-[10px] font-black uppercase text-vibrant-teal tracking-widest flex items-center gap-1.5">
-                        <Brain className="w-3.5 h-3.5" /> {t("boothScienceHeader")}
-                      </span>
-                      <p className="text-xs md:text-sm text-gray-655 font-medium leading-relaxed">
-                        {t(activeConcern.scienceKey)}
-                      </p>
+                      {/* Tab Pane details */}
+                      <div className="p-5 space-y-4">
+                        {activeDetailTab === "science" ? (
+                          <div className="space-y-2">
+                            <span className="text-[10px] font-black uppercase text-vibrant-teal tracking-widest flex items-center gap-1.5">
+                              <Brain className="w-3.5 h-3.5" /> {t("boothScienceHeader")}
+                            </span>
+                            <p className="text-xs md:text-sm text-gray-655 font-medium leading-relaxed">
+                              {t(activeConcern.scienceKey)}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            <span className="text-[10px] font-black uppercase text-vibrant-orange tracking-widest flex items-center gap-1.5">
+                              <ShieldCheck className="w-3.5 h-3.5" /> {t("boothAcademyHeader")}
+                            </span>
+                            <p className="text-xs md:text-sm text-gray-655 font-medium leading-relaxed">
+                              {t(activeConcern.academyWayKey)}
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <span className="text-[10px] font-black uppercase text-vibrant-orange tracking-widest flex items-center gap-1.5">
-                        <ShieldCheck className="w-3.5 h-3.5" /> {t("boothAcademyHeader")}
-                      </span>
-                      <p className="text-xs md:text-sm text-gray-655 font-medium leading-relaxed">
-                        {t(activeConcern.academyWayKey)}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
           </div>
