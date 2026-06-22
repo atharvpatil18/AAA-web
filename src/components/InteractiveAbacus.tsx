@@ -551,10 +551,13 @@ export default function InteractiveAbacus() {
                               : `Result: You guessed ${flashcardScore} / 5 challenges correctly!`}
                           </p>
                           <button
-                            onClick={resetFlashcardSession}
-                            className="w-full text-center text-xs font-black text-vibrant-orange hover:text-vibrant-orange/80 transition cursor-pointer underline block"
+                            onClick={() => {
+                              resetFlashcardSession();
+                              document.getElementById("speed-challenge-widget-section")?.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="w-full text-center text-xs font-black text-vibrant-orange hover:text-vibrant-orange/80 transition cursor-pointer underline block font-display"
                           >
-                            {language === "hi" ? "→ अगला सेट खेलें" : language === "mr" ? "→ नवीन संच सुरू करा" : "→ Play Next Set of Challenges"}
+                            → {t("bookFreeDemo")}
                           </button>
                         </div>
                       )}
