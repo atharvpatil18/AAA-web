@@ -23,6 +23,7 @@ export const translations = {
 
     // Home Hero
     heroBadge: "⚡ ALIGNED WITH NEP 2020 • SKILL INDIA & NSDC PARTNER",
+    heroRatioBadge: "🎯 GUARANTEED 1:8 BATCH RATIO — PERSONALIZED CARE",
     heroTitleStart: "Turn Math ",
     heroTitleFear: "Fear",
     heroTitleInto: " Into Math ",
@@ -172,6 +173,7 @@ export const translations = {
     locationBadge: "VISIT OUR OFFLINE CLASSROOM",
     locationTitle: "Our Wakad, Pune Academy Center",
     locationSubtitle: "We are conveniently located opposite Creative Cameo, before Park Street, Wakad, Pune. Parents are always welcome to check the live offline classroom setup.",
+    locationParkingTips: "🚗 FREE PARKING AVAILABLE • SAFE & EASY DROP-OFF / PICKUP ZONE FOR CHILDREN",
 
     // Footer / CTA
     ctaTitle: "Give Your Child the Power of Speed with Accuracy and Consistency",
@@ -330,7 +332,7 @@ export const translations = {
     subVedicMath: "Vedic Math",
     subMentalMath: "Mental Math",
     subSchoolMath: "School Math",
-    subCompetitiveMath: "Competitive Math",
+    subCompetitiveMath: "Olympiad & Competitive Prep",
     showcaseReadStory: "Read Full Story",
     showcaseHideStory: "Hide Details",
     showcaseVerified: "Verified Success",
@@ -746,6 +748,7 @@ export const translations = {
 
     // Home Hero
     heroBadge: "⚡ राष्ट्रीय शिक्षा नीति (NEP) २०२० संरेखित • स्किल इंडिया और NSDC भागीदार",
+    heroRatioBadge: "🎯 गारंटीकृत १:८ बैच अनुपात — व्यक्तिगत मार्गदर्शन",
     heroTitleStart: "गणित के ",
     heroTitleFear: "डर",
     heroTitleInto: " को गणित के ",
@@ -895,6 +898,7 @@ export const translations = {
     locationBadge: "हमारी ऑफलाइन क्लास देखें",
     locationTitle: "हमारा वाकड, पुणे एकेडमी सेंटर",
     locationSubtitle: "हम पार्क स्ट्रीट, वाकड, पुणे से पहले, क्रिएटिव कैमियो के ठीक सामने स्थित हैं। माता-पिता का हमेशा लाइव ऑफलाइन क्लास सेटअप देखने के लिए स्वागत है।",
+    locationParkingTips: "🚗 मुफ्त पार्किंग उपलब्ध • बच्चों के लिए सुरक्षित एवं आसान ड्रॉप-ऑफ / पिकअप ज़ोन",
 
     // Footer / CTA
     ctaTitle: "अपने बच्चे को सटीकता और निरंतरता के साथ गति की शक्ति दें",
@@ -1053,7 +1057,7 @@ export const translations = {
     subVedicMath: "वैदिक गणित",
     subMentalMath: "मेंटल मैथ",
     subSchoolMath: "स्कूल मैथ",
-    subCompetitiveMath: "प्रतियोगी मैथ",
+    subCompetitiveMath: "ओलंपियाड और प्रतियोगी तैयारी",
     showcaseReadStory: "पूरी कहानी पढ़ें",
     showcaseHideStory: "विवरण छुपाएं",
     showcaseVerified: "सत्यापित सफलता",
@@ -1469,6 +1473,7 @@ export const translations = {
 
     // Home Hero
     heroBadge: "⚡ राष्ट्रीय शैक्षणिक धोरण (NEP) २०२० संरेखित • स्किल इंडिया आणि NSDC भागीदार",
+    heroRatioBadge: "🎯 निश्चित १:८ विद्यार्थी-शिक्षक प्रमाण — वैयक्तिक मार्गदर्शन",
     heroTitleStart: "गणिताची ",
     heroTitleFear: "भीती",
     heroTitleInto: " गणिताच्या ",
@@ -1618,6 +1623,7 @@ export const translations = {
     locationBadge: "आमच्या ऑफलाइन वर्गाला भेट द्या",
     locationTitle: "आमचे वाकड, पुणे अकॅडमी सेंटर",
     locationSubtitle: "आम्ही क्रिएटिव्ह कॅमिओ समोर, पार्क स्ट्रीट जवळ, वाकड, पुणे येथे आहोत. ऑफलाइन क्लास कसा चालतो हे पाहण्यासाठी पालकांचे नेहमीच स्वागत आहे.",
+    locationParkingTips: "🚗 मोफत पार्किंग उपलब्ध • मुलांसाठी सुरक्षित आणि सोपे ड्रॉप-ऑफ / पिकअप झोन",
 
     // Footer / CTA
     ctaTitle: "तुमच्या मुलाला अचूकतेसह गणिताच्या वेगाची शक्ती द्या",
@@ -1776,7 +1782,7 @@ export const translations = {
     subVedicMath: "वैदिक गणित",
     subMentalMath: "मेंटल मॅथ",
     subSchoolMath: "स्कूल मॅथ",
-    subCompetitiveMath: "स्पर्धात्मक गणित",
+    subCompetitiveMath: "ऑलिम्पियाड आणि स्पर्धात्मक तयारी",
     showcaseReadStory: "पूर्ण यश वाचा",
     showcaseHideStory: "लपवा",
     showcaseVerified: "अधिकृत यश",

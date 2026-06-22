@@ -249,7 +249,7 @@ export default function InteractiveAbacus() {
         <motion.div 
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-vibrant-cream border-2 border-vibrant-dark/20 p-4 rounded-2xl text-xs text-vibrant-dark font-medium leading-relaxed space-y-2"
+          className="bg-vibrant-cream border-2 border-dashed border-vibrant-teal/30 p-4 rounded-2xl text-xs text-vibrant-dark font-medium leading-relaxed space-y-2"
         >
           <p className="font-bold text-vibrant-orange">{t("abacusGuideTitle")}</p>
           <ul className="list-disc list-inside space-y-1 text-gray-655">
@@ -585,7 +585,7 @@ export default function InteractiveAbacus() {
 
       {/* Dynamic Calculated Value Display - Only visible in Explore Mode */}
       {!isFlashcardMode && (
-        <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 text-center">
+        <div className="bg-vibrant-cream border-2 border-dashed border-vibrant-teal/30 rounded-2xl p-4 text-center">
           <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-widest">
             {t("abacusComputedTitle")}
           </span>

@@ -280,15 +280,15 @@ export default function SpeedChallengeWidget() {
               </div>
             </form>
             <div className="pt-3 border-t border-[#233C45] grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-center text-[10px] text-[#89B5BC] font-semibold">
-              <div className="bg-[#122429] border border-[#233C45] p-2 rounded-xl leading-snug">
+              <div className="bg-[#122429] border border-dashed border-vibrant-teal/30 p-2 rounded-xl leading-snug">
                 <strong className="block text-white text-[11px] sm:text-[10px]">{t("quizAge4to6")}</strong>
                 {t("quizAdditions")}
               </div>
-              <div className="bg-[#122429] border border-[#233C45] p-2 rounded-xl leading-snug">
+              <div className="bg-[#122429] border border-dashed border-vibrant-teal/30 p-2 rounded-xl leading-snug">
                 <strong className="block text-white text-[11px] sm:text-[10px]">{t("quizAge7to9")}</strong>
                 {t("quizChains")}
               </div>
-              <div className="bg-[#122429] border border-[#233C45] p-2 rounded-xl leading-snug">
+              <div className="bg-[#122429] border border-dashed border-vibrant-teal/30 p-2 rounded-xl leading-snug">
                 <strong className="block text-white text-[11px] sm:text-[10px]">{t("quizAge10plus")}</strong>
                 {t("quizMultDiv")}
               </div>
@@ -406,7 +406,7 @@ export default function SpeedChallengeWidget() {
             )}
 
             {/* Direct CRM CTA WhatsApp Button */}
-            <div className="bg-[#0D1A1E] p-5 rounded-3xl border-2 border-[#233C45] space-y-3 shadow-md">
+            <div className="bg-[#0D1A1E] p-5 rounded-3xl border-2 border-dashed border-vibrant-teal/30 space-y-3 shadow-md">
               <p className="text-[10px] text-vibrant-gold font-black tracking-widest uppercase mb-1">
                 {t("quizExclusiveOffer")}
               </p>

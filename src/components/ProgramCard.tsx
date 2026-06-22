@@ -120,6 +120,14 @@ export default function ProgramCard({ program }: ProgramCardProps) {
         <h3 className="font-display font-black text-2xl text-vibrant-dark group-hover:text-vibrant-orange transition-colors leading-tight mb-2">
           {title}
         </h3>
+        
+        {/* Offline Badge to alleviate screen-time anxiety */}
+        <div className="mb-3">
+          <span className="inline-flex items-center gap-1.5 bg-[#FFF0E0] border border-[#FFD8B1] text-vibrant-orange text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg">
+            <span>🏫 {language === "hi" ? "१००% ऑफलाइन, व्यावहारिक बैच" : language === "mr" ? "१००% ऑफलाइन, प्रत्यक्ष बॅचेस" : "100% Offline, Hands-On Batches"}</span>
+          </span>
+        </div>
+
         <p className="text-gray-500 text-xs md:text-sm font-semibold mb-4 italic leading-relaxed">
           "{tagline}"
         </p>

@@ -52,16 +52,28 @@ export default function Hero() {
           {/* Text Left Column */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
             
-            {/* Top Badge */}
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="inline-flex items-center gap-2 bg-[#FFF0E0] border border-[#FFD8B1] px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange mx-auto lg:mx-0"
-            >
-              <Sparkles className="w-4 h-4 text-vibrant-orange animate-spin-slow" />
-              <span>{t("heroBadge")}</span>
-            </motion.div>
+            {/* Top Badges */}
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+              <motion.div 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="inline-flex items-center gap-2 bg-[#FFF0E0] border border-[#FFD8B1] px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange"
+              >
+                <Sparkles className="w-4 h-4 text-vibrant-orange animate-spin-slow" />
+                <span>{t("heroBadge")}</span>
+              </motion.div>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.05 }}
+                className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-teal"
+              >
+                <ShieldCheck className="w-4 h-4 text-vibrant-teal" />
+                <span>{t("heroRatioBadge")}</span>
+              </motion.div>
+            </div>
 
             {/* Main Headline */}
             <motion.h1 

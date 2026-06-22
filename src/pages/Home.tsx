@@ -468,6 +468,11 @@ export default function Home() {
                 {t("locationSubtitle")}
               </p>
 
+              {/* Safe Drop-off & Parking Tips */}
+              <div className="bg-teal-50 border border-dashed border-vibrant-teal/30 text-vibrant-teal text-xs font-bold p-3.5 rounded-2xl flex items-center gap-2">
+                <span>{t("locationParkingTips")}</span>
+              </div>
+
               <div className="space-y-4 text-xs md:text-sm text-gray-700">
                 <div className="flex items-start gap-3 bg-vibrant-cream p-5 rounded-2xl border-2 border-vibrant-dark">
                   <MapPin className="w-5 h-5 text-vibrant-orange shrink-0 mt-0.5" />
