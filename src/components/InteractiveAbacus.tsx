@@ -14,7 +14,7 @@ interface RodState {
 }
 
 export default function InteractiveAbacus() {
-  const { t, formatNumber } = useLanguage();
+  const { language, t, formatNumber } = useLanguage();
   // 5 rods: Indices 0 (ten-thousands) to 4 (ones) from left to right
   const [rods, setRods] = useState<RodState[]>([
     { upper: false, lowerCount: 0 },
@@ -99,14 +99,14 @@ export default function InteractiveAbacus() {
 
   // Start the photographic memory game loop
   const startFlashcardChallenge = () => {
-    // Generate random target number
+    // Generate random target number (limited to 99 for standard testing)
     const target = Math.floor(Math.random() * 99) + 1;
     setFlashcardTarget(target);
     setFlashcardGuess("");
     setFlashcardFeedback("");
     setIsCountingDown(true);
 
-    // Set abacus to represent target number
+    // Set abacus to represent target number (visualized under the thousands and tens rods)
     const clamped = Math.max(0, Math.min(99999, target));
     const digits = clamped.toString().padStart(5, "0").split("").map(Number);
     const nextRods = digits.map((digit) => {
@@ -223,253 +223,263 @@ export default function InteractiveAbacus() {
       )}
 
       {/* Grid Layout for Abacus and Options */}
-      {!isFlashcardMode ? (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        {/* Left Hand: Visual Abacus Box */}
+        <div className={`lg:col-span-8 bg-[#5C3A21] border-4 sm:border-8 border-[#3D2513] rounded-3xl p-2 sm:p-6 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] relative overflow-hidden ${
+          isFlashcardMode ? "pointer-events-none" : ""
+        }`}>
           
-          {/* Left Hand: Visual Abacus Box */}
-          <div className="lg:col-span-8 bg-[#5C3A21] border-4 sm:border-8 border-[#3D2513] rounded-3xl p-2 sm:p-6 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] relative overflow-hidden">
+          {/* Rods and Frame container */}
+          <div className="relative h-[240px] border-4 border-[#2C190D] bg-[#1E1108] rounded-xl flex justify-around p-0.5 sm:p-1">
             
-            {/* Rods and Frame container */}
-            <div className="relative h-[240px] border-4 border-[#2C190D] bg-[#1E1108] rounded-xl flex justify-around p-0.5 sm:p-1">
-              
-              {/* Horizontal Beam/Divider */}
-              <div className="absolute top-[68px] left-0 right-0 h-4 bg-[#4A2C18] border-y-2 border-[#2C190D] shadow-md z-10 flex items-center justify-around">
-                {/* Real-time pinpoint indicators */}
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-vibrant-gold opacity-50 z-20" />
-                ))}
-              </div>
-
-              {/* Render Rods */}
-              {rods.map((rod, rIdx) => {
-                const val = getRodValue(rod);
-
-                return (
-                  <div key={rIdx} className="relative w-9 xs:w-12 sm:w-16 h-full flex flex-col items-center select-none">
-                    
-                    {/* Metallic Rod Line */}
-                    <div className="absolute top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-r from-gray-400 via-gray-100 to-gray-500 rounded-full shadow-sm" />
-
-                    {/* --- UPPER DECK --- */}
-                    <div 
-                      onClick={() => toggleUpper(rIdx)}
-                      className="absolute w-8 xs:w-10 sm:w-12 h-[60px] top-1 cursor-pointer flex items-center justify-center"
-                    >
-                      <motion.div 
-                        animate={{ y: rod.upper ? 20 : -10 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        className={`w-7 xs:w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[10px] font-black cursor-pointer ${
-                          rod.upper
-                            ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
-                            : "bg-gradient-to-b from-[#B07D3E] via-[#F4C178] to-[#99652B] text-amber-950/70"
-                        }`}
-                      >
-                        5
-                      </motion.div>
-                    </div>
-
-                    {/* --- LOWER DECK --- */}
-                    <div className="absolute top-[88px] bottom-1 w-8 xs:w-10 sm:w-12 cursor-pointer flex flex-col justify-end items-center pb-3">
-                      {[1, 2, 3, 4].map((idx) => {
-                        const isActive = rod.lowerCount >= idx;
-                        // Move active beads up to the divider (32px translation to prevent overlapping)
-                        const yOffset = isActive ? -32 : 0;
-
-                        return (
-                          <motion.div
-                            key={idx}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setLowerCount(rIdx, idx);
-                            }}
-                            animate={{ y: yOffset }}
-                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                            className={`relative w-7 xs:w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
-                              isActive 
-                                ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
-                                : "bg-gradient-to-b from-[#A5784A] via-[#E8B682] to-[#8C5D30] text-amber-950/70"
-                            }`}
-                          >
-                            1
-                          </motion.div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Individual Rod Value Badge */}
-                    <div className="absolute -bottom-1 bg-[#2C190D] border border-amber-950/50 rounded-md px-1 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-black text-vibrant-gold tracking-tight z-20">
-                      {formatNumber(val)}
-                    </div>
-
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-        {/* Right Hand: Examples & Custom Numbers Panel */}
-        <div className="lg:col-span-4 space-y-6">
-          {/* Example Numbers List */}
-          <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-3 shadow-[4px_4px_0_0_#1A2E35]">
-            <span className="flex items-center gap-1 text-[10px] text-vibrant-orange font-black uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5 fill-current" /> {t("abacusExamplesTitle")}
-            </span>
-            <p className="text-[11px] text-gray-500 font-semibold leading-tight">
-              {t("abacusExamplesSubtitle")}
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              {examples.map((item) => (
-                <button
-                  key={item.val}
-                  onClick={() => setAbacusNumber(item.val)}
-                  className="bg-white hover:bg-orange-50 border-2 border-vibrant-dark/80 px-2.5 py-1.5 rounded-xl text-left text-xs font-black text-vibrant-dark transition-all hover:scale-[1.02] shadow-[2px_2px_0_0_#1A2E35] cursor-pointer"
-                >
-                  {item.label}
-                </button>
+            {/* Horizontal Beam/Divider */}
+            <div className="absolute top-[68px] left-0 right-0 h-4 bg-[#4A2C18] border-y-2 border-[#2C190D] shadow-md z-10 flex items-center justify-around">
+              {/* Real-time pinpoint indicators */}
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-vibrant-gold opacity-50 z-20" />
               ))}
             </div>
+
+            {/* Render Rods */}
+            {rods.map((rod, rIdx) => {
+              const val = getRodValue(rod);
+
+              return (
+                <div key={rIdx} className="relative w-9 xs:w-12 sm:w-16 h-full flex flex-col items-center select-none">
+                  
+                  {/* Metallic Rod Line */}
+                  <div className="absolute top-0 bottom-0 w-0.5 sm:w-1 bg-gradient-to-r from-gray-400 via-gray-100 to-gray-500 rounded-full shadow-sm" />
+
+                  {/* --- UPPER DECK --- */}
+                  <div 
+                    onClick={() => toggleUpper(rIdx)}
+                    className="absolute w-8 xs:w-10 sm:w-12 h-[60px] top-1 cursor-pointer flex items-center justify-center"
+                  >
+                    <motion.div 
+                      animate={{ y: rod.upper ? 20 : -10 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      className={`w-7 xs:w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[10px] font-black cursor-pointer ${
+                        rod.upper
+                          ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
+                          : "bg-gradient-to-b from-[#B07D3E] via-[#F4C178] to-[#99652B] text-amber-950/70"
+                      }`}
+                    >
+                      5
+                    </motion.div>
+                  </div>
+
+                  {/* --- LOWER DECK --- */}
+                  <div className="absolute top-[88px] bottom-1 w-8 xs:w-10 sm:w-12 cursor-pointer flex flex-col justify-end items-center pb-3">
+                    {[1, 2, 3, 4].map((idx) => {
+                      const isActive = rod.lowerCount >= idx;
+                      // Move active beads up to the divider (32px translation to prevent overlapping)
+                      const yOffset = isActive ? -32 : 0;
+
+                      return (
+                        <motion.div
+                          key={idx}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLowerCount(rIdx, idx);
+                          }}
+                          animate={{ y: yOffset }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                          className={`relative w-7 xs:w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
+                            isActive 
+                              ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B] text-teal-950/70"
+                              : "bg-gradient-to-b from-[#A5784A] via-[#E8B682] to-[#8C5D30] text-amber-950/70"
+                          }`}
+                        >
+                          1
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Individual Rod Value Badge */}
+                  <div className="absolute -bottom-1 bg-[#2C190D] border border-amber-950/50 rounded-md px-1 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-black text-vibrant-gold tracking-tight z-20">
+                    {formatNumber(val)}
+                  </div>
+
+                </div>
+              );
+            })}
           </div>
 
-          {/* Custom Number Input */}
-          <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-3 shadow-[4px_4px_0_0_#1A2E35]">
-            <span className="flex items-center gap-1 text-[10px] text-vibrant-teal font-black uppercase tracking-wider">
-              <Hash className="w-3.5 h-3.5" /> {t("abacusCustomTitle")}
-            </span>
-            <p className="text-[11px] text-gray-500 font-semibold leading-tight">
-              {t("abacusCustomSubtitle")}
-            </p>
-            <form onSubmit={handleCustomInputSubmit} className="flex gap-2">
-              <input
-                type="number"
-                min="0"
-                max="99999"
-                placeholder="e.g. 54321"
-                value={customInput}
-                onChange={(e) => setCustomInput(e.target.value)}
-                className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-teal"
-              />
-              <button
-                type="submit"
-                className="bg-vibrant-teal text-white font-black text-xs px-4 py-2 rounded-xl shadow-[0_3px_0_0_#00897B] active:translate-y-0.5 active:shadow-none transition-all hover:brightness-105 cursor-pointer"
-              >
-                {t("abacusShow")}
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-      ) : (
-        /* Flashcard Challenge UI */
-        <div className="bg-[#FFFDF9] border-2 border-vibrant-dark rounded-[24px] p-6 text-center space-y-6 animate-fade-in relative min-h-[300px] flex flex-col justify-center items-center">
-          {flashcardTarget === null ? (
-            <div className="space-y-4 max-w-md">
-              <div className="text-4xl">📸</div>
-              <h4 className="font-display font-black text-xl text-vibrant-dark">
-                {language === "hi" ? "फोटोग्राफिक मेमोरी टेस्ट" : language === "mr" ? "फोटोग्राफिक मेमरी चाचणी" : "Photographic Memory Flashcard Game"}
+          {/* Overlay for Flashcard Mode when beads are hidden */}
+          {isFlashcardMode && !showFlashcardBeads && (
+            <div className="absolute inset-0 bg-[#FFFDF9]/95 z-30 flex flex-col items-center justify-center p-6 text-center animate-fade-in pointer-events-auto">
+              <div className="text-5xl mb-3">📸</div>
+              <h4 className="font-display font-black text-lg text-vibrant-dark mb-1">
+                {flashcardTarget === null 
+                  ? (language === "hi" ? "फोटोग्राफिक मेमोरी टेस्ट" : language === "mr" ? "फोटोग्राफिक मेमरी चाचणी" : "Photographic Memory Test")
+                  : (language === "hi" ? "मोतियाँ छिपी हुई हैं!" : language === "mr" ? "मणी लपविलेले आहेत!" : "Beads Hidden!")
+                }
               </h4>
-              <p className="text-xs text-gray-550 font-semibold leading-relaxed">
-                {language === "hi"
-                  ? "एबाकस की गिल्टियाँ १.५ सेकंड के लिए फ्लैश होंगी। क्या आप उनका मान याद रखकर सही संख्या का अनुमान लगा सकते हैं ?"
-                  : language === "mr"
-                  ? "ॲबॅकस मणी १.५ सेकंदांसाठी दिसतील. तुम्ही ते लक्षात ठेवून अचूक संख्या ओळखू शकता का ?"
-                  : "Abacus beads will flash for exactly 1.5 seconds. Can you memorize them and guess the correct value ?"}
+              <p className="text-xs text-gray-550 font-semibold max-w-md">
+                {flashcardTarget === null 
+                  ? (language === "hi" 
+                      ? "क्या आप गिल्टियों का मान याद रखकर सही संख्या का अनुमान लगा सकते हैं? चुनौती शुरू करने के लिए दाएँ पैनल का उपयोग करें।" 
+                      : language === "mr" 
+                      ? "तुम्ही मणी लक्षात ठेवून अचूक संख्या ओळखू शकता का? चाचणी सुरू करण्यासाठी उजवे पॅनेल वापरा." 
+                      : "Can you memorize the beads and guess the correct value? Use the right panel to start the challenge.")
+                  : (language === "hi"
+                      ? "दाएँ पैनल में अपना अनुमान सबमिट करें!"
+                      : language === "mr"
+                      ? "उजव्या पॅनेलमध्ये तुमचे उत्तर द्या!"
+                      : "Submit your guess in the panel on the right!")
+                }
               </p>
-              <button
-                onClick={startFlashcardChallenge}
-                className="bg-vibrant-orange text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/90 transition-all text-xs uppercase tracking-wider cursor-pointer"
-              >
-                {language === "hi" ? "चुनौती शुरू करें" : language === "mr" ? "चाचणी सुरू करा" : "Start Flashcard Challenge"}
-              </button>
-            </div>
-          ) : isCountingDown && showFlashcardBeads ? (
-            <div className="w-full flex flex-col items-center space-y-4">
-              <span className="bg-vibrant-orange text-white font-mono font-black text-xs px-4 py-1.5 rounded-full uppercase tracking-wider border-2 border-vibrant-dark animate-pulse">
-                {language === "hi" ? "स्मरण करें...!" : language === "mr" ? "मणी लक्षात ठेवा...!" : "Memorize the Beads...!"}
-              </span>
-              {/* Render Abacus Beads (Locked) */}
-              <div className="w-full max-w-xl bg-[#5C3A21] border-4 border-[#3D2513] rounded-3xl p-4 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] pointer-events-none select-none">
-                <div className="relative h-[180px] border-4 border-[#2C190D] bg-[#1E1108] rounded-xl flex justify-around p-1">
-                  <div className="absolute top-[52px] left-0 right-0 h-3 bg-[#4A2C18] border-y-2 border-[#2C190D] z-10" />
-                  {rods.map((rod, rIdx) => (
-                    <div key={rIdx} className="relative w-8 h-full flex flex-col items-center">
-                      <div className="absolute top-0 bottom-0 w-0.5 bg-gray-400 rounded-full" />
-                      <div className="absolute w-6 h-5 rounded-full border border-amber-950 bg-gradient-to-b from-[#B07D3E] via-[#F4C178] to-[#99652B] top-1" style={{ transform: `translateY(${rod.upper ? 15 : -6}px)` }} />
-                      <div className="absolute top-[68px] bottom-1 w-6 flex flex-col justify-end gap-0.5 pb-2">
-                        {[1, 2, 3, 4].map((idx) => (
-                          <div
-                            key={idx}
-                            className={`w-6 h-5 rounded-full border border-amber-950 ${rod.lowerCount >= idx ? "bg-gradient-to-b from-vibrant-teal via-[#7CEFE0] to-[#00897B]" : "bg-gradient-to-b from-[#A5784A] via-[#E8B682] to-[#8C5D30]"}`}
-                            style={{ transform: `translateY(${rod.lowerCount >= idx ? -22 : 0}px)` }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            /* Guess Submission Panel */
-            <div className="space-y-4 max-w-sm w-full">
-              <div className="text-4xl">🙈</div>
-              <h4 className="font-display font-black text-xl text-vibrant-dark">
-                {language === "hi" ? "अपना अनुमान सबमिट करें!" : language === "mr" ? "तुमचे उत्तर द्या!" : "Enter What You Saw!"}
-              </h4>
-              <p className="text-xs text-gray-500 font-semibold">
-                {language === "hi" ? "मोतियों ने किस संख्या का प्रतिनिधित्व किया ?" : language === "mr" ? "मणी कोणत्या संख्येचे प्रतिनिधित्व करत होते ?" : "What number did the abacus beads represent ?"}
-              </p>
-
-              <form onSubmit={handleGuessSubmit} className="flex gap-2 justify-center max-w-xs mx-auto">
-                <input
-                  type="number"
-                  placeholder="e.g. 42"
-                  value={flashcardGuess}
-                  disabled={flashcardFeedback !== ""}
-                  onChange={(e) => setFlashcardGuess(e.target.value)}
-                  className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-orange disabled:opacity-60"
-                />
-                <button
-                  type="submit"
-                  disabled={flashcardFeedback !== ""}
-                  className="bg-vibrant-orange text-white font-black text-xs px-4 py-2 rounded-xl shadow-[0_3px_0_0_#D35400] active:translate-y-0.5 active:shadow-none transition-all disabled:opacity-50 cursor-pointer"
-                >
-                  {language === "hi" ? "जांचें" : language === "mr" ? "तपासा" : "Submit"}
-                </button>
-              </form>
-
-              {/* Feedback status */}
-              {flashcardFeedback !== "" && (
-                <div className={`p-4 rounded-2xl border-2 text-xs font-black uppercase tracking-wider animate-fade-in ${
-                  flashcardFeedback === "correct"
-                    ? "bg-green-50 text-green-700 border-green-600 shadow-[2px_2px_0_0_#155724]"
-                    : "bg-red-50 text-red-700 border-red-600 shadow-[2px_2px_0_0_#721c24]"
-                }`}>
-                  {flashcardFeedback === "correct" ? (
-                    <span>🎯 {language === "hi" ? "सही जवाब! आपकी विज़ुअल मेमोरी सक्रिय है!" : language === "mr" ? "अचूक उत्तर! तुमची फोटोग्राफिक मेमरी सक्रिय आहे!" : "Correct! Photographic Reflex Active!"}</span>
-                  ) : (
-                    <span>❌ {language === "hi" ? `गलत जवाब! सही जवाब ${flashcardTarget} था।` : language === "mr" ? `चूकीचे उत्तर! अचूक उत्तर ${flashcardTarget} होते.` : `Oops! The correct answer was ${flashcardTarget}.`}</span>
-                  )}
-                </div>
-              )}
-
-              <div className="flex gap-3 justify-center pt-2">
-                <button
-                  onClick={startFlashcardChallenge}
-                  className="bg-vibrant-teal text-white border-2 border-vibrant-dark font-black px-4 py-2 rounded-xl shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all text-xs cursor-pointer"
-                >
-                  {language === "hi" ? "अगली चुनौती" : language === "mr" ? "पुढचे आव्हान" : "Next Challenge"}
-                </button>
-                <button
-                  onClick={() => { setFlashcardTarget(null); setFlashcardFeedback(""); }}
-                  className="bg-white text-vibrant-dark border-2 border-vibrant-dark/20 font-black px-4 py-2 rounded-xl hover:border-vibrant-dark transition-all text-xs cursor-pointer"
-                >
-                  {language === "hi" ? "रीसेट करें" : language === "mr" ? "रीसेट" : "Reset"}
-                </button>
-              </div>
             </div>
           )}
         </div>
-      )}
+
+        {/* Right Hand: Controls / Examples Panel */}
+        <div className="lg:col-span-4 space-y-6">
+          {!isFlashcardMode ? (
+            <>
+              {/* Example Numbers List */}
+              <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-3 shadow-[4px_4px_0_0_#1A2E35]">
+                <span className="flex items-center gap-1 text-[10px] text-vibrant-orange font-black uppercase tracking-wider">
+                  <Sparkles className="w-3.5 h-3.5 fill-current" /> {t("abacusExamplesTitle")}
+                </span>
+                <p className="text-[11px] text-gray-500 font-semibold leading-tight">
+                  {t("abacusExamplesSubtitle")}
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {examples.map((item) => (
+                    <button
+                      key={item.val}
+                      onClick={() => setAbacusNumber(item.val)}
+                      className="bg-white hover:bg-orange-50 border-2 border-vibrant-dark/80 px-2.5 py-1.5 rounded-xl text-left text-xs font-black text-vibrant-dark transition-all hover:scale-[1.02] shadow-[2px_2px_0_0_#1A2E35] cursor-pointer"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Custom Number Input */}
+              <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-3 shadow-[4px_4px_0_0_#1A2E35]">
+                <span className="flex items-center gap-1 text-[10px] text-vibrant-teal font-black uppercase tracking-wider">
+                  <Hash className="w-3.5 h-3.5" /> {t("abacusCustomTitle")}
+                </span>
+                <p className="text-[11px] text-gray-500 font-semibold leading-tight">
+                  {t("abacusCustomSubtitle")}
+                </p>
+                <form onSubmit={handleCustomInputSubmit} className="flex gap-2">
+                  <input
+                    type="number"
+                    min="0"
+                    max="99999"
+                    placeholder="e.g. 54321"
+                    value={customInput}
+                    onChange={(e) => setCustomInput(e.target.value)}
+                    className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-teal"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-vibrant-teal text-white font-black text-xs px-4 py-2 rounded-xl shadow-[0_3px_0_0_#00897B] active:translate-y-0.5 active:shadow-none transition-all hover:brightness-105 cursor-pointer"
+                  >
+                    {t("abacusShow")}
+                  </button>
+                </form>
+              </div>
+            </>
+          ) : (
+            /* Flashcard Controls Panel */
+            <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-4 shadow-[4px_4px_0_0_#1A2E35]">
+              {flashcardTarget === null ? (
+                <div className="text-center py-2 space-y-3">
+                  <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-orange bg-[#FFEEE5] border border-vibrant-orange/20 px-3 py-1 rounded-full uppercase tracking-wider font-black">
+                    {language === "hi" ? "मेमोरी गेम" : language === "mr" ? "मेमरी गेम" : "Memory Game"}
+                  </span>
+                  <p className="text-[11px] text-gray-500 font-semibold leading-relaxed">
+                    {language === "hi"
+                      ? "एबाकस की गिल्टियाँ १.५ सेकंड के लिए फ्लैश होंगी। क्या आप उनका मान याद रखकर सही संख्या का अनुमान लगा सकते हैं ?"
+                      : language === "mr"
+                      ? "ॲबॅकस मणी १.५ सेकंदांसाठी दिसतील. तुम्ही ते लक्षात ठेवून अचूक संख्या ओळखू शकता का ?"
+                      : "Abacus beads will flash for exactly 1.5 seconds. Can you memorize them and guess the correct value ?"}
+                  </p>
+                  <button
+                    onClick={startFlashcardChallenge}
+                    className="w-full bg-vibrant-orange text-white border-2 border-vibrant-dark font-black py-2.5 rounded-xl shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/90 transition-all text-xs uppercase tracking-wider cursor-pointer"
+                  >
+                    {language === "hi" ? "चुनौती शुरू करें" : language === "mr" ? "चाचणी सुरू करा" : "Start Challenge"}
+                  </button>
+                </div>
+              ) : isCountingDown && showFlashcardBeads ? (
+                <div className="text-center py-6 space-y-3 animate-pulse">
+                  <span className="inline-flex bg-vibrant-orange text-white font-mono font-black text-xs px-4 py-1.5 rounded-full uppercase tracking-wider border-2 border-vibrant-dark">
+                    {language === "hi" ? "स्मरण करें...!" : language === "mr" ? "मणी लक्षात ठेवा...!" : "Memorize beads!"}
+                  </span>
+                  <p className="text-xs font-bold text-vibrant-dark">
+                    {language === "hi" ? "समय सीमित है!" : language === "mr" ? "वेळ मर्यादित आहे!" : "Look at the abacus!"}
+                  </p>
+                </div>
+              ) : (
+                /* Guess Submission / Feedback */
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3 py-1 rounded-full uppercase tracking-wider font-black">
+                      {language === "hi" ? "अनुमान लगाएँ" : language === "mr" ? "उत्तर द्या" : "Your Guess"}
+                    </span>
+                  </div>
+                  
+                  <form onSubmit={handleGuessSubmit} className="flex gap-2">
+                    <input
+                      type="number"
+                      placeholder="e.g. 42"
+                      value={flashcardGuess}
+                      disabled={flashcardFeedback !== ""}
+                      onChange={(e) => setFlashcardGuess(e.target.value)}
+                      className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-orange disabled:opacity-60"
+                    />
+                    <button
+                      type="submit"
+                      disabled={flashcardFeedback !== ""}
+                      className="bg-vibrant-orange text-white font-black text-xs px-4 py-2 rounded-xl shadow-[0_3px_0_0_#D35400] active:translate-y-0.5 active:shadow-none transition-all disabled:opacity-50 cursor-pointer"
+                    >
+                      {language === "hi" ? "जांचें" : language === "mr" ? "तपासा" : "Submit"}
+                    </button>
+                  </form>
+
+                  {/* Feedback status */}
+                  {flashcardFeedback !== "" && (
+                    <div className={`p-3 rounded-xl border-2 text-xs font-black uppercase tracking-wider animate-fade-in ${
+                      flashcardFeedback === "correct"
+                        ? "bg-green-50 text-green-700 border-green-600 shadow-[2px_2px_0_0_#155724]"
+                        : "bg-red-50 text-red-700 border-red-600 shadow-[2px_2px_0_0_#721c24]"
+                    }`}>
+                      {flashcardFeedback === "correct" ? (
+                        <span>🎯 {language === "hi" ? "सही जवाब! आपकी मेमोरी सक्रिय है!" : language === "mr" ? "अचूक उत्तर! तुमची मेमरी सक्रिय आहे!" : "Correct! Memory Active!"}</span>
+                      ) : (
+                        <span>❌ {language === "hi" ? `गलत! सही ${flashcardTarget} था।` : language === "mr" ? `चूक! अचूक ${flashcardTarget} होते.` : `Wrong! Target was ${flashcardTarget}.`}</span>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="flex gap-2 pt-2">
+                    <button
+                      onClick={startFlashcardChallenge}
+                      className="flex-1 bg-vibrant-teal text-white border-2 border-vibrant-dark font-black py-2 rounded-xl shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all text-xs cursor-pointer text-center"
+                    >
+                      {language === "hi" ? "अगला" : language === "mr" ? "पुढचे" : "Next"}
+                    </button>
+                    <button
+                      onClick={() => { setFlashcardTarget(null); setFlashcardFeedback(""); }}
+                      className="flex-1 bg-white text-vibrant-dark border-2 border-vibrant-dark/20 font-black py-2 rounded-xl hover:border-vibrant-dark transition-all text-xs cursor-pointer text-center"
+                    >
+                      {language === "hi" ? "रीसेट" : language === "mr" ? "रीसेट" : "Reset"}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Dynamic Calculated Value Display - Only visible in Explore Mode */}
       {!isFlashcardMode && (
