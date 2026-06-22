@@ -207,28 +207,28 @@ export default function InteractiveAbacus() {
         inactive: "bg-pink-600/30 text-pink-500 border-pink-600/50"
       },
       { // Rod 2: Red
-        active: "bg-red-800 text-white border-red-950",
-        inactive: "bg-red-950/30 text-red-300 border-red-950"
+        active: "bg-red-700 text-white border-red-900",
+        inactive: "bg-red-700/30 text-red-500 border-red-700/50"
       },
       { // Rod 3: Green
         active: "bg-green-700 text-white border-green-900",
-        inactive: "bg-green-950/30 text-green-300 border-green-950"
+        inactive: "bg-green-700/30 text-green-500 border-green-700/50"
       },
       { // Rod 4: Yellow
         active: "bg-yellow-600 text-white border-yellow-800",
-        inactive: "bg-yellow-800/30 text-yellow-200 border-yellow-900"
+        inactive: "bg-yellow-600/30 text-yellow-500 border-yellow-600/50"
       },
       { // Rod 5: Orange
-        active: "bg-orange-650 text-white border-orange-850",
-        inactive: "bg-orange-850/30 text-orange-200 border-orange-900"
+        active: "bg-orange-600 text-white border-orange-800",
+        inactive: "bg-orange-600/30 text-orange-500 border-orange-600/50"
       },
       { // Rod 6: Blue
-        active: "bg-blue-800 text-white border-blue-950",
-        inactive: "bg-blue-950/30 text-blue-350 border-blue-950"
+        active: "bg-blue-700 text-white border-blue-900",
+        inactive: "bg-blue-700/30 text-blue-500 border-blue-700/50"
       },
       { // Rod 7: White
-        active: "bg-white text-vibrant-dark border-gray-800",
-        inactive: "bg-gray-400/30 text-gray-550 border-gray-500"
+        active: "bg-white text-vibrant-dark border-gray-400",
+        inactive: "bg-white/30 text-gray-400 border-gray-300"
       }
     ];
     const conf = configs[rIdx] || configs[6];
