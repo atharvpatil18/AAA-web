@@ -269,6 +269,16 @@ export default function InteractiveAbacus() {
           isFlashcardMode ? "pointer-events-none" : ""
         }`}>
           
+          {/* Column Place Value Labels */}
+          <div className="w-full flex justify-around mb-2 px-1 text-center font-black select-none text-[#FFFDF9]/60">
+            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider">{language === "hi" ? "हजार" : language === "mr" ? "हजार" : "Th"}</div>
+            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider">{language === "hi" ? "सैकड़ा" : language === "mr" ? "शतक" : "H"}</div>
+            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider">{language === "hi" ? "दहाई" : language === "mr" ? "दशक" : "T"}</div>
+            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider text-vibrant-gold">{language === "hi" ? "इकाई •" : language === "mr" ? "एकक •" : "O •"}</div>
+            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider text-[#FFFDF9]/40">{language === "hi" ? "दशांश" : language === "mr" ? "दशांश" : "t"}</div>
+            <div className="w-9 xs:w-12 sm:w-16 text-[9px] sm:text-[11px] uppercase tracking-wider text-[#FFFDF9]/40">{language === "hi" ? "शतांश" : language === "mr" ? "शतांश" : "h"}</div>
+          </div>
+
           {/* Rods and Frame container */}
           <div className="relative h-[240px] border-4 border-[#2C190D] bg-[#1E1108] rounded-xl flex justify-around p-0.5 sm:p-1">
             
@@ -302,6 +312,8 @@ export default function InteractiveAbacus() {
                   >
                     <motion.div 
                       animate={{ y: rod.upper ? 20 : -10 }}
+                      whileHover={{ scale: 1.08 }}
+                      whileTap={{ scale: 0.90 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                       className={`w-7 xs:w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[10px] font-black cursor-pointer ${
                         rod.upper
@@ -317,7 +329,6 @@ export default function InteractiveAbacus() {
                   <div className="absolute top-[88px] bottom-1 w-8 xs:w-10 sm:w-12 cursor-pointer flex flex-col justify-end items-center pb-3">
                     {[1, 2, 3, 4].map((idx) => {
                       const isActive = rod.lowerCount >= idx;
-                      // Move active beads up to the divider (32px translation to prevent overlapping)
                       const yOffset = isActive ? -32 : 0;
 
                       return (
@@ -328,6 +339,8 @@ export default function InteractiveAbacus() {
                             setLowerCount(rIdx, idx);
                           }}
                           animate={{ y: yOffset }}
+                          whileHover={{ scale: 1.08 }}
+                          whileTap={{ scale: 0.90 }}
                           transition={{ type: "spring", stiffness: 300, damping: 20 }}
                           className={`relative w-7 xs:w-9 sm:w-11 h-6 rounded-full border border-amber-950 shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
                             isActive 

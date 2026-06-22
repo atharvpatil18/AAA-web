@@ -26,6 +26,7 @@ export default function Home() {
   const [showAbacus, setShowAbacus] = useState(false);
   const [showVedic, setShowVedic] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
   const handleMapCtaClick = () => {
     trackDemoClick("home_map_nav_cta");
@@ -53,8 +54,31 @@ export default function Home() {
         <TrustBar />
       </div>
 
+
       {/* 2.2. Interactive Parent Consultation Booth */}
       <MathConcernVideoBooth />
+
+      {/* 3. Core Programs Showcase */}
+      <section id="programs-showcase" className="py-20 md:py-28 max-w-7xl mx-auto px-4 md:px-8">
+        <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
+          <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+            {t("progBadge")}
+          </span>
+          <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
+            {t("progTitle")}
+          </h2>
+          <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
+            {t("progSubtitle")}
+          </p>
+        </div>
+
+        {/* 3 Columns Program Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {PROGRAMS.map((prog) => (
+            <ProgramCard key={prog.id} program={prog} />
+          ))}
+        </div>
+      </section>
 
       {/* 2.5. Interactive Abacus Playground */}
       <section id="interactive-abacus-playground" className="py-16 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-2 border-slate-100">
@@ -120,32 +144,152 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. Core Programs Showcase */}
-      <section id="programs-showcase" className="py-20 md:py-28 max-w-7xl mx-auto px-4 md:px-8">
-        <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
-          <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            {t("progBadge")}
-          </span>
-          <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
-            {t("progTitle")}
-          </h2>
-          <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-            {t("progSubtitle")}
-          </p>
-        </div>
-
-        {/* 3 Columns Program Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {PROGRAMS.map((prog) => (
-            <ProgramCard key={prog.id} program={prog} />
-          ))}
-        </div>
-      </section>
-
       {/* 3.5. Interactive Math Synergy System (Comparison) */}
       <section id="math-synergy-comparison" className="py-20 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-4 border-vibrant-dark">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <MathComparisonDemo />
+        </div>
+      </section>
+
+      {/* 3.8. Competitor Differentiation Comparison Grid */}
+      <section id="competitor-comparison" className="py-20 md:py-24 bg-white border-t-4 border-vibrant-dark">
+        <div className="max-w-6xl mx-auto px-4 md:px-8">
+          <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
+            <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+              {t("diffAAA")}
+            </span>
+            <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
+              {t("diffTitle")}
+            </h2>
+            <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
+              {t("diffSubtitle")}
+            </p>
+          </div>
+
+          <div className="overflow-x-auto rounded-[32px] border-4 border-vibrant-dark shadow-[8px_8px_0_0_#1A2E35]">
+            <table className="w-full text-left border-collapse bg-white">
+              <thead>
+                <tr className="bg-vibrant-cream border-b-4 border-vibrant-dark font-black text-xs md:text-sm text-vibrant-dark uppercase tracking-wider">
+                  <th className="p-4 md:p-6 border-r-4 border-vibrant-dark w-1/4">{t("diffFeature")}</th>
+                  <th className="p-4 md:p-6 border-r-4 border-vibrant-dark bg-vibrant-teal/10 text-vibrant-teal w-3/8">{t("diffAAA")}</th>
+                  <th className="p-4 md:p-6 text-gray-550 w-3/8">{t("diffOthers")}</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y-4 divide-vibrant-dark font-bold text-xs md:text-sm text-vibrant-dark">
+                {/* Row 1 */}
+                <tr 
+                  onClick={() => setExpandedRows(prev => ({ ...prev, row1: !prev.row1 }))}
+                  className="cursor-pointer hover:bg-slate-50/50 transition-colors divide-x-4 divide-vibrant-dark"
+                >
+                  <td className="p-4 md:p-6 bg-slate-50 font-black flex items-center justify-between gap-2">
+                    <span>{t("diffRow1Name")}</span>
+                    {expandedRows.row1 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                  </td>
+                  <td className="p-4 md:p-6 bg-vibrant-teal/5 text-vibrant-teal">
+                    <div className="flex items-center gap-2">
+                      <span className="text-emerald-500 text-base font-black">✓</span>
+                      <span>{t("diffRow1AAA")}</span>
+                    </div>
+                    {expandedRows.row1 && (
+                      <p className="mt-3 text-xs text-vibrant-teal/80 font-semibold leading-relaxed border-t border-vibrant-teal/15 pt-2">
+                        {t("diffRow1Desc")}
+                      </p>
+                    )}
+                  </td>
+                  <td className="p-4 md:p-6 text-gray-400">
+                    <div className="flex items-center gap-2">
+                      <span className="text-rose-500 text-base font-black">✗</span>
+                      <span>{t("diffRow1Others")}</span>
+                    </div>
+                  </td>
+                </tr>
+
+                {/* Row 2 */}
+                <tr 
+                  onClick={() => setExpandedRows(prev => ({ ...prev, row2: !prev.row2 }))}
+                  className="cursor-pointer hover:bg-slate-50/50 transition-colors divide-x-4 divide-vibrant-dark"
+                >
+                  <td className="p-4 md:p-6 bg-slate-50 font-black flex items-center justify-between gap-2">
+                    <span>{t("diffRow2Name")}</span>
+                    {expandedRows.row2 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                  </td>
+                  <td className="p-4 md:p-6 bg-vibrant-teal/5 text-vibrant-teal">
+                    <div className="flex items-center gap-2">
+                      <span className="text-emerald-500 text-base font-black">✓</span>
+                      <span>{t("diffRow2AAA")}</span>
+                    </div>
+                    {expandedRows.row2 && (
+                      <p className="mt-3 text-xs text-vibrant-teal/80 font-semibold leading-relaxed border-t border-vibrant-teal/15 pt-2">
+                        {t("diffRow2Desc")}
+                      </p>
+                    )}
+                  </td>
+                  <td className="p-4 md:p-6 text-gray-400">
+                    <div className="flex items-center gap-2">
+                      <span className="text-rose-500 text-base font-black">✗</span>
+                      <span>{t("diffRow2Others")}</span>
+                    </div>
+                  </td>
+                </tr>
+
+                {/* Row 3 */}
+                <tr 
+                  onClick={() => setExpandedRows(prev => ({ ...prev, row3: !prev.row3 }))}
+                  className="cursor-pointer hover:bg-slate-50/50 transition-colors divide-x-4 divide-vibrant-dark"
+                >
+                  <td className="p-4 md:p-6 bg-slate-50 font-black flex items-center justify-between gap-2">
+                    <span>{t("diffRow3Name")}</span>
+                    {expandedRows.row3 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                  </td>
+                  <td className="p-4 md:p-6 bg-vibrant-teal/5 text-vibrant-teal">
+                    <div className="flex items-center gap-2">
+                      <span className="text-emerald-500 text-base font-black">✓</span>
+                      <span>{t("diffRow3AAA")}</span>
+                    </div>
+                    {expandedRows.row3 && (
+                      <p className="mt-3 text-xs text-vibrant-teal/80 font-semibold leading-relaxed border-t border-vibrant-teal/15 pt-2">
+                        {t("diffRow3Desc")}
+                      </p>
+                    )}
+                  </td>
+                  <td className="p-4 md:p-6 text-gray-400">
+                    <div className="flex items-center gap-2">
+                      <span className="text-rose-500 text-base font-black">✗</span>
+                      <span>{t("diffRow3Others")}</span>
+                    </div>
+                  </td>
+                </tr>
+
+                {/* Row 4 */}
+                <tr 
+                  onClick={() => setExpandedRows(prev => ({ ...prev, row4: !prev.row4 }))}
+                  className="cursor-pointer hover:bg-slate-50/50 transition-colors divide-x-4 divide-vibrant-dark"
+                >
+                  <td className="p-4 md:p-6 bg-slate-50 font-black flex items-center justify-between gap-2">
+                    <span>{t("diffRow4Name")}</span>
+                    {expandedRows.row4 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                  </td>
+                  <td className="p-4 md:p-6 bg-vibrant-teal/5 text-vibrant-teal">
+                    <div className="flex items-center gap-2">
+                      <span className="text-emerald-500 text-base font-black">✓</span>
+                      <span>{t("diffRow4AAA")}</span>
+                    </div>
+                    {expandedRows.row4 && (
+                      <p className="mt-3 text-xs text-vibrant-teal/80 font-semibold leading-relaxed border-t border-vibrant-teal/15 pt-2">
+                        {t("diffRow4Desc")}
+                      </p>
+                    )}
+                  </td>
+                  <td className="p-4 md:p-6 text-gray-400">
+                    <div className="flex items-center gap-2">
+                      <span className="text-rose-500 text-base font-black">✗</span>
+                      <span>{t("diffRow4Others")}</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 

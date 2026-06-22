@@ -10,6 +10,7 @@ import { useLanguage } from "../lib/LanguageContext";
 export default function VedicMathDemo() {
   const { language, t, formatNumber } = useLanguage();
   const [activeSutra, setActiveSutra] = useState<"square" | "cross" | "ekadhikena">("square");
+  const [showFormula, setShowFormula] = useState(false);
 
   // Sutra 1 State
   const [squareNum, setSquareNum] = useState<number>(98);
@@ -469,6 +470,58 @@ export default function VedicMathDemo() {
             })()}
           </div>
         )}
+
+        {/* Toggle Math Formula Button */}
+        <div className="pt-4 border-t border-slate-100">
+          <button
+            onClick={() => setShowFormula(!showFormula)}
+            className="text-xs font-black text-vibrant-teal hover:text-vibrant-teal/80 transition-colors flex items-center gap-1.5 cursor-pointer focus:outline-none"
+          >
+            <HelpCircle className="w-4 h-4 shrink-0" />
+            {showFormula 
+              ? (language === "hi" ? "सूत्र स्पष्टीकरण छिपाएं" : language === "mr" ? "सूत्र स्पष्टीकरण लपवा" : "Hide Formula Explanation")
+              : (language === "hi" ? "सूत्र स्पष्टीकरण देखें (9-14 वर्ष के लिए)" : language === "mr" ? "सूत्र स्पष्टीकरण पहा (९-१४ वर्षे)" : "Show Formula Explanation (For Ages 9-14)")
+            }
+          </button>
+          
+          {showFormula && (
+            <div className="mt-4 bg-vibrant-cream border-2 border-vibrant-dark p-5 rounded-2xl text-xs md:text-sm text-vibrant-dark space-y-3 shadow-[2px_2px_0_0_#1A2E35]">
+              <h4 className="font-black text-xs md:text-sm text-vibrant-teal">
+                {language === "hi" ? "बीजगणितीय प्रमाण (Algebraic Proof):" : language === "mr" ? "बीजगणितीय स्पष्टीकरण (Algebraic Proof):" : "Algebraic Proof (Sutra logic):"}
+              </h4>
+              {activeSutra === "square" && (
+                <p className="leading-relaxed font-semibold">
+                  {language === "hi" 
+                    ? "यदि कोई संख्या 100 से 'd' कम है, तो (100 - d)² = 10000 - 200d + d² = 100(100 - 2d) + d² = 100(संख्या - विचलन) + विचलन²। इसलिए बायाँ भाग (संख्या - विचलन) और दायाँ भाग विचलन² है।"
+                    : language === "mr"
+                    ? "जर एखादी संख्या 100 पेक्षा 'd' ने कमी असेल, तर (100 - d)² = 10000 - 200d + d² = 100(100 - 2d) + d² = 100(संख्या - विचलन) + विचलन²। म्हणून डावी बाजू (संख्या - विचलन) आणि उजवी बाजू विचलन² असते."
+                    : "If a number is 'd' below 100, then (100 - d)² = 10000 - 200d + d² = 100(100 - 2d) + d² = 100(Number - deviation) + deviation². Hence, the left half is (Number - deviation) and the right half is deviation²."
+                  }
+                </p>
+              )}
+              {activeSutra === "cross" && (
+                <p className="leading-relaxed font-semibold">
+                  {language === "hi"
+                    ? "इकाइयों, दहाइयों और सैकड़ा स्थानों के सामान्य विस्तार (100a + 10b + c)(10d + e) को गुणन स्तंभों में दर्शाया गया है: 1000ad + 100(ae + bd) + 10(be + cd) + ce।"
+                    : language === "mr"
+                    ? "इकाई, दशक आणि शतक स्थानांचा विस्तार (100a + 10b + c)(10d + e) गुणाकारात असा होतो: 1000ad + 100(ae + bd) + 10(be + cd) + ce।"
+                    : "The expansion of place values (100a + 10b + c)(10d + e) = 1000ad + 100(ae + bd) + 10(be + cd) + ce, which dictates the step-by-step vertical and crosswise multiplication."
+                  }
+                </p>
+              )}
+              {activeSutra === "ekadhikena" && (
+                <p className="leading-relaxed font-semibold">
+                  {language === "hi"
+                    ? "5 पर समाप्त होने वाली संख्या (10x + 5)² = 100x² + 100x + 25 = 100x(x + 1) + 25 होती है। इसलिए बायाँ भाग x(x + 1) होता है और दाहिना भाग हमेशा 25 होता है।"
+                    : language === "mr"
+                    ? "५ ने शेवट होणारी संख्या (10x + 5)² = 100x² + 100x + 25 = 100x(x + 1) + 25 असते। म्हणून डावी बाजू x(x + 1) आणि उजवी बाजू नेहमी २५ असते."
+                    : "Any number ending in 5 can be written as 10x + 5. Its square is (10x + 5)² = 100x(x + 1) + 25. This mathematically proves why the left side is x(x + 1) and the right side is always 25."
+                  }
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
