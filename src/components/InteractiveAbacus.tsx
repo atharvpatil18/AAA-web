@@ -15,8 +15,9 @@ interface RodState {
 
 export default function InteractiveAbacus() {
   const { language, t, formatNumber } = useLanguage();
-  // 5 rods: Indices 0 (ten-thousands) to 4 (ones) from left to right
+  // 6 rods: Indices 0 (hundred-thousands) to 5 (ones) from left to right
   const [rods, setRods] = useState<RodState[]>([
+    { upper: false, lowerCount: 0 },
     { upper: false, lowerCount: 0 },
     { upper: false, lowerCount: 0 },
     { upper: false, lowerCount: 0 },
@@ -59,8 +60,8 @@ export default function InteractiveAbacus() {
 
   // Set abacus to a specific number
   const setAbacusNumber = (num: number) => {
-    const clamped = Math.max(0, Math.min(99999, num));
-    const digits = clamped.toString().padStart(5, "0").split("").map(Number);
+    const clamped = Math.max(0, Math.min(999999, num));
+    const digits = clamped.toString().padStart(6, "0").split("").map(Number);
     const nextRods = digits.map((digit) => {
       const upper = digit >= 5;
       const lowerCount = digit % 5;
@@ -72,6 +73,7 @@ export default function InteractiveAbacus() {
   // Reset abacus to 0
   const resetAbacus = () => {
     setRods([
+      { upper: false, lowerCount: 0 },
       { upper: false, lowerCount: 0 },
       { upper: false, lowerCount: 0 },
       { upper: false, lowerCount: 0 },
@@ -95,7 +97,7 @@ export default function InteractiveAbacus() {
   };
 
   const totalValue = rods.reduce((acc, rod, idx) => {
-    const power = 4 - idx; // left is 10^4, right is 10^0
+    const power = 5 - idx; // left is 10^5, right is 10^0
     return acc + getRodValue(rod) * Math.pow(10, power);
   }, 0);
 
@@ -120,8 +122,8 @@ export default function InteractiveAbacus() {
     setIsCountingDown(true);
 
     // Set abacus to represent target number (visualized under the thousands and tens rods)
-    const clamped = Math.max(0, Math.min(99999, target));
-    const digits = clamped.toString().padStart(5, "0").split("").map(Number);
+    const clamped = Math.max(0, Math.min(999999, target));
+    const digits = clamped.toString().padStart(6, "0").split("").map(Number);
     const nextRods = digits.map((digit) => {
       const upper = digit >= 5;
       const lowerCount = digit % 5;
@@ -136,6 +138,7 @@ export default function InteractiveAbacus() {
       setIsCountingDown(false);
       // Reset abacus rods so player cannot read/count them
       setRods([
+        { upper: false, lowerCount: 0 },
         { upper: false, lowerCount: 0 },
         { upper: false, lowerCount: 0 },
         { upper: false, lowerCount: 0 },
@@ -165,7 +168,7 @@ export default function InteractiveAbacus() {
     { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९९" : "Number 99"}`, val: 99 },
     { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ३५०" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ३५०" : "Number 350"}`, val: 350 },
     { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या २,०२६" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या २,०२६" : "Number 2,026"}`, val: 2026 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९९,९९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९९,९९९" : "Number 99,999"}`, val: 99999 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९९९,९९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९९९,९९९" : "Number 999,999"}`, val: 999999 },
   ];
 
   return (
@@ -401,8 +404,8 @@ export default function InteractiveAbacus() {
                   <input
                     type="number"
                     min="0"
-                    max="99999"
-                    placeholder="e.g. 54321"
+                    max="999999"
+                    placeholder="e.g. 543210"
                     value={customInput}
                     onChange={(e) => setCustomInput(e.target.value)}
                     className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-teal"
