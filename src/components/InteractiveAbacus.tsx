@@ -249,9 +249,14 @@ export default function InteractiveAbacus() {
             
             {/* Horizontal Beam/Divider */}
             <div className="absolute top-[68px] left-0 right-0 h-4 bg-[#4A2C18] border-y-2 border-[#2C190D] shadow-md z-10 flex items-center justify-around">
-              {/* Real-time pinpoint indicators */}
+              {/* Real-time pinpoint indicators (only in 2nd and 5th columns: indices 1 and 4) */}
               {[...Array(5)].map((_, i) => (
-                <div key={i} className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-vibrant-gold opacity-50 z-20" />
+                <div 
+                  key={i} 
+                  className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-vibrant-gold z-20 ${
+                    i === 1 || i === 4 ? "opacity-75" : "opacity-0"
+                  }`} 
+                />
               ))}
             </div>
 
