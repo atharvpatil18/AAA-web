@@ -347,6 +347,8 @@ export const translations = {
     showcaseItem11Text: "Neha Patil receives the prestigious Entrepreneurship Excellence Award from IIVA & IVAS at IIT Delhi on National Mathematics Day. Handed over by the CEO and CMD of IIVA & IVAS, this national accolade celebrates her transformative impact on 150+ students.",
     showcaseItem12Title: "⚡ Unlocked: The \"Perfect 100\" Achievement! Meet Devaansh! ⚡",
     showcaseItem12Text: "Devaansh Ganjoo rewrote the rulebook with a perfect 100/100 in Abacus Runner Level 1 at 2.2x speed and excellent handwriting! Driven by laser focus and a heart of gold, he shines in class. We also honor his super support squad—Happy Father's Day to his dad and Happy Birthday to his mom! Next stop: National & International stages! 🏆",
+    showcaseItem13Title: "Champion & Birthday Boy: Meet Sushmit!",
+    showcaseItem13Text: "Happy Birthday, Sushmit! 🎂 We celebrate our birthday boy’s recent triumph: scoring a PERFECT 100/100 in Abacus Sr. KG and winning the Championship Trophy! Structured and curious, Sushmit stands out for his proactive habits and excellent handwriting. Heartfelt thanks to Supermom Manisha and Teacher Neha. Our future International Math Champion is destined for greatness! 🏆",
 
     showcaseTag1: "International Champion",
     showcaseTag2: "Double Champion",
@@ -360,6 +362,7 @@ export const translations = {
     showcaseTag10: "Summer Agility",
     showcaseTag11: "National Recognition",
     showcaseTag12: "Perfect 100 Score",
+    showcaseTag13: "Championship Trophy",
 
     // Contact
     contactTitle: "Reach Out to Arnav Abacus Academy",
@@ -960,6 +963,8 @@ export const translations = {
     showcaseItem11Text: "राष्ट्रीय गणित दिवस पर IIT दिल्ली में IIVA और IVAS द्वारा नेहा पाटिल को प्रतिष्ठित उद्यमिता उत्कृष्टता पुरस्कार से सम्मानित किया गया। यह राष्ट्रीय पुरस्कार 150+ छात्रों के जीवन में उनके द्वारा लाए गए सकारात्मक बदलावों की सराहना करता है।",
     showcaseItem12Title: "⚡ 'परफेक्ट 100' की उपलब्धि: मिलिए देवांश से! ⚡",
     showcaseItem12Text: "देवांश गंजू ने शानदार २.२ गुना गति और बेहतरीन लिखावट के साथ एबाकस रनर लेवल १ में १००/१०० का परफेक्ट स्कोर बनाया है ! लेज़र फोकस और दयालु दिल के साथ क्लास में चमकने वाले देवांश के सुपर परिवार (पापा को फादर्स डे और मम्मी को जन्मदिन) को भी बधाई। अगला पड़ाव: राष्ट्रीय और अंतर्राष्ट्रीय मंच ! 🏆",
+    showcaseItem13Title: "चैंपियन और बर्थडे बॉय: मिलिए सुशमित से!",
+    showcaseItem13Text: "हैप्पी बर्थडे, सुशमित ! 🎂 हम अपने बर्थडे बॉय की हालिया जीत का जश्न मना रहे हैं: एबाकस सीनियर केजी में परफेक्ट १००/१०० स्कोर और चैम्पियनशिप ट्रॉफी ! सुशमित अपनी जिज्ञासु प्रवृत्ति, बेहतरीन लिखावट और अनुशासन के लिए जाने जाते हैं। उनकी सुपरमॉम मनीषा और नेहा मैम को बहुत-बहुत आभार। हमारे भविष्य के अंतर्राष्ट्रीय गणित चैंपियन का भविष्य उज्ज्वल है ! 🏆",
 
     showcaseTag1: "अंतर्राष्ट्रीय चैंपियन",
     showcaseTag2: "डबल चैंपियन",
@@ -973,6 +978,7 @@ export const translations = {
     showcaseTag10: "समर कैंप कौशल",
     showcaseTag11: "राष्ट्रीय सम्मान",
     showcaseTag12: "परफेक्ट 100 स्कोर",
+    showcaseTag13: "चैंपियनशिप ट्रॉफी",
 
     // Contact
     contactTitle: "अर्णव एबाकस एकेडमी से संपर्क करें",
@@ -1573,6 +1579,8 @@ export const translations = {
     showcaseItem11Text: "राष्ट्रीय गणित दिनानिमित्त IIT दिल्ली येथे IIVA आणि IVAS द्वारे नेहा पाटील यांना राष्ट्रीय उद्योजकता उत्कृष्टता पुरस्काराने गौरवण्यात आले।",
     showcaseItem12Title: "⚡ 'परफेक्ट 100' यश संपादन: भेटा देवांशला! ⚡",
     showcaseItem12Text: "देवांश गंजू याने उत्कृष्ट हस्ताक्षरासह आणि २.२ पट वेगवान गतीने ॲबॅकस रनर लेव्हल १ मध्ये १००/१०० मिळवून इतिहास रचला आहे ! लेझर फोकस आणि दयाळू वृत्तीने सर्वांचे मन जिंकणाऱ्या देवांशच्या पालकांना (वडिलांना फादर्स डे आणि आईला वाढदिवस) मनःपूर्वक शुभेच्छा। पुढील लक्ष्य: राष्ट्रीय व आंतरराष्ट्रीय स्तरावरील यश ! 🏆",
+    showcaseItem13Title: "चॅम्पियन आणि बर्थडे बॉय: भेटा सुशमितला!",
+    showcaseItem13Text: "हॅपी बर्थडे, सुशमित ! 🎂 आम्ही आपल्या या विद्यार्थ्याच्या दुहेरी आनंदाचे स्वागत करतो: ॲबॅकस सीनियर केजीमध्ये १००/१०० गुण आणि चॅम्पियनशिप ट्रॉफी ! सुशमित त्याच्या जिज्ञासू वृत्तीसाठी, शिस्तीसाठी आणि सुंदर हस्ताक्षरासाठी ओळखला जातो। त्याची सुपरमॉम मनीषा आणि नेहा मॅडमचे मनापासून आभार। आमचा भावी आंतरराष्ट्रीय गणित चॅम्पियन यशाच्या शिखरावर पोहोचेल यात शंका नाही ! 🏆",
 
     showcaseTag1: "आंतरराष्ट्रीय विजेता",
     showcaseTag2: "सलग दोनदा विजेता",
@@ -1586,6 +1594,7 @@ export const translations = {
     showcaseTag10: "समर कॅम्प",
     showcaseTag11: "राष्ट्रीय गौरव",
     showcaseTag12: "परफेक्ट 100 गुण",
+    showcaseTag13: "चॅम्पियनशिप ट्रॉफी",
 
     // Contact
     contactTitle: "अर्णव ॲबॅकस अकॅडमीशी संपर्क साधा",

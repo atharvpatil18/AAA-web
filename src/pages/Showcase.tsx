@@ -165,6 +165,16 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       colorTheme: "gold",
     },
     {
+      id: "gallery-sushmit-championship",
+      type: "competition",
+      title: t("showcaseItem13Title"),
+      tag: t("showcaseTag13"),
+      achievementText: t("showcaseItem13Text"),
+      imageUrl: "sushmit_championship_birthday.webp",
+      imageAlt: "Sushmit holding his Championship Trophy with Teacher Neha at Arnav Abacus Academy",
+      colorTheme: "gold",
+    },
+    {
       id: "story-1",
       type: "transformation",
       title: "Zeroing Down Silly Mistakes",
