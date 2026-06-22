@@ -203,32 +203,32 @@ export default function InteractiveAbacus() {
   const getBeadColor = (rIdx: number, isActive: boolean) => {
     const configs = [
       { // Rod 1: Pink
-        active: "bg-pink-500 text-white border-pink-700",
-        inactive: "bg-pink-100 text-pink-700/50 border-pink-300"
+        active: "bg-pink-700 text-white border-pink-900",
+        inactive: "bg-pink-900/30 text-pink-300 border-pink-950"
       },
       { // Rod 2: Red
-        active: "bg-red-600 text-white border-red-800",
-        inactive: "bg-red-100 text-red-700/50 border-red-300"
+        active: "bg-red-800 text-white border-red-950",
+        inactive: "bg-red-950/30 text-red-300 border-red-950"
       },
       { // Rod 3: Green
-        active: "bg-green-600 text-white border-green-800",
-        inactive: "bg-green-100 text-green-700/50 border-green-300"
+        active: "bg-green-700 text-white border-green-900",
+        inactive: "bg-green-950/30 text-green-300 border-green-950"
       },
       { // Rod 4: Yellow
-        active: "bg-yellow-400 text-vibrant-dark border-yellow-600",
-        inactive: "bg-yellow-100 text-yellow-800/50 border-yellow-300"
+        active: "bg-yellow-600 text-white border-yellow-800",
+        inactive: "bg-yellow-800/30 text-yellow-200 border-yellow-900"
       },
       { // Rod 5: Orange
-        active: "bg-orange-500 text-white border-orange-700",
-        inactive: "bg-orange-100 text-orange-700/50 border-orange-300"
+        active: "bg-orange-650 text-white border-orange-850",
+        inactive: "bg-orange-850/30 text-orange-200 border-orange-900"
       },
       { // Rod 6: Blue
-        active: "bg-blue-600 text-white border-blue-800",
-        inactive: "bg-blue-100 text-blue-700/50 border-blue-300"
+        active: "bg-blue-800 text-white border-blue-950",
+        inactive: "bg-blue-950/30 text-blue-350 border-blue-950"
       },
       { // Rod 7: White
-        active: "bg-white text-vibrant-dark border-gray-600",
-        inactive: "bg-gray-100 text-gray-400 border-gray-300"
+        active: "bg-white text-vibrant-dark border-gray-800",
+        inactive: "bg-gray-400/30 text-gray-550 border-gray-500"
       }
     ];
     const conf = configs[rIdx] || configs[6];
