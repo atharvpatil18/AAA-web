@@ -58,10 +58,17 @@ export default function InteractiveAbacus() {
     });
   };
 
-  // Set abacus to a specific number
+  // Set abacus to a specific number supporting decimals up to 9999.99
   const setAbacusNumber = (num: number) => {
-    const clamped = Math.max(0, Math.min(999999, num));
-    const digits = clamped.toString().padStart(6, "0").split("").map(Number);
+    const clamped = Math.max(0, Math.min(9999.99, num));
+    const d0 = Math.floor(clamped / 1000) % 10;
+    const d1 = Math.floor(clamped / 100) % 10;
+    const d2 = Math.floor(clamped / 10) % 10;
+    const d3 = Math.floor(clamped) % 10;
+    const d4 = Math.floor(clamped * 10) % 10;
+    const d5 = Math.round(clamped * 100) % 10;
+
+    const digits = [d0, d1, d2, d3, d4, d5];
     const nextRods = digits.map((digit) => {
       const upper = digit >= 5;
       const lowerCount = digit % 5;
@@ -97,13 +104,21 @@ export default function InteractiveAbacus() {
   };
 
   const totalValue = rods.reduce((acc, rod, idx) => {
-    const power = 5 - idx; // left is 10^5, right is 10^0
-    return acc + getRodValue(rod) * Math.pow(10, power);
+    let multiplier = 1;
+    if (idx === 0) multiplier = 1000;
+    else if (idx === 1) multiplier = 100;
+    else if (idx === 2) multiplier = 10;
+    else if (idx === 3) multiplier = 1;
+    else if (idx === 4) multiplier = 0.1;
+    else if (idx === 5) multiplier = 0.01;
+    return acc + getRodValue(rod) * multiplier;
   }, 0);
+
+  const displayTotal = parseFloat(totalValue.toFixed(2));
 
   const handleCustomInputSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const val = parseInt(customInput, 10);
+    const val = parseFloat(customInput);
     if (!isNaN(val)) {
       setAbacusNumber(val);
     }
@@ -121,9 +136,16 @@ export default function InteractiveAbacus() {
     setFlashcardFeedback("");
     setIsCountingDown(true);
 
-    // Set abacus to represent target number (visualized under the thousands and tens rods)
-    const clamped = Math.max(0, Math.min(999999, target));
-    const digits = clamped.toString().padStart(6, "0").split("").map(Number);
+    // Set abacus to represent target number
+    const clamped = Math.max(0, Math.min(9999.99, target));
+    const d0 = Math.floor(clamped / 1000) % 10;
+    const d1 = Math.floor(clamped / 100) % 10;
+    const d2 = Math.floor(clamped / 10) % 10;
+    const d3 = Math.floor(clamped) % 10;
+    const d4 = Math.floor(clamped * 10) % 10;
+    const d5 = Math.round(clamped * 100) % 10;
+
+    const digits = [d0, d1, d2, d3, d4, d5];
     const nextRods = digits.map((digit) => {
       const upper = digit >= 5;
       const lowerCount = digit % 5;
@@ -163,12 +185,12 @@ export default function InteractiveAbacus() {
   };
 
   const examples = [
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ७" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ७" : "Number 7"}`, val: 7 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या १२" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या १२" : "Number 12"}`, val: 12 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९९" : "Number 99"}`, val: 99 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ३५०" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ३५०" : "Number 350"}`, val: 350 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ०.०५" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ०.०५" : "Number 0.05"}`, val: 0.05 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ७.५" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ७.५" : "Number 7.5"}`, val: 7.5 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या १२.३४" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या १२.३४" : "Number 12.34"}`, val: 12.34 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ३५०.१" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ३५०.१" : "Number 350.1"}`, val: 350.1 },
     { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या २,०२६" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या २,०२६" : "Number 2,026"}`, val: 2026 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९९९,९९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९९९,९९९" : "Number 999,999"}`, val: 999999 },
+    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९,९९९.९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९,९९९.९९" : "Number 9,999.99"}`, val: 9999.99 },
   ];
 
   return (
@@ -252,12 +274,12 @@ export default function InteractiveAbacus() {
             
             {/* Horizontal Beam/Divider */}
             <div className="absolute top-[68px] left-0 right-0 h-4 bg-[#4A2C18] border-y-2 border-[#2C190D] shadow-md z-10 flex items-center justify-around">
-              {/* Real-time pinpoint indicators (only in 2nd and 5th columns: indices 1 and 4) */}
-              {[...Array(5)].map((_, i) => (
+              {/* Real-time pinpoint indicators (only in 1st and 4th columns: indices 0 and 3) */}
+              {[...Array(6)].map((_, i) => (
                 <div 
                   key={i} 
                   className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-vibrant-gold z-20 ${
-                    i === 1 || i === 4 ? "opacity-75" : "opacity-0"
+                    i === 0 || i === 3 ? "opacity-75" : "opacity-0"
                   }`} 
                 />
               ))}
@@ -403,9 +425,10 @@ export default function InteractiveAbacus() {
                 <form onSubmit={handleCustomInputSubmit} className="flex gap-2">
                   <input
                     type="number"
+                    step="0.01"
                     min="0"
-                    max="999999"
-                    placeholder="e.g. 543210"
+                    max="9999.99"
+                    placeholder="e.g. 1234.56"
                     value={customInput}
                     onChange={(e) => setCustomInput(e.target.value)}
                     className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-teal"
@@ -551,7 +574,7 @@ export default function InteractiveAbacus() {
             {t("abacusComputedTitle")}
           </span>
           <span className="font-display font-black text-4xl md:text-5xl text-vibrant-dark block tracking-tight my-1">
-            {formatNumber(totalValue.toLocaleString("en-IN"))}
+            {formatNumber(displayTotal.toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 2 }))}
           </span>
           <p className="text-xs text-gray-400 font-semibold leading-relaxed">
             {t("abacusComputedSubtitle")}
