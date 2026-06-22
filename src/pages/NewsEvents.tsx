@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, Phone, ArrowRight, Smartphone, Compass, Sparkles, BookOpen, Star } from "lucide-react";
+import { Calendar, Phone, ArrowRight, Smartphone, Compass, Sparkles, BookOpen, Star, ChevronDown, ChevronUp } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
@@ -18,10 +19,20 @@ interface NewsItem {
   summary: string;
   details: string[];
   colorTheme: "teal" | "orange" | "gold";
+  imageUrl?: string;
 }
 
 export default function NewsEvents() {
   const { t } = useLanguage();
+  const [expandedEvents, setExpandedEvents] = useState<Record<string, boolean>>({});
+
+  const toggleEvent = (id: string) => {
+    setExpandedEvents(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
   const handleCtaClick = () => {
     trackDemoClick("news_page_bottom_cta");
   };
@@ -71,6 +82,22 @@ export default function NewsEvents() {
         t("news3Detail4")
       ],
       colorTheme: "orange",
+    },
+    {
+      id: "news-4",
+      title: t("news4Title"),
+      date: t("news4Date"),
+      category: "competition",
+      tag: t("news4Tag"),
+      summary: t("news4Summary"),
+      details: [
+        t("news4Detail1"),
+        t("news4Detail2"),
+        t("news4Detail3"),
+        t("news4Detail4")
+      ],
+      colorTheme: "gold",
+      imageUrl: "mental_math_power_sessions_july_2026.jpg"
     }
   ];
 
@@ -181,6 +208,8 @@ export default function NewsEvents() {
             const shadowCol = "#1A2E35";
             const accentBg = isTeal ? "bg-vibrant-teal" : isOrange ? "bg-vibrant-orange" : "bg-vibrant-gold";
 
+            const isExpanded = !!expandedEvents[item.id];
+
             return (
               <div 
                 key={item.id}
@@ -197,23 +226,67 @@ export default function NewsEvents() {
                 </div>
 
                 {/* News contents */}
-                <div className="flex-grow space-y-4">
-                  <h3 className="font-display font-black text-xl md:text-2xl text-vibrant-dark tracking-tight leading-tight">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs md:text-sm text-gray-500 leading-relaxed font-semibold">
-                    {item.summary}
-                  </p>
+                <div className="flex-grow flex flex-col justify-between space-y-4">
+                  <div className="space-y-4">
+                    <h3 className="font-display font-black text-xl md:text-2xl text-vibrant-dark tracking-tight leading-tight">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-500 leading-relaxed font-semibold">
+                      {item.summary}
+                    </p>
 
-                  {/* Bullet specifics */}
-                  <ul className="space-y-2.5 pt-2">
-                    {item.details.map((detail, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-xs text-vibrant-dark font-black">
-                        <span className={`w-1.5 h-1.5 rounded-full ${accentBg} shrink-0 mt-1.5`}></span>
-                        <span>{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          className="overflow-hidden"
+                        >
+                          <div className="pt-4 flex flex-col lg:flex-row gap-6 border-t border-dashed border-vibrant-dark/15 mt-4">
+                            {/* Bullet specifics */}
+                            <div className="flex-grow space-y-2.5">
+                              <ul className="space-y-2.5">
+                                {item.details.map((detail, idx) => (
+                                  <li key={idx} className="flex items-start gap-2 text-xs text-vibrant-dark font-black">
+                                    <span className={`w-1.5 h-1.5 rounded-full ${accentBg} shrink-0 mt-1.5`}></span>
+                                    <span>{detail}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            {/* Optional Image block */}
+                            {item.imageUrl && (
+                              <div className="lg:w-80 shrink-0 aspect-[16/9] lg:aspect-auto lg:h-52 border-4 border-vibrant-dark rounded-[24px] overflow-hidden bg-white shadow-[4px_4px_0_0_#1A2E35] flex items-center justify-center">
+                                <img 
+                                  src={item.imageUrl} 
+                                  alt={item.title} 
+                                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+
+                  {/* Toggle Button */}
+                  <div className="pt-2">
+                    <button
+                      onClick={() => toggleEvent(item.id)}
+                      className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider border-2 border-vibrant-dark transition-all duration-150 shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none ${
+                        isExpanded
+                          ? "bg-vibrant-orange text-white shadow-none translate-y-0.5"
+                          : "bg-white text-vibrant-dark hover:bg-vibrant-cream"
+                      }`}
+                    >
+                      <span>{isExpanded ? t("newsHideDetails") : t("newsViewDetails")}</span>
+                      {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    </button>
+                  </div>
                 </div>
               </div>
             );
