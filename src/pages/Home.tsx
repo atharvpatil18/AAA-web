@@ -26,6 +26,7 @@ export default function Home() {
   const [showAbacus, setShowAbacus] = useState(false);
   const [showVedic, setShowVedic] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [showCompareTable, setShowCompareTable] = useState(false);
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
   const handleMapCtaClick = () => {
