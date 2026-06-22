@@ -24,11 +24,14 @@ interface SuccessItem {
   imageAlt: string;
   tag: string;
   colorTheme: "teal" | "orange" | "gold";
+  mainCategory: "international" | "national_state" | "school_level" | "academy_level";
+  academySubCategory?: "abacus" | "vedic_math" | "mental_math" | "school_math" | "competitive_math";
 }
 
 export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
-  const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState<"all" | "stories" | "gallery">(defaultTab);
+  const { language, t } = useLanguage();
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [academySubFilter, setAcademySubFilter] = useState<string>("all");
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
   const [selectedItem, setSelectedItem] = useState<SuccessItem | null>(null);
 
@@ -53,6 +56,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "international_abacus_champion.webp",
       imageAlt: "Arnav Patil receiving the International Abacus Champion Trophy from Hon. Dr. Kiran Bedi and IIVA CEO",
       colorTheme: "gold",
+      mainCategory: "international"
     },
     {
       id: "gallery-double-champion-arnav",
@@ -63,6 +67,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "arnav_patil_international_1st_2025.webp",
       imageAlt: "Arnav Patil holding the 1st Rank Trophy with Neha Patil on stage",
       colorTheme: "gold",
+      mainCategory: "international"
     },
     {
       id: "gallery-business-excellence",
@@ -73,6 +78,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "business_excellence_award_2025.webp",
       imageAlt: "Neha Patil receiving the Business Excellence Award 2025 from Sanjay Kalamkar",
       colorTheme: "gold",
+      mainCategory: "national_state"
     },
     {
       id: "gallery-womens-achiever",
@@ -83,6 +89,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "neha_achiever_collage.webp",
       imageAlt: "Neha Patil receiving the Women's Achiever Award from LPBMW community leaders",
       colorTheme: "gold",
+      mainCategory: "national_state"
     },
     {
       id: "gallery-best-student",
@@ -93,6 +100,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "best_student_spriha_kamat_2025_2026.webp",
       imageAlt: "Spriha Kamath holding the Best Student of the Year Trophy with Neha Patil",
       colorTheme: "teal",
+      mainCategory: "academy_level",
+      academySubCategory: "abacus"
     },
     {
       id: "gallery-hitanshi-bronze",
@@ -103,6 +112,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "hitanshi_collage.webp",
       imageAlt: "Hitanshi Agarwal holding her trophy and celebrating her 3rd Rank at the International Abacus Competition",
       colorTheme: "orange",
+      mainCategory: "international"
     },
     {
       id: "gallery-shreshth-champion",
@@ -113,6 +123,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "shreshth_gupta_champion_2025.webp",
       imageAlt: "Shreshth Gupta receiving the 1st Rank International Abacus Competition Trophy with Neha Patil",
       colorTheme: "gold",
+      mainCategory: "international"
     },
     {
       id: "gallery-seven-runnerups",
@@ -123,6 +134,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "seven_runner_up_stars_2025.webp",
       imageAlt: "Seven Arnav Abacus Academy students posing with their Runner-Up Trophies on stage",
       colorTheme: "teal",
+      mainCategory: "international"
     },
     {
       id: "gallery-competition-glimpses",
@@ -133,6 +145,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "competition_glimpses_collage.webp",
       imageAlt: "Collage of students participating and celebrating awards at various abacus competitions from 2023 to 2025",
       colorTheme: "teal",
+      mainCategory: "national_state"
     },
     {
       id: "gallery-bliss-camp",
@@ -143,6 +156,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "bliss_international_abacus_camp_2024.webp",
       imageAlt: "Neha Patil teaching abacus to students at Bliss International School summer camp",
       colorTheme: "orange",
+      mainCategory: "academy_level",
+      academySubCategory: "abacus"
     },
     {
       id: "gallery-award",
@@ -153,6 +168,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "national_math_day_award.webp",
       imageAlt: "Neha Patil receiving Entrepreneurship Excellence Award at IIT Delhi from IIVA & IVAS",
       colorTheme: "gold",
+      mainCategory: "national_state"
     },
     {
       id: "gallery-devaansh-perfect-100",
@@ -163,6 +179,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "devaansh_runner_level_1.webp",
       imageAlt: "Devaansh Ganjoo holding his 100/100 Runner Level 1 trophy at Arnav Abacus Academy",
       colorTheme: "gold",
+      mainCategory: "academy_level",
+      academySubCategory: "abacus"
     },
     {
       id: "gallery-sushmit-championship",
@@ -173,6 +191,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       imageUrl: "sushmit_championship_birthday.webp",
       imageAlt: "Sushmit holding his Championship Trophy with Teacher Neha at Arnav Abacus Academy",
       colorTheme: "gold",
+      mainCategory: "academy_level",
+      academySubCategory: "abacus"
     },
     {
       id: "story-1",
@@ -186,6 +206,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       afterText: "Developed photographic memory using 5-rod Soroban mental abacus. Silly mistakes reduced to zero, scores improved by 35%!",
       imageAlt: "Student practicing abacus visualization",
       colorTheme: "teal",
+      mainCategory: "academy_level",
+      academySubCategory: "abacus"
     },
     {
       id: "story-2",
@@ -198,6 +220,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       achievementText: "Bagged Gold Medal at the National Mental Arithmetic Competition (IIVA and SmartKid association), solving 100 sums in 8 minutes flat.",
       imageAlt: "Student holding award certificate",
       colorTheme: "gold",
+      mainCategory: "national_state"
     },
     {
       id: "story-3",
@@ -211,6 +234,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       afterText: "Learned 16 sutras of Vedic Mathematics. Now performs calculations 10x faster. Scored a perfect 100/100 in math finals!",
       imageAlt: "Student solving algebraic sums on board",
       colorTheme: "orange",
+      mainCategory: "academy_level",
+      academySubCategory: "vedic_math"
     },
     {
       id: "story-4",
@@ -223,6 +248,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       achievementText: "Qualified for the National level IPM & Scholarship exam with an state-wide rank. Solved complex fraction and decimal series mentally.",
       imageAlt: "Proud student holding scholarship badge",
       colorTheme: "teal",
+      mainCategory: "academy_level",
+      academySubCategory: "competitive_math"
     },
     {
       id: "gallery-1",
@@ -232,6 +259,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       achievementText: "Snapshots of our young champions sitting for their level-up exams under IIVA guidelines. 100% of our students cleared with distinction!",
       imageAlt: "Students writing certification test",
       colorTheme: "orange",
+      mainCategory: "academy_level",
+      academySubCategory: "abacus"
     },
     {
       id: "gallery-2",
@@ -241,6 +270,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       achievementText: "Interactive group practice sessions where middle school students mastered mental calendar tricks, squares, and division shortcuts.",
       imageAlt: "Group of students in a high-energy workshop",
       colorTheme: "gold",
+      mainCategory: "academy_level",
+      academySubCategory: "vedic_math"
     },
     {
       id: "gallery-3",
@@ -250,6 +281,8 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       achievementText: "A warm gathering sharing individual progress sheets, student behavioral improvements, and custom spatial skill developments.",
       imageAlt: "Teachers interacting with parents at center",
       colorTheme: "teal",
+      mainCategory: "academy_level",
+      academySubCategory: "mental_math"
     },
     {
       id: "gallery-4",
@@ -259,20 +292,28 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       achievementText: "Rewarding weekly stars for consistency and neat abacus workbook submissions to build self-confidence and regular practice habits.",
       imageAlt: "Child receiving a medal from Neha Patil",
       colorTheme: "orange",
+      mainCategory: "academy_level",
+      academySubCategory: "mental_math"
     }
   ];
 
   // Only show items that have a photo. Remove the cards without images or having only icon as image.
   const visibleItems = showcaseData.filter(item => !!item.imageUrl);
 
-  const filteredItems = activeTab === "all" 
-    ? visibleItems 
-    : activeTab === "stories"
-      ? visibleItems.filter(item => item.type === "transformation" || item.type === "competition")
-      : visibleItems.filter(item => item.type === "gallery");
+  const filteredItems = visibleItems.filter(item => {
+    if (activeCategory !== "all" && item.mainCategory !== activeCategory) {
+      return false;
+    }
+    if (activeCategory === "academy_level" && academySubFilter !== "all" && item.academySubCategory !== academySubFilter) {
+      return false;
+    }
+    return true;
+  });
 
-  const storiesCount = visibleItems.filter(x => x.type === "transformation" || x.type === "competition").length;
-  const galleryCount = visibleItems.filter(x => x.type === "gallery").length;
+  const getCategoryCount = (catId: string) => {
+    if (catId === "all") return visibleItems.length;
+    return visibleItems.filter(item => item.mainCategory === catId).length;
+  };
 
   return (
     <div id="showcase-page-container" className="bg-[#FFFDF9] min-h-screen">
@@ -294,18 +335,22 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       </section>
 
       {/* 2. Filter Navigation Tab Bar */}
-      <section className="pt-12 pb-6 max-w-7xl mx-auto px-4 md:px-8">
+      <section className="pt-12 pb-6 max-w-7xl mx-auto px-4 md:px-8 space-y-6">
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
           {[
-            { id: "all", label: t("showcaseTabAll"), count: visibleItems.length },
-            { id: "stories", label: t("showcaseTabStories"), count: storiesCount },
-            { id: "gallery", label: t("showcaseTabGallery"), count: galleryCount },
+            { id: "all", label: t("categoryAll"), count: visibleItems.length },
+            { id: "international", label: t("categoryInternational"), count: getCategoryCount("international") },
+            { id: "national_state", label: t("categoryNationalState"), count: getCategoryCount("national_state") },
+            { id: "academy_level", label: t("categoryAcademyLevel"), count: getCategoryCount("academy_level") },
           ].map(tab => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() => {
+                setActiveCategory(tab.id);
+                setAcademySubFilter("all");
+              }}
               className={`px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider border-2 border-vibrant-dark transition-all duration-150 shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none ${
-                activeTab === tab.id
+                activeCategory === tab.id
                   ? "bg-vibrant-orange text-white shadow-none translate-y-0.5"
                   : "bg-white text-vibrant-dark hover:bg-vibrant-cream"
               }`}
@@ -314,6 +359,36 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
             </button>
           ))}
         </div>
+
+        {activeCategory === "academy_level" && (
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 p-4 bg-[#F5F2EB] rounded-2xl border-2 border-dashed border-vibrant-dark/25 max-w-4xl mx-auto">
+            {[
+              { id: "all", label: t("subAll") },
+              { id: "abacus", label: t("subAbacus") },
+              { id: "vedic_math", label: t("subVedicMath") },
+              { id: "mental_math", label: t("subMentalMath") },
+              { id: "school_math", label: t("subSchoolMath") },
+              { id: "competitive_math", label: t("subCompetitiveMath") },
+            ].map(subTab => {
+              const count = subTab.id === "all"
+                ? visibleItems.filter(item => item.mainCategory === "academy_level").length
+                : visibleItems.filter(item => item.mainCategory === "academy_level" && item.academySubCategory === subTab.id).length;
+              return (
+                <button
+                  key={subTab.id}
+                  onClick={() => setAcademySubFilter(subTab.id)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 ${
+                    academySubFilter === subTab.id
+                      ? "bg-vibrant-teal text-white shadow-[1px_1px_0_0_#1A2E35] border border-vibrant-dark"
+                      : "bg-white text-vibrant-dark/80 hover:text-vibrant-dark border border-gray-300 hover:border-vibrant-dark"
+                  }`}
+                >
+                  {subTab.label} <span className="ml-0.5 opacity-60 text-[10px]">({count})</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {/* 3. Items Grid */}

@@ -13,7 +13,7 @@ interface FaqItem {
   id: string;
   question: string;
   answer: string;
-  category: "General" | "Abacus" | "Vedic Maths" | "School Maths";
+  category: "General" | "Abacus Math" | "Vedic Maths" | "School Maths";
 }
 
 export default function Faqs() {
@@ -22,7 +22,7 @@ export default function Faqs() {
   const faqItems: FaqItem[] = [
     {
       id: "faq1",
-      category: "Abacus",
+      category: "Abacus Math",
       question: t("faq1Question"),
       answer: t("faq1Answer")
     },
@@ -46,7 +46,7 @@ export default function Faqs() {
     },
     {
       id: "faq5",
-      category: "Abacus",
+      category: "Abacus Math",
       question: t("faq5Question"),
       answer: t("faq5Answer")
     },
@@ -71,7 +71,7 @@ export default function Faqs() {
   ];
 
   // Map category tab filter
-  const [selectedCategory, setSelectedCategory] = useState<"All" | "General" | "Abacus" | "Vedic Maths" | "School Maths">("All");
+  const [selectedCategory, setSelectedCategory] = useState<"All" | "General" | "Abacus Math" | "Vedic Maths" | "School Maths">("All");
 
   // Accordion track open list
   const [openedFaqs, setOpenedFaqs] = useState<Record<string, boolean>>({
@@ -89,14 +89,14 @@ export default function Faqs() {
     trackDemoClick("faqs_page_doubts_cta");
   };
 
-  const categories: ("All" | "General" | "Abacus" | "Vedic Maths" | "School Maths")[] = [
-    "All", "General", "Abacus", "Vedic Maths", "School Maths"
+  const categories: ("All" | "General" | "Abacus Math" | "Vedic Maths" | "School Maths")[] = [
+    "All", "General", "Abacus Math", "Vedic Maths", "School Maths"
   ];
 
   const catMapping: Record<string, string> = {
     "All": t("faqCategoryAll"),
     "General": t("faqCategoryGeneral"),
-    "Abacus": t("faqCategoryAbacus"),
+    "Abacus Math": t("faqCategoryAbacus"),
     "Vedic Maths": t("faqCategoryVedic"),
     "School Maths": t("faqCategorySchool")
   };
