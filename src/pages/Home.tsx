@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import Hero from "../components/Hero";
@@ -31,47 +31,6 @@ export default function Home() {
   const [selectedProgram, setSelectedProgram] = useState("abacus");
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
-  const [activeSection, setActiveSection] = useState("hero-section");
-  const [scrollPercentage, setScrollPercentage] = useState(0);
-
-  const pageSections = [
-    { id: "hero-section", label: "Intro", fullLabel: "Introduction", icon: "🏠" },
-    { id: "consultation-booth", label: "Consult", fullLabel: "Parent Consult", icon: "💬" },
-    { id: "programs-showcase", label: "Programs", fullLabel: "Classroom Streams", icon: "🎓" },
-    { id: "interactive-abacus-playground", label: "Abacus", fullLabel: "Interactive Soroban", icon: "🧮" },
-    { id: "interactive-vedic-playground", label: "Vedic", fullLabel: "Vedic Math", icon: "⚡" },
-    { id: "competitor-comparison", label: "Compare", fullLabel: "Franchise Switch", icon: "⚖️" },
-    { id: "location-contact", label: "Wakad Map", fullLabel: "Center Location", icon: "📍" },
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Calculate scroll progress percentage
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      setScrollPercentage(pct);
-
-      // Determine the active section
-      const sectionElements = pageSections.map(sec => document.getElementById(sec.id));
-      let currentActive = "hero-section";
-
-      for (const el of sectionElements) {
-        if (!el) continue;
-        const rect = el.getBoundingClientRect();
-        // If the top of the section is at or above the upper middle viewport
-        if (rect.top <= window.innerHeight * 0.4) {
-          currentActive = el.id;
-        }
-      }
-      setActiveSection(currentActive);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // initial call
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const handleMapCtaClick = () => {
     trackDemoClick("home_map_nav_cta");
   };
@@ -89,85 +48,7 @@ export default function Home() {
     : (language === "hi" ? "गणित क्विज़ चुनौती शुरू करें" : language === "mr" ? "गणित क्विझ आव्हान सुरू करा" : "Try Math Quiz Challenge");
 
   return (
-    <div id="home-page-container" className="bg-[#FFFDF9] min-h-screen flex flex-row relative">
-      
-      {/* 20% Sidebar ScrollSpy Column */}
-      <aside className="w-[20%] md:w-[22%] lg:w-[18%] bg-vibrant-dark text-white border-r-4 border-vibrant-dark sticky top-[80px] h-[calc(100vh-80px)] z-30 flex flex-col justify-start py-8 px-2 md:px-4 select-none overflow-y-auto shrink-0 shadow-md">
-        {/* Title progress section */}
-        <div className="hidden md:block mb-8 text-center shrink-0">
-          <h4 className="font-display font-black text-xs text-vibrant-orange uppercase tracking-wider">Arnav Progress</h4>
-          <div className="w-12 h-0.5 bg-vibrant-orange mx-auto mt-1 rounded-full" />
-        </div>
-
-        {/* Dynamic scroll progress list */}
-        <div className="relative flex-1 flex flex-col justify-between py-6 pl-1 md:pl-2 min-h-[350px]">
-          {/* Vertical progress bar line */}
-          <div className="absolute left-[12px] md:left-[16px] top-[10px] bottom-[10px] w-[3px] bg-[#233C45] rounded-full z-0">
-            <div 
-              className="w-full bg-vibrant-orange rounded-full transition-all duration-100" 
-              style={{ height: `${scrollPercentage}%` }}
-            />
-          </div>
-
-          {/* Section rows */}
-          {pageSections.map((sec, idx) => {
-            const isActive = activeSection === sec.id;
-            const isScrolledPast = pageSections.findIndex(s => s.id === activeSection) >= idx;
-
-            return (
-              <button
-                key={sec.id}
-                onClick={() => {
-                  const target = document.getElementById(sec.id);
-                  if (target) {
-                    target.scrollIntoView({ behavior: "smooth" });
-                  }
-                }}
-                className="flex items-center gap-2 md:gap-3 text-left focus:outline-none group relative z-10 w-full cursor-pointer py-1.5"
-              >
-                {/* Dot */}
-                <div 
-                  className={`w-3 h-3 md:w-3.5 md:h-3.5 rounded-full border-2 transition-all duration-300 flex items-center justify-center shrink-0 ${
-                    isActive 
-                      ? "bg-vibrant-orange border-vibrant-orange scale-110 shadow-[0_0_8px_rgba(242,106,51,0.6)]" 
-                      : isScrolledPast
-                      ? "bg-[#233C45] border-vibrant-orange"
-                      : "bg-[#102227] border-[#233C45]"
-                  }`}
-                >
-                  {isActive && <div className="w-1 h-1 bg-white rounded-full" />}
-                </div>
-
-                {/* Section Labels */}
-                <div className="flex flex-col min-w-0">
-                  {/* Mobile (up to 20%) Short Label / icon */}
-                  <span className={`block md:hidden text-[8px] sm:text-[9px] font-black uppercase tracking-tighter truncate leading-none ${
-                    isActive ? "text-vibrant-orange" : "text-gray-400 opacity-60"
-                  }`}>
-                    {sec.icon} {sec.label}
-                  </span>
-
-                  {/* Desktop Label */}
-                  <span className={`hidden md:block text-[11px] font-black uppercase tracking-wider truncate leading-tight ${
-                    isActive ? "text-vibrant-orange" : "text-gray-400 opacity-60 hover:text-white"
-                  }`}>
-                    {sec.fullLabel}
-                  </span>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Progress reading percentage block */}
-        <div className="hidden lg:block pt-6 border-t border-[#233C45] text-center shrink-0">
-          <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block">Scrolled</span>
-          <span className="font-mono text-xs font-black text-vibrant-teal">{Math.round(scrollPercentage)}%</span>
-        </div>
-      </aside>
-
-      {/* 80% Main Content Area */}
-      <main className="w-[80%] md:w-[78%] lg:w-[82%] min-h-screen flex-grow overflow-x-hidden">
+    <div id="home-page-container" className="bg-[#FFFDF9] min-h-screen">
       {/* 1. Hero Banner */}
       <Hero />
 
@@ -721,7 +602,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      </main>
     </div>
   );
 }

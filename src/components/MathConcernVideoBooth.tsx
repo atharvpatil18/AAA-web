@@ -176,7 +176,7 @@ export default function MathConcernVideoBooth() {
   const currentSub = getCurrentSubtitle();
 
   return (
-    <section id="consultation-booth" className="py-20 md:py-24 bg-[#FFFDF9] border-t-4 border-vibrant-dark relative">
+    <section className="py-20 md:py-24 bg-[#FFFDF9] border-t-4 border-vibrant-dark relative">
       <div className="absolute inset-0 bg-radial from-vibrant-teal/5 to-transparent pointer-events-none" />
       <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12 relative z-10">
         
