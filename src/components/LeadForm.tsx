@@ -16,7 +16,9 @@ interface LeadFormProps {
 
 export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: LeadFormProps) {
   const { language, t } = useLanguage();
+  const [salutation, setSalutation] = useState("Mr.");
   const [parentName, setParentName] = useState("");
+  const [studentName, setStudentName] = useState("");
   const [childAge, setChildAge] = useState("7-9");
   const [program, setProgram] = useState(defaultProgram);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,7 +27,7 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
 
   // International Demo Customizations
   const [countryCode, setCountryCode] = useState("+91");
-  const [classMode, setClassMode] = useState("offline");
+  const [classMode, setClassMode] = useState("offline"); // Default to Offline Wakad Pune Center
   const [timeZone, setTimeZone] = useState("Asia/Kolkata");
   const [schoolCurriculum, setSchoolCurriculum] = useState("CBSE/ICSE");
 
@@ -41,7 +43,7 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
       if (userTz) {
         setTimeZone(userTz);
         if (userTz !== "Asia/Kolkata") {
-          setClassMode("online");
+          // Keep demo mode offline by default as requested.
           if (userTz.startsWith("America")) {
             setCountryCode("+1");
           } else if (userTz.startsWith("Europe/London") || userTz.startsWith("Europe")) {
@@ -304,7 +306,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(8.5);
       doc.setTextColor(100, 100, 100);
-      doc.text("Address: Flat No. 3, Adv. Balaji Sagar Bungalow, Opposite Creative Cameo, Wakad, Pune", 20, 242);
+      doc.text("Address: Flat No. 3, Adv. Balaji Sagar Bungalow, Opposite Creative Cameo, Wakad, Pune, India", 20, 242);
       doc.text("Contact Phone / WhatsApp: +91 90219 24968", 20, 248);
 
       doc.setFontSize(8);
@@ -326,6 +328,10 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       setValidationError(t("formNameError"));
       return;
     }
+    if (!studentName.trim()) {
+      setValidationError(language === "hi" ? "कृपया छात्र का नाम दर्ज करें।" : language === "mr" ? "कृपया विद्यार्थ्याचे नाव टाईप करा." : "Please enter student's name.");
+      return;
+    }
 
     setIsSubmitting(true);
     
@@ -334,7 +340,8 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
 
     // Form custom WhatsApp message template
     let textMessage = `Hello, I'm interested in a Demo Class at Arnav Abacus Academy!
-Name: ${parentName}
+Parent Name: ${salutation} ${parentName}
+Student Name: ${studentName}
 Child's Age: ${childAge}
 Program: ${program}
 Country Code: ${countryCode}
@@ -344,7 +351,8 @@ Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}
 
     if (language === "hi") {
       textMessage = `नमस्ते, मैं अर्णव एबाकस एकेडमी में फ्री डेमो क्लास के लिए उत्सुक हूँ!
-अभिभावक का नाम: ${parentName}
+अभिभावक का नाम: ${salutation} ${parentName}
+छात्र का नाम: ${studentName}
 बच्चे की उम्र: ${childAge}
 कोर्स विषय: ${program}
 कंट्री कोड: ${countryCode}
@@ -353,7 +361,8 @@ Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}
 स्कूल बोर्ड: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
     } else if (language === "mr") {
       textMessage = `नमस्कार, मी अर्णव ॲबॅकस अकॅडमीमध्ये मोफत डेमो क्लाससाठी चौकशी करू इच्छितो!
-पालकांचे नाव: ${parentName}
+पालकांचे नाव: ${salutation} ${parentName}
+विद्यार्थ्याचे नाव: ${studentName}
 मुलाचे वय: ${childAge}
 कोर्स प्रकार: ${program}
 कंट्री कोड: ${countryCode}
@@ -437,16 +446,47 @@ Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}
             </div>
           )}
 
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div className="sm:col-span-1">
+              <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+                {t("formSalutation")}
+              </label>
+              <select
+                value={salutation}
+                onChange={(e) => setSalutation(e.target.value)}
+                className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
+              >
+                <option value="Mr.">Mr.</option>
+                <option value="Mrs.">Mrs.</option>
+                <option value="Ms.">Ms.</option>
+              </select>
+            </div>
+
+            <div className="sm:col-span-3">
+              <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+                {t("formParentName")}
+              </label>
+              <input
+                type="text"
+                required
+                placeholder={t("formNamePlaceholder")}
+                value={parentName}
+                onChange={(e) => setParentName(e.target.value)}
+                className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 placeholder-gray-400 transition shadow-sm"
+              />
+            </div>
+          </div>
+
           <div>
             <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
-              {t("formParentName")}
+              {t("formStudentName")}
             </label>
             <input
               type="text"
               required
-              placeholder={t("formNamePlaceholder")}
-              value={parentName}
-              onChange={(e) => setParentName(e.target.value)}
+              placeholder={language === "hi" ? "जैसे: आयुष शर्मा" : language === "mr" ? "उदा. आयुष शर्मा" : "e.g. Ayush Sharma"}
+              value={studentName}
+              onChange={(e) => setStudentName(e.target.value)}
               className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 placeholder-gray-400 transition shadow-sm"
             />
           </div>
@@ -599,7 +639,7 @@ Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}
         </form>
 
         <p className="text-center text-[10px] font-bold uppercase text-gray-400 mt-4 flex items-center justify-center gap-1.5">
-          <Landmark className="w-3.5 h-3.5 shrink-0 text-gray-300" /> {language === "hi" ? "क्रिएटिव कैमियो के सामने, पार्क स्ट्रीट से पहले, पुणे" : language === "mr" ? "क्रिएटिव्ह कॅमिओच्या समोर, पार्क स्ट्रीटजवळ, पुणे" : "Center opposite Creative Cameo, before Park Street, Pune"}
+          <Landmark className="w-3.5 h-3.5 shrink-0 text-gray-300" /> {language === "hi" ? "क्रिएटिव कैमियो के सामने, पार्क स्ट्रीट से पहले, पुणे, भारत" : language === "mr" ? "क्रिएटिव्ह कॅमिओच्या समोर, पार्क स्ट्रीटजवळ, पुणे, भारत" : "Center opposite Creative Cameo, before Park Street, Pune, India"}
         </p>
       </div>
     </div>

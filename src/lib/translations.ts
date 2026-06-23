@@ -19,7 +19,7 @@ export const translations = {
     bookFreeDemo: "Book Free Demo",
     bookTrial: "Book Free Demo Now",
     workingCenter: "Wakad Brain Center • Open Every Day",
-    batchesOngoing: "Batches Ongoing (Wakad, Pune)",
+    batchesOngoing: "Batches Ongoing (Wakad, Pune, India)",
 
     // Home Hero
     heroBadge: "⚡ ALIGNED WITH NEP 2020 • SKILL INDIA & NSDC PARTNER",
@@ -145,7 +145,9 @@ export const translations = {
     quizBookConsult: "Book Free Consultation",
 
     // LeadForm
+    formSalutation: "Salutation",
     formParentName: "Parent's Name",
+    formStudentName: "Student's Name",
     formChildAge: "Child's Age",
     formChooseProgram: "Choose Program",
     formSelectDefault: "Select a program",
@@ -177,14 +179,14 @@ export const translations = {
 
     // Location
     locationBadge: "VISIT OUR OFFLINE CLASSROOM",
-    locationTitle: "Our Wakad, Pune Academy Center",
-    locationSubtitle: "We are conveniently located opposite Creative Cameo, before Park Street, Wakad, Pune. Parents are always welcome to check the live offline classroom setup.",
+    locationTitle: "Our Wakad, Pune, India Academy Center",
+    locationSubtitle: "We are conveniently located opposite Creative Cameo, before Park Street, Wakad, Pune, India. Parents are always welcome to check the live offline classroom setup.",
     locationParkingTips: "🚗 FREE PARKING AVAILABLE • SAFE & EASY DROP-OFF / PICKUP ZONE FOR CHILDREN",
 
     // Footer / CTA
     ctaTitle: "Give Your Child the Power of Speed with Accuracy and Consistency",
     ctaSubtitle: "Every child who joins our starter batches reports an immediate increase in school evaluation scores. Book your complimentary customized center trial today.",
-    footerAddress: "Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Wakad, Pune, Maharashtra 411057",
+    footerAddress: "Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Wakad, Pune, Maharashtra 411057, India",
     copyright: "© 2026 Arnav Abacus Academy. All Rights Reserved.",
     ctaFloatingText: "Coordinate a free demo on WhatsApp!",
     floatMentorName: "Neha Patil (Mentor)",
@@ -443,7 +445,7 @@ export const translations = {
 
     form2Sessions: "FREE TRIAL • 2 Mental Math Sessions",
     formClaimSlot: "Claim Free Demo Slot",
-    formEvaluationDesc: "Get a personalized evaluation session at our center. It takes less than a minute.",
+    formEvaluationDesc: "Get a quick online/offline math evaluation in under a minute.",
     formNamePlaceholder: "e.g. Rahul Sharma",
     formAgeBracket: "Child's Age Bracket",
     formProgramTopic: "Program Topic",
@@ -709,7 +711,7 @@ export const translations = {
     contactPageTimingsNote: "Flexible and customized batches to fit your routine",
     contactPageMapBadge: "LIVE ACCURATE LOCATION MAPS",
     contactPageMapTitle: "Locate Our Classroom Center",
-    contactPageMapDesc: "Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Pune. Use the interactive map details below to coordinate easy travel directions.",
+    contactPageMapDesc: "Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, Pune, India. Use the interactive map details below to coordinate easy travel directions.",
     contactPageTravel1: "Parking: Free street parking for two-wheelers & family cars outside Adv. Balaji Sagar Bungalow gates.",
     contactPageTravel2: "Landmarks: Right across from Creative Cameo, and just a fast 2-minute drive from Park Street housing gates.",
     contactPageTravel3: "Security: Secure residential street ensuring excellent child safety rules before and after tuition slots.",
@@ -754,7 +756,7 @@ export const translations = {
     bookFreeDemo: "फ्री डेमो बुक करें",
     bookTrial: "अभी फ्री डेमो बुक करें",
     workingCenter: "वाकड ब्रेन सेंटर • हर दिन खुला है",
-    batchesOngoing: "बैच चालू हैं (वाकड, पुणे)",
+    batchesOngoing: "बैच चालू हैं (वाकड, पुणे, भारत)",
 
     // Home Hero
     heroBadge: "⚡ राष्ट्रीय शिक्षा नीति (NEP) २०२० संरेखित • स्किल इंडिया और NSDC भागीदार",
@@ -880,7 +882,9 @@ export const translations = {
     quizBookConsult: "फ्री परामर्श बुक करें",
 
     // LeadForm
+    formSalutation: "संबोधन",
     formParentName: "अभिभावक का नाम",
+    formStudentName: "छात्र का नाम",
     formChildAge: "बच्चे की उम्र",
     formChooseProgram: "कोर्स चुनें",
     formSelectDefault: "एक कोर्स चुनें",
@@ -912,14 +916,14 @@ export const translations = {
 
     // Location
     locationBadge: "हमारी ऑफलाइन क्लास देखें",
-    locationTitle: "हमारा वाकड, पुणे एकेडमी सेंटर",
-    locationSubtitle: "हम पार्क स्ट्रीट, वाकड, पुणे से पहले, क्रिएटिव कैमियो के ठीक सामने स्थित हैं। माता-पिता का हमेशा लाइव ऑफलाइन क्लास सेटअप देखने के लिए स्वागत है।",
+    locationTitle: "हमारा वाकड, पुणे, भारत एकेडमी सेंटर",
+    locationSubtitle: "हम पार्क स्ट्रीट, वाकड, पुणे, भारत से पहले, क्रिएटिव कैमियो के ठीक सामने स्थित हैं। माता-पिता का हमेशा लाइव ऑफलाइन क्लास सेटअप देखने के लिए स्वागत है।",
     locationParkingTips: "🚗 मुफ्त पार्किंग उपलब्ध • बच्चों के लिए सुरक्षित एवं आसान ड्रॉप-ऑफ / पिकअप ज़ोन",
 
     // Footer / CTA
     ctaTitle: "अपने बच्चे को सटीकता और निरंतरता के साथ गति की शक्ति दें",
     ctaSubtitle: "हमारे शुरुआती बैचों में शामिल होने वाले प्रत्येक बच्चे के स्कूल मूल्यांकन स्कोर में तत्काल वृद्धि दर्ज की गई है। आज ही अपनी मानार्थ अनुकूलित केंद्र परीक्षण बुक करें।",
-    footerAddress: "फ्लैट नंबर 3, पहली मंजिल, एडवोकेट बालाजी सागर बंगला, क्रिएटिव कैमियो के सामने, पार्क स्ट्रीट के पास, वाकड, पुणे, महाराष्ट्र 411057",
+    footerAddress: "फ्लैट नंबर 3, पहली मंजिल, एडवोकेट बालाजी सागर बंगला, क्रिएटिव कैमियो के सामने, पार्क स्ट्रीट के पास, वाकड, पुणे, महाराष्ट्र 411057, भारत",
     copyright: "© 2026 अर्णव एबाकस एकेडमी। सभी अधिकार सुरक्षित।",
     ctaFloatingText: "व्हाट्सएप पर फ्री डेमो का समय तय करें !",
     floatMentorName: "नेहा पाटिल (मेंटर)",
@@ -1178,7 +1182,7 @@ export const translations = {
 
     form2Sessions: "फ्री ट्रायल • 2 मेंटल मैथ सेशन्स",
     formClaimSlot: "फ्री डेमो स्लॉट प्राप्त करें",
-    formEvaluationDesc: "हमारे केंद्र पर व्यक्तिगत मूल्यांकन सत्र प्राप्त करें। इसमें एक मिनट से भी कम समय लगता है।",
+    formEvaluationDesc: "एक मिनट से भी कम समय में त्वरित ऑनलाइन या ऑफलाइन मूल्यांकन प्राप्त करें।",
     formNamePlaceholder: "जैसे: राहुल शर्मा",
     formAgeBracket: "बच्चे का आयु वर्ग",
     formProgramTopic: "कोर्स विषय",
@@ -1444,7 +1448,7 @@ export const translations = {
     contactPageTimingsNote: "आपकी दिनचर्या के अनुकूल लचीले और कस्टमाइज्ड बैच",
     contactPageMapBadge: "सटीक लाइव लोकेशन मैप",
     contactPageMapTitle: "हमारे क्लासरूम सेंटर का पता लगाएं",
-    contactPageMapDesc: "एडवोकेट बालाजी सागर बंगला, क्रिएटिव कैमियो के सामने, पार्क स्ट्रीट के पास, वाकड। आसान दिशा-निर्देशों के लिए नीचे दिए गए लाइव मैप का उपयोग करें।",
+    contactPageMapDesc: "एडवोकेट बालाजी सागर बंगला, क्रिएटिव कैमियो के सामने, पार्क स्ट्रीट के पास, वाकड, पुणे, भारत। आसान दिशा-निर्देशों के लिए नीचे दिए गए लाइव मैप का उपयोग करें।",
     contactPageTravel1: "पार्किंग: एडवोकेट बालाजी सागर बंगले के गेट के बाहर दोपहिया और चौपहिया वाहनों के लिए मुफ्त पार्किंग।",
     contactPageTravel2: "लैंडमार्क: क्रिएटिव कैमियो के ठीक सामने, और पार्क स्ट्रीट हाउसिंग गेट्स से केवल 2 मिनट की ड्राइव पर।",
     contactPageTravel3: "सुरक्षा: सुरक्षित आवासीय सड़क जो ट्यूशन से पहले और बाद में बच्चों की सुरक्षा सुनिश्चित करती है।",
@@ -1489,7 +1493,7 @@ export const translations = {
     bookFreeDemo: "मोफत डेमो बुक करा",
     bookTrial: "आता मोफत डेमो बुक करा",
     workingCenter: "वाकड ब्रेनセンター • दररोज उघडे",
-    batchesOngoing: "बॅचेस सुरू आहेत (वाकड, पुणे)",
+    batchesOngoing: "बॅचेस सुरू आहेत (वाकड, पुणे, भारत)",
 
     // Home Hero
     heroBadge: "⚡ राष्ट्रीय शैक्षणिक धोरण (NEP) २०२० संरेखित • स्किल इंडिया आणि NSDC भागीदार",
@@ -1615,7 +1619,9 @@ export const translations = {
     quizBookConsult: "मोफत डेमो क्लास बुक करा",
 
     // LeadForm
+    formSalutation: "संबोधन",
     formParentName: "पालकांचे नाव",
+    formStudentName: "विद्यार्थ्याचे नाव",
     formChildAge: "मुलाचे वय",
     formChooseProgram: "कोर्स निवडा",
     formSelectDefault: "एक कोर्स निवडा",
@@ -1647,14 +1653,14 @@ export const translations = {
 
     // Location
     locationBadge: "आमच्या ऑफलाइन वर्गाला भेट द्या",
-    locationTitle: "आमचे वाकड, पुणे अकॅडमी सेंटर",
-    locationSubtitle: "आम्ही क्रिएटिव्ह कॅमिओ समोर, पार्क स्ट्रीट जवळ, वाकड, पुणे येथे आहोत. ऑफलाइन क्लास कसा चालतो हे पाहण्यासाठी पालकांचे नेहमीच स्वागत आहे.",
+    locationTitle: "आमचे वाकड, पुणे, भारत अकॅडमी सेंटर",
+    locationSubtitle: "आम्ही क्रिएटिव्ह कॅमिओ समोर, पार्क स्ट्रीट जवळ, वाकड, पुणे, भारत येथे आहोत. ऑफलाइन क्लास कसा चालतो हे पाहण्यासाठी पालकांचे नेहमीच स्वागत आहे.",
     locationParkingTips: "🚗 मोफत पार्किंग उपलब्ध • मुलांसाठी सुरक्षित आणि सोपे ड्रॉप-ऑफ / पिकअप झोन",
 
     // Footer / CTA
     ctaTitle: "तुमच्या मुलाला अचूकतेसह गणिताच्या वेगाची शक्ती द्या",
     ctaSubtitle: "आम्च्या बॅचेसमध्ये प्रवेश घेतलेल्या प्रत्येक मुलाच्या गणिताच्या गुणांमध्ये त्वरित वाढ झाली आहे. आजच तुमची मोफत डेमो क्लास वेळ बुक करा.",
-    footerAddress: "फ्लॅट नंबर ३, पहिला मजला, ॲडव्होकेट बालाजी सागर बंगला, क्रिएटिव्ह कॅमिओ समोर, पार्क स्ट्रीट जवळ, वाकड, पुणे, महाराष्ट्र ४११०५७",
+    footerAddress: "फ्लॅट नंबर ३, पहिला मजला, ॲडव्होकेट बालाजी सागर बंगला, क्रिएटिव्ह कॅमिओ समोर, पार्क स्ट्रीट जवळ, वाकड, पुणे, महाराष्ट्र ४११०५७, भारत",
     copyright: "© 2026 अर्णव ॲबॅकस अकॅडमी. सर्व हक्क राखीव.",
     ctaFloatingText: "व्हॉट्सॲपवर मोफत डेमो क्लासची वेळ ठरवा !",
     floatMentorName: "नेहा पाटील (मार्गदर्शक)",
@@ -1913,7 +1919,7 @@ export const translations = {
 
     form2Sessions: "मोफत ट्रायल • २ मेंटल मॅथ सेशन्स",
     formClaimSlot: "मोफत डेमो स्लॉट मिळवा",
-    formEvaluationDesc: "आमच्या केंद्रावर वैयक्तिक मूल्यमापन सत्र मिळवा. फक्त एक मिनिट लागेल.",
+    formEvaluationDesc: "एका मिनिटापेक्षा कमी वेळात जलद ऑनलाइन किंवा ऑफलाइन मूल्यमापन मिळवा.",
     formNamePlaceholder: "उदा. राहुल शर्मा",
     formAgeBracket: "मुलाचे वय",
     formProgramTopic: "कोर्सचा प्रकार",
@@ -2179,7 +2185,7 @@ export const translations = {
     contactPageTimingsNote: "तुमच्या वेळेनुसार लवचिक आणि वैयक्तिक बॅचेस",
     contactPageMapBadge: "थेट आणि अचूक लोकेशन नकाशा",
     contactPageMapTitle: "आमच्या क्लासरूम सेंटरचे स्थान पहा",
-    contactPageMapDesc: "फ्लॅट नं. ३, १ ला मजला, ॲडव्होकेट बालाजी सागर बंगला, क्रिएटिव्ह कॅमिओ समोर, पार्क स्ट्रीट जवळ, वाकड। सहज प्रवासाच्या दिशांसाठी खालील थेट नकाशा वापरा.",
+    contactPageMapDesc: "फ्लॅट नं. ३, १ ला मजला, ॲडव्होकेट बालाजी सागर बंगला, क्रिएटिव्ह कॅमिओ समोर, पार्क स्ट्रीट जवळ, वाकड, पुणे, भारत। सहज प्रवासाच्या दिशांसाठी खालील थेट नकाशा वापरा.",
     contactPageTravel1: "पार्किंग: ॲड. बालाजी सागर बंगल्याच्या गेटबाहेर दुचाकी आणि चारचाकी वाहनांसाठी मोफत पार्किंग उपलब्ध आहे.",
     contactPageTravel2: "लँडमार्क: क्रिएटिव्ह कॅमिओच्या अगदी समोर आणि पार्क स्ट्रीटच्या गेटपासून अवघ्या २ मिनिटांच्या अंतरावर.",
     contactPageTravel3: "सुरक्षा: सुरक्षित निवासी परिसर ज्यामुळे क्लासच्या आधी आणि नंतर मुलांची उत्तम सुरक्षा सुनिश्चित होते.",
