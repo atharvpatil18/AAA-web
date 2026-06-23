@@ -125,26 +125,41 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
       doc.setTextColor(120, 120, 120);
       doc.text("National & International Abacus & Vedic Math Excellence", 40, 29);
 
-      doc.setDrawColor(220, 220, 220);
+      // Header Accent Badge
+      doc.setFillColor(242, 100, 25);
+      doc.roundedRect(145, 16, 50, 7, 1.5, 1.5, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(8);
+      doc.text("DIAGNOSTIC WORKBOOK", 170, 20.8, { align: "center" });
+
+      doc.setDrawColor(242, 100, 25);
+      doc.setLineWidth(0.8);
       doc.line(15, 38, 195, 38);
 
-      doc.setTextColor(242, 100, 25);
+      doc.setTextColor(26, 46, 53);
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(14);
-      doc.text("A Welcome Message from Neha Patil", 15, 46);
+      doc.text("A Welcome Message from Our Founder", 15, 46);
 
       if (photoBase64) {
+        // Aesthetic Offset Shadow for Photo
+        doc.setFillColor(242, 100, 25);
+        doc.rect(17, 54, 40, 48, "F");
+        doc.addImage(photoBase64, "JPEG", 15, 52, 40, 48);
         doc.setDrawColor(26, 46, 53);
         doc.setLineWidth(0.5);
         doc.rect(15, 52, 40, 48);
-        doc.addImage(photoBase64, "JPEG", 15, 52, 40, 48);
       }
 
-      const textX = photoBase64 ? 60 : 15;
-      const textWidth = photoBase64 ? 135 : 180;
-      doc.setTextColor(50, 50, 50);
-      doc.setFont("Helvetica", "normal");
-      doc.setFontSize(10);
+      const cardX = photoBase64 ? 60 : 15;
+      const cardWidth = photoBase64 ? 135 : 180;
+
+      // Welcome Card Box with Left Color Border
+      doc.setFillColor(248, 250, 252);
+      doc.roundedRect(cardX, 52, cardWidth, 52, 2, 2, "F");
+      doc.setFillColor(242, 100, 25);
+      doc.rect(cardX, 52, 1.5, 52, "F");
 
       const welcomeLetter = `Dear Parent,
 
@@ -158,45 +173,85 @@ Warm regards,
 
 Neha Patil
 Founder & Director, Arnav Abacus Academy
-(IIVA Certified Mentor)`;
+(IIVA Certified Mentor) `;
 
-      const splitWelcome = doc.splitTextToSize(welcomeLetter, textWidth);
-      doc.text(splitWelcome, textX, 55);
+      doc.setTextColor(60, 66, 78);
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(8.2);
+      const splitWelcome = doc.splitTextToSize(welcomeLetter, cardWidth - 8);
+      doc.text(splitWelcome, cardX + 5, 56.5);
 
-      doc.setDrawColor(220, 220, 220);
-      doc.line(15, 115, 195, 115);
+      doc.setDrawColor(230, 235, 240);
+      doc.setLineWidth(0.3);
+      doc.line(15, 112, 195, 112);
 
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(13);
       doc.setTextColor(26, 46, 53);
-      doc.text("About the Founder & Director", 15, 123);
+      doc.text("About the Founder & Director", 15, 120);
 
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(9.5);
-      doc.setTextColor(80, 80, 80);
+      doc.setTextColor(70, 75, 85);
       const bioText = `Neha Patil is a highly certified IIVA (Indian Institute of Vedic Maths & Abacus) Master Trainer and Child Psychology specialist. With over 3+ years of direct mentoring excellence, she has coached more than 200+ local students in Wakad, Pune, India, and 10+ international students from the US, UK, and Gulf countries.
 
 Arnav Abacus Academy operates in alignment with the National Education Policy (NEP) 2020 and is an active Skill India partner, prioritizing 1:8 maximum student-teacher ratios for dedicated personal growth.`;
 
       const splitBio = doc.splitTextToSize(bioText, 180);
-      doc.text(splitBio, 15, 129);
+      doc.text(splitBio, 15, 126);
 
-      doc.setFillColor(245, 247, 248);
-      doc.rect(15, 155, 180, 32, "F");
+      // Core Pillars Section
+      doc.setFillColor(240, 246, 248);
+      doc.roundedRect(15, 168, 180, 42, 2, 2, "F");
       doc.setDrawColor(26, 46, 53);
-      doc.rect(15, 155, 180, 32);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(15, 168, 180, 42, 2, 2);
 
       doc.setFont("Helvetica", "bold");
-      doc.setFontSize(10);
+      doc.setFontSize(11);
       doc.setTextColor(26, 46, 53);
-      doc.text("Our Core Pillars of Excellence:", 20, 162);
+      doc.text("Our Core Pillars of Educational Excellence:", 22, 175);
 
-      doc.setFont("Helvetica", "normal");
+      // Bullet 1
+      doc.setFillColor(242, 100, 25);
+      doc.rect(22, 181, 2, 2, "F");
+      doc.setFont("Helvetica", "bold");
       doc.setFontSize(9);
+      doc.setTextColor(26, 46, 53);
+      doc.text("Personalized Growth:", 27, 183);
+      doc.setFont("Helvetica", "normal");
       doc.setTextColor(60, 60, 60);
-      doc.text("- Guaranteed 1:8 Classroom Batch Ratio for personalized attention", 20, 168);
-      doc.text("- Complete synergy with CBSE, ICSE, IB, IGCSE & US Common Core School Boards", 20, 174);
-      doc.text("- Photographic Memory development through tactile Soroban Abacus techniques", 20, 180);
+      doc.text("Guaranteed 1:8 batch ratio for dedicated teacher attention.", 64, 183);
+
+      // Bullet 2
+      doc.setFillColor(242, 100, 25);
+      doc.rect(22, 189, 2, 2, "F");
+      doc.setFont("Helvetica", "bold");
+      doc.setTextColor(26, 46, 53);
+      doc.text("Global Curriculums:", 27, 191);
+      doc.setFont("Helvetica", "normal");
+      doc.setTextColor(60, 60, 60);
+      doc.text("Complete board synergy with CBSE, ICSE, IB, IGCSE & US Common Core.", 64, 191);
+
+      // Bullet 3
+      doc.setFillColor(242, 100, 25);
+      doc.rect(22, 197, 2, 2, "F");
+      doc.setFont("Helvetica", "bold");
+      doc.setTextColor(26, 46, 53);
+      doc.text("Cognitive Agility:", 27, 199);
+      doc.setFont("Helvetica", "normal");
+      doc.setTextColor(60, 60, 60);
+      doc.text("Photographic memory development via tactile Soroban Abacus methods.", 64, 199);
+
+      // Bottom Compliance Banner
+      doc.setFillColor(26, 46, 53);
+      doc.roundedRect(15, 218, 180, 15, 1, 1, "F");
+      doc.setFillColor(242, 100, 25);
+      doc.rect(15, 233, 180, 1.5, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.text("AUTHORIZED SKILL INDIA PARTNER • NEP 2020 COMPLIANT CURRICULUM", 105, 227.5, { align: "center" });
 
       doc.setFontSize(8);
       doc.setTextColor(150, 150, 150);
