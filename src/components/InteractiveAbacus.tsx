@@ -307,7 +307,7 @@ export default function InteractiveAbacus() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* Left Hand: Visual Abacus Box */}
-        <div className={`lg:col-span-8 bg-black border-4 sm:border-8 border-black rounded-3xl p-3 sm:p-6 shadow-[8px_8px_0_0_#1A2E35] relative overflow-hidden ${
+        <div className={`lg:col-span-8 bg-slate-700 border-4 sm:border-8 border-slate-800 rounded-3xl p-3 sm:p-6 shadow-[8px_8px_0_0_#1A2E35] relative overflow-hidden ${
           isFlashcardMode ? "pointer-events-none" : ""
         }`}>
           {/* Header Name on tool */}
@@ -326,8 +326,8 @@ export default function InteractiveAbacus() {
             <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-vibrant-gold">{language === "hi" ? "हजारवां •" : language === "mr" ? "हजारवा •" : "th •"}</div>
           </div>
 
-          {/* Rods and Frame container with White Background */}
-          <div className="relative h-[240px] border-4 border-black bg-white rounded-xl flex justify-around p-0.5 sm:p-1">
+          {/* Rods and Frame container with Light Sky Blue Background */}
+          <div className="relative h-[240px] border-4 border-slate-800 bg-sky-100 rounded-xl flex justify-around p-0.5 sm:p-1">
             
             {/* Horizontal Beam/Divider in Black */}
             <div className="absolute top-[68px] left-0 right-0 h-4 bg-black border-y border-black shadow-md z-10 flex items-center justify-around">
@@ -351,8 +351,10 @@ export default function InteractiveAbacus() {
               return (
                 <div key={rIdx} className="relative w-9 xs:w-11 sm:w-14 h-full flex flex-col items-center select-none">
                   
-                  {/* Black Rod Line */}
-                  <div className="absolute top-0 bottom-0 w-0.5 sm:w-1 bg-black rounded-full shadow-sm" />
+                  {/* Conditional Colored Rod Line */}
+                  <div className={`absolute top-0 bottom-0 w-0.5 sm:w-1 rounded-full shadow-sm ${
+                    rIdx === 3 ? "bg-yellow-500" : rIdx === 2 ? "bg-green-600" : "bg-black"
+                  }`} />
 
                   {/* --- UPPER DECK --- */}
                   <div 
@@ -368,7 +370,7 @@ export default function InteractiveAbacus() {
                         rod.upper ? beadStyle : inactiveBeadStyle
                       }`}
                     >
-                      5
+                      {rIdx === 3 ? "5" : ""}
                     </motion.div>
                   </div>
 
@@ -393,7 +395,7 @@ export default function InteractiveAbacus() {
                             isActive ? beadStyle : inactiveBeadStyle
                           }`}
                         >
-                          1
+                          {rIdx === 3 ? "1" : ""}
                         </motion.div>
                       );
                     })}
