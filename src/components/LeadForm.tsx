@@ -694,7 +694,7 @@ Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}
         </form>
 
         <p className="text-center text-[10px] font-bold uppercase text-gray-400 mt-4 flex items-center justify-center gap-1.5">
-          <Landmark className="w-3.5 h-3.5 shrink-0 text-gray-300" /> {language === "hi" ? "क्रिएटिव कैमियो के सामने, पार्क स्ट्रीट से पहले, पुणे, भारत" : language === "mr" ? "क्रिएटिव्ह कॅमिओच्या समोर, पार्क स्ट्रीटजवळ, पुणे, भारत" : "Center opposite Creative Cameo, before Park Street, Pune, India"}
+          <Landmark className="w-3.5 h-3.5 shrink-0 text-gray-300" /> {language === "hi" ? "स्किल इंडिया अधिकृत केंद्र, क्रिएटिव कैमियो के सामने, पार्क स्ट्रीट से पहले, वाकड, पुणे, भारत" : language === "mr" ? "स्किल इंडिया अधिकृत केंद्र, क्रिएटिव्ह कॅमिओच्या समोर, पार्क स्ट्रीटजवळ, वाकड, पुणे, भारत" : "Skill India Authorised Center Opposite Creative Cameo, before Park Street, Wakad, Pune, India"}
         </p>
       </div>
     </div>
