@@ -445,7 +445,7 @@ export const translations = {
 
     form2Sessions: "FREE TRIAL • 2 Mental Math Sessions",
     formClaimSlot: "Claim Free Demo Slot",
-    formEvaluationDesc: "Get a quick online/offline math evaluation in under a minute.",
+    formEvaluationDesc: "Unlock a 360° Math Agility & Confidence Diagnostic. We map calculation logic, emotional barriers, and learning styles to align a stress-free math roadmap.",
     formNamePlaceholder: "e.g. Rahul Sharma",
     formAgeBracket: "Child's Age Bracket",
     formProgramTopic: "Program Topic",
@@ -1182,7 +1182,7 @@ export const translations = {
 
     form2Sessions: "फ्री ट्रायल • 2 मेंटल मैथ सेशन्स",
     formClaimSlot: "फ्री डेमो स्लॉट प्राप्त करें",
-    formEvaluationDesc: "एक मिनट से भी कम समय में त्वरित ऑनलाइन या ऑफलाइन मूल्यांकन प्राप्त करें।",
+    formEvaluationDesc: "360° गणित चपलता और आत्मविश्वास निदान (Diagnostic) प्राप्त करें। हम गणना तर्क, भावनात्मक बाधाओं और सीखने की शैली को समझकर एक तनाव-मुक्त गणितीय रोडमैप तैयार करते हैं।",
     formNamePlaceholder: "जैसे: राहुल शर्मा",
     formAgeBracket: "बच्चे का आयु वर्ग",
     formProgramTopic: "कोर्स विषय",
@@ -1919,7 +1919,7 @@ export const translations = {
 
     form2Sessions: "मोफत ट्रायल • २ मेंटल मॅथ सेशन्स",
     formClaimSlot: "मोफत डेमो स्लॉट मिळवा",
-    formEvaluationDesc: "एका मिनिटापेक्षा कमी वेळात जलद ऑनलाइन किंवा ऑफलाइन मूल्यमापन मिळवा.",
+    formEvaluationDesc: "३६०° गणितीय चपळता आणि आत्मविश्वास निदान (Diagnostic) मिळवा. आम्ही गणिताचे तर्क, भावनिक अडथळे आणि शिकण्याच्या पद्धती ओळखून एक तणाव-मुक्त गणिताचा रोडमॅप तयार करतो।",
     formNamePlaceholder: "उदा. राहुल शर्मा",
     formAgeBracket: "मुलाचे वय",
     formProgramTopic: "कोर्सचा प्रकार",
