@@ -534,6 +534,109 @@ export default function Home() {
                 {t("locationSubtitle")}
               </p>
 
+      {/* Local Wakad Hub vs Global Online Batch Comparison Section */}
+      <div className="py-12 bg-white rounded-3xl border-2 border-vibrant-dark/20 p-6 md:p-8 mt-10">
+        <div className="text-center space-y-2 mb-8">
+          <span className="text-[10px] font-black text-white bg-vibrant-orange px-3 py-1 rounded-full uppercase tracking-wider inline-block">
+            Flexible Formats
+          </span>
+          <h3 className="font-display font-black text-2xl text-vibrant-dark">
+            Local Learning Center or Live Online Batches
+          </h3>
+          <p className="text-gray-500 text-xs md:text-sm font-semibold max-w-xl mx-auto">
+            Choose the delivery style that fits your lifestyle. Both tracks receive direct guidance from certified educators.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Column 1: Wakad Hub */}
+          <div className="bg-orange-50/20 border-2 border-orange-100 rounded-2xl p-5 flex flex-col justify-between">
+            <div>
+              <span className="text-[9px] font-black text-white bg-vibrant-orange px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-3">
+                Wakad Physical Hub
+              </span>
+              <h4 className="font-black text-base text-vibrant-dark mb-2">
+                Wakad Brain Center (Pune)
+              </h4>
+              <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-4">
+                Bring your child to our safe, screen-free physical classroom in Wakad. Replicates traditional tactile learning structures.
+              </p>
+              <ul className="space-y-1.5 text-xs font-bold text-gray-500 mb-6">
+                <li className="flex items-center gap-1.5">✔ Max 1:8 batch student-to-teacher ratio</li>
+                <li className="flex items-center gap-1.5">✔ Tactile, hands-on physical abacus board tools</li>
+                <li className="flex items-center gap-1.5">✔ Safe drop-off & pickup zone with free parking</li>
+              </ul>
+            </div>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=18.5936735,73.7656606"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-vibrant-dark text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block"
+            >
+              Get Directions to Center
+            </a>
+          </div>
+
+          {/* Column 2: Global Online */}
+          <div className="bg-teal-50/20 border-2 border-teal-100 rounded-2xl p-5 flex flex-col justify-between">
+            <div>
+              <span className="text-[9px] font-black text-white bg-vibrant-teal px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-3">
+                Global Online
+              </span>
+              <h4 className="font-black text-base text-vibrant-dark mb-2">
+                International Online Batches
+              </h4>
+              <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-4">
+                Live, interactive online classes scheduled to accommodate US, UK, and Gulf time-zones. Replicates physical class dynamics.
+              </p>
+              <ul className="space-y-1.5 text-xs font-bold text-gray-500 mb-6">
+                <li className="flex items-center gap-1.5">✔ Micro-batches capped at max 1:4 kids</li>
+                <li className="flex items-center gap-1.5">✔ Dynamic digital abacus visualization software</li>
+                <li className="flex items-center gap-1.5">✔ Time-zone flex options with class rescheduling</li>
+              </ul>
+            </div>
+            <a
+              href="https://wa.me/919021924968?text=Hello!%20I%2520would%20like%20to%20inquire%20about%20your%20Online%20International%20Abacus%20batches."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-vibrant-teal text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block"
+            >
+              Inquire Online Slots
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Video Demonstration Reel Showcase */}
+      <div className="py-12 bg-white rounded-3xl border-2 border-vibrant-dark/20 p-6 md:p-8 mt-10">
+        <div className="text-center space-y-2 mb-6">
+          <span className="text-[10px] font-black text-white bg-vibrant-orange px-3 py-1 rounded-full uppercase tracking-wider inline-block">
+            Seeing is Believing
+          </span>
+          <h3 className="font-display font-black text-2xl text-vibrant-dark">
+            Watch Our Champions In Action
+          </h3>
+          <p className="text-gray-500 text-xs md:text-sm font-semibold max-w-xl mx-auto">
+            Observe how visual abacus neural wiring allows students to compute multidigits at supersonic speeds.
+          </p>
+        </div>
+
+        <div className="max-w-2xl mx-auto bg-slate-950 rounded-2xl relative flex flex-col items-center justify-center text-center p-6 group cursor-pointer overflow-hidden border border-slate-800 aspect-video">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-300"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent"></div>
+          
+          <div className="relative z-10 w-14 h-14 bg-vibrant-orange text-white rounded-full flex items-center justify-center shadow-lg border-2 border-white group-hover:scale-110 transition-transform mb-3">
+            <span className="text-xl ml-1">▶</span>
+          </div>
+          <span className="relative z-10 text-white font-display font-black text-base md:text-lg leading-tight">
+            Watch Arnav Patil calculate 10x faster than a calculator
+          </span>
+          <span className="relative z-10 text-gray-300 text-xs mt-1 font-bold">
+            8th International Abacus Meet (Pune, India) • 1 Min Video
+          </span>
+        </div>
+      </div>
+
               {/* Safe Drop-off & Parking Tips */}
               <div className="bg-teal-50 border border-dashed border-vibrant-teal/30 text-vibrant-teal text-xs font-bold p-3.5 rounded-2xl flex items-center gap-2">
                 <span>{t("locationParkingTips")}</span>

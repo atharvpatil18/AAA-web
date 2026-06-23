@@ -16,9 +16,9 @@ export const translations = {
     navMentor: "Meet Neha Patil (Mentor)",
     navFaqs: "FAQs",
     navContact: "Contact",
-    bookFreeDemo: "Book Free Demo",
+    bookFreeDemo: "Book Free Math Assessment",
     downloadBrochure: "Download Brochure",
-    bookTrial: "Book Free Demo Now",
+    bookTrial: "Get Free Math Assessment Now",
     workingCenter: "Wakad Brain Center • Open Every Day",
     batchesOngoing: "Batches Ongoing (Wakad, Pune, India)",
 
