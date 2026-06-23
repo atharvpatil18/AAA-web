@@ -155,6 +155,12 @@ export const translations = {
     formAgeError: "Please enter child's age.",
     formProgramError: "Please choose a program.",
     formSource: "Requested from: ",
+    formCountryCode: "Country Code",
+    formClassMode: "Demo Class Mode",
+    formOnline: "Online Video Class (Zoom/Meet)",
+    formOffline: "Offline (Wakad Pune Center)",
+    formTimeZone: "Time Zone",
+    formCurriculum: "School Board / Curriculum",
 
     // Mentor Profile
     mentorBadge: "MEET YOUR MAIN MENTOR",
@@ -880,6 +886,12 @@ export const translations = {
     formAgeError: "कृपया बच्चे की उम्र दर्ज करें।",
     formProgramError: "कृपया एक कोर्स चुनें।",
     formSource: "अनुरोधित स्थान: ",
+    formCountryCode: "कंट्री कोड",
+    formClassMode: "डेमो क्लास मोड",
+    formOnline: "ऑनलाइन वीडियो क्लास (Zoom/Meet)",
+    formOffline: "ऑफलाइन (वाकड पुणे सेंटर)",
+    formTimeZone: "टाइम ज़ोन (समय क्षेत्र)",
+    formCurriculum: "स्कूल बोर्ड / पाठ्यक्रम",
 
     // Mentor Profile
     mentorBadge: "अपने मुख्य मेंटर से मिलें",
@@ -1605,6 +1617,12 @@ export const translations = {
     formAgeError: "कृपया मुलाचे वय टाईप करा.",
     formProgramError: "कृपया कोर्स निवडा.",
     formSource: "मागणीचे ठिकाण: ",
+    formCountryCode: "कंट्री कोड",
+    formClassMode: "डेमो क्लासचा प्रकार",
+    formOnline: "ऑनलाइन व्हिडिओ क्लास (Zoom/Meet)",
+    formOffline: "ऑफलाइन (वाकड पुणे सेंटर)",
+    formTimeZone: "टाइम झोन (वेळ क्षेत्र)",
+    formCurriculum: "शालेय बोर्ड / अभ्यासक्रम",
 
     // Mentor Profile
     mentorBadge: "मुख्य मार्गदर्शकांना भेटा",

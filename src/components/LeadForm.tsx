@@ -22,11 +22,42 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
   const [redirectSuccess, setRedirectSuccess] = useState(false);
   const [validationError, setValidationError] = useState("");
 
+  // International Demo Customizations
+  const [countryCode, setCountryCode] = useState("+91");
+  const [classMode, setClassMode] = useState("offline");
+  const [timeZone, setTimeZone] = useState("Asia/Kolkata");
+  const [schoolCurriculum, setSchoolCurriculum] = useState("CBSE/ICSE");
+
   useEffect(() => {
     if (defaultProgram) {
       setProgram(defaultProgram);
     }
   }, [defaultProgram]);
+
+  useEffect(() => {
+    try {
+      const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (userTz) {
+        setTimeZone(userTz);
+        if (userTz !== "Asia/Kolkata") {
+          setClassMode("online");
+          if (userTz.startsWith("America")) {
+            setCountryCode("+1");
+          } else if (userTz.startsWith("Europe/London") || userTz.startsWith("Europe")) {
+            setCountryCode("+44");
+          } else if (userTz.startsWith("Asia/Dubai") || userTz.startsWith("Asia/Riyadh") || userTz.startsWith("Asia/Muscat") || userTz.startsWith("Asia/Qatar") || userTz.startsWith("Asia/Kuwait")) {
+            setCountryCode("+971");
+          } else if (userTz.startsWith("Australia")) {
+            setCountryCode("+61");
+          } else if (userTz.startsWith("Asia/Singapore")) {
+            setCountryCode("+65");
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Timezone detection failed", e);
+    }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,18 +77,30 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
     let textMessage = `Hello, I'm interested in a Demo Class at Arnav Abacus Academy!
 Name: ${parentName}
 Child's Age: ${childAge}
-Program: ${program}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
+Program: ${program}
+Country Code: ${countryCode}
+Mode: ${classMode === "online" ? "Online Video Class (Zoom/Meet)" : "Offline (Wakad Pune Center)"}
+Time Zone: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
+Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
 
     if (language === "hi") {
       textMessage = `नमस्ते, मैं अर्णव एबाकस एकेडमी में फ्री डेमो क्लास के लिए उत्सुक हूँ!
 अभिभावक का नाम: ${parentName}
 बच्चे की उम्र: ${childAge}
-कोर्स विषय: ${program}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
+कोर्स विषय: ${program}
+कंट्री कोड: ${countryCode}
+क्लास का प्रकार: ${classMode === "online" ? "ऑनलाइन वीडियो क्लास (Zoom/Meet)" : "ऑफलाइन (वाकड पुणे सेंटर)"}
+टाइम ज़ोन: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
+स्कूल बोर्ड: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
     } else if (language === "mr") {
       textMessage = `नमस्कार, मी अर्णव ॲबॅकस अकॅडमीमध्ये मोफत डेमो क्लाससाठी चौकशी करू इच्छितो!
 पालकांचे नाव: ${parentName}
 मुलाचे वय: ${childAge}
-कोर्स प्रकार: ${program}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
+कोर्स प्रकार: ${program}
+कंट्री कोड: ${countryCode}
+डेमोचा प्रकार: ${classMode === "online" ? "ऑनलाइन व्हिडिओ क्लास (Zoom/Meet)" : "ऑफलाइन (वाकड पुणे सेंटर)"}
+टाइम झोन: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
+अभ्यासक्रम: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
     }
 
     const encodedText = encodeURIComponent(textMessage);
@@ -182,6 +225,86 @@ Program: ${program}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
             </div>
           </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+                {t("formClassMode")}
+              </label>
+              <select
+                value={classMode}
+                onChange={(e) => setClassMode(e.target.value)}
+                className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
+              >
+                <option value="offline">{t("formOffline")}</option>
+                <option value="online">{t("formOnline")}</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+                {t("formCurriculum")}
+              </label>
+              <select
+                value={schoolCurriculum}
+                onChange={(e) => setSchoolCurriculum(e.target.value)}
+                className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
+              >
+                <option value="CBSE/ICSE">CBSE / ICSE</option>
+                <option value="State Board">State Board</option>
+                <option value="IB">IB (International Baccalaureate)</option>
+                <option value="IGCSE">Cambridge IGCSE</option>
+                <option value="US Common Core">US Common Core</option>
+                <option value="Other">Other / International</option>
+              </select>
+            </div>
+          </div>
+
+          {classMode === "online" && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fade-in">
+              <div>
+                <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+                  {t("formCountryCode")}
+                </label>
+                <select
+                  value={countryCode}
+                  onChange={(e) => setCountryCode(e.target.value)}
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
+                >
+                  <option value="+91">🇮🇳 India (+91)</option>
+                  <option value="+1">🇺🇸/🇨🇦 US/Canada (+1)</option>
+                  <option value="+44">🇬🇧 United Kingdom (+44)</option>
+                  <option value="+971">🇦🇪 UAE / Middle East (+971)</option>
+                  <option value="+65">🇸🇬 Singapore (+65)</option>
+                  <option value="+61">🇦🇺 Australia (+61)</option>
+                  <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
+                  <option value="+968">🇴🇲 Oman (+968)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+                  {t("formTimeZone")}
+                </label>
+                <select
+                  value={timeZone}
+                  onChange={(e) => setTimeZone(e.target.value)}
+                  className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-[11px] text-gray-800 transition cursor-pointer shadow-sm"
+                >
+                  <option value="Asia/Kolkata">🇮🇳 India (IST - UTC+5:30)</option>
+                  <option value="America/New_York">🇺🇸 US Eastern (EST/EDT)</option>
+                  <option value="America/Chicago">🇺🇸 US Central (CST/CDT)</option>
+                  <option value="America/Denver">🇺🇸 US Mountain (MST/MDT)</option>
+                  <option value="America/Los_Angeles">🇺🇸 US Pacific (PST/PDT)</option>
+                  <option value="Europe/London">🇬🇧 London (GMT/BST)</option>
+                  <option value="Asia/Dubai">🇦🇪 Gulf Standard (GST - UTC+4)</option>
+                  <option value="Asia/Singapore">🇸🇬 Singapore (SGT - UTC+8)</option>
+                  <option value="Australia/Sydney">🇦🇺 Australia Eastern (AEST)</option>
+                  <option value={timeZone}>{timeZone} (Detected)</option>
+                </select>
+              </div>
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={isSubmitting}
@@ -232,7 +355,7 @@ PARENTS DIAGNOSTICS LOG:
 - Focus Scale (1-10): ______ / 10
 
 Need answers or a detailed cognitive score assessment?
-Book your free offline assessment trial class at Arnav Abacus Academy, Wakad, Pune!
+Book your free trial class at Arnav Abacus Academy!
 Contact: +91 9021924968 / Neha Patil (IIVA Certified Mentor)`;
 
               const blob = new Blob([textContent], { type: "text/plain" });
