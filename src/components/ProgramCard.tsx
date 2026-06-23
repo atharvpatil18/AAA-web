@@ -124,7 +124,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
         {/* Offline Badge to alleviate screen-time anxiety */}
         <div className="mb-3">
           <span className="inline-flex items-center gap-1.5 bg-[#FFF0E0] border border-[#FFD8B1] text-vibrant-orange text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg">
-            <span>🏫 {language === "hi" ? "१००% ऑफलाइन, व्यावहारिक बैच" : language === "mr" ? "१००% ऑफलाइन, प्रत्यक्ष बॅचेस" : "100% Offline, Hands-On Batches"}</span>
+            <span>🏫 {language === "hi" ? "९०% ऑफलाइन और १०% ऑनलाइन, व्यावहारिक बैच" : language === "mr" ? "९०% ऑफलाइन आणि १०% ऑनलाइन, प्रत्यक्ष बॅचेस" : "90% Offline & 10% Online, Hands-On Batches"}</span>
           </span>
         </div>
 
