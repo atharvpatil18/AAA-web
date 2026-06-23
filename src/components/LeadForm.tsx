@@ -174,7 +174,7 @@ Founder & Director, Arnav Abacus Academy
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(9.5);
       doc.setTextColor(80, 80, 80);
-      const bioText = `Neha Patil is a highly certified IIVA (Indian Institute of Vedic Maths & Abacus) Master Trainer and Child Psychology specialist. With over 3+ years of direct mentoring excellence, she has coached more than 200+ local students in Wakad, Pune, and 10+ international students from the US, UK, and Gulf countries.
+      const bioText = `Neha Patil is a highly certified IIVA (Indian Institute of Vedic Maths & Abacus) Master Trainer and Child Psychology specialist. With over 3+ years of direct mentoring excellence, she has coached more than 200+ local students in Wakad, Pune, India, and 10+ international students from the US, UK, and Gulf countries.
 
 Arnav Abacus Academy operates in alignment with the National Education Policy (NEP) 2020 and is an active Skill India partner, prioritizing 1:8 maximum student-teacher ratios for dedicated personal growth.`;
 
