@@ -31,6 +31,13 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
   const [timeZone, setTimeZone] = useState("Asia/Kolkata");
   const [schoolCurriculum, setSchoolCurriculum] = useState("CBSE/ICSE");
 
+  // Optional checklist states
+  const [showExpectations, setShowExpectations] = useState(false);
+  const [countsOnFingers, setCountsOnFingers] = useState(false);
+  const [carelessMistakes, setCarelessMistakes] = useState(false);
+  const [mathAnxiety, setMathAnxiety] = useState(false);
+  const [competitiveFocus, setCompetitiveFocus] = useState(false);
+
   useEffect(() => {
     if (defaultProgram) {
       setProgram(defaultProgram);
@@ -366,7 +373,114 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
 
       doc.setFontSize(8);
       doc.setTextColor(150, 150, 150);
-      doc.text("Page 2 of 2 • Arnav Abacus Academy", 15, 285);
+      doc.text("Page 2 of 3 • Arnav Abacus Academy", 15, 285);
+      doc.text("Contact: +91 90219 24968", 165, 285);
+
+      // Page 3
+      doc.addPage();
+      doc.setFillColor(26, 46, 53);
+      doc.rect(0, 0, 210, 8, "F");
+      doc.setFillColor(242, 100, 25);
+      doc.rect(0, 8, 210, 2, "F");
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(14);
+      doc.setTextColor(26, 46, 53);
+      doc.text("360° MATH AGILITY & EXPECTATION CHECKLIST", 15, 20);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(9.5);
+      doc.setTextColor(100, 100, 100);
+      doc.text("Please fill this checklist with your child to help Neha Patil customize their learning path.", 15, 25);
+
+      // Section 1: Cognitive Checkpoints
+      doc.setFillColor(240, 246, 248);
+      doc.roundedRect(15, 32, 180, 52, 2, 2, "F");
+      doc.setDrawColor(26, 46, 53);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(15, 32, 180, 52, 2, 2);
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(10.5);
+      doc.setTextColor(26, 46, 53);
+      doc.text("PART 1: STUDENT COGNITIVE & MATH HABITS", 20, 39);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(60, 60, 60);
+
+      let cy = 46;
+      const cognitiveHabits = [
+        "[  ]  Counts on fingers or draws lines for basic calculations",
+        "[  ]  Whispers or moves lips (subvocalizes) while solving sums",
+        "[  ]  Calculates quickly but makes frequent silly/careless mistakes",
+        "[  ]  Loses patience or gets distracted easily during homework",
+        "[  ]  Needs constant adult supervision and reassurance to finish tasks"
+      ];
+      cognitiveHabits.forEach((habit) => {
+        doc.text(habit, 22, cy);
+        cy += 7;
+      });
+
+      // Section 2: Parent Expectations
+      doc.setFillColor(255, 248, 240);
+      doc.roundedRect(15, 92, 180, 52, 2, 2, "F");
+      doc.setDrawColor(242, 100, 25);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(15, 92, 180, 52, 2, 2);
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(10.5);
+      doc.setTextColor(242, 100, 25);
+      doc.text("PART 2: PARENT GOALS & TARGET OUTCOMES", 20, 99);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(60, 60, 60);
+
+      cy = 106;
+      const parentGoals = [
+        "[  ]  Eliminate math anxiety and build high confidence in numbers",
+        "[  ]  Develop instant mental math calculation speed & visualization reflexes",
+        "[  ]  Enhance brain focus, auditory attention, and photographic memory",
+        "[  ]  Prepare for competitive tests (Olympiads, IPM, Scholarships)",
+        "[  ]  Ensure school curriculum synergy (CBSE, ICSE, IB, IGCSE, US Common Core)"
+      ];
+      parentGoals.forEach((goal) => {
+        doc.text(goal, 22, cy);
+        cy += 7;
+      });
+
+      // Section 3: Next Steps
+      doc.setFillColor(245, 247, 248);
+      doc.roundedRect(15, 152, 180, 40, 2, 2, "F");
+      doc.setDrawColor(220, 220, 220);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(15, 152, 180, 40, 2, 2);
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(10.5);
+      doc.setTextColor(26, 46, 53);
+      doc.text("NEXT STEPS: DEMO CLASS COLLABORATION", 20, 159);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.setTextColor(80, 80, 80);
+      const demoInstructions = `During your scheduled trial session (at our Wakad Center or Online Video Call), Neha Patil will review your child's diagnostic worksheet speeds and go through this checklist with you to suggest the most optimal curriculum level and teaching engagement style.`;
+      const splitInstructions = doc.splitTextToSize(demoInstructions, 170);
+      doc.text(splitInstructions, 20, 165);
+
+      // NEP Footer on Page 3
+      doc.setFillColor(26, 46, 53);
+      doc.roundedRect(15, 200, 180, 12, 1, 1, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(8.5);
+      doc.text("BRING THIS WORKSHEET & CHECKLIST TO YOUR TRIAL CLASS FOR 360° EVALUATION", 105, 207.5, { align: "center" });
+
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text("Page 3 of 3 • Arnav Abacus Academy", 15, 285);
       doc.text("Contact: +91 90219 24968", 165, 285);
 
       doc.save("arnav_abacus_diagnostic_worksheet.pdf");
@@ -394,6 +508,13 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     trackLeadFormSubmission(parentName, childAge, program);
 
     // Form custom WhatsApp message template
+    let parentExpectations = [];
+    if (countsOnFingers) parentExpectations.push("Counts on fingers");
+    if (carelessMistakes) parentExpectations.push("Careless mistakes");
+    if (mathAnxiety) parentExpectations.push("Math anxiety");
+    if (competitiveFocus) parentExpectations.push("Olympiad/Competitive focus");
+    const expStr = parentExpectations.length > 0 ? `\nHabits/Expectations: ${parentExpectations.join(", ")}` : "";
+
     let textMessage = `Hello, I'm interested in a Demo Class at Arnav Abacus Academy!
 Parent Name: ${salutation} ${parentName}
 Student Name: ${studentName}
@@ -402,9 +523,16 @@ Program: ${program}
 Country Code: ${countryCode}
 Mode: ${classMode === "online" ? "Online Video Class (Zoom/Meet)" : "Offline (Wakad Pune Center)"}
 Time Zone: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
-Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
+Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
 
     if (language === "hi") {
+      let parentExpectationsHi = [];
+      if (countsOnFingers) parentExpectationsHi.push("उँगलियों पर गिनना");
+      if (carelessMistakes) parentExpectationsHi.push("असावधान गलतियाँ");
+      if (mathAnxiety) parentExpectationsHi.push("गणित से डर");
+      if (competitiveFocus) parentExpectationsHi.push("प्रतियोगी परीक्षा");
+      const expStrHi = parentExpectationsHi.length > 0 ? `\nआदतें/अपेक्षाएँ: ${parentExpectationsHi.join(", ")}` : "";
+
       textMessage = `नमस्ते, मैं अर्णव एबाकस एकेडमी में फ्री डेमो क्लास के लिए उत्सुक हूँ!
 अभिभावक का नाम: ${salutation} ${parentName}
 छात्र का नाम: ${studentName}
@@ -413,8 +541,15 @@ Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}
 कंट्री कोड: ${countryCode}
 क्लास का प्रकार: ${classMode === "online" ? "ऑनलाइन वीडियो क्लास (Zoom/Meet)" : "ऑफलाइन (वाकड पुणे सेंटर)"}
 टाइम ज़ोन: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
-स्कूल बोर्ड: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
+स्कूल बोर्ड: ${schoolCurriculum}${expStrHi}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
     } else if (language === "mr") {
+      let parentExpectationsMr = [];
+      if (countsOnFingers) parentExpectationsMr.push("बोटांवर मोजणे");
+      if (carelessMistakes) parentExpectationsMr.push("अनावधानाने चुका");
+      if (mathAnxiety) parentExpectationsMr.push("गणिताची भीती");
+      if (competitiveFocus) parentExpectationsMr.push("स्पर्धा परीक्षा");
+      const expStrMr = parentExpectationsMr.length > 0 ? `\nसवयी/अपेक्षा: ${parentExpectationsMr.join(", ")}` : "";
+
       textMessage = `नमस्कार, मी अर्णव ॲबॅकस अकॅडमीमध्ये मोफत डेमो क्लाससाठी चौकशी करू इच्छितो!
 पालकांचे नाव: ${salutation} ${parentName}
 विद्यार्थ्याचे नाव: ${studentName}
@@ -423,7 +558,7 @@ Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}
 कंट्री कोड: ${countryCode}
 डेमोचा प्रकार: ${classMode === "online" ? "ऑनलाइन व्हिडिओ क्लास (Zoom/Meet)" : "ऑफलाइन (वाकड पुणे सेंटर)"}
 टाइम झोन: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
-अभ्यासक्रम: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
+अभ्यासक्रम: ${schoolCurriculum}${expStrMr}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
     }
 
     const encodedText = encodeURIComponent(textMessage);
@@ -663,6 +798,59 @@ Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}
               </div>
             </div>
           )}
+
+          {/* Optional Expectation Checklist Dropdown */}
+          <div className="mt-3 bg-gray-50 border border-gray-200 rounded-2xl p-3.5 transition-all">
+            <button
+              type="button"
+              onClick={() => setShowExpectations(!showExpectations)}
+              className="w-full flex items-center justify-between font-bold text-xs uppercase tracking-wider text-vibrant-dark focus:outline-none cursor-pointer"
+            >
+              <span>{language === "hi" ? "बच्चे की गणित की आदतें जोड़ें (वैकल्पिक)" : language === "mr" ? "मुलाच्या गणिताच्या सवयी जोडा (पर्यायी)" : "Child's Math Habits & Goals (Optional)"}</span>
+              <span className="text-vibrant-orange text-sm font-black transition-transform duration-200">{showExpectations ? "−" : "+"}</span>
+            </button>
+            
+            {showExpectations && (
+              <div className="mt-3 space-y-2 border-t border-gray-100 pt-3 animate-fade-in text-xs text-gray-700">
+                <label className="flex items-start gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={countsOnFingers}
+                    onChange={(e) => setCountsOnFingers(e.target.checked)}
+                    className="mt-0.5 rounded border-gray-300 text-vibrant-orange focus:ring-vibrant-orange"
+                  />
+                  <span>{language === "hi" ? "कैलकुलेशन के लिए उँगलियों का उपयोग करता है" : language === "mr" ? "गणित सोडवताना बोटांचा वापर करतो" : "Counts on fingers or draws lines to calculate"}</span>
+                </label>
+                <label className="flex items-start gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={carelessMistakes}
+                    onChange={(e) => setCarelessMistakes(e.target.checked)}
+                    className="mt-0.5 rounded border-gray-300 text-vibrant-orange focus:ring-vibrant-orange"
+                  />
+                  <span>{language === "hi" ? "अक्सर असावधान/सिली मिस्टेक्स करता है" : language === "mr" ? "नेहमी सोप्या गणितांमध्ये सिली मिस्टेक्स करतो" : "Frequently makes careless or silly mistakes"}</span>
+                </label>
+                <label className="flex items-start gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={mathAnxiety}
+                    onChange={(e) => setMathAnxiety(e.target.checked)}
+                    className="mt-0.5 rounded border-gray-300 text-vibrant-orange focus:ring-vibrant-orange"
+                  />
+                  <span>{language === "hi" ? "गणित से डर लगता है / ध्यान भटकता है" : language === "mr" ? "गणिताची भीती वाटते / लक्ष विचलित होते" : "Has math anxiety or gets distracted easily"}</span>
+                </label>
+                <label className="flex items-start gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={competitiveFocus}
+                    onChange={(e) => setCompetitiveFocus(e.target.checked)}
+                    className="mt-0.5 rounded border-gray-300 text-vibrant-orange focus:ring-vibrant-orange"
+                  />
+                  <span>{language === "hi" ? "ओलंपियाड / आईपीएम प्रतियोगी परीक्षा पर ध्यान" : language === "mr" ? "ऑलिम्पियाड / आयपीएम स्पर्धा परीक्षांवर लक्ष" : "Focus on competitive exams (Olympiad, IPM, etc.)"}</span>
+                </label>
+              </div>
+            )}
+          </div>
 
           <button
             type="submit"

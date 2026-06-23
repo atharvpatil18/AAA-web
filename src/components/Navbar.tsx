@@ -9,6 +9,7 @@ import { Phone, Mail, Clock, Menu, X, ArrowRight, MessageCircle, Globe } from "l
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import { Language } from "../lib/translations";
+import { generateBrochurePDF } from "../lib/brochure";
 
 export default function Navbar() {
   const { language, setLanguage, t } = useLanguage();
@@ -143,16 +144,26 @@ export default function Navbar() {
             </ul>
 
             {/* CTA Button with Flat Brutallist Shadow */}
-            <a
-              href="https://wa.me/919021924968"
-              onClick={handleBookDemoClick}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-vibrant-teal text-white px-6 py-2.5 rounded-full font-black text-sm shadow-[0_4px_0_0_#00897B] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all inline-flex items-center gap-1.5 cursor-pointer"
-            >
-              {t("bookFreeDemo")}
-              <ArrowRight className="w-3.5 h-3.5" />
-            </a>
+            <div className="flex items-center gap-3 shrink-0">
+              <a
+                href="https://wa.me/919021924968"
+                onClick={handleBookDemoClick}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-vibrant-teal text-white px-6 py-2.5 rounded-full font-black text-sm shadow-[0_4px_0_0_#00897B] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center"
+              >
+                {t("bookFreeDemo")}
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
+
+              <button
+                onClick={() => generateBrochurePDF(language)}
+                className="bg-white hover:bg-slate-50 text-vibrant-dark border-2 border-vibrant-dark px-5 py-2 rounded-full font-black text-xs shadow-[0_4px_0_0_#1A2E35] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all inline-flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>{t("downloadBrochure")}</span>
+                <span className="text-[9px] bg-vibrant-orange text-white px-1.5 py-0.5 rounded font-black">PDF</span>
+              </button>
+            </div>
           </div>
 
           {/* Mobile Menu Action Icon */}
@@ -192,7 +203,7 @@ export default function Navbar() {
                 );
               })}
             </ul>
-            <div className="pt-2 border-t border-gray-100">
+            <div className="pt-2 border-t border-gray-100 flex flex-col gap-2.5">
               <a
                 href="https://wa.me/919021924968"
                 onClick={() => {
@@ -201,11 +212,22 @@ export default function Navbar() {
                 }}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-vibrant-teal text-white py-3 rounded-xl font-bold shadow-[0_4px_0_0_#00897B] active:translate-y-0.5 active:shadow-none text-center text-xs md:text-sm flex items-center justify-center gap-1.5"
+                className="w-full bg-vibrant-teal text-white py-3 rounded-xl font-bold shadow-[0_4px_0_0_#00897B] active:translate-y-0.5 active:shadow-none text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 {t("bookTrial")}
                 <ArrowRight className="w-4 h-4" />
               </a>
+
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  generateBrochurePDF(language);
+                }}
+                className="w-full bg-white hover:bg-slate-50 text-vibrant-dark border-2 border-vibrant-dark py-3 rounded-xl font-bold shadow-[0_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>{t("downloadBrochure")}</span>
+                <span className="text-[9px] bg-vibrant-orange text-white px-1.5 py-0.5 rounded font-black">PDF</span>
+              </button>
             </div>
           </div>
         </div>
