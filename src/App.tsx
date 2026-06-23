@@ -16,6 +16,7 @@ import Faqs from "./pages/Faqs";
 import CampaignPage from "./pages/CampaignPage";
 import Showcase from "./pages/Showcase";
 import NewsEvents from "./pages/NewsEvents";
+import InteractiveBrochure from "./pages/InteractiveBrochure";
 
 import { LanguageProvider } from "./lib/LanguageContext";
 
@@ -51,6 +52,7 @@ export default function App() {
             <Route path="/gallery" element={<Showcase defaultTab="gallery" />} />
             <Route path="/news" element={<NewsEvents />} />
             <Route path="/faqs" element={<Faqs />} />
+            <Route path="/brochure" element={<InteractiveBrochure />} />
             <Route path="/campaigns/:slug" element={<CampaignPage />} />
             {/* Fallback routing */}
             <Route path="*" element={<Home />} />

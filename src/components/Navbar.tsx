@@ -156,13 +156,14 @@ export default function Navbar() {
                 <ArrowRight className="w-3.5 h-3.5" />
               </a>
 
-              <button
-                onClick={() => generateBrochurePDF(language)}
-                className="bg-white hover:bg-slate-50 text-vibrant-dark border-2 border-vibrant-dark px-5 py-2 rounded-full font-black text-xs shadow-[0_4px_0_0_#1A2E35] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all inline-flex items-center gap-1.5 cursor-pointer"
+              <Link
+                to="/brochure"
+                className="bg-vibrant-orange hover:brightness-105 text-white px-6 py-2.5 rounded-full font-black text-sm shadow-[0_4px_0_0_#D35400] active:translate-y-1 active:shadow-none transition-all inline-flex items-center gap-1.5 cursor-pointer text-center"
+                title="View & Download 1-Page Brochure"
               >
                 <span>{t("downloadBrochure")}</span>
-                <span className="text-[9px] bg-vibrant-orange text-white px-1.5 py-0.5 rounded font-black">PDF</span>
-              </button>
+                <span className="text-[9px] bg-white text-vibrant-orange px-1.5 py-0.5 rounded font-black">Interactive</span>
+              </Link>
             </div>
           </div>
 
@@ -218,16 +219,14 @@ export default function Navbar() {
                 <ArrowRight className="w-4 h-4" />
               </a>
 
-              <button
-                onClick={() => {
-                  setIsOpen(false);
-                  generateBrochurePDF(language);
-                }}
-                className="w-full bg-white hover:bg-slate-50 text-vibrant-dark border-2 border-vibrant-dark py-3 rounded-xl font-bold shadow-[0_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
+              <Link
+                to="/brochure"
+                onClick={() => setIsOpen(false)}
+                className="w-full bg-vibrant-orange hover:brightness-105 text-white py-3 rounded-xl font-bold shadow-[0_4px_0_0_#D35400] active:translate-y-0.5 active:shadow-none text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>{t("downloadBrochure")}</span>
-                <span className="text-[9px] bg-vibrant-orange text-white px-1.5 py-0.5 rounded font-black">PDF</span>
-              </button>
+                <span className="text-[9px] bg-white text-vibrant-orange px-1.5 py-0.5 rounded font-black">Interactive</span>
+              </Link>
             </div>
           </div>
         </div>
