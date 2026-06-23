@@ -17,6 +17,7 @@ export default function TeacherProfile() {
 
   const certifications = [
     t("teacherCert1"),
+    t("teacherCert5"),
     t("teacherCert2"),
     t("teacherCert3"),
     t("teacherCert4")
