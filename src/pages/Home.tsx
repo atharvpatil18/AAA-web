@@ -538,13 +538,13 @@ export default function Home() {
       <div className="py-12 bg-white rounded-3xl border-2 border-vibrant-dark/20 p-6 md:p-8 mt-10">
         <div className="text-center space-y-2 mb-8">
           <span className="text-[10px] font-black text-white bg-vibrant-orange px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-            Flexible Formats
+            {t("quizExclusiveOffer").split("•")[0].trim()}
           </span>
           <h3 className="font-display font-black text-2xl text-vibrant-dark">
-            Local Learning Center or Live Online Batches
+            {t("formatTitle")}
           </h3>
           <p className="text-gray-500 text-xs md:text-sm font-semibold max-w-xl mx-auto">
-            Choose the delivery style that fits your lifestyle. Both tracks receive direct guidance from certified educators.
+            {t("formatSubtitle")}
           </p>
         </div>
 
@@ -553,18 +553,18 @@ export default function Home() {
           <div className="bg-orange-50/20 border-2 border-orange-100 rounded-2xl p-5 flex flex-col justify-between">
             <div>
               <span className="text-[9px] font-black text-white bg-vibrant-orange px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-3">
-                Wakad Physical Hub
+                {t("formatLocalBadge")}
               </span>
               <h4 className="font-black text-base text-vibrant-dark mb-2">
-                Wakad Brain Center (Pune)
+                {t("formatLocalTitle")}
               </h4>
               <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-4">
-                Bring your child to our safe, screen-free physical classroom in Wakad. Replicates traditional tactile learning structures.
+                {t("formatLocalDesc")}
               </p>
               <ul className="space-y-1.5 text-xs font-bold text-gray-500 mb-6">
-                <li className="flex items-center gap-1.5">✔ Max 1:8 batch student-to-teacher ratio</li>
-                <li className="flex items-center gap-1.5">✔ Tactile, hands-on physical abacus board tools</li>
-                <li className="flex items-center gap-1.5">✔ Safe drop-off & pickup zone with free parking</li>
+                <li className="flex items-center gap-1.5">✔ {t("formatLocalB1")}</li>
+                <li className="flex items-center gap-1.5">✔ {t("formatLocalB2")}</li>
+                <li className="flex items-center gap-1.5">✔ {t("formatLocalB3")}</li>
               </ul>
             </div>
             <a
@@ -573,7 +573,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="bg-vibrant-dark text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block"
             >
-              Get Directions to Center
+              {t("formatLocalBtn")}
             </a>
           </div>
 
@@ -581,18 +581,18 @@ export default function Home() {
           <div className="bg-teal-50/20 border-2 border-teal-100 rounded-2xl p-5 flex flex-col justify-between">
             <div>
               <span className="text-[9px] font-black text-white bg-vibrant-teal px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-3">
-                Global Online
+                {t("formatOnlineBadge")}
               </span>
               <h4 className="font-black text-base text-vibrant-dark mb-2">
-                International Online Batches
+                {t("formatOnlineTitle")}
               </h4>
               <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-4">
-                Live, interactive online classes scheduled to accommodate US, UK, and Gulf time-zones. Replicates physical class dynamics.
+                {t("formatOnlineDesc")}
               </p>
               <ul className="space-y-1.5 text-xs font-bold text-gray-500 mb-6">
-                <li className="flex items-center gap-1.5">✔ Micro-batches capped at max 1:4 kids</li>
-                <li className="flex items-center gap-1.5">✔ Dynamic digital abacus visualization software</li>
-                <li className="flex items-center gap-1.5">✔ Time-zone flex options with class rescheduling</li>
+                <li className="flex items-center gap-1.5">✔ {t("formatOnlineB1")}</li>
+                <li className="flex items-center gap-1.5">✔ {t("formatOnlineB2")}</li>
+                <li className="flex items-center gap-1.5">✔ {t("formatOnlineB3")}</li>
               </ul>
             </div>
             <a
@@ -601,7 +601,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="bg-vibrant-teal text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block"
             >
-              Inquire Online Slots
+              {t("formatOnlineBtn")}
             </a>
           </div>
         </div>
@@ -611,13 +611,13 @@ export default function Home() {
       <div className="py-12 bg-white rounded-3xl border-2 border-vibrant-dark/20 p-6 md:p-8 mt-10">
         <div className="text-center space-y-2 mb-6">
           <span className="text-[10px] font-black text-white bg-vibrant-orange px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-            Seeing is Believing
+            {t("videoBadge")}
           </span>
           <h3 className="font-display font-black text-2xl text-vibrant-dark">
-            Watch Our Champions In Action
+            {t("videoTitle")}
           </h3>
           <p className="text-gray-500 text-xs md:text-sm font-semibold max-w-xl mx-auto">
-            Observe how visual abacus neural wiring allows students to compute multidigits at supersonic speeds.
+            {t("videoSubtitle")}
           </p>
         </div>
 
@@ -629,10 +629,10 @@ export default function Home() {
             <span className="text-xl ml-1">▶</span>
           </div>
           <span className="relative z-10 text-white font-display font-black text-base md:text-lg leading-tight">
-            Watch Arnav Patil calculate 10x faster than a calculator
+            {t("videoReelTitle")}
           </span>
           <span className="relative z-10 text-gray-300 text-xs mt-1 font-bold">
-            8th International Abacus Meet (Pune, India) • 1 Min Video
+            {t("videoReelSub")}
           </span>
         </div>
       </div>
