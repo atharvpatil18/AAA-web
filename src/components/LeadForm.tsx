@@ -7,6 +7,7 @@ import React, { useState, useEffect } from "react";
 import { trackLeadFormSubmission } from "../lib/analytics";
 import { Sparkles, Gift, Send, Landmark, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
+import { jsPDF } from "jspdf";
 
 interface LeadFormProps {
   sourceCampaign?: string;
@@ -58,6 +59,264 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
       console.warn("Timezone detection failed", e);
     }
   }, []);
+
+  const generatePDFWorksheet = async () => {
+    try {
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4"
+      });
+
+      const getBase64FromUrl = (url: string): Promise<string> => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            if (ctx) {
+              ctx.drawImage(img, 0, 0);
+              resolve(canvas.toDataURL("image/jpeg", 0.8));
+            } else {
+              reject(new Error("Canvas context error"));
+            }
+          };
+          img.onerror = () => reject(new Error("Image load error: " + url));
+          img.src = url;
+        });
+      };
+
+      let logoBase64 = "";
+      let photoBase64 = "";
+
+      try {
+        logoBase64 = await getBase64FromUrl("/logo.png");
+      } catch (err) {
+        console.warn("Logo load failed", err);
+      }
+
+      try {
+        photoBase64 = await getBase64FromUrl("/teacher-profile.jpg");
+      } catch (err) {
+        console.warn("Photo load failed", err);
+      }
+
+      // Page 1 Styles & Design
+      doc.setFillColor(26, 46, 53);
+      doc.rect(0, 0, 210, 8, "F");
+      doc.setFillColor(242, 100, 25);
+      doc.rect(0, 8, 210, 2, "F");
+
+      if (logoBase64) {
+        doc.addImage(logoBase64, "JPEG", 15, 15, 20, 20);
+      }
+
+      doc.setTextColor(26, 46, 53);
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(22);
+      doc.text("ARNAV ABACUS ACADEMY", 40, 24);
+      doc.setFontSize(10);
+      doc.setFont("Helvetica", "normal");
+      doc.setTextColor(120, 120, 120);
+      doc.text("National & International Abacus & Vedic Math Excellence", 40, 29);
+
+      doc.setDrawColor(220, 220, 220);
+      doc.line(15, 38, 195, 38);
+
+      doc.setTextColor(242, 100, 25);
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(14);
+      doc.text("A Welcome Message from Neha Patil", 15, 46);
+
+      if (photoBase64) {
+        doc.setDrawColor(26, 46, 53);
+        doc.setLineWidth(0.5);
+        doc.rect(15, 52, 40, 48);
+        doc.addImage(photoBase64, "JPEG", 15, 52, 40, 48);
+      }
+
+      const textX = photoBase64 ? 60 : 15;
+      const textWidth = photoBase64 ? 135 : 180;
+      doc.setTextColor(50, 50, 50);
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(10);
+
+      const welcomeLetter = `Dear Parent,
+
+Thank you for choosing Arnav Abacus Academy! We are honored to accompany your child on their mathematical journey.
+
+Our core philosophy extends past mere rote calculations. We focus on building spatial visualization skills, visual agility, focus, and a foundational love for numbers.
+
+This diagnostic sheet is designed to evaluate your child's visual counting confidence and logical agility. We look forward to analyzing their scores and helping them grow.
+
+Warm regards,
+
+Neha Patil
+Founder & Director, Arnav Abacus Academy
+(IIVA Certified Mentor)`;
+
+      const splitWelcome = doc.splitTextToSize(welcomeLetter, textWidth);
+      doc.text(splitWelcome, textX, 55);
+
+      doc.setDrawColor(220, 220, 220);
+      doc.line(15, 115, 195, 115);
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(13);
+      doc.setTextColor(26, 46, 53);
+      doc.text("About the Founder & Director", 15, 123);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(9.5);
+      doc.setTextColor(80, 80, 80);
+      const bioText = `Neha Patil is a highly certified IIVA (Indian Institute of Vedic Maths & Abacus) Master Trainer and Child Psychology specialist. With over 3+ years of direct mentoring excellence, she has coached more than 200+ local students in Wakad, Pune, and 10+ international students from the US, UK, and Gulf countries.
+
+Arnav Abacus Academy operates in alignment with the National Education Policy (NEP) 2020 and is an active Skill India partner, prioritizing 1:8 maximum student-teacher ratios for dedicated personal growth.`;
+
+      const splitBio = doc.splitTextToSize(bioText, 180);
+      doc.text(splitBio, 15, 129);
+
+      doc.setFillColor(245, 247, 248);
+      doc.rect(15, 155, 180, 32, "F");
+      doc.setDrawColor(26, 46, 53);
+      doc.rect(15, 155, 180, 32);
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(26, 46, 53);
+      doc.text("Our Core Pillars of Excellence:", 20, 162);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(60, 60, 60);
+      doc.text("- Guaranteed 1:8 Classroom Batch Ratio for personalized attention", 20, 168);
+      doc.text("- Complete synergy with CBSE, ICSE, IB, IGCSE & US Common Core School Boards", 20, 174);
+      doc.text("- Photographic Memory development through tactile Soroban Abacus techniques", 20, 180);
+
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text("Page 1 of 2 • Arnav Abacus Academy", 15, 285);
+      doc.text("Contact: +91 90219 24968", 165, 285);
+
+      // Page 2
+      doc.addPage();
+      doc.setFillColor(26, 46, 53);
+      doc.rect(0, 0, 210, 8, "F");
+      doc.setFillColor(242, 100, 25);
+      doc.rect(0, 8, 210, 2, "F");
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(15);
+      doc.setTextColor(26, 46, 53);
+      doc.text("MATH DIAGNOSTIC WORKSHEET (AGES 4-14)", 15, 20);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(9.5);
+      doc.setTextColor(100, 100, 100);
+      doc.text("Please have your child solve these problems mentally. Record the time taken and errors.", 15, 25);
+
+      doc.setFillColor(240, 244, 248);
+      doc.rect(15, 30, 180, 7, "F");
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(26, 46, 53);
+      doc.text("SECTION 1: ABACUS VISUALIZATION (AGES 4-8)", 18, 35);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(10);
+      doc.setTextColor(55, 55, 55);
+      const qAbacus = [
+        "1)  2  +  2  -  1  =  [   ]",
+        "2)  5  +  3  -  2  =  [   ]",
+        "3)  10  +  5  -  5  =  [   ]",
+        "4)  22  +  11  -  3  =  [   ]",
+        "5)  50  +  20  -  10  =  [   ]"
+      ];
+      let currentY = 44;
+      qAbacus.forEach((q) => {
+        doc.text(q, 25, currentY);
+        currentY += 8;
+      });
+
+      doc.setFillColor(240, 244, 248);
+      doc.rect(15, 90, 180, 7, "F");
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(26, 46, 53);
+      doc.text("SECTION 2: SPEED MATH & SUTRAS (AGES 9-14)", 18, 95);
+
+      doc.setFont("Helvetica", "normal");
+      const qSpeed = [
+        "1)  Square of 98  =  [   ]  (Hint: Use Deviation from Base 100!)",
+        "2)  Square of 45  =  [   ]  (Hint: Use ending in 5 formula: 4 * (4+1) | 25!)",
+        "3)  123 x 5  =  [   ]",
+        "4)  99 x 9  =  [   ]",
+        "5)  300 - 145  =  [   ]"
+      ];
+      currentY = 104;
+      qSpeed.forEach((q) => {
+        doc.text(q, 25, currentY);
+        currentY += 8;
+      });
+
+      doc.setFillColor(255, 248, 240);
+      doc.rect(15, 150, 180, 35, "F");
+      doc.setDrawColor(242, 100, 25);
+      doc.rect(15, 150, 180, 35);
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(10.5);
+      doc.setTextColor(242, 100, 25);
+      doc.text("PARENT'S DIAGNOSTIC REPORT CARD LOG:", 20, 157);
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.setTextColor(50, 50, 50);
+      doc.text("Total Time Taken: ____________ seconds", 25, 166);
+      doc.text("Silly Mistakes Count: ____________", 25, 172);
+      doc.text("Focus & Attention Scale (1 - 10): ____________ / 10", 25, 178);
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor(26, 46, 53);
+      doc.text("Ready for a Professional Cognitive Assessment?", 15, 205);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(9.5);
+      doc.setTextColor(80, 80, 80);
+      const bookingNotice = `Bring this sheet with you to your booked demo session (either online via video share or at our physical center in Wakad, Pune). Neha Patil will review your child's accuracy and visualization speeds to suggest custom learning tracks.`;
+      const splitNotice = doc.splitTextToSize(bookingNotice, 180);
+      doc.text(splitNotice, 15, 211);
+
+      doc.setFillColor(245, 247, 248);
+      doc.rect(15, 230, 180, 25, "F");
+      doc.setDrawColor(220, 220, 220);
+      doc.rect(15, 230, 180, 25);
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.setTextColor(26, 46, 53);
+      doc.text("Arnav Abacus Academy", 20, 236);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.setTextColor(100, 100, 100);
+      doc.text("Address: Flat No. 3, Adv. Balaji Sagar Bungalow, Opposite Creative Cameo, Wakad, Pune", 20, 242);
+      doc.text("Contact Phone / WhatsApp: +91 90219 24968", 20, 248);
+
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text("Page 2 of 2 • Arnav Abacus Academy", 15, 285);
+      doc.text("Contact: +91 90219 24968", 165, 285);
+
+      doc.save("arnav_abacus_diagnostic_worksheet.pdf");
+    } catch (err) {
+      console.error("PDF generation error", err);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -218,9 +477,14 @@ Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}
                 onChange={(e) => setProgram(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
               >
-                <option value="Abacus">{language === "hi" ? "एबाकस कोर्स" : language === "mr" ? "ॲबॅकस कोर्स" : "Abacus Course"}</option>
+                <option value="Abacus Math">{language === "hi" ? "एबाकस गणित" : language === "mr" ? "ॲबॅकस गणित" : "Abacus Math"}</option>
                 <option value="Vedic Math">{language === "hi" ? "वैदिक गणित" : language === "mr" ? "वैदिक गणित" : "Vedic Math"}</option>
                 <option value="School Math">{language === "hi" ? "स्कूल गणित" : language === "mr" ? "शालेय गणित" : "School Math"}</option>
+                <option value="IPM Math">{language === "hi" ? "आईपीएम गणित" : language === "mr" ? "आयपीएम गणित" : "IPM Math"}</option>
+                <option value="Olympiad Math">{language === "hi" ? "ओलंपियाड गणित" : language === "mr" ? "ऑलिम्पियाड गणित" : "Olympiad Math"}</option>
+                <option value="Scholarship Math">{language === "hi" ? "स्कॉलरशिप गणित" : language === "mr" ? "स्कॉलरशिप गणित" : "Scholarship Math"}</option>
+                <option value="Competitive Math">{language === "hi" ? "प्रतियोगी गणित" : language === "mr" ? "स्पर्धात्मक गणित" : "Competitive Math"}</option>
+                <option value="Mental Math">{language === "hi" ? "मेंटल मैथ" : language === "mr" ? "मेंटल मॅथ" : "Mental Math"}</option>
               </select>
             </div>
           </div>
@@ -326,48 +590,7 @@ Curriculum: ${schoolCurriculum}${sourceCampaign ? `\nCampaign: ${sourceCampaign}
           {/* Diagnostic Worksheet Download Button */}
           <button
             type="button"
-            onClick={() => {
-              const textContent = `ARNAV ABACUS ACADEMY - DIAGNOSTIC MATH WORKSHEET (AGES 4-14)
-=============================================================
-This diagnostic helps assess your child's arithmetic speed, focus, and visual photographic agility.
-
-SECTION 1: ABACUS VISUALIZATION (AGES 4-8)
-------------------------------------------
-Have your child visualize abacus beads to solve these mentally.
-1) 2 + 2 - 1 = [ ]
-2) 5 + 3 - 2 = [ ]
-3) 10 + 5 - 5 = [ ]
-4) 22 + 11 - 3 = [ ]
-5) 50 + 20 - 10 = [ ]
-
-SECTION 2: SPEED MATH & SUTRAS (AGES 9-14)
--------------------------------------------
-Solve these equations as fast as possible. Record the time taken.
-1) Square of 98 = [ ]     (Hint: Use Nikhilam Sutra deviation check!)
-2) Square of 45 = [ ]     (Hint: Use Ending in 5 formula: 4 * 5 | 25!)
-3) 123 x 5 = [ ]
-4) 99 x 9 = [ ]
-5) 300 - 145 = [ ]
-
-PARENTS DIAGNOSTICS LOG:
-- Total Time Taken: ______ seconds
-- Silly Mistakes Count: ______
-- Focus Scale (1-10): ______ / 10
-
-Need answers or a detailed cognitive score assessment?
-Book your free trial class at Arnav Abacus Academy!
-Contact: +91 9021924968 / Neha Patil (IIVA Certified Mentor)`;
-
-              const blob = new Blob([textContent], { type: "text/plain" });
-              const url = URL.createObjectURL(blob);
-              const link = document.createElement("a");
-              link.href = url;
-              link.download = "arnav_abacus_diagnostic_worksheet.txt";
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-              URL.revokeObjectURL(url);
-            }}
+            onClick={generatePDFWorksheet}
             className="w-full bg-white hover:bg-slate-50 text-vibrant-dark border-2 border-vibrant-dark py-3.5 rounded-2xl font-black text-sm shadow-[0_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center gap-2 mt-3 cursor-pointer"
           >
             <Gift className="w-4 h-4 text-vibrant-teal" />
