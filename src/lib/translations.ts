@@ -736,6 +736,10 @@ export const translations = {
     diffRow4AAA: "Stress-free, visual learning with simulators",
     diffRow4Others: "High-pressure speed test focus & heavy drills",
     diffRow4Desc: "Franchises rely on heavy, stressful speed worksheets. AAA uses gamified digital playgrounds and stress-free visual sprints to make children love numbers.",
+    diffRow5Name: "Global Curricular Fit & Timing",
+    diffRow5AAA: "1:4 micro-batches matched to US/UK/Gulf time zones & IB/IGCSE syllabus",
+    diffRow5Others: "Rigid local timings, drills disconnected from international boards",
+    diffRow5Desc: "AAA schedules sessions directly to suit different time zones with premium 1:4 batch sizes. Our curriculum supports inquiry-based logic (IB), Cambridge IGCSE speed math, and US Common Core instead of rigid repetitive worksheets.",
   },
   hi: {
     // Navbar
@@ -1467,6 +1471,10 @@ export const translations = {
     diffRow4AAA: "तनाव मुक्त और इंटरैक्टिव खेल-आधारित शिक्षण",
     diffRow4Others: "भारी दबाव वाले गति परीक्षण और थकाऊ अभ्यास",
     diffRow4Desc: "फ्रेंचाइजी भारी तनाव वाले स्पीड टेस्ट पर जोर देती हैं। AAA खेल-आधारित इंटरैक्टिव टूल का उपयोग करता है ताकि बच्चों को गणित मजेदार लगे।",
+    diffRow5Name: "ग्लोबल पाठ्यक्रम और समय लचीलापन",
+    diffRow5AAA: "US/UK/Gulf टाइम ज़ोन के अनुकूल 1:4 माइक्रो-बैच और IB/IGCSE सिलेबस समन्वय",
+    diffRow5Others: "कठोर स्थानीय समय, अंतर्राष्ट्रीय बोर्डों से पूरी तरह अलग अभ्यास",
+    diffRow5Desc: "AAA विभिन्न देशों के टाइम ज़ोन के अनुसार 1:4 के छोटे प्रीमियम बैच में क्लासेस आयोजित करता है। हमारा पाठ्यक्रम रटने के बजाय IB, Cambridge IGCSE स्पीड मैथ और US Common Core के अनुकूल तार्किक सोच विकसित करता है।",
   },
   mr: {
     // Navbar
@@ -2198,6 +2206,10 @@ export const translations = {
     diffRow4AAA: "आनंदी, ताण-मुक्त आणि खेळाच्या माध्यमातून शिक्षण",
     diffRow4Others: "परीक्षांचे दडपण आणि कंटाळवाणी गणिते",
     diffRow4Desc: "व्यावसायिक फ्रेंचायझी परीक्षांचे दडपण आणून सराव करून घेतात. AAA मधील खेळाच्या आणि सिम्युलेटरच्या मदतीने मुले गणिताचा आनंद घेतात.",
+    diffRow5Name: "ग्लोबल अभ्यासक्रम आणि वेळेची लवचिकता",
+    diffRow5AAA: "US/UK/Gulf टाइम झोननुसार लवचिक १:४ मायक्रो-बॅचेस आणि IB/IGCSE अभ्यासक्रम समन्वय",
+    diffRow5Others: "कठोर स्थानिक वेळा, आंतरराष्ट्रीय शैक्षणिक बोर्डांशी कोणताही संबंध नाही",
+    diffRow5Desc: "AAA वेगवेगळ्या देशांच्या टाइम झोननुसार लहान १:४ प्रीमियम बॅचेसमध्ये क्लासेस आयोजित करते. आमचा अभ्यासक्रम केवळ यांत्रिक सराव न घेता IB तार्किक विचारसरणी, Cambridge IGCSE स्पीड मॅथ आणि US Common Core निकषांना पूरक आहे.",
   }
 };
 

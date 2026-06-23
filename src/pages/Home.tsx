@@ -341,6 +341,34 @@ export default function Home() {
                         </div>
                       </td>
                     </tr>
+
+                    {/* Row 5 */}
+                    <tr 
+                      onClick={() => setExpandedRows(prev => ({ ...prev, row5: !prev.row5 }))}
+                      className="cursor-pointer hover:bg-slate-50/50 transition-colors divide-x-4 divide-vibrant-dark"
+                    >
+                      <td className="p-4 md:p-6 bg-slate-50 font-black flex items-center justify-between gap-2">
+                        <span>{t("diffRow5Name")}</span>
+                        {expandedRows.row5 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                      </td>
+                      <td className="p-4 md:p-6 bg-vibrant-teal/5 text-vibrant-teal">
+                        <div className="flex items-center gap-2">
+                          <span className="text-emerald-500 text-base font-black">✓</span>
+                          <span>{t("diffRow5AAA")}</span>
+                        </div>
+                        {expandedRows.row5 && (
+                          <p className="mt-3 text-xs text-vibrant-teal/80 font-semibold leading-relaxed border-t border-vibrant-teal/15 pt-2">
+                            {t("diffRow5Desc")}
+                          </p>
+                        )}
+                      </td>
+                      <td className="p-4 md:p-6 text-gray-400">
+                        <div className="flex items-center gap-2">
+                          <span className="text-rose-500 text-base font-black">✗</span>
+                          <span>{t("diffRow5Others")}</span>
+                        </div>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -351,7 +379,8 @@ export default function Home() {
                   { key: "row1", name: t("diffRow1Name"), aaa: t("diffRow1AAA"), others: t("diffRow1Others"), desc: t("diffRow1Desc") },
                   { key: "row2", name: t("diffRow2Name"), aaa: t("diffRow2AAA"), others: t("diffRow2Others"), desc: t("diffRow2Desc") },
                   { key: "row3", name: t("diffRow3Name"), aaa: t("diffRow3AAA"), others: t("diffRow3Others"), desc: t("diffRow3Desc") },
-                  { key: "row4", name: t("diffRow4Name"), aaa: t("diffRow4AAA"), others: t("diffRow4Others"), desc: t("diffRow4Desc") }
+                  { key: "row4", name: t("diffRow4Name"), aaa: t("diffRow4AAA"), others: t("diffRow4Others"), desc: t("diffRow4Desc") },
+                  { key: "row5", name: t("diffRow5Name"), aaa: t("diffRow5AAA"), others: t("diffRow5Others"), desc: t("diffRow5Desc") }
                 ].map((row) => {
                   const isRowExpanded = !!expandedRows[row.key];
                   return (
