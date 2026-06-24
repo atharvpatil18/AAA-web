@@ -30,6 +30,8 @@ export default function Home() {
   const [showCompareTable, setShowCompareTable] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState("abacus");
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const [showLocalDetails, setShowLocalDetails] = useState(false);
+  const [showOnlineDetails, setShowOnlineDetails] = useState(false);
 
   const handleMapCtaClick = () => {
     trackDemoClick("home_map_nav_cta");
@@ -550,7 +552,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Column 1: Wakad Hub */}
-          <div className="bg-orange-50/20 border-2 border-orange-100 rounded-2xl p-5 flex flex-col justify-between">
+          <div className="bg-orange-50/20 border-2 border-orange-100 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300">
             <div>
               <span className="text-[9px] font-black text-white bg-vibrant-orange px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-3">
                 {t("formatLocalBadge")}
@@ -558,27 +560,47 @@ export default function Home() {
               <h4 className="font-black text-base text-vibrant-dark mb-2">
                 {t("formatLocalTitle")}
               </h4>
-              <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-4">
+              <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-3">
                 {t("formatLocalDesc")}
               </p>
-              <ul className="space-y-1.5 text-xs font-bold text-gray-500 mb-6">
-                <li className="flex items-center gap-1.5">✔ {t("formatLocalB1")}</li>
-                <li className="flex items-center gap-1.5">✔ {t("formatLocalB2")}</li>
-                <li className="flex items-center gap-1.5">✔ {t("formatLocalB3")}</li>
-              </ul>
+              
+              <button 
+                onClick={() => setShowLocalDetails(!showLocalDetails)}
+                className="flex items-center gap-1 text-[10px] font-black text-vibrant-orange hover:text-vibrant-orange/80 transition-colors uppercase tracking-wider mb-4"
+              >
+                {showLocalDetails ? (
+                  <>Show Less <ChevronUp className="w-3.5 h-3.5" /></>
+                ) : (
+                  <>Explore Details <ChevronDown className="w-3.5 h-3.5" /></>
+                )}
+              </button>
+
+              {showLocalDetails && (
+                <motion.ul 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="space-y-1.5 text-xs font-bold text-gray-500 mb-6 border-t border-dashed border-orange-200/50 pt-3"
+                >
+                  <li className="flex items-center gap-1.5"><span className="text-vibrant-orange">✔</span> {t("formatLocalB1")}</li>
+                  <li className="flex items-center gap-1.5"><span className="text-vibrant-orange">✔</span> {t("formatLocalB2")}</li>
+                  <li className="flex items-center gap-1.5"><span className="text-vibrant-orange">✔</span> {t("formatLocalB3")}</li>
+                </motion.ul>
+              )}
             </div>
             <a
               href="https://maps.app.goo.gl/A7QVndN4donCTM4P9"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-vibrant-dark text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block"
+              className="bg-vibrant-dark text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block mt-2"
             >
               {t("formatLocalBtn")}
             </a>
           </div>
 
           {/* Column 2: Global Online */}
-          <div className="bg-teal-50/20 border-2 border-teal-100 rounded-2xl p-5 flex flex-col justify-between">
+          <div className="bg-teal-50/20 border-2 border-teal-100 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300">
             <div>
               <span className="text-[9px] font-black text-white bg-vibrant-teal px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-3">
                 {t("formatOnlineBadge")}
@@ -586,20 +608,40 @@ export default function Home() {
               <h4 className="font-black text-base text-vibrant-dark mb-2">
                 {t("formatOnlineTitle")}
               </h4>
-              <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-4">
+              <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-3">
                 {t("formatOnlineDesc")}
               </p>
-              <ul className="space-y-1.5 text-xs font-bold text-gray-500 mb-6">
-                <li className="flex items-center gap-1.5">✔ {t("formatOnlineB1")}</li>
-                <li className="flex items-center gap-1.5">✔ {t("formatOnlineB2")}</li>
-                <li className="flex items-center gap-1.5">✔ {t("formatOnlineB3")}</li>
-              </ul>
+              
+              <button 
+                onClick={() => setShowOnlineDetails(!showOnlineDetails)}
+                className="flex items-center gap-1 text-[10px] font-black text-vibrant-teal hover:text-vibrant-teal/80 transition-colors uppercase tracking-wider mb-4"
+              >
+                {showOnlineDetails ? (
+                  <>Show Less <ChevronUp className="w-3.5 h-3.5" /></>
+                ) : (
+                  <>Explore Details <ChevronDown className="w-3.5 h-3.5" /></>
+                )}
+              </button>
+
+              {showOnlineDetails && (
+                <motion.ul 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="space-y-1.5 text-xs font-bold text-gray-500 mb-6 border-t border-dashed border-teal-200/50 pt-3"
+                >
+                  <li className="flex items-center gap-1.5"><span className="text-vibrant-teal">✔</span> {t("formatOnlineB1")}</li>
+                  <li className="flex items-center gap-1.5"><span className="text-vibrant-teal">✔</span> {t("formatOnlineB2")}</li>
+                  <li className="flex items-center gap-1.5"><span className="text-vibrant-teal">✔</span> {t("formatOnlineB3")}</li>
+                </motion.ul>
+              )}
             </div>
             <a
               href="https://wa.me/919021924968?text=Hello!%20I%2520would%20like%20to%20inquire%20about%20your%20Online%20International%20Abacus%20batches."
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-vibrant-teal text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block"
+              className="bg-vibrant-teal text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block mt-2"
             >
               {t("formatOnlineBtn")}
             </a>
