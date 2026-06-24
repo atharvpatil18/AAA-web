@@ -681,7 +681,7 @@ export default function Home() {
 
               <div>
                 <a
-                  href="https://www.google.com/maps/dir/?api=1&destination=18.5975866,73.7810869"
+                  href="https://maps.app.goo.gl/A7QVndN4donCTM4P9"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-black text-vibrant-orange hover:text-vibrant-orange/95 uppercase tracking-widest bg-vibrant-cream border-2 border-vibrant-dark px-4 py-2 rounded-xl text-center shadow-[0_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all"
