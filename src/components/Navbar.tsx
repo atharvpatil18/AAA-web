@@ -89,13 +89,15 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-      </div>      {/* 2. Main Navbar */}
-      <nav id="navbar-body" className="bg-white border-b-4 border-vibrant-orange shadow-sm">
+      </div>
+
+      {/* 2. Main Navbar */}
+      <nav id="navbar-body" className="bg-white border-b border-slate-100 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-3.5 flex justify-between items-center">
           {/* Logo Name */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="flex items-center gap-1.5 shrink-0">
-              <div className="w-10 h-10 md:w-11 md:h-11 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-vibrant-dark shadow-md group-hover:scale-105 transition-transform shrink-0">
+              <div className="w-10 h-10 md:w-11 md:h-11 bg-white rounded-full flex items-center justify-center overflow-hidden border border-slate-200 shadow-xs group-hover:scale-105 transition-transform shrink-0">
                 {!logoFailed ? (
                   <img 
                     src="/logo.png" 
@@ -130,10 +132,10 @@ export default function Navbar() {
                   <li key={link.name}>
                     <Link
                       to={link.path}
-                      className={`text-sm font-black tracking-wide transition-colors duration-150 py-1.5 ${
+                      className={`text-sm font-semibold tracking-wide transition-colors duration-150 py-1.5 relative ${
                         isActive
-                          ? "text-vibrant-orange border-b-2 border-vibrant-orange"
-                          : "text-gray-650 hover:text-vibrant-orange"
+                          ? "text-vibrant-orange after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-vibrant-orange after:rounded-full"
+                          : "text-gray-660 hover:text-vibrant-orange"
                       }`}
                     >
                       {link.name}
@@ -143,14 +145,14 @@ export default function Navbar() {
               })}
             </ul>
 
-            {/* CTA Button with Flat Brutallist Shadow */}
+            {/* CTA Button with Flat shadow replacement */}
             <div className="flex items-center gap-3 shrink-0">
               <a
                 href="https://wa.me/919021924968"
                 onClick={handleBookDemoClick}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-vibrant-teal text-white px-6 py-2.5 rounded-full font-black text-sm shadow-[0_4px_0_0_#00897B] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center"
+                className="bg-vibrant-teal hover:bg-vibrant-teal/95 text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center"
               >
                 {t("bookFreeDemo")}
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -158,7 +160,7 @@ export default function Navbar() {
 
               <Link
                 to="/brochure"
-                className="bg-vibrant-orange hover:brightness-105 text-white px-6 py-2.5 rounded-full font-black text-sm shadow-[0_4px_0_0_#D35400] active:translate-y-1 active:shadow-none transition-all inline-flex items-center gap-1.5 cursor-pointer text-center"
+                className="bg-vibrant-orange hover:bg-vibrant-orange/95 text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center"
                 title="View & Download 1-Page Brochure"
               >
                 <span>{t("downloadBrochure")}</span>
@@ -195,7 +197,7 @@ export default function Navbar() {
                       className={`block px-3 py-2 rounded-lg text-sm font-bold transition-colors ${
                         isActive
                           ? "bg-vibrant-orange/10 text-vibrant-orange"
-                          : "text-gray-650 hover:bg-white hover:text-vibrant-orange"
+                          : "text-gray-655 hover:bg-white hover:text-vibrant-orange"
                       }`}
                     >
                       {link.name}
@@ -213,7 +215,7 @@ export default function Navbar() {
                 }}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-vibrant-teal text-white py-3 rounded-xl font-bold shadow-[0_4px_0_0_#00897B] active:translate-y-0.5 active:shadow-none text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full bg-vibrant-teal hover:bg-vibrant-teal/95 text-white py-3 rounded-xl font-bold shadow-xs hover:shadow-md active:scale-95 transition-all text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 {t("bookTrial")}
                 <ArrowRight className="w-4 h-4" />
@@ -222,7 +224,7 @@ export default function Navbar() {
               <Link
                 to="/brochure"
                 onClick={() => setIsOpen(false)}
-                className="w-full bg-vibrant-orange hover:brightness-105 text-white py-3 rounded-xl font-bold shadow-[0_4px_0_0_#D35400] active:translate-y-0.5 active:shadow-none text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full bg-vibrant-orange hover:bg-vibrant-orange/95 text-white py-3 rounded-xl font-bold shadow-xs hover:shadow-md active:scale-95 transition-all text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <span>{t("downloadBrochure")}</span>
                 <span className="text-[9px] bg-white text-vibrant-orange px-1.5 py-0.5 rounded font-black">Interactive</span>

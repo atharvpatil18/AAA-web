@@ -22,13 +22,13 @@ export default function InteractiveBrochure() {
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6 md:gap-8 mb-10">
         {/* 1. Header Intro (Center aligned on mobile, left aligned on desktop) */}
         <div className="text-center md:text-left space-y-4 max-w-2xl">
-          <span className="text-[10px] font-black text-white bg-vibrant-orange px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block shadow-[2px_2px_0_0_#1A2E35] border border-vibrant-dark">
+          <span className="text-[10px] font-bold text-vibrant-orange bg-vibrant-orange/10 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
             {t("brochureBadge")}
           </span>
           <h1 className="font-display font-black text-3xl sm:text-5xl text-vibrant-dark leading-tight">
             {t("brochureTitle")}
           </h1>
-          <p className="text-gray-600 text-sm sm:text-base font-semibold leading-relaxed">
+          <p className="text-gray-650 text-sm sm:text-base font-semibold leading-relaxed">
             {t("brochureSubtitle")}
           </p>
         </div>
@@ -38,7 +38,7 @@ export default function InteractiveBrochure() {
           {/* Download Brochure Button */}
           <button
             onClick={handleDownload}
-            className="bg-vibrant-orange text-white px-8 py-3.5 rounded-full font-black text-sm shadow-[0_4px_0_0_#D35400] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto md:w-64"
+            className="bg-vibrant-orange hover:bg-vibrant-orange/95 text-white px-8 py-3.5 rounded-full font-bold text-sm shadow-xs hover:shadow-md active:scale-97 transition-all flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto md:w-64"
           >
             <Download className="w-4 h-4" />
             {t("brochureBtnDownload")}
@@ -47,7 +47,7 @@ export default function InteractiveBrochure() {
           {/* Double Side Flip Brochure Action Button */}
           <button
             onClick={() => setIsFlipped(!isFlipped)}
-            className="bg-vibrant-teal text-white px-8 py-3 rounded-full font-black text-sm shadow-[0_4px_0_0_#00897B] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto md:w-64"
+            className="bg-vibrant-teal hover:bg-vibrant-teal/95 text-white px-8 py-3 rounded-full font-bold text-sm shadow-xs hover:shadow-md active:scale-97 transition-all flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto md:w-64"
           >
             <RotateCw className="w-4 h-4" />
             {t("brochureBtnFlipText")} ({isFlipped ? t("brochureBtnFlipFront") : t("brochureBtnFlipBack")})
@@ -64,31 +64,31 @@ export default function InteractiveBrochure() {
           onClick={() => setIsFlipped(!isFlipped)}
         >
           {/* FRONT SIDE */}
-          <div className="absolute w-full h-full backface-hidden border-2 border-vibrant-dark/20 rounded-3xl bg-white shadow-[0_10px_25px_-5px_rgba(26,46,53,0.1)] flex flex-col justify-between overflow-hidden p-4 md:p-6 lg:p-8">
+          <div className="absolute w-full h-full backface-hidden border border-slate-200/80 rounded-3xl bg-white shadow-xl shadow-slate-200/40 flex flex-col justify-between overflow-hidden p-4 md:p-6 lg:p-8">
             {/* Header section with Circular Academy Logo */}
-            <div className="flex items-center justify-between border-b-2 border-dashed border-vibrant-dark/10 pb-3 md:pb-4 shrink-0">
+            <div className="flex items-center justify-between border-b border-dashed border-slate-200 pb-3 md:pb-4 shrink-0">
               <div className="flex items-center gap-2 md:gap-3">
                 <img 
                   src="/logo.png" 
-                  className="w-8 h-8 md:w-12 md:h-12 object-contain rounded-full border-2 border-vibrant-dark/20 bg-white" 
+                  className="w-8 h-8 md:w-12 md:h-12 object-contain rounded-full border border-slate-200 bg-white" 
                   alt="Academy Logo"
                 />
                 <div>
                   <h2 className="font-display font-black text-sm md:text-xl text-vibrant-dark tracking-tight leading-tight">
                     ARNAV ABACUS ACADEMY
                   </h2>
-                  <p className="text-[8px] md:text-[10px] font-black text-vibrant-orange uppercase tracking-wider">
+                  <p className="text-[8px] md:text-[10px] font-bold text-vibrant-orange uppercase tracking-wider">
                     {t("brochureNepInfo")}
                   </p>
                 </div>
               </div>
-              <span className="hidden sm:inline-block text-[10px] font-black text-vibrant-teal bg-vibrant-teal/15 border-2 border-vibrant-teal/20 px-3 py-1 rounded-full uppercase">
+              <span className="hidden sm:inline-block text-[10px] font-bold text-vibrant-teal bg-vibrant-teal/10 px-3 py-1 rounded-full uppercase">
                 {t("brochureSideFront")}
               </span>
             </div>
 
             {/* Core Impact Hook */}
-            <div className="my-2 md:my-3 text-center bg-indigo-50/50 border-2 border-indigo-100 rounded-2xl p-2.5 md:p-4 shrink-0">
+            <div className="my-2 md:my-3 text-center bg-indigo-50/20 border border-indigo-100 rounded-2xl p-2.5 md:p-4 shrink-0">
               <h3 className="font-display font-black text-[11px] md:text-base text-indigo-950 flex items-center justify-center gap-1.5 md:gap-2">
                 <Sparkles className="w-3.5 h-3.5 md:w-5 md:h-5 text-vibrant-orange animate-pulse" />
                 {t("brochureHookTitle")}
@@ -104,84 +104,84 @@ export default function InteractiveBrochure() {
             {/* Programs Section */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 my-1 md:my-2 shrink-0">
               {/* Card 1 */}
-              <div className="bg-orange-50/30 border-2 border-orange-100 rounded-2xl p-2.5 md:p-4 flex flex-row md:flex-col justify-between items-center md:items-stretch gap-2 hover:shadow-md transition-shadow">
+              <div className="bg-orange-50/20 border border-orange-100/70 rounded-2xl p-2.5 md:p-4 flex flex-row md:flex-col justify-between items-center md:items-stretch gap-2 hover:shadow-md transition-shadow">
                 <div className="flex-1 md:flex-initial">
                   <h4 className="font-black text-xs md:text-sm text-vibrant-dark leading-tight flex items-center gap-1.5">
-                    <span className="w-5 h-5 bg-vibrant-orange text-white rounded-lg flex items-center justify-center font-black text-[10px] md:text-xs">1</span>
+                    <span className="w-5 h-5 bg-vibrant-orange text-white rounded-lg flex items-center justify-center font-bold text-[10px] md:text-xs">1</span>
                     {t("brochureProg1Title")}
                   </h4>
                   <p className="text-gray-650 text-[9.5px] md:text-[11px] leading-tight font-semibold mt-0.5">
                     {t("brochureProg1Desc")}
                   </p>
                 </div>
-                <div className="border-l md:border-l-0 md:border-t border-dashed border-vibrant-dark/15 pl-2 md:pl-0 md:pt-1.5 shrink-0 text-[8.5px] md:text-[9.5px] font-bold text-gray-500">
-                  <p className="font-black text-vibrant-dark hidden md:block">{t("brochureFocusOutcomes")}</p>
+                <div className="border-l md:border-l-0 md:border-t border-dashed border-slate-205 pl-2 md:pl-0 md:pt-1.5 shrink-0 text-[8.5px] md:text-[9.5px] font-bold text-gray-500">
+                  <p className="font-bold text-vibrant-dark hidden md:block">{t("brochureFocusOutcomes")}</p>
                   <span>{t("brochureProg1Outcome")}</span>
                 </div>
               </div>
 
               {/* Card 2 */}
-              <div className="bg-teal-50/30 border-2 border-teal-100 rounded-2xl p-2.5 md:p-4 flex flex-row md:flex-col justify-between items-center md:items-stretch gap-2 hover:shadow-md transition-shadow">
+              <div className="bg-teal-50/20 border border-teal-100/70 rounded-2xl p-2.5 md:p-4 flex flex-row md:flex-col justify-between items-center md:items-stretch gap-2 hover:shadow-md transition-shadow">
                 <div className="flex-1 md:flex-initial">
                   <h4 className="font-black text-xs md:text-sm text-vibrant-dark leading-tight flex items-center gap-1.5">
-                    <span className="w-5 h-5 bg-vibrant-teal text-white rounded-lg flex items-center justify-center font-black text-[10px] md:text-xs">2</span>
+                    <span className="w-5 h-5 bg-vibrant-teal text-white rounded-lg flex items-center justify-center font-bold text-[10px] md:text-xs">2</span>
                     {t("brochureProg2Title")}
                   </h4>
                   <p className="text-gray-655 text-[9.5px] md:text-[11px] leading-tight font-semibold mt-0.5">
                     {t("brochureProg2Desc")}
                   </p>
                 </div>
-                <div className="border-l md:border-l-0 md:border-t border-dashed border-vibrant-dark/15 pl-2 md:pl-0 md:pt-1.5 shrink-0 text-[8.5px] md:text-[9.5px] font-bold text-gray-500">
-                  <p className="font-black text-vibrant-dark hidden md:block">{t("brochureFocusOutcomes")}</p>
+                <div className="border-l md:border-l-0 md:border-t border-dashed border-slate-205 pl-2 md:pl-0 md:pt-1.5 shrink-0 text-[8.5px] md:text-[9.5px] font-bold text-gray-500">
+                  <p className="font-bold text-vibrant-dark hidden md:block">{t("brochureFocusOutcomes")}</p>
                   <span>{t("brochureProg2Outcome")}</span>
                 </div>
               </div>
 
               {/* Card 3 */}
-              <div className="bg-blue-50/30 border-2 border-blue-100 rounded-2xl p-2.5 md:p-4 flex flex-row md:flex-col justify-between items-center md:items-stretch gap-2 hover:shadow-md transition-shadow">
+              <div className="bg-blue-50/20 border border-blue-100/70 rounded-2xl p-2.5 md:p-4 flex flex-row md:flex-col justify-between items-center md:items-stretch gap-2 hover:shadow-md transition-shadow">
                 <div className="flex-1 md:flex-initial">
                   <h4 className="font-black text-xs md:text-sm text-vibrant-dark leading-tight flex items-center gap-1.5">
-                    <span className="w-5 h-5 bg-blue-600 text-white rounded-lg flex items-center justify-center font-black text-[10px] md:text-xs">3</span>
+                    <span className="w-5 h-5 bg-blue-600 text-white rounded-lg flex items-center justify-center font-bold text-[10px] md:text-xs">3</span>
                     {t("brochureProg3Title")}
                   </h4>
                   <p className="text-gray-650 text-[9.5px] md:text-[11px] leading-tight font-semibold mt-0.5">
                     {t("brochureProg3Desc")}
                   </p>
                 </div>
-                <div className="border-l md:border-l-0 md:border-t border-dashed border-vibrant-dark/15 pl-2 md:pl-0 md:pt-1.5 shrink-0 text-[8.5px] md:text-[9.5px] font-bold text-gray-500">
-                  <p className="font-black text-vibrant-dark hidden md:block">{t("brochureFocusOutcomes")}</p>
+                <div className="border-l md:border-l-0 md:border-t border-dashed border-slate-205 pl-2 md:pl-0 md:pt-1.5 shrink-0 text-[8.5px] md:text-[9.5px] font-bold text-gray-500">
+                  <p className="font-bold text-vibrant-dark hidden md:block">{t("brochureFocusOutcomes")}</p>
                   <span>{t("brochureProg3Outcome")}</span>
                 </div>
               </div>
             </div>
 
             {/* Bottom Brand Credential Footer */}
-            <div className="flex items-center justify-between border-t-2 border-dashed border-vibrant-dark/10 pt-2.5 md:pt-4 mt-1 shrink-0">
-              <p className="text-[8.5px] md:text-[10px] font-black text-gray-500">
+            <div className="flex items-center justify-between border-t border-dashed border-slate-200 pt-2.5 md:pt-4 mt-1 shrink-0">
+              <p className="text-[8.5px] md:text-[10px] font-bold text-gray-500">
                 {t("brochureHubInfo")}
               </p>
-              <p className="text-[9.5px] md:text-[11px] font-black text-vibrant-orange animate-bounce">
+              <p className="text-[9.5px] md:text-[11px] font-bold text-vibrant-orange animate-bounce">
                 {t("brochureFlipActionBack")}
               </p>
             </div>
           </div>
 
           {/* BACK SIDE */}
-          <div className="absolute w-full h-full backface-hidden rotate-y-180 border-2 border-vibrant-dark/20 rounded-3xl bg-white shadow-[0_10px_25px_-5px_rgba(26,46,53,0.1)] flex flex-col justify-between overflow-hidden p-4 md:p-6 lg:p-8">
+          <div className="absolute w-full h-full backface-hidden rotate-y-180 border border-slate-200/80 rounded-3xl bg-white shadow-xl shadow-slate-200/40 flex flex-col justify-between overflow-hidden p-4 md:p-6 lg:p-8">
             {/* Header section */}
-            <div className="flex items-center justify-between border-b-2 border-dashed border-vibrant-dark/10 pb-3 md:pb-4 shrink-0">
+            <div className="flex items-center justify-between border-b border-dashed border-slate-200 pb-3 md:pb-4 shrink-0">
               <div className="flex items-center gap-2 md:gap-3">
                 <span className="text-lg">🏆</span>
                 <div>
                   <h2 className="font-display font-black text-sm md:text-xl text-vibrant-dark tracking-tight leading-tight">
                     {t("brochureTrustTitle")}
                   </h2>
-                  <p className="text-[8px] md:text-[10px] font-black text-vibrant-teal uppercase tracking-wider">
+                  <p className="text-[8px] md:text-[10px] font-bold text-vibrant-teal uppercase tracking-wider">
                     {t("brochureTrustSub")}
                   </p>
                 </div>
               </div>
-              <span className="hidden sm:inline-block text-[10px] font-black text-vibrant-orange bg-vibrant-orange/15 border-2 border-vibrant-orange/20 px-3 py-1 rounded-full uppercase">
+              <span className="hidden sm:inline-block text-[10px] font-bold text-vibrant-orange bg-vibrant-orange/10 px-3 py-1 rounded-full uppercase">
                 {t("brochureSideBack")}
               </span>
             </div>
@@ -190,7 +190,7 @@ export default function InteractiveBrochure() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 my-1.5 md:my-2 shrink-0">
               {/* AAA Advantages */}
               <div className="space-y-1">
-                <h3 className="font-black text-xs md:text-sm text-vibrant-dark flex items-center gap-1">
+                <h3 className="font-bold text-xs md:text-sm text-vibrant-dark flex items-center gap-1">
                   <Zap className="w-3 h-3 md:w-3.5 md:h-3.5 text-vibrant-orange" />
                   {t("brochureAdvTitle")}
                 </h3>
@@ -218,12 +218,12 @@ export default function InteractiveBrochure() {
 
               {/* Quick FAQs */}
               <div className="space-y-1">
-                <h3 className="font-black text-xs md:text-sm text-vibrant-dark flex items-center gap-1">
+                <h3 className="font-bold text-xs md:text-sm text-vibrant-dark flex items-center gap-1">
                   <HelpCircle className="w-3 h-3 md:w-3.5 md:h-3.5 text-vibrant-teal" />
                   {t("brochureFaqTitle")}
                 </h3>
                 <div className="space-y-1 bg-amber-50/20 border border-amber-100/50 rounded-2xl p-2 shrink-0">
-                  <p className="text-[8.5px] md:text-[9.5px] font-bold text-gray-650 leading-tight">
+                  <p className="text-[8.5px] md:text-[9.5px] font-bold text-gray-655 leading-tight">
                     <strong className="text-vibrant-dark font-black">{t("brochureFaq1Q")}</strong> {t("brochureFaq1A")}
                   </p>
                   <p className="text-[8.5px] md:text-[9.5px] font-bold text-gray-655 leading-tight mt-0.5">
@@ -237,12 +237,12 @@ export default function InteractiveBrochure() {
             </div>
 
             {/* Hall of Fame section on Backside with 4 Success Stories and 1 line spacing */}
-            <div className="my-1 border-2 border-orange-100 bg-orange-50/20 rounded-2xl p-2 md:p-3 shrink-0">
-              <h3 className="font-black text-xs text-vibrant-dark flex items-center gap-1.5 mb-1 shrink-0">
+            <div className="my-1 border border-orange-100 bg-orange-50/10 rounded-2xl p-2 md:p-3 shrink-0">
+              <h3 className="font-bold text-xs text-vibrant-dark flex items-center gap-1.5 mb-1 shrink-0">
                 <Award className="w-3 h-3 md:w-3.5 md:h-3.5 text-vibrant-orange animate-bounce" />
                 {t("brochureFameTitle")}
               </h3>
-              <ul className="space-y-0.5 text-[9px] md:text-[10px] font-bold text-gray-600">
+              <ul className="space-y-0.5 text-[9px] md:text-[10px] font-semibold text-gray-600">
                 <li>🏆 {t("brochureFame1")}</li>
                 <li>🏆 {t("brochureFame2")}</li>
                 <li className="pt-0.5">🏆 {t("brochureFame3")}</li>
@@ -251,14 +251,14 @@ export default function InteractiveBrochure() {
             </div>
 
             {/* Bottom CTA Block */}
-            <div className="bg-[#1A2E35] border-2 border-vibrant-dark rounded-2xl p-2 text-center text-white shadow-[3px_3px_0_0_#1A2E35] shrink-0">
+            <div className="bg-[#1A2E35] border border-vibrant-dark rounded-2xl p-3 text-center text-white shadow-md shrink-0">
               <h3 className="font-display font-black text-[9px] md:text-xs text-vibrant-orange tracking-wider uppercase mb-0.5">
                 {t("brochureCtaTitle")}
               </h3>
               <p className="text-[8px] md:text-[9.5px] text-gray-300 font-semibold mb-1">
                 {t("brochureCtaDesc")}
               </p>
-              <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[9px] md:text-xs font-black">
+              <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-[9px] md:text-xs font-bold">
                 <span className="flex items-center gap-1 text-vibrant-orange">
                   <Phone className="w-3 h-3 text-vibrant-orange" />
                   {t("brochureCtaWa")}
@@ -269,11 +269,11 @@ export default function InteractiveBrochure() {
             </div>
 
             {/* Micro footer */}
-            <div className="flex items-center justify-between border-t-2 border-dashed border-vibrant-dark/10 pt-2.5 mt-1 shrink-0">
-              <p className="text-[8.5px] md:text-[10px] font-black text-gray-400">
+            <div className="flex items-center justify-between border-t border-dashed border-slate-200 pt-2.5 mt-1 shrink-0">
+              <p className="text-[8.5px] md:text-[10px] font-bold text-gray-400">
                 {t("brochureFooterNote")}
               </p>
-              <p className="text-[9.5px] md:text-[11px] font-black text-vibrant-orange">
+              <p className="text-[9.5px] md:text-[11px] font-bold text-vibrant-orange">
                 {t("brochureFlipActionFront")}
               </p>
             </div>

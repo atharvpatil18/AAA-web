@@ -14,6 +14,11 @@
   --color-vibrant-teal-shadow: #00897B;
   --color-vibrant-dark: #1A2E35;
   --color-vibrant-gold: #FFD700;
+  
+  /* Google Material Palette Additions */
+  --color-google-blue: #1a73e8;
+  --color-google-gray: #f8f9fa;
+  --color-google-border: #dadce0;
 }
 
 @layer utilities {
@@ -37,3 +42,12 @@
 @utility rotate-y-180 {
   transform: rotateY(180deg);
 }
+
+@utility hover-material-card {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 20px -8px rgba(26, 46, 53, 0.12);
+  }
+}
+

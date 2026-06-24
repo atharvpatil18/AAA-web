@@ -86,10 +86,10 @@ export default function Home() {
               <button
                 key={prog.id}
                 onClick={() => setSelectedProgram(prog.id)}
-                className={`flex-1 py-3 px-4 rounded-2xl text-xs md:text-sm font-black uppercase tracking-wider transition-all duration-200 cursor-pointer border-2 shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none text-center ${
+                className={`flex-1 py-3.5 px-4 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer text-center shadow-xs active:scale-97 ${
                   isSelected
-                    ? "bg-vibrant-orange text-white border-vibrant-dark"
-                    : "bg-white text-vibrant-dark hover:bg-vibrant-cream border-vibrant-dark/20"
+                    ? "bg-vibrant-orange text-white shadow-md"
+                    : "bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-vibrant-dark border border-slate-200/50"
                 }`}
               >
                 {progTitle}
@@ -568,7 +568,7 @@ export default function Home() {
               </ul>
             </div>
             <a
-              href="https://www.google.com/maps/dir/?api=1&destination=18.5936735,73.7656606"
+              href="https://maps.app.goo.gl/A7QVndN4donCTM4P9"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-vibrant-dark text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block"
@@ -621,7 +621,12 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto bg-slate-950 rounded-2xl relative flex flex-col items-center justify-center text-center p-6 group cursor-pointer overflow-hidden border border-slate-800 aspect-video">
+        <a 
+          href="https://www.instagram.com/reel/DYPkbDEN5U1/?igsh=MXR5ZHJ1NWEydHVmMA=="
+          target="_blank"
+          rel="noopener noreferrer"
+          className="max-w-2xl mx-auto bg-slate-950 rounded-2xl relative flex flex-col items-center justify-center text-center p-6 group cursor-pointer overflow-hidden border border-slate-800 aspect-video block"
+        >
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-300"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent"></div>
           
@@ -634,7 +639,7 @@ export default function Home() {
           <span className="relative z-10 text-gray-300 text-xs mt-1 font-bold">
             {t("videoReelSub")}
           </span>
-        </div>
+        </a>
       </div>
 
               {/* Safe Drop-off & Parking Tips */}
@@ -676,7 +681,7 @@ export default function Home() {
 
               <div>
                 <a
-                  href="https://www.google.com/maps/dir/?api=1&destination=18.5936735,73.7656606"
+                  href="https://www.google.com/maps/dir/?api=1&destination=18.5975866,73.7810869"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-black text-vibrant-orange hover:text-vibrant-orange/95 uppercase tracking-widest bg-vibrant-cream border-2 border-vibrant-dark px-4 py-2 rounded-xl text-center shadow-[0_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all"
@@ -689,7 +694,7 @@ export default function Home() {
             {/* Column Right: Map Iframe wrapper */}
             <div className="lg:col-span-7 h-[350px] md:h-[450px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] relative group">
               <iframe 
-                src="https://maps.google.com/maps?q=18.5936735,73.7656606&z=17&output=embed" 
+                src="https://maps.google.com/maps?q=18.5975866,73.7810869&z=17&output=embed" 
                 className="w-full h-full border-0" 
                 allowFullScreen={true}
                 loading="lazy" 

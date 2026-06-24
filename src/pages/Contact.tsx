@@ -163,7 +163,7 @@ export default function Contact() {
           {/* Map Frame wrapper */}
           <div className="h-[400px] md:h-[500px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] relative">
             <iframe 
-              src="https://maps.google.com/maps?q=18.5936735,73.7656606&z=17&output=embed" 
+              src="https://maps.google.com/maps?q=18.5975866,73.7810869&z=17&output=embed" 
               className="w-full h-full border-0" 
               allowFullScreen={true}
               loading="lazy" 

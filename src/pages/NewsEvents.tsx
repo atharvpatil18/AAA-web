@@ -315,7 +315,7 @@ export default function NewsEvents() {
               {t("newsContactCta")}
             </a>
             <a
-              href="https://www.google.com/maps/dir/?api=1&destination=18.5936735,73.7656606"
+              href="https://www.google.com/maps/dir/?api=1&destination=18.5975866,73.7810869"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs uppercase font-black text-white tracking-widest hover:underline flex items-center gap-1"

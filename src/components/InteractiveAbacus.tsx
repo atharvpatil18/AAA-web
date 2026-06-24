@@ -238,11 +238,11 @@ export default function InteractiveAbacus() {
   return (
     <div 
       id="interactive-abacus-widget" 
-      className="bg-white border-4 border-vibrant-dark rounded-[36px] p-6 md:p-8 shadow-[8px_8px_0_0_#1A2E35] max-w-4xl mx-auto space-y-6"
+      className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-xl shadow-slate-200/50 max-w-4xl mx-auto space-y-6"
     >
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-gray-100 pb-4">
         <div className="space-y-1 text-center sm:text-left">
-          <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3 py-1 rounded-full uppercase tracking-wider font-black">
+          <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3 py-1 rounded-full uppercase tracking-wider font-bold">
             <Star className="w-3.5 h-3.5 fill-current" /> {t("abacusBadge")}
           </span>
           <h3 className="font-display font-black text-2xl text-vibrant-dark">
@@ -307,7 +307,7 @@ export default function InteractiveAbacus() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* Left Hand: Visual Abacus Box */}
-        <div className={`lg:col-span-8 bg-slate-700 border-4 sm:border-8 border-slate-800 rounded-3xl p-3 sm:p-6 shadow-[8px_8px_0_0_#1A2E35] relative overflow-hidden ${
+        <div className={`lg:col-span-8 bg-slate-750 border border-slate-700/80 rounded-3xl p-3 sm:p-6 shadow-xl relative overflow-hidden ${
           isFlashcardMode ? "pointer-events-none" : ""
         }`}>
           {/* Header Name on tool */}
@@ -454,8 +454,8 @@ export default function InteractiveAbacus() {
           {!isFlashcardMode ? (
             <>
               {/* Example Numbers List */}
-              <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-3 shadow-[4px_4px_0_0_#1A2E35]">
-                <span className="flex items-center gap-1 text-[10px] text-vibrant-orange font-black uppercase tracking-wider">
+              <div className="bg-slate-50/50 border border-slate-100 rounded-2xl p-4 space-y-3 shadow-sm shadow-slate-100/50">
+                <span className="flex items-center gap-1 text-[10px] text-vibrant-orange font-bold uppercase tracking-wider">
                   <Sparkles className="w-3.5 h-3.5 fill-current" /> {t("abacusExamplesTitle")}
                 </span>
                 <p className="text-[11px] text-gray-500 font-semibold leading-tight">
@@ -466,7 +466,7 @@ export default function InteractiveAbacus() {
                     <button
                       key={item.val}
                       onClick={() => setAbacusNumber(item.val)}
-                      className="bg-white hover:bg-orange-50 border-2 border-vibrant-dark/80 px-2.5 py-1.5 rounded-xl text-left text-xs font-black text-vibrant-dark transition-all hover:scale-[1.02] shadow-[2px_2px_0_0_#1A2E35] cursor-pointer"
+                      className="bg-white hover:bg-orange-50/50 border border-slate-205 px-2.5 py-1.5 rounded-xl text-left text-xs font-bold text-vibrant-dark transition-all hover:scale-[1.01] shadow-xs cursor-pointer"
                     >
                       {item.label}
                     </button>
@@ -475,8 +475,8 @@ export default function InteractiveAbacus() {
               </div>
 
               {/* Custom Number Input */}
-              <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-3 shadow-[4px_4px_0_0_#1A2E35]">
-                <span className="flex items-center gap-1 text-[10px] text-vibrant-teal font-black uppercase tracking-wider">
+              <div className="bg-slate-50/50 border border-slate-100 rounded-2xl p-4 space-y-3 shadow-sm shadow-slate-100/50">
+                <span className="flex items-center gap-1 text-[10px] text-vibrant-teal font-bold uppercase tracking-wider">
                   <Hash className="w-3.5 h-3.5" /> {t("abacusCustomTitle")}
                 </span>
                 <p className="text-[11px] text-gray-500 font-semibold leading-tight">
@@ -491,11 +491,11 @@ export default function InteractiveAbacus() {
                     placeholder="e.g. 1234.567"
                     value={customInput}
                     onChange={(e) => setCustomInput(e.target.value)}
-                    className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-teal"
+                    className="flex-1 min-w-0 bg-white border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-teal focus:ring-1 focus:ring-vibrant-teal"
                   />
                   <button
                     type="submit"
-                    className="bg-vibrant-teal text-white font-black text-xs px-4 py-2 rounded-xl shadow-[0_3px_0_0_#00897B] active:translate-y-0.5 active:shadow-none transition-all hover:brightness-105 cursor-pointer"
+                    className="bg-vibrant-teal hover:bg-vibrant-teal/95 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-xs active:scale-97 transition-all cursor-pointer"
                   >
                     {t("abacusShow")}
                   </button>
@@ -503,11 +503,10 @@ export default function InteractiveAbacus() {
               </div>
             </>
           ) : (
-            /* Flashcard Controls Panel */
-            <div className="bg-vibrant-cream border-2 border-vibrant-dark rounded-2xl p-4 space-y-4 shadow-[4px_4px_0_0_#1A2E35]">
+            <div className="bg-slate-50/50 border border-slate-100 rounded-2xl p-4 space-y-4 shadow-sm shadow-slate-100/50">
               {flashcardAttempts === 0 ? (
                 <div className="text-center py-2 space-y-3">
-                  <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-orange bg-[#FFEEE5] border border-vibrant-orange/20 px-3 py-1 rounded-full uppercase tracking-wider font-black">
+                  <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-orange bg-[#FFEEE5] px-3 py-1 rounded-full uppercase tracking-wider font-bold">
                     {language === "hi" ? "मेमोरी गेम" : language === "mr" ? "मेमरी गेम" : "Memory Game"}
                   </span>
                   <p className="text-[11px] text-gray-500 font-semibold leading-relaxed">
@@ -519,14 +518,14 @@ export default function InteractiveAbacus() {
                   </p>
                   <button
                     onClick={startFlashcardChallenge}
-                    className="w-full bg-vibrant-orange text-white border-2 border-vibrant-dark font-black py-2.5 rounded-xl shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/90 transition-all text-xs uppercase tracking-wider cursor-pointer"
+                    className="w-full bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold py-2.5 rounded-full shadow-xs active:scale-97 transition-all text-xs uppercase tracking-wider cursor-pointer"
                   >
                     {language === "hi" ? "चुनौती शुरू करें" : language === "mr" ? "चाचणी सुरू करा" : "Start Challenge"}
                   </button>
                 </div>
               ) : isCountingDown && showFlashcardBeads ? (
                 <div className="text-center py-6 space-y-3 animate-pulse">
-                  <span className="inline-flex bg-vibrant-orange text-white font-mono font-black text-xs px-4 py-1.5 rounded-full uppercase tracking-wider border-2 border-vibrant-dark">
+                  <span className="inline-flex bg-vibrant-orange text-white font-mono font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider">
                     {language === "hi" ? `चुनौती ${formatNumber(flashcardAttempts)} / ५` : language === "mr" ? `चाचणी ${formatNumber(flashcardAttempts)} / ५` : `Challenge ${flashcardAttempts} / 5`}
                   </span>
                   <p className="text-xs font-bold text-vibrant-dark">
@@ -537,10 +536,10 @@ export default function InteractiveAbacus() {
                 /* Guess Submission / Feedback */
                 <div className="space-y-4">
                   <div className="text-center flex justify-between items-center px-1">
-                    <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3 py-1 rounded-full uppercase tracking-wider font-black">
+                    <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3 py-1 rounded-full uppercase tracking-wider font-bold">
                       {language === "hi" ? `चुनौती ${formatNumber(flashcardAttempts)} / ५` : language === "mr" ? `चाचणी ${formatNumber(flashcardAttempts)} / ५` : `Challenge ${flashcardAttempts} / 5`}
                     </span>
-                    <span className="text-[10px] font-black text-vibrant-dark">
+                    <span className="text-[10px] font-bold text-vibrant-dark">
                       {language === "hi" ? `स्कोर: ${formatNumber(flashcardScore)}` : language === "mr" ? `स्कोअर: ${formatNumber(flashcardScore)}` : `Score: ${flashcardScore}`}
                     </span>
                   </div>
@@ -553,11 +552,11 @@ export default function InteractiveAbacus() {
                         placeholder="e.g. 42"
                         value={flashcardGuess}
                         onChange={(e) => setFlashcardGuess(e.target.value)}
-                        className="flex-1 min-w-0 bg-white border-2 border-vibrant-dark px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-orange"
+                        className="flex-1 min-w-0 bg-white border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-orange focus:ring-1 focus:ring-vibrant-orange"
                       />
                       <button
                         type="submit"
-                        className="bg-vibrant-orange text-white font-black text-xs px-4 py-2 rounded-xl shadow-[0_3px_0_0_#D35400] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                        className="bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-xs active:scale-97 transition-all cursor-pointer"
                       >
                         {language === "hi" ? "जांचें" : language === "mr" ? "तपासा" : "Submit"}
                       </button>
@@ -566,10 +565,10 @@ export default function InteractiveAbacus() {
 
                   {/* Feedback status */}
                   {flashcardFeedback !== "" && (
-                    <div className={`p-3 rounded-xl border-2 text-xs font-black uppercase tracking-wider animate-fade-in ${
+                    <div className={`p-3 rounded-xl border text-xs font-bold uppercase tracking-wider animate-fade-in ${
                       flashcardFeedback === "correct"
-                        ? "bg-green-50 text-green-700 border-green-600 shadow-[2px_2px_0_0_#155724]"
-                        : "bg-red-50 text-red-700 border-red-600 shadow-[2px_2px_0_0_#721c24]"
+                        ? "bg-green-50 text-green-700 border-green-200 shadow-xs"
+                        : "bg-red-50 text-red-700 border-red-200 shadow-xs"
                     }`}>
                       {flashcardFeedback === "correct" ? (
                         <span>🎯 {language === "hi" ? "सही जवाब!" : language === "mr" ? "अचूक उत्तर!" : "Correct!"}</span>
@@ -586,20 +585,20 @@ export default function InteractiveAbacus() {
                         <div className="flex gap-2 pt-2">
                           <button
                             onClick={startFlashcardChallenge}
-                            className="flex-1 bg-vibrant-teal text-white border-2 border-vibrant-dark font-black py-2 rounded-xl shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all text-xs cursor-pointer text-center"
+                            className="flex-1 bg-vibrant-teal hover:bg-vibrant-teal/95 text-white font-bold py-2 rounded-full shadow-xs active:scale-97 transition-all text-xs cursor-pointer text-center"
                           >
                             {language === "hi" ? "अगली चुनौती" : language === "mr" ? "पुढचे आव्हान" : "Next Challenge"}
                           </button>
                           <button
                             onClick={resetFlashcardSession}
-                            className="flex-1 bg-white text-vibrant-dark border-2 border-vibrant-dark/20 font-black py-2 rounded-xl hover:border-vibrant-dark transition-all text-xs cursor-pointer text-center"
+                            className="flex-1 bg-white hover:bg-slate-50 text-vibrant-dark border border-slate-200 font-bold py-2 rounded-full shadow-xs active:scale-97 transition-all text-xs cursor-pointer text-center"
                           >
                             {language === "hi" ? "रीसेट सत्र" : language === "mr" ? "रीसेट सत्र" : "Reset Session"}
                           </button>
                         </div>
                       ) : (
                         /* Session complete results card */
-                        <div className="bg-white border-2 border-vibrant-dark rounded-xl p-3 text-center space-y-3 shadow-[2px_2px_0_0_#1A2E35] animate-fade-in">
+                        <div className="bg-white border border-slate-100 rounded-2xl p-4 text-center space-y-3 shadow-md shadow-slate-100/50 animate-fade-in">
                           <p className="text-xs font-black text-vibrant-dark uppercase tracking-wider">
                             {language === "hi" ? "🏆 सत्र समाप्त 🏆" : language === "mr" ? "🏆 सत्र पूर्ण झाले 🏆" : "🏆 Session Finished 🏆"}
                           </p>

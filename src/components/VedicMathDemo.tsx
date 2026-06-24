@@ -141,28 +141,40 @@ export default function VedicMathDemo() {
   const finalSquare = leftHalf * 100 + rightHalfVal;
 
   return (
-    <div className="bg-white border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_#1A2E35] max-w-3xl mx-auto">
+    <div className="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 max-w-3xl mx-auto">
       {/* Tab Selector */}
-      <div className="flex flex-col sm:flex-row border-b-4 border-vibrant-dark bg-vibrant-cream font-bold text-xs uppercase tracking-wider divide-y-4 sm:divide-y-0 sm:divide-x-4 divide-vibrant-dark">
+      <div className="p-3 border-b border-slate-100 bg-slate-50/50 flex flex-wrap gap-2 justify-center">
         <button
           onClick={() => { setActiveSutra("square"); setCrossStep(0); }}
-          className={`flex-1 py-4 text-center transition-all flex items-center justify-center gap-2 cursor-pointer ${activeSutra === "square" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
+          className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer focus:outline-none ${
+            activeSutra === "square" 
+              ? "bg-vibrant-teal text-white shadow-sm" 
+              : "bg-white border border-slate-200 hover:border-slate-350 text-vibrant-dark"
+          }`}
         >
-          <Sparkles className="w-4 h-4" />
+          <Sparkles className="w-4 h-4 shrink-0" />
           {t("vedicTabSquaring")}
         </button>
         <button
           onClick={() => { setActiveSutra("cross"); }}
-          className={`flex-1 py-4 text-center transition-all flex items-center justify-center gap-2 cursor-pointer ${activeSutra === "cross" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
+          className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer focus:outline-none ${
+            activeSutra === "cross" 
+              ? "bg-vibrant-teal text-white shadow-sm" 
+              : "bg-white border border-slate-200 hover:border-slate-350 text-vibrant-dark"
+          }`}
         >
-          <Calculator className="w-4 h-4" />
+          <Calculator className="w-4 h-4 shrink-0" />
           {t("vedicTabMult")}
         </button>
         <button
           onClick={() => { setActiveSutra("ekadhikena"); }}
-          className={`flex-1 py-4 text-center transition-all flex items-center justify-center gap-2 cursor-pointer ${activeSutra === "ekadhikena" ? "bg-vibrant-orange text-white" : "hover:bg-vibrant-cream/80 text-vibrant-dark"}`}
+          className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer focus:outline-none ${
+            activeSutra === "ekadhikena" 
+              ? "bg-vibrant-teal text-white shadow-sm" 
+              : "bg-white border border-slate-200 hover:border-slate-350 text-vibrant-dark"
+          }`}
         >
-          <Sparkles className="w-4 h-4 text-vibrant-gold" />
+          <Sparkles className="w-4 h-4 text-vibrant-gold shrink-0" />
           {t("vedicTabEndingFive")}
         </button>
       </div>
@@ -181,12 +193,12 @@ export default function VedicMathDemo() {
             </div>
 
             {/* Slider control */}
-            <div className="bg-slate-50 p-5 rounded-2xl border-2 border-dashed border-slate-200 space-y-4">
+            <div className="bg-slate-50/50 p-5 rounded-2xl border border-slate-100 space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-xs font-bold text-gray-650">
+                <span className="text-xs font-semibold text-gray-605">
                   {language === "hi" ? "संख्या चुनें:" : language === "mr" ? "संख्या निवडा:" : "Select Number:"}
                 </span>
-                <span className="bg-vibrant-teal text-white text-lg font-black px-4.5 py-1.5 rounded-xl border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35]">
+                <span className="bg-vibrant-teal text-white text-lg font-bold px-4 py-1 rounded-xl shadow-xs">
                   {formatNumber(squareNum)}²
                 </span>
               </div>
@@ -207,7 +219,7 @@ export default function VedicMathDemo() {
 
             {/* Step Visualization Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-[#FFF8F0] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
+              <div className="bg-[#FFF8F0]/70 border border-orange-100 p-4.5 rounded-2xl text-center space-y-1 hover-material-card">
                 <span className="text-[10px] font-black text-vibrant-orange uppercase tracking-wider block">
                   {language === "hi" ? "चरण १: विचलन" : language === "mr" ? "पायरी १: विचलन" : "Step 1: Deficiency"}
                 </span>
@@ -219,7 +231,7 @@ export default function VedicMathDemo() {
                 </p>
               </div>
 
-              <div className="bg-[#E0FAF5] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
+              <div className="bg-[#E0FAF5]/70 border border-teal-100 p-4.5 rounded-2xl text-center space-y-1 hover-material-card">
                 <span className="text-[10px] font-black text-vibrant-teal uppercase tracking-wider block">
                   {language === "hi" ? "चरण २: बायाँ भाग" : language === "mr" ? "पायरी २: डावा भाग" : "Step 2: Left Half"}
                 </span>
@@ -231,7 +243,7 @@ export default function VedicMathDemo() {
                 </p>
               </div>
 
-              <div className="bg-[#FFFCE0] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
+              <div className="bg-[#FFFCE0]/70 border border-amber-200 p-4.5 rounded-2xl text-center space-y-1 hover-material-card">
                 <span className="text-[10px] font-black text-amber-700 uppercase tracking-wider block">
                   {language === "hi" ? "चरण ३: दायाँ भाग" : language === "mr" ? "पायरी ३: उजवा भाग" : "Step 3: Right Half"}
                 </span>
@@ -245,9 +257,9 @@ export default function VedicMathDemo() {
             </div>
 
             {/* Formula Block */}
-            <div className="bg-vibrant-dark text-white p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 border-2 border-vibrant-dark shadow-md">
+            <div className="bg-slate-900 text-white p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 border border-slate-800 shadow-sm">
               <div className="space-y-1">
-                <span className="text-[10px] font-black text-vibrant-gold uppercase tracking-wider block">
+                <span className="text-[10px] font-black text-vibrant-gold uppercase tracking-wider block animate-pulse">
                   {language === "hi" ? "भागों को मिलाएं" : language === "mr" ? "भाग एकत्र करा" : "Combine Parts"}
                 </span>
                 <div className="font-display font-black text-2.5xl leading-none">
@@ -285,15 +297,15 @@ export default function VedicMathDemo() {
             </div>
 
             {/* Interactive Grid Simulation */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-slate-50 p-6 rounded-2xl border-2 border-slate-200">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-slate-50/50 p-6 rounded-2xl border border-slate-100">
               {/* Digit Alignments */}
-              <div className="space-y-3 font-mono font-black text-2xl text-vibrant-dark tracking-widest text-center select-none bg-white p-5 rounded-xl border border-slate-200 shadow-sm min-w-[150px]">
+              <div className="space-y-3 font-mono font-black text-2xl text-vibrant-dark tracking-widest text-center select-none bg-white p-5 rounded-2xl border border-slate-100 shadow-xs min-w-[150px]">
                 <div className="flex justify-center gap-4">
-                  <span className={steps3x2[crossStep].highlight.includes("hundreds") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-350"}>{formatNumber(1)}</span>
+                  <span className={steps3x2[crossStep].highlight.includes("hundreds") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-300"}>{formatNumber(1)}</span>
                   <span className={steps3x2[crossStep].highlight.includes("tens") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-400"}>{formatNumber(2)}</span>
                   <span className={steps3x2[crossStep].highlight.includes("units") ? "text-vibrant-orange scale-110 transition-all" : "text-gray-400"}>{formatNumber(3)}</span>
                 </div>
-                <div className="border-b-4 border-vibrant-dark pb-1 flex justify-center gap-4">
+                <div className="border-b-2 border-slate-200 pb-1 flex justify-center gap-4">
                   <span className="text-gray-200">×</span>
                   <span className="text-gray-200">{formatNumber(0)}</span>
                   <span className={steps3x2[crossStep].highlight.includes("tens") ? "text-vibrant-teal scale-110 transition-all" : "text-gray-400"}>{formatNumber(4)}</span>
@@ -312,7 +324,7 @@ export default function VedicMathDemo() {
               {/* Progress details */}
               <div className="flex-grow space-y-3.5">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] bg-vibrant-orange/15 text-vibrant-orange px-2.5 py-1 rounded-full font-black uppercase tracking-wider">
+                  <span className="text-[10px] bg-vibrant-orange/10 text-vibrant-orange px-2.5 py-1 rounded-full font-black uppercase tracking-wider">
                     {formatNumber(language === "hi" ? `चरण ${crossStep + 1}/5` : language === "mr" ? `पायरी ${crossStep + 1} पैकी ५` : `Step ${crossStep + 1} of 5`)}
                   </span>
                   <span className="text-xs font-bold text-gray-400">
@@ -322,10 +334,10 @@ export default function VedicMathDemo() {
                 <div className="font-display font-black text-lg text-vibrant-dark">
                   {formatNumber(steps3x2[crossStep].formula)}
                 </div>
-                <p className="text-xs text-gray-600 font-semibold leading-relaxed">
+                <p className="text-xs text-gray-605 font-semibold leading-relaxed">
                   {formatNumber(steps3x2[crossStep].explain)}
                 </p>
-                <div className="bg-vibrant-dark text-vibrant-gold font-mono font-black text-sm p-3 rounded-lg w-fit">
+                <div className="bg-slate-900 text-vibrant-gold font-mono font-black text-sm p-3 rounded-xl w-fit">
                   {formatNumber(steps3x2[crossStep].result)}
                 </div>
               </div>
@@ -336,14 +348,14 @@ export default function VedicMathDemo() {
               <button
                 disabled={crossStep === 0}
                 onClick={() => setCrossStep((prev) => prev - 1)}
-                className="px-4 py-2.5 rounded-xl border-2 border-vibrant-dark text-xs font-black uppercase tracking-wider bg-white shadow-[2px_2px_0_0_#1A2E35] disabled:opacity-40 disabled:pointer-events-none active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-1 cursor-pointer"
+                className="px-5 py-2.5 rounded-full border border-slate-200 hover:border-slate-350 text-xs font-bold uppercase tracking-wider bg-white text-vibrant-dark disabled:opacity-40 disabled:pointer-events-none active:scale-97 transition-all flex items-center gap-1 cursor-pointer focus:outline-none"
               >
                 <ChevronLeft className="w-4 h-4" /> {language === "hi" ? "पिछला" : language === "mr" ? "मागे" : "Prev"}
               </button>
 
               <button
                 onClick={() => setCrossStep(0)}
-                className="p-2.5 rounded-xl border-2 border-vibrant-dark text-xs font-black bg-white hover:bg-slate-50 transition-colors cursor-pointer"
+                className="p-2.5 rounded-full border border-slate-200 hover:bg-slate-50 transition-colors cursor-pointer focus:outline-none"
                 title="Reset steps"
               >
                 <RefreshCw className="w-4.5 h-4.5 text-gray-500" />
@@ -352,7 +364,7 @@ export default function VedicMathDemo() {
               <button
                 disabled={crossStep === steps3x2.length - 1}
                 onClick={() => setCrossStep((prev) => prev + 1)}
-                className="px-5 py-2.5 rounded-xl border-2 border-vibrant-dark text-xs font-black uppercase tracking-wider bg-vibrant-teal text-white shadow-[2px_2px_0_0_#1A2E35] disabled:opacity-40 disabled:pointer-events-none active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-1 cursor-pointer"
+                className="px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-vibrant-teal text-white shadow-xs hover:shadow-md disabled:opacity-40 disabled:pointer-events-none active:scale-97 transition-all flex items-center gap-1 cursor-pointer focus:outline-none"
               >
                 {language === "hi" ? "अगला" : language === "mr" ? "पुढे" : "Next"} <ChevronRight className="w-4 h-4" />
               </button>
@@ -377,8 +389,8 @@ export default function VedicMathDemo() {
             </div>
 
             {/* Quick Picker */}
-            <div className="bg-slate-50 p-5 rounded-2xl border-2 border-dashed border-slate-200 space-y-3">
-              <span className="text-xs font-bold text-gray-655 block">
+            <div className="bg-slate-50/50 p-5 rounded-2xl border border-slate-100 space-y-3">
+              <span className="text-xs font-bold text-gray-605 block">
                 {language === "hi" ? "संख्या चुनें:" : language === "mr" ? "संख्या निवडा:" : "Choose Number:"}
               </span>
               <div className="flex flex-wrap gap-2">
@@ -386,10 +398,10 @@ export default function VedicMathDemo() {
                   <button
                     key={n}
                     onClick={() => setFiveNum(n)}
-                    className={`px-4 py-2 rounded-xl text-xs font-black border-2 transition-all cursor-pointer ${
+                    className={`px-4 py-2 rounded-full text-xs font-bold border transition-all cursor-pointer focus:outline-none ${
                       fiveNum === n
-                        ? "bg-vibrant-orange text-white border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35]"
-                        : "bg-white text-vibrant-dark border-vibrant-dark/15 hover:border-vibrant-dark shadow-[1px_1px_0_0_#1A2E35]"
+                        ? "bg-vibrant-orange text-white border-vibrant-orange shadow-sm"
+                        : "bg-white text-vibrant-dark border-slate-200 hover:border-slate-350 hover:bg-slate-50"
                     }`}
                   >
                     {formatNumber(n)}
@@ -407,7 +419,7 @@ export default function VedicMathDemo() {
               return (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-[#FFF8F0] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
+                    <div className="bg-[#FFF8F0]/70 border border-orange-100 p-4.5 rounded-2xl text-center space-y-1 hover-material-card">
                       <span className="text-[10px] font-black text-vibrant-orange uppercase tracking-wider block">
                         {language === "hi" ? "चरण १: पहला अंक" : language === "mr" ? "पायरी १: पहिला अंक" : "Step 1: First Digit"}
                       </span>
@@ -419,7 +431,7 @@ export default function VedicMathDemo() {
                       </p>
                     </div>
 
-                    <div className="bg-[#E0FAF5] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
+                    <div className="bg-[#E0FAF5]/70 border border-teal-100 p-4.5 rounded-2xl text-center space-y-1 hover-material-card">
                       <span className="text-[10px] font-black text-vibrant-teal uppercase tracking-wider block">
                         {language === "hi" ? "चरण २: बायाँ भाग" : language === "mr" ? "पायरी २: डावा भाग" : "Step 2: Left Half"}
                       </span>
@@ -427,11 +439,11 @@ export default function VedicMathDemo() {
                         {formatNumber(firstDigit)} × ({formatNumber(firstDigit)} + {formatNumber(1)}) = <span className="text-vibrant-teal">{formatNumber(leftPart)}</span>
                       </div>
                       <p className="text-[10px] text-gray-400 font-medium">
-                        {language === "hi" ? "अंक को (अंक + १) से गुणा करें" : language === "mr" ? "पहिल्या अंकाला (अंक + १) ने गुणा" : "Multiply digit by (digit + 1)"}
+                        {language === "hi" ? "अंतिम '५' को छोड़कर पहले अंक को (अंक + १) से गुणा करें" : language === "mr" ? "शेवटचा '५' वगळता पहिल्या अंकाला (अंक + १) ने गुणा" : "Multiply digit by (digit + 1)"}
                       </p>
                     </div>
 
-                    <div className="bg-[#FFFCE0] border-2 border-vibrant-dark p-4.5 rounded-2xl shadow-sm text-center space-y-1">
+                    <div className="bg-[#FFFCE0]/70 border border-amber-200 p-4.5 rounded-2xl text-center space-y-1 hover-material-card">
                       <span className="text-[10px] font-black text-amber-700 uppercase tracking-wider block">
                         {language === "hi" ? "चरण ३: दायाँ भाग" : language === "mr" ? "पायरी ३: उजवा भाग" : "Step 3: Right Half"}
                       </span>
@@ -445,9 +457,9 @@ export default function VedicMathDemo() {
                   </div>
 
                   {/* Combined Results */}
-                  <div className="bg-vibrant-dark text-white p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 border-2 border-vibrant-dark shadow-md">
+                  <div className="bg-slate-900 text-white p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 border border-slate-800 shadow-sm">
                     <div className="space-y-1">
-                      <span className="text-[10px] font-black text-vibrant-gold uppercase tracking-wider block">
+                      <span className="text-[10px] font-black text-vibrant-gold uppercase tracking-wider block animate-pulse">
                         {language === "hi" ? "भागों को मिलाएं" : language === "mr" ? "भाग एकत्र करा" : "Combine Parts"}
                       </span>
                       <div className="font-display font-black text-2.5xl leading-none">
@@ -485,7 +497,7 @@ export default function VedicMathDemo() {
           </button>
           
           {showFormula && (
-            <div className="mt-4 bg-vibrant-cream border-2 border-vibrant-dark p-5 rounded-2xl text-xs md:text-sm text-vibrant-dark space-y-3 shadow-[2px_2px_0_0_#1A2E35]">
+            <div className="mt-4 bg-slate-50 border border-slate-150 p-5 rounded-2xl text-xs md:text-sm text-vibrant-dark space-y-3 shadow-xs">
               <h4 className="font-black text-xs md:text-sm text-vibrant-teal">
                 {language === "hi" ? "बीजगणितीय प्रमाण (Algebraic Proof):" : language === "mr" ? "बीजगणितीय स्पष्टीकरण (Algebraic Proof):" : "Algebraic Proof (Sutra logic):"}
               </h4>

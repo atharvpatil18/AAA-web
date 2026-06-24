@@ -197,7 +197,7 @@ export default function MathConcernVideoBooth() {
         <div className="flex justify-center">
           <button
             onClick={() => setShowDashboard(!showDashboard)}
-            className="flex items-center gap-2 bg-vibrant-orange text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/95 transition-all text-xs md:text-sm uppercase tracking-wider cursor-pointer"
+            className="flex items-center gap-2 bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold px-6 py-3 rounded-full shadow-xs active:scale-97 transition-all text-xs md:text-sm uppercase tracking-wider cursor-pointer"
           >
             <span>{showDashboard ? t("boothCloseCta") : t("boothExploreCta")}</span>
             {showDashboard ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -205,8 +205,8 @@ export default function MathConcernVideoBooth() {
         </div>
 
         {showDashboard && (
-          <div className="border-4 border-vibrant-dark rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_#1A2E35] bg-white">
-          <div className="grid grid-cols-1 lg:grid-cols-12 divide-y-4 lg:divide-y-0 lg:divide-x-4 divide-vibrant-dark">
+          <div className="border border-slate-100 rounded-3xl overflow-hidden shadow-xl shadow-slate-200/50 bg-white">
+          <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-200/60">
             
             {/* Subsection 1: Goal or Challenge Path Selector (Left Column) */}
             <div className="lg:col-span-5 p-5 md:p-6 bg-vibrant-cream/30 space-y-4">
@@ -221,10 +221,10 @@ export default function MathConcernVideoBooth() {
                     <button
                       key={concern.id}
                       onClick={() => setActiveConcernId(concern.id)}
-                      className={`w-full text-left p-4 rounded-2xl border-2 transition-all duration-150 flex items-center gap-4 ${
+                      className={`w-full text-left p-4 rounded-2xl border transition-all duration-150 flex items-center gap-4 ${
                         isActive 
-                          ? "bg-vibrant-dark text-white border-vibrant-dark shadow-[4px_4px_0_0_#FF6321]"
-                          : "bg-white text-vibrant-dark border-vibrant-dark/15 hover:border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] hover:bg-vibrant-cream"
+                          ? "bg-vibrant-dark text-white border-transparent shadow-md"
+                          : "bg-white text-vibrant-dark border-slate-200 hover:border-slate-350 shadow-xs hover:bg-slate-50/40"
                       }`}
                     >
                       <div className={`w-10 h-10 rounded-xl flex items-center justify-center border shrink-0 text-xl ${concern.avatarBg}`}>

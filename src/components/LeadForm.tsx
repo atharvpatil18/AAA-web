@@ -609,16 +609,16 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
   return (
     <div 
       id="lead-form-container" 
-      className="bg-white rounded-[40px] border-4 border-vibrant-dark p-6 md:p-10 shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] relative overflow-hidden"
+      className="bg-white rounded-3xl border border-slate-100 p-6 md:p-10 shadow-2xl shadow-slate-200/50 relative overflow-hidden"
     >
       {/* Free 2 Sessions sticker rotated element */}
-      <div className="absolute -top-5 -right-5 bg-vibrant-gold p-4 rounded-2xl rotate-12 border-2 border-vibrant-dark shadow-md text-vibrant-dark text-center leading-none z-20 max-w-[120px]">
+      <div className="absolute -top-5 -right-5 bg-vibrant-gold p-4 rounded-2xl rotate-6 border border-vibrant-dark/10 shadow-lg text-vibrant-dark text-center leading-none z-20 max-w-[120px]">
         <p className="font-black text-xs leading-none">{language === "hi" ? "फ्री ट्रायल" : language === "mr" ? "मोफत ट्रायल" : "FREE TRIAL"}</p>
         <p className="text-[8px] font-black tracking-wide uppercase mt-1">{language === "hi" ? "2 मेंटल मैथ सेशन्स" : language === "mr" ? "२ मेंटल मॅथ सेशन्स" : "2 Mental Math Sessions"}</p>
       </div>
 
       <div className="relative z-10 space-y-4">
-        <div className="inline-flex items-center gap-2 bg-[#FFF0E0] border border-[#FFD8B1] px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange uppercase tracking-wider">
+        <div className="inline-flex items-center gap-2 bg-vibrant-orange/10 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5" /> {t("bookFreeDemo")}
         </div>
 
@@ -855,7 +855,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full bg-vibrant-orange text-white py-4 rounded-2xl font-black text-lg shadow-[0_6px_0_0_#B33A00] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all flex items-center justify-center gap-2 mt-4 cursor-pointer disabled:opacity-80"
+            className="w-full bg-vibrant-orange hover:bg-vibrant-orange/95 text-white py-4 rounded-full font-bold text-lg shadow-xs hover:shadow-md active:scale-97 transition-all flex items-center justify-center gap-2 mt-4 cursor-pointer disabled:opacity-80"
           >
             {isSubmitting ? (
               <>
@@ -874,7 +874,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
           <button
             type="button"
             onClick={generatePDFWorksheet}
-            className="w-full bg-white hover:bg-slate-50 text-vibrant-dark border-2 border-vibrant-dark py-3.5 rounded-2xl font-black text-sm shadow-[0_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center gap-2 mt-3 cursor-pointer"
+            className="w-full bg-white hover:bg-slate-50 text-vibrant-dark border border-slate-205 py-3.5 rounded-full font-bold text-sm shadow-xs hover:shadow-sm active:scale-97 transition-all flex items-center justify-center gap-2 mt-3 cursor-pointer"
           >
             <Gift className="w-4 h-4 text-vibrant-teal" />
             <span>{language === "hi" ? "फ्री गणितीय वर्कशीट डाउनलोड करें" : language === "mr" ? "मोफत गणितीय वर्कशीट डाउनलोड करा" : "Download Free Diagnostic Worksheet"}</span>

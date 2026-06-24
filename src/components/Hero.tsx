@@ -39,7 +39,7 @@ export default function Hero() {
   };
 
   return (
-    <section id="hero-section" className="relative bg-vibrant-cream overflow-hidden pt-12 pb-24 md:pt-16 md:pb-28 lg:pt-20 lg:pb-36 border-b-2 border-slate-205">
+    <section id="hero-section" className="relative bg-vibrant-cream overflow-hidden pt-12 pb-24 md:pt-16 md:pb-28 lg:pt-20 lg:pb-36 border-b border-slate-100">
       
       {/* Dynamic Background Visual Blobs */}
       <div className="absolute top-0 left-0 w-80 h-80 bg-vibrant-orange/5 rounded-full blur-3xl pointer-events-none -ml-40 -mt-20" />
@@ -58,7 +58,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="inline-flex items-center gap-2 bg-[#FFF0E0] border border-[#FFD8B1] px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange"
+                className="inline-flex items-center gap-2 bg-vibrant-orange/10 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange"
               >
                 <Sparkles className="w-4 h-4 text-vibrant-orange animate-spin-slow" />
                 <span>{t("heroBadge")}</span>
@@ -68,7 +68,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.05 }}
-                className="inline-flex items-center gap-2 bg-teal-50 border border-teal-200 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-teal"
+                className="inline-flex items-center gap-2 bg-vibrant-teal/10 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-teal"
               >
                 <ShieldCheck className="w-4 h-4 text-vibrant-teal" />
                 <span>{t("heroRatioBadge")}</span>
@@ -107,7 +107,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.25 }}
-              className="text-[#5A5A5A] text-sm md:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 pr-0 lg:pr-12"
+              className="text-slate-650 text-sm md:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 pr-0 lg:pr-12"
             >
               {t("heroSubtitle")}
             </motion.p>
@@ -117,28 +117,28 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.35 }}
-              className="grid grid-cols-4 gap-4 bg-white p-6 rounded-3xl border-2 border-slate-150 shadow-sm"
+              className="grid grid-cols-4 gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm shadow-slate-100/50"
             >
               <div className="text-center">
                 <p className="text-2xl font-black text-vibrant-orange">{t("trustTrained").split(" ")[0]}</p>
-                <p className="text-[10px] font-black uppercase text-slate-400">{t("trustTrained").split(" ").slice(1).join(" ")}</p>
+                <p className="text-[10px] font-bold uppercase text-slate-400">{t("trustTrained").split(" ").slice(1).join(" ")}</p>
               </div>
               <div className="text-center border-l border-slate-100">
                 <p className="text-2xl font-black text-vibrant-dark">{t("trustExp").split(" ")[0]}</p>
-                <p className="text-[10px] font-black uppercase text-slate-400">{t("trustExp").split(" ").slice(1).join(" ")}</p>
+                <p className="text-[10px] font-bold uppercase text-slate-400">{t("trustExp").split(" ").slice(1).join(" ")}</p>
               </div>
               <div className="text-center border-l border-slate-100">
                 <p className="text-2xl font-black text-vibrant-teal">{t("trustAwards").split(" ")[0]}</p>
-                <p className="text-[10px] font-black uppercase text-slate-400">{t("trustAwards").split(" ").slice(1).join(" ")}</p>
+                <p className="text-[10px] font-bold uppercase text-slate-400">{t("trustAwards").split(" ").slice(1).join(" ")}</p>
               </div>
               <a 
                 href="https://share.google/fFcUhDGoBJ5M27dX5" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-center border-l border-slate-100 hover:scale-105 transition-transform block"
+                className="text-center border-l border-slate-100 hover:scale-102 transition-transform block"
               >
                 <p className="text-2xl font-black text-amber-500">{t("trustRating").split(" ")[0]}</p>
-                <p className="text-[10px] font-black uppercase text-slate-400 underline decoration-amber-500">{t("trustRating").split(" ").slice(1).join(" ")}</p>
+                <p className="text-[10px] font-bold uppercase text-slate-400 underline decoration-amber-500">{t("trustRating").split(" ").slice(1).join(" ")}</p>
               </a>
             </motion.div>
 
@@ -154,7 +154,7 @@ export default function Hero() {
                 onClick={handleCtaClick}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto bg-vibrant-orange text-white font-black text-sm px-8 py-4.5 rounded-2xl shadow-[0_6px_0_0_#B33A00] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold text-sm px-8 py-4 rounded-full shadow-sm hover:shadow-md active:scale-97 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
               >
                 {t("heroCta")}
                 <ArrowRight className="w-4 h-4 text-orange-100" />
@@ -162,7 +162,7 @@ export default function Hero() {
 
               <button
                 onClick={handleGameScroll}
-                className="w-full sm:w-auto bg-white hover:bg-vibrant-cream text-vibrant-dark border-2 border-vibrant-dark font-black text-sm px-7 py-4 rounded-2xl shadow-[0_4px_0_0_#1A2E35] active:translate-y-1 active:shadow-none transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto bg-white hover:bg-slate-50 text-vibrant-dark border border-slate-200 font-bold text-sm px-7 py-4 rounded-full shadow-xs hover:shadow-md active:scale-97 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
               >
                 {t("heroBtnQuiz")}
               </button>
@@ -173,10 +173,10 @@ export default function Hero() {
           {/* Right Hero App Card Column with Comic Heavy Shadow Theme */}
           <div className="lg:col-span-5 relative mt-8 lg:mt-0">
             
-            <div className="relative bg-white border-4 border-vibrant-dark rounded-[40px] p-6 sm:p-8 shadow-[6px_6px_0_0_#1A2E35] sm:shadow-[12px_12px_0_0_#1A2E35] space-y-6">
+            <div className="relative bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 space-y-6">
               
               {/* Highlight promo badge rotated */}
-              <div className="absolute -top-6 -right-4 bg-vibrant-gold p-3 rounded-2xl rotate-12 border-2 border-vibrant-dark shadow-md text-vibrant-dark text-center leading-none z-10 max-w-[120px]">
+              <div className="absolute -top-6 -right-4 bg-vibrant-gold p-3 rounded-2xl rotate-6 border border-vibrant-dark/10 shadow-lg text-vibrant-dark text-center leading-none z-10 max-w-[120px]">
                 <p className="font-black text-xs text-vibrant-dark leading-none">{t("heroFreeTrial")}</p>
                 <p className="text-[8px] font-black tracking-wider uppercase mt-1">{t("heroTwoSessions")}</p>
               </div>
@@ -204,11 +204,11 @@ export default function Hero() {
 
               {/* Bullet highlights with check circle */}
               <div className="grid grid-cols-2 gap-3 pb-2">
-                <div className="bg-vibrant-cream p-3 rounded-xl border border-gray-200">
+                <div className="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
                   <span className="block font-black text-vibrant-orange text-sm md:text-base">{t("heroStatSpeed")}</span>
                   <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">{t("heroStatSpeedLabel")}</span>
                 </div>
-                <div className="bg-vibrant-cream p-3 rounded-xl border border-gray-200">
+                <div className="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
                   <span className="block font-black text-vibrant-teal text-sm md:text-base">{t("heroStatAge")}</span>
                   <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">{t("heroStatAgeLabel")}</span>
                 </div>
@@ -218,7 +218,7 @@ export default function Hero() {
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Link
                   to="/showcase"
-                  className="flex-1 bg-vibrant-teal text-white border-2 border-vibrant-dark font-black text-xs px-4 py-3.5 rounded-xl shadow-[4px_4px_0_0_#1A2E35] hover:scale-[1.02] active:translate-y-0.5 active:shadow-none transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                  className="flex-1 bg-vibrant-teal hover:bg-vibrant-teal/95 text-white font-bold text-xs px-4 py-3 rounded-full shadow-xs hover:shadow-md active:scale-97 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Trophy className="w-4 h-4 text-white shrink-0" />
                   <span>{t("heroBtnStories")}</span>
@@ -227,7 +227,7 @@ export default function Hero() {
                   href="https://share.google/fFcUhDGoBJ5M27dX5"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 bg-vibrant-gold text-vibrant-dark border-2 border-vibrant-dark font-black text-xs px-4 py-3.5 rounded-xl shadow-[4px_4px_0_0_#1A2E35] hover:scale-[1.02] active:translate-y-0.5 active:shadow-none transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                  className="flex-1 bg-vibrant-gold hover:bg-vibrant-gold/95 text-vibrant-dark font-bold text-xs px-4 py-3 rounded-full shadow-xs hover:shadow-md active:scale-97 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Star className="w-4 h-4 fill-current text-vibrant-dark shrink-0" />
                   <span>{t("heroBtnReviews")}</span>
