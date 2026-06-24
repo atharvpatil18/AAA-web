@@ -428,10 +428,10 @@ export const translations = {
     formatOnlineB3: "Time-zone flex options with class rescheduling",
     formatOnlineBtn: "Inquire Online Slots",
     videoBadge: "Seeing is Believing",
-    videoTitle: "Watch Our Champions In Action",
-    videoSubtitle: "Observe how visual abacus neural wiring allows students to compute multidigits at supersonic speeds.",
-    videoReelTitle: "Watch Arnav Patil calculate 10x faster than a calculator",
-    videoReelSub: "8th International Abacus Meet (Pune, India) • 1 Min Video",
+    videoTitle: "STOP SCROLLING. Can you even breathe this fast?! 🤯💨",
+    videoSubtitle: "Meet 9-year-old Arnav. His brain processes numbers faster than a calculator. Watch him recite the table of 9 up to 855 in exactly 60 seconds (95 multiples, zero pauses, zero mistakes) at Arnav Abacus Academy!",
+    videoReelTitle: "👇 THE 60-SECOND CHALLENGE 👇",
+    videoReelSub: "Try to speak along! We bet you'll lose your breath by the 30-second mark. At what number did you give up? 💬",
 
     // Interactive Brochure Page
     brochureBadge: "Best-in-Class Student & Parent Resource",
@@ -1243,10 +1243,10 @@ export const translations = {
     formatOnlineB3: "कक्षा पुनर्निर्धारण के साथ टाइम-जोन लचीलापन विकल्प",
     formatOnlineBtn: "ऑनलाइन स्लॉट की पूछताछ करें",
     videoBadge: "देखना ही विश्वास करना है",
-    videoTitle: "हमारे चैंपियंस को एक्शन में देखें",
-    videoSubtitle: "देखें कि कैसे एबाकस विज़ुअलाइज़ेशन छात्रों को कैलकुलेटर से भी तेज़ गणना करने की अनुमति देता है।",
-    videoReelTitle: "कैलकुलेटर से 10 गुना तेज गणना करते अर्णव पाटिल को देखें",
-    videoReelSub: "8वीं अंतर्राष्ट्रीय एबाकस मीट (पुणे, भारत) • 1 मिनट का वीडियो",
+    videoTitle: "स्क्रॉल करना बंद करें। क्या आप इतनी तेजी से सांस भी ले सकते हैं?! 🤯💨",
+    videoSubtitle: "मिलिए 9 साल के अर्णव से। उनका दिमाग कैलकुलेटर से भी तेज काम करता है। उन्हें ठीक 60 सेकंड में 9 की टेबल को 855 तक पढ़ते हुए देखें—95 गुणक, शून्य ठहराव, शून्य गलतियाँ!",
+    videoReelTitle: "👇 60-सेकंड की चुनौती 👇",
+    videoReelSub: "साथ बोलने की कोशिश करें! हमें यकीन है कि आप 30 सेकंड तक थक जाएंगे। आप किस नंबर पर रुके? 💬",
 
     // Interactive Brochure Page
     brochureBadge: "सर्वश्रेष्ठ छात्र और अभिभावक संसाधन",
@@ -2057,10 +2057,10 @@ export const translations = {
     formatOnlineB3: "वेळेच्या सोयीनुसार बॅच बदलण्याची किंवा पुन्हा शेड्यूल करण्याची मुभा",
     formatOnlineBtn: "ऑनलाईन बॅचेसची चौकशी करा",
     videoBadge: "प्रत्यक्ष अनुभव",
-    videoTitle: "आमच्या विद्यार्थ्यांचे कौशल्य पहा",
-    videoSubtitle: "ॲबॅकस विजुअलायझेशन तंत्रामुळे विद्यार्थी कोणत्याही कॅल्क्युलेटरपेक्षा किती वेगवान गतीने आकडेमोड करू शकतात ते पहा.",
-    videoReelTitle: "कॅल्क्युलेटरपेक्षा १० पट वेगाने आकडेमोड करणारा अर्णव पाटील पहा",
-    videoReelSub: "८ वी आंतरराष्ट्रीय ॲबॅकस स्पर्धा (पुणे, भारत) • १ मिनिटाचा व्हिडिओ",
+    videoTitle: "स्क्रोल करणे थांबवा. आपण इतक्या वेगाने श्वास घेऊ शकता का?! 🤯💨",
+    videoSubtitle: "भेटा ९ वर्षांच्या अर्णवला. त्याचे मेंदू कॅल्क्युलेटरपेक्षा वेगाने विचार करतो. त्याला बरोबर ६० सेकंदात ९ चा पाढा ८५५ पर्यंत वाचताना पहा—९५ गुणक, शून्य चुका!",
+    videoReelTitle: "👇 ६०-सेकंदांचे आव्हान 👇",
+    videoReelSub: "सोबत बोलण्याचा प्रयत्न करा! ३० सेकंदांपर्यंत तुमचा श्वास नक्कीच सुटेल. आपण कोणत्या नंबरवर थांबलात? 💬",
 
     // Interactive Brochure Page
     brochureBadge: "सर्वोत्कृष्ट विद्यार्थी आणि पालक साधन",
