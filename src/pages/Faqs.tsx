@@ -67,6 +67,24 @@ export default function Faqs() {
       category: "General",
       question: t("faq8Question"),
       answer: t("faq8Answer")
+    },
+    {
+      id: "faq9",
+      category: "Abacus Math",
+      question: t("faqSyllabusConflictQuestion"),
+      answer: t("faqSyllabusConflictAnswer")
+    },
+    {
+      id: "faq10",
+      category: "School Maths",
+      question: t("faqStepMarksQuestion"),
+      answer: t("faqStepMarksAnswer")
+    },
+    {
+      id: "faq11",
+      category: "Abacus Math",
+      question: t("faqWordProblemsQuestion"),
+      answer: t("faqWordProblemsAnswer")
     }
   ];
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Program } from "../types";
-import { Check, Sparkles, Flame, GraduationCap, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
+import { Check, Sparkles, Flame, GraduationCap, ArrowRight, ChevronDown, ChevronUp, ShieldCheck } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
@@ -187,6 +187,19 @@ export default function ProgramCard({ program }: ProgramCardProps) {
                     {item}
                   </span>
                 ))}
+              </div>
+            </div>
+
+            {/* School Math Synergy Guarantee Block */}
+            <div className="bg-[#FFFDF9] border border-dashed border-[#FFD8B1] rounded-2xl p-4 mt-6 flex items-start gap-3">
+              <ShieldCheck className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
+              <div>
+                <strong className="block text-[11px] md:text-xs font-black text-vibrant-dark uppercase tracking-wider mb-1">
+                  {t("progSynergyTitle")}
+                </strong>
+                <p className="text-[10.5px] md:text-xs text-gray-500 font-semibold leading-relaxed">
+                  {t("progSynergyDesc")}
+                </p>
               </div>
             </div>
           </div>
