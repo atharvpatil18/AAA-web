@@ -39,12 +39,12 @@ export default function Hero() {
   };
 
   return (
-    <section id="hero-section" className="relative bg-vibrant-cream overflow-hidden pt-12 pb-24 md:pt-16 md:pb-28 lg:pt-20 lg:pb-36 border-b border-slate-100">
+    <section id="hero-section" className="relative bg-vibrant-cream overflow-hidden pt-8 pb-16 sm:pt-12 sm:pb-24 md:pt-16 md:pb-28 lg:pt-20 lg:pb-36 border-b border-slate-100">
       
       {/* Dynamic Background Visual Blobs */}
       <div className="absolute top-0 left-0 w-80 h-80 bg-vibrant-orange/5 rounded-full blur-3xl pointer-events-none -ml-40 -mt-20" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-vibrant-teal/5 rounded-full blur-3xl pointer-events-none -mr-40 -mb-20" />
-
+ 
       {/* Hero Body Grid */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -63,7 +63,7 @@ export default function Hero() {
                 <Sparkles className="w-4 h-4 text-vibrant-orange animate-spin-slow" />
                 <span>{t("heroBadge")}</span>
               </motion.div>
-
+ 
               <motion.div 
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -74,13 +74,13 @@ export default function Hero() {
                 <span>{t("heroRatioBadge")}</span>
               </motion.div>
             </div>
-
+ 
             {/* Main Headline */}
             <motion.h1 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.15 }}
-              className="font-display font-black text-5xl sm:text-6xl lg:text-7xl text-vibrant-dark tracking-tight leading-[1.1] mb-10"
+              className="font-display font-black text-3xl xs:text-4xl sm:text-6xl lg:text-7xl text-vibrant-dark tracking-tight leading-[1.1] mb-6 sm:mb-10"
             >
               {t("heroTitleStart")}<span className="text-vibrant-orange">{t("heroTitleFear")}</span>{" "} <br />
               {t("heroTitleInto")}<span className="text-vibrant-teal">{t("heroTitleFun")}</span>{" "}
