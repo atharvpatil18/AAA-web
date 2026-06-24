@@ -32,6 +32,36 @@ export default function Home() {
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [showLocalDetails, setShowLocalDetails] = useState(false);
   const [showOnlineDetails, setShowOnlineDetails] = useState(false);
+  const [parentFocus, setParentFocus] = useState<"all" | "fear" | "speed" | "details">("all");
+
+  const parentFocusText = {
+    en: {
+      title: "How can we help your child today?",
+      subtitle: "Select your main interest or concern to customize your tour of Arnav Abacus Academy.",
+      all: "Show All Details",
+      fear: "Overcome Math Fear & Focus 😰",
+      speed: "Boost Speed & Exam Scores ⚡",
+      details: "Explore Wakad Center & Timings 📅",
+    },
+    hi: {
+      title: "आज हम आपके बच्चे की कैसे मदद कर सकते हैं?",
+      subtitle: "अर्णव एबाकस एकेडमी की जानकारी को अपनी पसंद के अनुसार देखने के लिए मुख्य चिंता या लक्ष्य चुनें।",
+      all: "सभी विवरण दिखाएं",
+      fear: "गणित का डर और फोकस बढ़ाएं 😰",
+      speed: "स्पीड और एग्जाम स्कोर बढ़ाएं ⚡",
+      details: "वाकड सेंटर और टाइमिंग्स 📅",
+    },
+    mr: {
+      title: "आज आम्ही तुमच्या मुलाला कशी मदत करू शकतो?",
+      subtitle: "अर्णव ॲबॅकस अकॅडमीची माहिती तुमच्या आवडीनुसार पाहण्यासाठी मुख्य ध्येय निवडा.",
+      all: "सर्व माहिती पहा",
+      fear: "गणित भीती घालवा आणि लक्ष वाढवा 😰",
+      speed: "स्पीड आणि परीक्षेचे गुण वाढवा ⚡",
+      details: "वाकड सेंटर आणि वेळा 📅",
+    }
+  };
+
+  const strings = parentFocusText[language as "en" | "hi" | "mr"] || parentFocusText.en;
 
   const handleMapCtaClick = () => {
     trackDemoClick("home_map_nav_cta");
@@ -59,12 +89,46 @@ export default function Home() {
         <TrustBar />
       </div>
 
+      {/* 2. Parent-Centric Pathway Hub */}
+      <section className="py-8 bg-vibrant-cream/30 border-y-2 border-slate-200/50 max-w-7xl mx-auto px-4 md:px-8 mt-6">
+        <div className="text-center space-y-2.5 max-w-3xl mx-auto mb-6">
+          <h2 className="font-display font-black text-xl md:text-2xl text-vibrant-dark tracking-tight">
+            {strings.title}
+          </h2>
+          <p className="text-gray-500 text-xs font-semibold">
+            {strings.subtitle}
+          </p>
+        </div>
+
+        {/* Tab/Selector Layout */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
+          {(["all", "fear", "speed", "details"] as const).map((mode) => {
+            const isActive = parentFocus === mode;
+            return (
+              <button
+                key={mode}
+                onClick={() => setParentFocus(mode)}
+                className={`py-3 px-2 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer text-center border-2 active:scale-98 ${
+                  isActive
+                    ? "bg-vibrant-dark text-white border-vibrant-dark shadow-md"
+                    : "bg-white text-slate-600 hover:bg-slate-50 border-slate-200"
+                }`}
+              >
+                {strings[mode]}
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
       {/* 2.2. Interactive Parent Consultation Booth */}
-      <MathConcernVideoBooth />
+      {(parentFocus === "all" || parentFocus === "fear") && (
+        <MathConcernVideoBooth />
+      )}
 
       {/* 3. Core Programs Showcase */}
-      <section id="programs-showcase" className="py-20 md:py-28 max-w-7xl mx-auto px-4 md:px-8">
+      {(parentFocus === "all" || parentFocus === "details") && (
+        <section id="programs-showcase" className="py-20 md:py-28 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
           <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
             {t("progBadge")}
@@ -118,9 +182,11 @@ export default function Home() {
           })}
         </div>
       </section>
+      )}
 
       {/* 2.5. Interactive Abacus Playground */}
-      <section id="interactive-abacus-playground" className="py-16 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-2 border-slate-100">
+      {(parentFocus === "all" || parentFocus === "fear") && (
+        <section id="interactive-abacus-playground" className="py-16 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-2 border-slate-100">
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col items-center">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-6">
             <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
@@ -150,9 +216,11 @@ export default function Home() {
           )}
         </div>
       </section>
+      )}
 
       {/* 2.6. Interactive Vedic Math Playground */}
-      <section id="interactive-vedic-playground" className="py-16 md:py-20 bg-white border-t-2 border-slate-100">
+      {(parentFocus === "all" || parentFocus === "speed") && (
+        <section id="interactive-vedic-playground" className="py-16 md:py-20 bg-white border-t-2 border-slate-100">
         <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-6 flex flex-col items-center">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
             <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
@@ -182,9 +250,12 @@ export default function Home() {
           )}
         </div>
       </section>
+      )}
 
       {/* 3.5. Interactive Math Synergy System (Comparison) */}
-      <section id="math-synergy-comparison" className="py-20 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-4 border-vibrant-dark">
+      {(parentFocus === "all" || parentFocus === "details") && (
+        <>
+          <section id="math-synergy-comparison" className="py-20 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-4 border-vibrant-dark">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <MathComparisonDemo />
         </div>
@@ -432,12 +503,14 @@ export default function Home() {
           )}
         </div>
       </section>
+      </>)}
 
       {/* 4. Gamified Quiz & Lead Form CTA Segment (Split columns) */}
-      <section 
-        id="speed-challenge-widget-section" 
-        className="py-16 md:py-24 bg-vibrant-cream border-y-4 border-vibrant-dark relative overflow-hidden"
-      >
+      {(parentFocus === "all" || parentFocus === "speed") && (
+        <section 
+          id="speed-challenge-widget-section" 
+          className="py-16 md:py-24 bg-vibrant-cream border-y-4 border-vibrant-dark relative overflow-hidden"
+        >
         <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center lg:items-start">
             
@@ -480,9 +553,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 5. Mentor Overview section */}
-      <section id="mentor-overview" className="py-20 md:py-28 bg-white">
+      {(parentFocus === "all" || parentFocus === "details") && (
+        <section id="mentor-overview" className="py-20 md:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
             <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
@@ -499,9 +574,11 @@ export default function Home() {
           <TeacherProfile />
         </div>
       </section>
+      )}
 
       {/* 6. Testimonials Row carousel */}
-      <section id="parent-testimonials" className="py-20 md:py-28 bg-[#FFFDF9] border-t-4 border-vibrant-dark relative">
+      {(parentFocus === "all" || parentFocus === "fear" || parentFocus === "speed") && (
+        <section id="parent-testimonials" className="py-20 md:py-28 bg-[#FFFDF9] border-t-4 border-vibrant-dark relative">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
             <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
@@ -518,9 +595,11 @@ export default function Home() {
           <TestimonialCarousel />
         </div>
       </section>
+      )}
 
       {/* 7. Wakad Center Address & Google Map Contact Block */}
-      <section id="location-contact" className="py-20 md:py-28 bg-white border-t-4 border-vibrant-dark">
+      {(parentFocus === "all" || parentFocus === "details") && (
+        <section id="location-contact" className="py-20 md:py-28 bg-white border-t-4 border-vibrant-dark">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
@@ -751,6 +830,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 8. Call to Action Lead Form Section */}
       <section className="py-20 md:py-28 bg-[#FF6321] text-white border-t-4 border-vibrant-dark relative">
