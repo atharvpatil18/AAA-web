@@ -123,7 +123,7 @@ export default function Login() {
           )}
 
           {/* OTP Simulator SMS Toast Box */}
-          {simulatedOtp && otpSent && (
+          {simulatedOtp && otpSent && (!(import.meta as any).env.VITE_FAST2SMS_API_KEY || (import.meta as any).env.VITE_FAST2SMS_API_KEY === "YOUR_FAST2SMS_API_KEY_HERE") && (
             <div className="bg-amber-50 border-2 border-dashed border-amber-300 text-amber-900 rounded-xl p-4 mb-5 text-xs">
               <div className="font-bold flex items-center gap-1.5 text-amber-800 mb-1">
                 <ShieldCheck className="w-4 h-4 text-amber-600" /> Simulated SMS Gateway

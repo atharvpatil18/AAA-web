@@ -46,6 +46,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Generate a simple 6-digit OTP code
     const generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
     sessionStorage.setItem(`otp_${mobile}`, generatedOTP);
+
+    const apiKey = (import.meta as any).env.VITE_FAST2SMS_API_KEY;
+    if (apiKey && apiKey !== "YOUR_FAST2SMS_API_KEY_HERE" && apiKey.trim() !== "") {
+      try {
+        const response = await fetch("https://www.fast2sms.com/dev/bulkV2", {
+          method: "POST",
+          headers: {
+            "authorization": apiKey,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            "variables_values": generatedOTP,
+            "route": "otp",
+            "numbers": mobile
+          })
+        });
+        const result = await response.json();
+        if (result.return) {
+          console.log("OTP successfully sent via Fast2SMS API:", result);
+        } else {
+          console.warn("Fast2SMS API error, using local simulator:", result);
+        }
+      } catch (err) {
+        console.error("Fast2SMS API failed, using local simulator:", err);
+      }
+    } else {
+      console.log("No Fast2SMS API Key found, using local simulated OTP:", generatedOTP);
+    }
+
     return { success: true, otp: generatedOTP };
   };
 
