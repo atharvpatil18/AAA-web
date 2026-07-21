@@ -8,8 +8,10 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { getCustomizedSet } from "../data/practiceData";
 import { UserAnswer, PracticeMode, Question } from "../types";
 import { Flag, ArrowLeft, ArrowRight, Clock, CheckCircle, HelpCircle, LayoutGrid, Sparkles, Trophy, Zap, Flame, Smile, Check, ChevronDown, ChevronUp } from "lucide-react";
+import { useAuth } from "../lib/AuthContext";
 
 export default function PracticeSession() {
+  const { currentUser } = useAuth();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -145,6 +147,21 @@ export default function PracticeSession() {
       questions: questionSet.questions,
     };
 
+    // Store in global attempts DB for leaderboards and user tracking
+    const attemptRecord = {
+      ...resultPayload,
+      userId: currentUser?.id || "guest",
+      userName: currentUser?.name || "Guest Student",
+    };
+    try {
+      const existingRaw = localStorage.getItem("aaa_leaderboard_attempts");
+      const existing = existingRaw ? JSON.parse(existingRaw) : [];
+      existing.push(attemptRecord);
+      localStorage.setItem("aaa_leaderboard_attempts", JSON.stringify(existing));
+    } catch (e) {
+      console.error("Failed to append leaderboard result", e);
+    }
+
     sessionStorage.setItem("last_practice_result", JSON.stringify(resultPayload));
     navigate("/practice/results");
   };
@@ -155,7 +172,7 @@ export default function PracticeSession() {
     return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
-  const answeredCount = Object.values(userAnswers).filter(a => a.answer !== "").length;
+  const answeredCount = (Object.values(userAnswers) as UserAnswer[]).filter(a => a.answer !== "").length;
 
   return (
     <div className="bg-slate-50 min-h-screen py-6 px-3 sm:px-6 md:px-8">
