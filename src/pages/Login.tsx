@@ -28,6 +28,14 @@ export default function Login() {
   const [otpSent, setOtpSent] = useState(false);
   const [simulatedOtp, setSimulatedOtp] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    console.log("DEBUG KEYS LOADED:", {
+      Service: (import.meta as any).env.VITE_EMAILJS_SERVICE_ID,
+      Template: (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID,
+      Key: (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY
+    });
+  }, []);
+
   const isConfigured = () => {
     const serviceId = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID;
     const templateId = (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID;
