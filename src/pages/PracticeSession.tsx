@@ -15,9 +15,10 @@ export default function PracticeSession() {
 
   const setId = searchParams.get("setId") || "abacus-jr2-direct-4row";
   const mode = (searchParams.get("mode") as PracticeMode) || "exam";
+  const qCount = Number(searchParams.get("count")) || 20;
 
-  // Load customized set based on mode (20 Qs 4 min, 100 Qs 5m/10m, 200 Qs 20m)
-  const questionSet = getCustomizedSet(setId, mode);
+  // Load customized set based on mode and selected question count (10 Qs, 20 Qs, 50 Qs, 100 Qs, 200 Qs)
+  const questionSet = getCustomizedSet(setId, mode, qCount);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, UserAnswer>>({});

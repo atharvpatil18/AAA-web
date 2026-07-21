@@ -44,9 +44,9 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     category: "abacus",
     level: "JR-2",
     topic: "2. ADD & SUB DIRECT (SINGLE DIGIT), 6 ROWS",
-    description: "6 rows single-digit direct speed test (as in reference screen).",
+    description: "6 rows single-digit direct speed test.",
     questionCount: 20,
-    timeLimitSeconds: 240, // 4 minutes
+    timeLimitSeconds: 240,
     questions: [
       { id: 1, numbers: [7, -6, 1, 5, -1, -5], correctAnswer: 1, conceptTag: "Direct 6 Rows" },
       { id: 2, numbers: [4, 5, -2, 1, -3, 2], correctAnswer: 7, conceptTag: "Direct 6 Rows" },
@@ -58,16 +58,6 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 8, numbers: [1, 3, 5, -6, 1, 5], correctAnswer: 9, conceptTag: "Direct 6 Rows" },
       { id: 9, numbers: [5, 4, -7, 2, 5, -4], correctAnswer: 5, conceptTag: "Direct 6 Rows" },
       { id: 10, numbers: [8, -2, -5, 3, 5, -4], correctAnswer: 5, conceptTag: "Direct 6 Rows" },
-      { id: 11, numbers: [7, 1, -5, 1, 5, -2], correctAnswer: 7, conceptTag: "Direct 6 Rows" },
-      { id: 12, numbers: [4, -1, 5, -3, 2, 1], correctAnswer: 8, conceptTag: "Direct 6 Rows" },
-      { id: 13, numbers: [9, -8, 3, 5, -4, 1], correctAnswer: 6, conceptTag: "Direct 6 Rows" },
-      { id: 14, numbers: [3, 5, -6, 2, 5, -1], correctAnswer: 8, conceptTag: "Direct 6 Rows" },
-      { id: 15, numbers: [6, -5, 3, 5, -4, 2], correctAnswer: 7, conceptTag: "Direct 6 Rows" },
-      { id: 16, numbers: [2, 2, 5, -6, 1, 5], correctAnswer: 9, conceptTag: "Direct 6 Rows" },
-      { id: 17, numbers: [8, -3, 4, -5, 1, 2], correctAnswer: 7, conceptTag: "Direct 6 Rows" },
-      { id: 18, numbers: [5, 2, -6, 3, 5, -4], correctAnswer: 5, conceptTag: "Direct 6 Rows" },
-      { id: 19, numbers: [1, 8, -7, 2, 5, -4], correctAnswer: 5, conceptTag: "Direct 6 Rows" },
-      { id: 20, numbers: [7, 2, -5, 1, -4, 3], correctAnswer: 4, conceptTag: "Direct 6 Rows" },
     ]
   },
   {
@@ -78,28 +68,13 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     topic: "3. SMALL FRIENDS ADDITION (+4=+5-1, +3=+5-2, +2=+5-3, +1=+5-4)",
     description: "Master the 5-bead complement formulas for speed mental arithmetic.",
     questionCount: 20,
-    timeLimitSeconds: 240, // 4 minutes
+    timeLimitSeconds: 240,
     questions: [
-      { id: 1, numbers: [4, 4, -3, 2], correctAnswer: 7, conceptTag: "Small Friend +4 (+5 - 1)", explanation: "4 + 4 (+5 - 1 = 8) - 3 = 5 + 2 = 7" },
+      { id: 1, numbers: [4, 4, -3, 2], correctAnswer: 7, conceptTag: "Small Friend +4 (+5 - 1)" },
       { id: 2, numbers: [3, 3, 2, -5], correctAnswer: 3, conceptTag: "Small Friend +3 (+5 - 2)" },
       { id: 3, numbers: [4, 2, 3, -6], correctAnswer: 3, conceptTag: "Small Friend +2 (+5 - 3)" },
       { id: 4, numbers: [4, 1, 4, -5], correctAnswer: 4, conceptTag: "Small Friend +1 (+5 - 4)" },
       { id: 5, numbers: [2, 3, 4, -7], correctAnswer: 2, conceptTag: "Small Friends Mix" },
-      { id: 6, numbers: [1, 4, 3, -5], correctAnswer: 3, conceptTag: "Small Friends Mix" },
-      { id: 7, numbers: [4, 3, -2, 4], correctAnswer: 9, conceptTag: "Small Friends Mix" },
-      { id: 8, numbers: [3, 4, 2, -5], correctAnswer: 4, conceptTag: "Small Friends Mix" },
-      { id: 9, numbers: [2, 4, 3, -8], correctAnswer: 1, conceptTag: "Small Friends Mix" },
-      { id: 10, numbers: [4, 2, 2, 1], correctAnswer: 9, conceptTag: "Small Friends Mix" },
-      { id: 11, numbers: [3, 2, 4, -6], correctAnswer: 3, conceptTag: "Small Friends Mix" },
-      { id: 12, numbers: [1, 3, 4, -5], correctAnswer: 3, conceptTag: "Small Friends Mix" },
-      { id: 13, numbers: [4, 4, -5, 3], correctAnswer: 6, conceptTag: "Small Friends Mix" },
-      { id: 14, numbers: [2, 2, 4, -3], correctAnswer: 5, conceptTag: "Small Friends Mix" },
-      { id: 15, numbers: [3, 4, -5, 4], correctAnswer: 6, conceptTag: "Small Friends Mix" },
-      { id: 16, numbers: [4, 1, 3, -2], correctAnswer: 6, conceptTag: "Small Friends Mix" },
-      { id: 17, numbers: [2, 3, 3, -4], correctAnswer: 4, conceptTag: "Small Friends Mix" },
-      { id: 18, numbers: [1, 4, 4, -5], correctAnswer: 4, conceptTag: "Small Friends Mix" },
-      { id: 19, numbers: [3, 3, 3, -6], correctAnswer: 3, conceptTag: "Small Friends Mix" },
-      { id: 20, numbers: [4, 3, 2, -5], correctAnswer: 4, conceptTag: "Small Friends Mix" },
     ]
   },
   {
@@ -110,95 +85,451 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     topic: "4. BIG FRIENDS (+9=+10-1, +8=+10-2, +7=+10-3 ...)",
     description: "Master 10-base carrying and borrowing techniques.",
     questionCount: 20,
-    timeLimitSeconds: 240, // 4 minutes
+    timeLimitSeconds: 240,
     questions: [
       { id: 1, numbers: [9, 9, -5, 2], correctAnswer: 15, conceptTag: "Big Friend +9 (+10 - 1)" },
       { id: 2, numbers: [8, 8, 3, -4], correctAnswer: 15, conceptTag: "Big Friend +8 (+10 - 2)" },
       { id: 3, numbers: [7, 7, -3, 5], correctAnswer: 16, conceptTag: "Big Friend +7 (+10 - 3)" },
-      { id: 4, numbers: [6, 6, 4, -5], correctAnswer: 11, conceptTag: "Big Friend +6 (+10 - 4)" },
-      { id: 5, numbers: [5, 5, 8, -3], correctAnswer: 15, conceptTag: "Big Friend +5 (+10 - 5)" },
-      { id: 6, numbers: [9, 4, 8, -6], correctAnswer: 15, conceptTag: "Big Friends Mix" },
-      { id: 7, numbers: [8, 5, 7, -2], correctAnswer: 18, conceptTag: "Big Friends Mix" },
-      { id: 8, numbers: [7, 6, 9, -5], correctAnswer: 17, conceptTag: "Big Friends Mix" },
-      { id: 9, numbers: [6, 7, 8, -4], correctAnswer: 17, conceptTag: "Big Friends Mix" },
-      { id: 10, numbers: [9, 9, 9, -7], correctAnswer: 20, conceptTag: "Big Friends Mix" },
-      { id: 11, numbers: [8, 4, 9, -5], correctAnswer: 16, conceptTag: "Big Friends Mix" },
-      { id: 12, numbers: [7, 8, 6, -3], correctAnswer: 18, conceptTag: "Big Friends Mix" },
-      { id: 13, numbers: [9, 3, 8, -4], correctAnswer: 16, conceptTag: "Big Friends Mix" },
-      { id: 14, numbers: [6, 9, 7, -5], correctAnswer: 17, conceptTag: "Big Friends Mix" },
-      { id: 15, numbers: [5, 8, 9, -6], correctAnswer: 16, conceptTag: "Big Friends Mix" },
-      { id: 16, numbers: [8, 7, 8, -4], correctAnswer: 19, conceptTag: "Big Friends Mix" },
-      { id: 17, numbers: [9, 6, 7, -8], correctAnswer: 14, conceptTag: "Big Friends Mix" },
-      { id: 18, numbers: [7, 9, 5, -6], correctAnswer: 15, conceptTag: "Big Friends Mix" },
-      { id: 19, numbers: [6, 8, 9, -7], correctAnswer: 16, conceptTag: "Big Friends Mix" },
-      { id: 20, numbers: [9, 8, 7, -5], correctAnswer: 19, conceptTag: "Big Friends Mix" },
-    ]
-  },
-  {
-    id: "abacus-mix-combo",
-    title: "MIX COMBO (SMALL + BIG FRIENDS)",
-    category: "abacus",
-    level: "SR-2",
-    topic: "5. MIX COMBO FORMULAS (+6=+11-5, +7=+12-5, +8=+13-5, +9=+14-5)",
-    description: "Advanced combination formulas combining 5s and 10s beads.",
-    questionCount: 20,
-    timeLimitSeconds: 240, // 4 minutes
-    questions: [
-      { id: 1, numbers: [5, 6, 7, -3], correctAnswer: 15, conceptTag: "Mix Combo Formula" },
-      { id: 2, numbers: [6, 7, 8, -4], correctAnswer: 17, conceptTag: "Mix Combo Formula" },
-      { id: 3, numbers: [7, 8, 6, -5], correctAnswer: 16, conceptTag: "Mix Combo Formula" },
-      { id: 4, numbers: [8, 6, 7, -2], correctAnswer: 19, conceptTag: "Mix Combo Formula" },
-      { id: 5, numbers: [9, 7, 6, -4], correctAnswer: 18, conceptTag: "Mix Combo Formula" },
-      { id: 6, numbers: [4, 6, 7, 8], correctAnswer: 25, conceptTag: "Mix Combo Formula" },
-      { id: 7, numbers: [3, 7, 8, 6], correctAnswer: 24, conceptTag: "Mix Combo Formula" },
-      { id: 8, numbers: [2, 8, 6, 7], correctAnswer: 23, conceptTag: "Mix Combo Formula" },
-      { id: 9, numbers: [1, 9, 7, 8], correctAnswer: 25, conceptTag: "Mix Combo Formula" },
-      { id: 10, numbers: [5, 7, 6, 9], correctAnswer: 27, conceptTag: "Mix Combo Formula" },
-      { id: 11, numbers: [6, 6, 7, -5], correctAnswer: 14, conceptTag: "Mix Combo Formula" },
-      { id: 12, numbers: [7, 7, 6, -4], correctAnswer: 16, conceptTag: "Mix Combo Formula" },
-      { id: 13, numbers: [8, 8, 7, -6], correctAnswer: 17, conceptTag: "Mix Combo Formula" },
-      { id: 14, numbers: [9, 6, 8, -5], correctAnswer: 18, conceptTag: "Mix Combo Formula" },
-      { id: 15, numbers: [4, 7, 6, 8], correctAnswer: 25, conceptTag: "Mix Combo Formula" },
-      { id: 16, numbers: [3, 8, 7, 6], correctAnswer: 24, conceptTag: "Mix Combo Formula" },
-      { id: 17, numbers: [2, 9, 6, 7], correctAnswer: 24, conceptTag: "Mix Combo Formula" },
-      { id: 18, numbers: [5, 8, 6, 9], correctAnswer: 28, conceptTag: "Mix Combo Formula" },
-      { id: 19, numbers: [6, 9, 7, -4], correctAnswer: 18, conceptTag: "Mix Combo Formula" },
-      { id: 20, numbers: [7, 6, 8, -5], correctAnswer: 16, conceptTag: "Mix Combo Formula" },
     ]
   }
 ];
 
 export const VEDIC_QUESTION_SETS: QuestionSet[] = [
+  // JVM-1 Modules (from Reference Screenshot)
+  {
+    id: "jvm1-addition",
+    title: "JVM-1: Rapid Addition",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Addition",
+    description: "Fast left-to-right Vedic addition drills.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "48 + 37", correctAnswer: 85, conceptTag: "Left to Right Addition", explanation: "40+30=70, 8+7=15 -> 85" },
+      { id: 2, expression: "59 + 26", correctAnswer: 85, conceptTag: "Left to Right Addition" },
+      { id: 3, expression: "64 + 49", correctAnswer: 113, conceptTag: "Left to Right Addition" },
+      { id: 4, expression: "78 + 35", correctAnswer: 113, conceptTag: "Left to Right Addition" },
+      { id: 5, expression: "83 + 57", correctAnswer: 140, conceptTag: "Left to Right Addition" },
+      { id: 6, expression: "96 + 48", correctAnswer: 144, conceptTag: "Left to Right Addition" },
+      { id: 7, expression: "29 + 63", correctAnswer: 92, conceptTag: "Left to Right Addition" },
+      { id: 8, expression: "47 + 85", correctAnswer: 132, conceptTag: "Left to Right Addition" },
+      { id: 9, expression: "74 + 68", correctAnswer: 142, conceptTag: "Left to Right Addition" },
+      { id: 10, expression: "89 + 77", correctAnswer: 166, conceptTag: "Left to Right Addition" },
+    ]
+  },
+  {
+    id: "jvm1-ekadhik",
+    title: "JVM-1: Ekadhik Sutra",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Ekadhik",
+    description: "One more than the previous digit (Ekadhikena Purvena).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "Ekadhik of 7", correctAnswer: 8, conceptTag: "7 + 1 = 8" },
+      { id: 2, expression: "Ekadhik of 19", correctAnswer: 20, conceptTag: "19 + 1 = 20" },
+      { id: 3, expression: "Ekadhik of 45", correctAnswer: 46, conceptTag: "45 + 1 = 46" },
+      { id: 4, expression: "Ekadhik of 89", correctAnswer: 90, conceptTag: "89 + 1 = 90" },
+      { id: 5, expression: "Ekadhik of 134", correctAnswer: 135, conceptTag: "134 + 1 = 135" },
+      { id: 6, expression: "Ekadhik of 999", correctAnswer: 1000, conceptTag: "999 + 1 = 1000" },
+      { id: 7, expression: "Ekadhik of 68", correctAnswer: 69, conceptTag: "68 + 1 = 69" },
+      { id: 8, expression: "Ekadhik of 249", correctAnswer: 250, conceptTag: "249 + 1 = 250" },
+      { id: 9, expression: "Ekadhik of 73", correctAnswer: 74, conceptTag: "73 + 1 = 74" },
+      { id: 10, expression: "Ekadhik of 519", correctAnswer: 520, conceptTag: "519 + 1 = 520" },
+    ]
+  },
+  {
+    id: "jvm1-ekanyunena",
+    title: "JVM-1: Ekanyunena Sutra",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Ekanyunena",
+    description: "One less than the previous digit (Ekanyunena Purvena).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "Ekanyunena of 9", correctAnswer: 8, conceptTag: "9 - 1 = 8" },
+      { id: 2, expression: "Ekanyunena of 50", correctAnswer: 49, conceptTag: "50 - 1 = 49" },
+      { id: 3, expression: "Ekanyunena of 74", correctAnswer: 73, conceptTag: "74 - 1 = 73" },
+      { id: 4, expression: "Ekanyunena of 100", correctAnswer: 99, conceptTag: "100 - 1 = 99" },
+      { id: 5, expression: "Ekanyunena of 628", correctAnswer: 627, conceptTag: "628 - 1 = 627" },
+      { id: 6, expression: "Ekanyunena of 430", correctAnswer: 429, conceptTag: "430 - 1 = 429" },
+      { id: 7, expression: "Ekanyunena of 88", correctAnswer: 87, conceptTag: "88 - 1 = 87" },
+      { id: 8, expression: "Ekanyunena of 1000", correctAnswer: 999, conceptTag: "1000 - 1 = 999" },
+      { id: 9, expression: "Ekanyunena of 351", correctAnswer: 350, conceptTag: "351 - 1 = 350" },
+      { id: 10, expression: "Ekanyunena of 90", correctAnswer: 89, conceptTag: "90 - 1 = 89" },
+    ]
+  },
+  {
+    id: "jvm1-dodging-table",
+    title: "JVM-1: Dodging Tables",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Dodging Table",
+    description: "Split-second multiplication table drills.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "14 × 7", correctAnswer: 98, conceptTag: "Table 14" },
+      { id: 2, expression: "16 × 8", correctAnswer: 128, conceptTag: "Table 16" },
+      { id: 3, expression: "17 × 6", correctAnswer: 102, conceptTag: "Table 17" },
+      { id: 4, expression: "18 × 9", correctAnswer: 162, conceptTag: "Table 18" },
+      { id: 5, expression: "19 × 7", correctAnswer: 133, conceptTag: "Table 19" },
+      { id: 6, expression: "13 × 9", correctAnswer: 117, conceptTag: "Table 13" },
+      { id: 7, expression: "15 × 8", correctAnswer: 120, conceptTag: "Table 15" },
+      { id: 8, expression: "17 × 9", correctAnswer: 153, conceptTag: "Table 17" },
+      { id: 9, expression: "18 × 7", correctAnswer: 126, conceptTag: "Table 18" },
+      { id: 10, expression: "19 × 8", correctAnswer: 152, conceptTag: "Table 19" },
+    ]
+  },
+  {
+    id: "jvm1-mult-11",
+    title: "JVM-1: Multiplication by 11",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Multiplication by 11",
+    description: "Instant Vedic sandwich trick for multiplying any number by 11.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "35 × 11", correctAnswer: 385, conceptTag: "3 | (3+5) | 5 = 385" },
+      { id: 2, expression: "42 × 11", correctAnswer: 462, conceptTag: "4 | (4+2) | 2 = 462" },
+      { id: 3, expression: "63 × 11", correctAnswer: 693, conceptTag: "6 | (6+3) | 3 = 693" },
+      { id: 4, expression: "75 × 11", correctAnswer: 825, conceptTag: "7 | (7+5) | 5 = 825" },
+      { id: 5, expression: "84 × 11", correctAnswer: 924, conceptTag: "8 | (8+4) | 4 = 924" },
+      { id: 6, expression: "96 × 11", correctAnswer: 1056, conceptTag: "9 | (9+6) | 6 = 1056" },
+      { id: 7, expression: "54 × 11", correctAnswer: 594, conceptTag: "5 | (5+4) | 4 = 594" },
+      { id: 8, expression: "123 × 11", correctAnswer: 1353, conceptTag: "1 | (1+2) | (2+3) | 3" },
+      { id: 9, expression: "245 × 11", correctAnswer: 2695, conceptTag: "2 | (2+4) | (4+5) | 5" },
+      { id: 10, expression: "314 × 11", correctAnswer: 3454, conceptTag: "3 | (3+1) | (1+4) | 4" },
+    ]
+  },
+  {
+    id: "jvm1-mult-multiples-11",
+    title: "JVM-1: Multiplication by Multiples of 11",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Multiplication by Multiples of 11",
+    description: "Multiply numbers by 22, 33, 44, 55 instantly.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "24 × 22", correctAnswer: 528, conceptTag: "(24 × 2) × 11 = 48 × 11 = 528" },
+      { id: 2, expression: "15 × 33", correctAnswer: 495, conceptTag: "(15 × 3) × 11 = 45 × 11 = 495" },
+      { id: 3, expression: "12 × 44", correctAnswer: 528, conceptTag: "(12 × 4) × 11 = 48 × 11 = 528" },
+      { id: 4, expression: "18 × 55", correctAnswer: 990, conceptTag: "(18 × 5) × 11 = 90 × 11 = 990" },
+      { id: 5, expression: "32 × 22", correctAnswer: 704, conceptTag: "(32 × 2) × 11 = 64 × 11 = 704" },
+      { id: 6, expression: "21 × 33", correctAnswer: 693, conceptTag: "(21 × 3) × 11 = 63 × 11 = 693" },
+      { id: 7, expression: "23 × 44", correctAnswer: 1012, conceptTag: "(23 × 4) × 11 = 92 × 11 = 1012" },
+      { id: 8, expression: "16 × 55", correctAnswer: 880, conceptTag: "(16 × 5) × 11 = 80 × 11 = 880" },
+      { id: 9, expression: "41 × 22", correctAnswer: 902, conceptTag: "(41 × 2) × 11 = 82 × 11 = 902" },
+      { id: 10, expression: "25 × 33", correctAnswer: 825, conceptTag: "(25 × 3) × 11 = 75 × 11 = 825" },
+    ]
+  },
+  {
+    id: "jvm1-mult-101",
+    title: "JVM-1: Multiplication by 101",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Multiplication by 101",
+    description: "Double repeat pattern rule for multiplying 2-digit numbers by 101.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "37 × 101", correctAnswer: 3737, conceptTag: "Repeat digits 37 twice -> 3737" },
+      { id: 2, expression: "45 × 101", correctAnswer: 4545, conceptTag: "Repeat digits 45 twice -> 4545" },
+      { id: 3, expression: "89 × 101", correctAnswer: 8989, conceptTag: "Repeat digits 89 twice -> 8989" },
+      { id: 4, expression: "62 × 101", correctAnswer: 6262, conceptTag: "Repeat digits 62 twice -> 6262" },
+      { id: 5, expression: "74 × 101", correctAnswer: 7474, conceptTag: "Repeat digits 74 twice -> 7474" },
+      { id: 6, expression: "93 × 101", correctAnswer: 9393, conceptTag: "Repeat digits 93 twice -> 9393" },
+      { id: 7, expression: "28 × 101", correctAnswer: 2828, conceptTag: "Repeat digits 28 twice -> 2828" },
+      { id: 8, expression: "56 × 101", correctAnswer: 5656, conceptTag: "Repeat digits 56 twice -> 5656" },
+      { id: 9, expression: "19 × 101", correctAnswer: 1919, conceptTag: "Repeat digits 19 twice -> 1919" },
+      { id: 10, expression: "81 × 101", correctAnswer: 8181, conceptTag: "Repeat digits 81 twice -> 8181" },
+    ]
+  },
+  {
+    id: "jvm1-convert-paise-rupees",
+    title: "JVM-1: Convert Paise into Rupees",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Paise into Rupees",
+    description: "Convert paise to rupees (Divide by 100).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "500 Paise = ? Rupees", correctAnswer: 5, conceptTag: "500 ÷ 100 = 5" },
+      { id: 2, expression: "750 Paise = ? Rupees (in decimals)", correctAnswer: 7.5, conceptTag: "750 ÷ 100 = 7.5" },
+      { id: 3, expression: "1200 Paise = ? Rupees", correctAnswer: 12, conceptTag: "1200 ÷ 100 = 12" },
+      { id: 4, expression: "2450 Paise = ? Rupees", correctAnswer: 24.5, conceptTag: "2450 ÷ 100 = 24.5" },
+      { id: 5, expression: "3000 Paise = ? Rupees", correctAnswer: 30, conceptTag: "3000 ÷ 100 = 30" },
+      { id: 6, expression: "4500 Paise = ? Rupees", correctAnswer: 45, conceptTag: "4500 ÷ 100 = 45" },
+      { id: 7, expression: "800 Paise = ? Rupees", correctAnswer: 8, conceptTag: "800 ÷ 100 = 8" },
+      { id: 8, expression: "1850 Paise = ? Rupees", correctAnswer: 18.5, conceptTag: "1850 ÷ 100 = 18.5" },
+      { id: 9, expression: "6000 Paise = ? Rupees", correctAnswer: 60, conceptTag: "6000 ÷ 100 = 60" },
+      { id: 10, expression: "950 Paise = ? Rupees", correctAnswer: 9.5, conceptTag: "950 ÷ 100 = 9.5" },
+    ]
+  },
+  {
+    id: "jvm1-convert-rupees-paise",
+    title: "JVM-1: Convert Rupees into Paise",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Rupees into Paise",
+    description: "Convert rupees to paise (Multiply by 100).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "₹ 8 = ? Paise", correctAnswer: 800, conceptTag: "8 × 100 = 800" },
+      { id: 2, expression: "₹ 15 = ? Paise", correctAnswer: 1500, conceptTag: "15 × 100 = 1500" },
+      { id: 3, expression: "₹ 24.50 = ? Paise", correctAnswer: 2450, conceptTag: "24.5 × 100 = 2450" },
+      { id: 4, expression: "₹ 50 = ? Paise", correctAnswer: 5000, conceptTag: "50 × 100 = 5000" },
+      { id: 5, expression: "₹ 7.50 = ? Paise", correctAnswer: 750, conceptTag: "7.5 × 100 = 750" },
+      { id: 6, expression: "₹ 12.25 = ? Paise", correctAnswer: 1225, conceptTag: "12.25 × 100 = 1225" },
+      { id: 7, expression: "₹ 35 = ? Paise", correctAnswer: 3500, conceptTag: "35 × 100 = 3500" },
+      { id: 8, expression: "₹ 9.90 = ? Paise", correctAnswer: 990, conceptTag: "9.9 × 100 = 990" },
+      { id: 9, expression: "₹ 62 = ? Paise", correctAnswer: 6200, conceptTag: "62 × 100 = 6200" },
+      { id: 10, expression: "₹ 100 = ? Paise", correctAnswer: 10000, conceptTag: "100 × 100 = 10000" },
+    ]
+  },
+  {
+    id: "jvm1-convert-cm-m",
+    title: "JVM-1: Convert Centimeter into Meter",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Centimeter into Meter",
+    description: "Convert cm to meters (Divide by 100).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "400 cm = ? Meters", correctAnswer: 4, conceptTag: "400 ÷ 100 = 4" },
+      { id: 2, expression: "750 cm = ? Meters", correctAnswer: 7.5, conceptTag: "750 ÷ 100 = 7.5" },
+      { id: 3, expression: "1500 cm = ? Meters", correctAnswer: 15, conceptTag: "1500 ÷ 100 = 15" },
+      { id: 4, expression: "2800 cm = ? Meters", correctAnswer: 28, conceptTag: "2800 ÷ 100 = 28" },
+      { id: 5, expression: "600 cm = ? Meters", correctAnswer: 6, conceptTag: "600 ÷ 100 = 6" },
+      { id: 6, expression: "350 cm = ? Meters", correctAnswer: 3.5, conceptTag: "350 ÷ 100 = 3.5" },
+      { id: 7, expression: "900 cm = ? Meters", correctAnswer: 9, conceptTag: "900 ÷ 100 = 9" },
+      { id: 8, expression: "4200 cm = ? Meters", correctAnswer: 42, conceptTag: "4200 ÷ 100 = 42" },
+      { id: 9, expression: "1250 cm = ? Meters", correctAnswer: 12.5, conceptTag: "1250 ÷ 100 = 12.5" },
+      { id: 10, expression: "8000 cm = ? Meters", correctAnswer: 80, conceptTag: "8000 ÷ 100 = 80" },
+    ]
+  },
+  {
+    id: "jvm1-convert-m-cm",
+    title: "JVM-1: Convert Meter into Centimeter",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Meter into Centimeter",
+    description: "Convert meters to centimeters (Multiply by 100).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "6 m = ? Centimeters", correctAnswer: 600, conceptTag: "6 × 100 = 600" },
+      { id: 2, expression: "14 m = ? Centimeters", correctAnswer: 1400, conceptTag: "14 × 100 = 1400" },
+      { id: 3, expression: "8.5 m = ? Centimeters", correctAnswer: 850, conceptTag: "8.5 × 100 = 850" },
+      { id: 4, expression: "25 m = ? Centimeters", correctAnswer: 2500, conceptTag: "25 × 100 = 2500" },
+      { id: 5, expression: "3.2 m = ? Centimeters", correctAnswer: 320, conceptTag: "3.2 × 100 = 320" },
+      { id: 6, expression: "40 m = ? Centimeters", correctAnswer: 4000, conceptTag: "40 × 100 = 4000" },
+      { id: 7, expression: "12 m = ? Centimeters", correctAnswer: 1200, conceptTag: "12 × 100 = 1200" },
+      { id: 8, expression: "7.8 m = ? Centimeters", correctAnswer: 780, conceptTag: "7.8 × 100 = 780" },
+      { id: 9, expression: "50 m = ? Centimeters", correctAnswer: 5000, conceptTag: "50 × 100 = 5000" },
+      { id: 10, expression: "100 m = ? Centimeters", correctAnswer: 10000, conceptTag: "100 × 100 = 10000" },
+    ]
+  },
+  {
+    id: "jvm1-convert-g-kg",
+    title: "JVM-1: Convert Gram into Kilogram",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Gram into Kilogram",
+    description: "Convert grams to kg (Divide by 1000).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "4000 g = ? Kilograms", correctAnswer: 4, conceptTag: "4000 ÷ 1000 = 4" },
+      { id: 2, expression: "2500 g = ? Kilograms", correctAnswer: 2.5, conceptTag: "2500 ÷ 1000 = 2.5" },
+      { id: 3, expression: "7000 g = ? Kilograms", correctAnswer: 7, conceptTag: "7000 ÷ 1000 = 7" },
+      { id: 4, expression: "1500 g = ? Kilograms", correctAnswer: 1.5, conceptTag: "1500 ÷ 1000 = 1.5" },
+      { id: 5, expression: "9000 g = ? Kilograms", correctAnswer: 9, conceptTag: "9000 ÷ 1000 = 9" },
+      { id: 6, expression: "3500 g = ? Kilograms", correctAnswer: 3.5, conceptTag: "3500 ÷ 1000 = 3.5" },
+      { id: 7, expression: "12000 g = ? Kilograms", correctAnswer: 12, conceptTag: "12000 ÷ 1000 = 12" },
+      { id: 8, expression: "8500 g = ? Kilograms", correctAnswer: 8.5, conceptTag: "8500 ÷ 1000 = 8.5" },
+      { id: 9, expression: "5000 g = ? Kilograms", correctAnswer: 5, conceptTag: "5000 ÷ 1000 = 5" },
+      { id: 10, expression: "10000 g = ? Kilograms", correctAnswer: 10, conceptTag: "10000 ÷ 1000 = 10" },
+    ]
+  },
+  {
+    id: "jvm1-convert-kg-g",
+    title: "JVM-1: Convert Kilogram into Gram",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Kilogram into Gram",
+    description: "Convert kg to grams (Multiply by 1000).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "5 kg = ? Grams", correctAnswer: 5000, conceptTag: "5 × 1000 = 5000" },
+      { id: 2, expression: "3.5 kg = ? Grams", correctAnswer: 3500, conceptTag: "3.5 × 1000 = 3500" },
+      { id: 3, expression: "12 kg = ? Grams", correctAnswer: 12000, conceptTag: "12 × 1000 = 12000" },
+      { id: 4, expression: "8 kg = ? Grams", correctAnswer: 8000, conceptTag: "8 × 1000 = 8000" },
+      { id: 5, expression: "2.25 kg = ? Grams", correctAnswer: 2250, conceptTag: "2.25 × 1000 = 2250" },
+      { id: 6, expression: "15 kg = ? Grams", correctAnswer: 15000, conceptTag: "15 × 1000 = 15000" },
+      { id: 7, expression: "6.5 kg = ? Grams", correctAnswer: 6500, conceptTag: "6.5 × 1000 = 6500" },
+      { id: 8, expression: "20 kg = ? Grams", correctAnswer: 20000, conceptTag: "20 × 1000 = 20000" },
+      { id: 9, expression: "4.8 kg = ? Grams", correctAnswer: 4800, conceptTag: "4.8 × 1000 = 4800" },
+      { id: 10, expression: "50 kg = ? Grams", correctAnswer: 50000, conceptTag: "50 × 1000 = 50000" },
+    ]
+  },
+  {
+    id: "jvm1-convert-ml-l",
+    title: "JVM-1: Convert Millilitre into Litre",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Millilitre into Litre",
+    description: "Convert ml to litres (Divide by 1000).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "3000 ml = ? Litres", correctAnswer: 3, conceptTag: "3000 ÷ 1000 = 3" },
+      { id: 2, expression: "1500 ml = ? Litres", correctAnswer: 1.5, conceptTag: "1500 ÷ 1000 = 1.5" },
+      { id: 3, expression: "6000 ml = ? Litres", correctAnswer: 6, conceptTag: "6000 ÷ 1000 = 6" },
+      { id: 4, expression: "4500 ml = ? Litres", correctAnswer: 4.5, conceptTag: "4500 ÷ 1000 = 4.5" },
+      { id: 5, expression: "8000 ml = ? Litres", correctAnswer: 8, conceptTag: "8000 ÷ 1000 = 8" },
+      { id: 6, expression: "2500 ml = ? Litres", correctAnswer: 2.5, conceptTag: "2500 ÷ 1000 = 2.5" },
+      { id: 7, expression: "10000 ml = ? Litres", correctAnswer: 10, conceptTag: "10000 ÷ 1000 = 10" },
+      { id: 8, expression: "7500 ml = ? Litres", correctAnswer: 7.5, conceptTag: "7500 ÷ 1000 = 7.5" },
+      { id: 9, expression: "5000 ml = ? Litres", correctAnswer: 5, conceptTag: "5000 ÷ 1000 = 5" },
+      { id: 10, expression: "12000 ml = ? Litres", correctAnswer: 12, conceptTag: "12000 ÷ 1000 = 12" },
+    ]
+  },
+  {
+    id: "jvm1-convert-l-ml",
+    title: "JVM-1: Convert Litre into Millilitre",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Litre into Millilitre",
+    description: "Convert litres to ml (Multiply by 1000).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "4 l = ? Millilitres", correctAnswer: 4000, conceptTag: "4 × 1000 = 4000" },
+      { id: 2, expression: "2.5 l = ? Millilitres", correctAnswer: 2500, conceptTag: "2.5 × 1000 = 2500" },
+      { id: 3, expression: "7 l = ? Millilitres", correctAnswer: 7000, conceptTag: "7 × 1000 = 7000" },
+      { id: 4, expression: "9.5 l = ? Millilitres", correctAnswer: 9500, conceptTag: "9.5 × 1000 = 9500" },
+      { id: 5, expression: "15 l = ? Millilitres", correctAnswer: 15000, conceptTag: "15 × 1000 = 15000" },
+      { id: 6, expression: "3.25 l = ? Millilitres", correctAnswer: 3250, conceptTag: "3.25 × 1000 = 3250" },
+      { id: 7, expression: "20 l = ? Millilitres", correctAnswer: 20000, conceptTag: "20 × 1000 = 20000" },
+      { id: 8, expression: "6.8 l = ? Millilitres", correctAnswer: 6800, conceptTag: "6.8 × 1000 = 6800" },
+      { id: 9, expression: "12 l = ? Millilitres", correctAnswer: 12000, conceptTag: "12 × 1000 = 12000" },
+      { id: 10, expression: "50 l = ? Millilitres", correctAnswer: 50000, conceptTag: "50 × 1000 = 50000" },
+    ]
+  },
+  {
+    id: "jvm1-convert-m-km",
+    title: "JVM-1: Convert Meter into Kilometer",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Meter into Kilometer",
+    description: "Convert meters to km (Divide by 1000).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "5000 m = ? Kilometers", correctAnswer: 5, conceptTag: "5000 ÷ 1000 = 5" },
+      { id: 2, expression: "2500 m = ? Kilometers", correctAnswer: 2.5, conceptTag: "2500 ÷ 1000 = 2.5" },
+      { id: 3, expression: "8000 m = ? Kilometers", correctAnswer: 8, conceptTag: "8000 ÷ 1000 = 8" },
+      { id: 4, expression: "12000 m = ? Kilometers", correctAnswer: 12, conceptTag: "12000 ÷ 1000 = 12" },
+      { id: 5, expression: "4500 m = ? Kilometers", correctAnswer: 4.5, conceptTag: "4500 ÷ 1000 = 4.5" },
+      { id: 6, expression: "15000 m = ? Kilometers", correctAnswer: 15, conceptTag: "15000 ÷ 1000 = 15" },
+      { id: 7, expression: "7500 m = ? Kilometers", correctAnswer: 7.5, conceptTag: "7500 ÷ 1000 = 7.5" },
+      { id: 8, expression: "20000 m = ? Kilometers", correctAnswer: 20, conceptTag: "20000 ÷ 1000 = 20" },
+      { id: 9, expression: "3500 m = ? Kilometers", correctAnswer: 3.5, conceptTag: "3500 ÷ 1000 = 3.5" },
+      { id: 10, expression: "9000 m = ? Kilometers", correctAnswer: 9, conceptTag: "9000 ÷ 1000 = 9" },
+    ]
+  },
+  {
+    id: "jvm1-convert-km-m",
+    title: "JVM-1: Convert Kilometer into Meter",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Kilometer into Meter",
+    description: "Convert km to meters (Multiply by 1000).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "7 km = ? Meters", correctAnswer: 7000, conceptTag: "7 × 1000 = 7000" },
+      { id: 2, expression: "4.5 km = ? Meters", correctAnswer: 4500, conceptTag: "4.5 × 1000 = 4500" },
+      { id: 3, expression: "15 km = ? Meters", correctAnswer: 15000, conceptTag: "15 × 1000 = 15000" },
+      { id: 4, expression: "9.2 km = ? Meters", correctAnswer: 9200, conceptTag: "9.2 × 1000 = 9200" },
+      { id: 5, expression: "25 km = ? Meters", correctAnswer: 25000, conceptTag: "25 × 1000 = 25000" },
+      { id: 6, expression: "3.75 km = ? Meters", correctAnswer: 3750, conceptTag: "3.75 × 1000 = 3750" },
+      { id: 7, expression: "11 km = ? Meters", correctAnswer: 11000, conceptTag: "11 × 1000 = 11000" },
+      { id: 8, expression: "6.5 km = ? Meters", correctAnswer: 6500, conceptTag: "6.5 × 1000 = 6500" },
+      { id: 9, expression: "40 km = ? Meters", correctAnswer: 40000, conceptTag: "40 × 1000 = 40000" },
+      { id: 10, expression: "50 km = ? Meters", correctAnswer: 50000, conceptTag: "50 × 1000 = 50000" },
+    ]
+  },
+  {
+    id: "jvm1-convert-l-kl",
+    title: "JVM-1: Convert Litre into Kilolitre",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Litre into Kilolitre",
+    description: "Convert litres to kilolitres (Divide by 1000).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "6000 l = ? Kilolitres", correctAnswer: 6, conceptTag: "6000 ÷ 1000 = 6" },
+      { id: 2, expression: "3500 l = ? Kilolitres", correctAnswer: 3.5, conceptTag: "3500 ÷ 1000 = 3.5" },
+      { id: 3, expression: "9000 l = ? Kilolitres", correctAnswer: 9, conceptTag: "9000 ÷ 1000 = 9" },
+      { id: 4, expression: "12000 l = ? Kilolitres", correctAnswer: 12, conceptTag: "12000 ÷ 1000 = 12" },
+      { id: 5, expression: "4500 l = ? Kilolitres", correctAnswer: 4.5, conceptTag: "4500 ÷ 1000 = 4.5" },
+      { id: 6, expression: "18000 l = ? Kilolitres", correctAnswer: 18, conceptTag: "18000 ÷ 1000 = 18" },
+      { id: 7, expression: "7500 l = ? Kilolitres", correctAnswer: 7.5, conceptTag: "7500 ÷ 1000 = 7.5" },
+      { id: 8, expression: "25000 l = ? Kilolitres", correctAnswer: 25, conceptTag: "25000 ÷ 1000 = 25" },
+      { id: 9, expression: "8000 l = ? Kilolitres", correctAnswer: 8, conceptTag: "8000 ÷ 1000 = 8" },
+      { id: 10, expression: "10000 l = ? Kilolitres", correctAnswer: 10, conceptTag: "10000 ÷ 1000 = 10" },
+    ]
+  },
+  {
+    id: "jvm1-convert-kl-l",
+    title: "JVM-1: Convert Kilolitre into Litre",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "Convert Kilolitre into Litre",
+    description: "Convert kilolitres to litres (Multiply by 1000).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "8 kl = ? Litres", correctAnswer: 8000, conceptTag: "8 × 1000 = 8000" },
+      { id: 2, expression: "5.5 kl = ? Litres", correctAnswer: 5500, conceptTag: "5.5 × 1000 = 5500" },
+      { id: 3, expression: "14 kl = ? Litres", correctAnswer: 14000, conceptTag: "14 × 1000 = 14000" },
+      { id: 4, expression: "9.2 kl = ? Litres", correctAnswer: 9200, conceptTag: "9.2 × 1000 = 9200" },
+      { id: 5, expression: "20 kl = ? Litres", correctAnswer: 20000, conceptTag: "20 × 1000 = 20000" },
+      { id: 6, expression: "4.75 kl = ? Litres", correctAnswer: 4750, conceptTag: "4.75 × 1000 = 4750" },
+      { id: 7, expression: "12 kl = ? Litres", correctAnswer: 12000, conceptTag: "12 × 1000 = 12000" },
+      { id: 8, expression: "6.5 kl = ? Litres", correctAnswer: 6500, conceptTag: "6.5 × 1000 = 6500" },
+      { id: 9, expression: "30 kl = ? Litres", correctAnswer: 30000, conceptTag: "30 × 1000 = 30000" },
+      { id: 10, expression: "50 kl = ? Litres", correctAnswer: 50000, conceptTag: "50 × 1000 = 50000" },
+    ]
+  },
+  // Advanced Level Sets
   {
     id: "vedic-level1-nikhilam",
     title: "NIKHILAM SUTRA (BASE 10 & 100 MULTIPLICATION)",
     category: "vedic",
     level: "Level 1",
-    topic: "1. NIKHILAM NAVATASHCARAMAM DASHATAH (ALL FROM 9, LAST FROM 10)",
+    topic: "NIKHILAM NAVATASHCARAMAM DASHATAH",
     description: "Rapid mental multiplication for numbers close to base 10, 100, and 1000.",
     questionCount: 20,
-    timeLimitSeconds: 240, // 4 minutes
+    timeLimitSeconds: 240,
     questions: [
-      { id: 1, expression: "97 × 95", correctAnswer: 9215, conceptTag: "Base 100 (-3, -5)", explanation: "Deficits: -3, -5. LHS: 97 - 5 = 92. RHS: (-3) × (-5) = 15. Result: 9215" },
-      { id: 2, expression: "98 × 94", correctAnswer: 9212, conceptTag: "Base 100 (-2, -6)", explanation: "Deficits: -2, -6. LHS: 98 - 6 = 92. RHS: 2 × 6 = 12. Result: 9212" },
-      { id: 3, expression: "96 × 93", correctAnswer: 8928, conceptTag: "Base 100 (-4, -7)", explanation: "Deficits: -4, -7. LHS: 96 - 7 = 89. RHS: 4 × 7 = 28. Result: 8928" },
-      { id: 4, expression: "99 × 91", correctAnswer: 9009, conceptTag: "Base 100 (-1, -9)", explanation: "Deficits: -1, -9. LHS: 99 - 9 = 90. RHS: 1 × 9 = 09. Result: 9009" },
-      { id: 5, expression: "103 × 105", correctAnswer: 10815, conceptTag: "Base 100 Surplus (+3, +5)", explanation: "Surplus: +3, +5. LHS: 103 + 5 = 108. RHS: 3 × 5 = 15. Result: 10815" },
-      { id: 6, expression: "104 × 106", correctAnswer: 11024, conceptTag: "Base 100 Surplus (+4, +6)", explanation: "Surplus: +4, +6. LHS: 104 + 6 = 110. RHS: 4 × 6 = 24. Result: 11024" },
-      { id: 7, expression: "102 × 107", correctAnswer: 10914, conceptTag: "Base 100 Surplus (+2, +7)", explanation: "Surplus: +2, +7. LHS: 102 + 7 = 109. RHS: 2 × 7 = 14. Result: 10914" },
-      { id: 8, expression: "108 × 109", correctAnswer: 11772, conceptTag: "Base 100 Surplus (+8, +9)", explanation: "Surplus: +8, +9. LHS: 108 + 9 = 117. RHS: 8 × 9 = 72. Result: 11772" },
-      { id: 9, expression: "9 × 8", correctAnswer: 72, conceptTag: "Base 10 (-1, -2)" },
-      { id: 10, expression: "7 × 8", correctAnswer: 56, conceptTag: "Base 10 (-3, -2)" },
-      { id: 11, expression: "92 × 97", correctAnswer: 8924, conceptTag: "Base 100 (-8, -3)" },
-      { id: 12, expression: "95 × 94", correctAnswer: 8930, conceptTag: "Base 100 (-5, -6)" },
-      { id: 13, expression: "105 × 107", correctAnswer: 11235, conceptTag: "Base 100 (+5, +7)" },
-      { id: 14, expression: "109 × 103", correctAnswer: 11227, conceptTag: "Base 100 (+9, +3)" },
-      { id: 15, expression: "998 × 995", correctAnswer: 993010, conceptTag: "Base 1000 (-2, -5)" },
-      { id: 16, expression: "996 × 997", correctAnswer: 993012, conceptTag: "Base 1000 (-4, -3)" },
-      { id: 17, expression: "1004 × 1005", correctAnswer: 1009020, conceptTag: "Base 1000 (+4, +5)" },
-      { id: 18, expression: "91 × 98", correctAnswer: 8918, conceptTag: "Base 100 (-9, -2)" },
-      { id: 19, expression: "106 × 108", correctAnswer: 11448, conceptTag: "Base 100 (+6, +8)" },
-      { id: 20, expression: "94 × 97", correctAnswer: 9118, conceptTag: "Base 100 (-6, -3)" },
+      { id: 1, expression: "97 × 95", correctAnswer: 9215, conceptTag: "Base 100 (-3, -5)" },
+      { id: 2, expression: "98 × 94", correctAnswer: 9212, conceptTag: "Base 100 (-2, -6)" },
+      { id: 3, expression: "96 × 93", correctAnswer: 8928, conceptTag: "Base 100 (-4, -7)" },
+      { id: 4, expression: "99 × 91", correctAnswer: 9009, conceptTag: "Base 100 (-1, -9)" },
+      { id: 5, expression: "103 × 105", correctAnswer: 10815, conceptTag: "Base 100 Surplus (+3, +5)" },
     ]
   },
   {
@@ -206,31 +537,16 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
     title: "EKADHIKENA PURVENA (SQUARING ENDING IN 5)",
     category: "vedic",
     level: "Level 1",
-    topic: "2. EKADHIKENA PURVENA (BY ONE MORE THAN THE PREVIOUS ONE)",
+    topic: "EKADHIKENA PURVENA",
     description: "Instant 2-second trick to square any number ending in 5.",
     questionCount: 20,
-    timeLimitSeconds: 240, // 4 minutes
+    timeLimitSeconds: 240,
     questions: [
       { id: 1, expression: "15²", correctAnswer: 225, conceptTag: "1 × (1+1) = 2, attach 25" },
       { id: 2, expression: "25²", correctAnswer: 625, conceptTag: "2 × 3 = 6, attach 25" },
       { id: 3, expression: "35²", correctAnswer: 1225, conceptTag: "3 × 4 = 12, attach 25" },
       { id: 4, expression: "45²", correctAnswer: 2025, conceptTag: "4 × 5 = 20, attach 25" },
       { id: 5, expression: "55²", correctAnswer: 3025, conceptTag: "5 × 6 = 30, attach 25" },
-      { id: 6, expression: "65²", correctAnswer: 4225, conceptTag: "6 × 7 = 42, attach 25" },
-      { id: 7, expression: "75²", correctAnswer: 5625, conceptTag: "7 × 8 = 56, attach 25" },
-      { id: 8, expression: "85²", correctAnswer: 7225, conceptTag: "8 × 9 = 72, attach 25" },
-      { id: 9, expression: "95²", correctAnswer: 9025, conceptTag: "9 × 10 = 90, attach 25" },
-      { id: 10, expression: "105²", correctAnswer: 11025, conceptTag: "10 × 11 = 110, attach 25" },
-      { id: 11, expression: "115²", correctAnswer: 13225, conceptTag: "11 × 12 = 132, attach 25" },
-      { id: 12, expression: "125²", correctAnswer: 15625, conceptTag: "12 × 13 = 156, attach 25" },
-      { id: 13, expression: "35 × 35", correctAnswer: 1225, conceptTag: "Ekadhikena Purvena" },
-      { id: 14, expression: "45 × 45", correctAnswer: 2025, conceptTag: "Ekadhikena Purvena" },
-      { id: 15, expression: "65 × 65", correctAnswer: 4225, conceptTag: "Ekadhikena Purvena" },
-      { id: 16, expression: "75 × 75", correctAnswer: 5625, conceptTag: "Ekadhikena Purvena" },
-      { id: 17, expression: "85 × 85", correctAnswer: 7225, conceptTag: "Ekadhikena Purvena" },
-      { id: 18, expression: "95 × 95", correctAnswer: 9025, conceptTag: "Ekadhikena Purvena" },
-      { id: 19, expression: "105 × 105", correctAnswer: 11025, conceptTag: "Ekadhikena Purvena" },
-      { id: 20, expression: "115 × 115", correctAnswer: 13225, conceptTag: "Ekadhikena Purvena" },
     ]
   },
   {
@@ -238,31 +554,16 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
     title: "URDHVA TIRYAGBHYAM (CRISS-CROSS MULTIPLICATION)",
     category: "vedic",
     level: "Level 2",
-    topic: "3. URDHVA TIRYAGBHYAM (VERTICALLY AND CROSSWISE)",
+    topic: "URDHVA TIRYAGBHYAM",
     description: "General multiplication sutra for multiplying any 2-digit by 2-digit numbers mentally.",
     questionCount: 20,
-    timeLimitSeconds: 240, // 4 minutes
+    timeLimitSeconds: 240,
     questions: [
-      { id: 1, expression: "12 × 13", correctAnswer: 156, conceptTag: "Criss-Cross 2x2", explanation: "(1×1) | (1×3 + 2×1) | (2×3) = 1 | 5 | 6 = 156" },
+      { id: 1, expression: "12 × 13", correctAnswer: 156, conceptTag: "Criss-Cross 2x2" },
       { id: 2, expression: "21 × 31", correctAnswer: 651, conceptTag: "Criss-Cross 2x2" },
       { id: 3, expression: "14 × 12", correctAnswer: 168, conceptTag: "Criss-Cross 2x2" },
       { id: 4, expression: "23 × 12", correctAnswer: 276, conceptTag: "Criss-Cross 2x2" },
       { id: 5, expression: "32 × 21", correctAnswer: 672, conceptTag: "Criss-Cross 2x2" },
-      { id: 6, expression: "41 × 12", correctAnswer: 492, conceptTag: "Criss-Cross 2x2" },
-      { id: 7, expression: "22 × 31", correctAnswer: 682, conceptTag: "Criss-Cross 2x2" },
-      { id: 8, expression: "13 × 14", correctAnswer: 182, conceptTag: "Criss-Cross 2x2" },
-      { id: 9, expression: "31 × 32", correctAnswer: 992, conceptTag: "Criss-Cross 2x2" },
-      { id: 10, expression: "51 × 12", correctAnswer: 612, conceptTag: "Criss-Cross 2x2" },
-      { id: 11, expression: "24 × 12", correctAnswer: 288, conceptTag: "Criss-Cross 2x2" },
-      { id: 12, expression: "33 × 21", correctAnswer: 693, conceptTag: "Criss-Cross 2x2" },
-      { id: 13, expression: "42 × 12", correctAnswer: 504, conceptTag: "Criss-Cross 2x2" },
-      { id: 14, expression: "15 × 12", correctAnswer: 180, conceptTag: "Criss-Cross 2x2" },
-      { id: 15, expression: "23 × 22", correctAnswer: 506, conceptTag: "Criss-Cross 2x2" },
-      { id: 16, expression: "34 × 12", correctAnswer: 408, conceptTag: "Criss-Cross 2x2" },
-      { id: 17, expression: "52 × 11", correctAnswer: 572, conceptTag: "Criss-Cross 2x2" },
-      { id: 18, expression: "61 × 12", correctAnswer: 732, conceptTag: "Criss-Cross 2x2" },
-      { id: 19, expression: "71 × 11", correctAnswer: 781, conceptTag: "Criss-Cross 2x2" },
-      { id: 20, expression: "82 × 11", correctAnswer: 902, conceptTag: "Criss-Cross 2x2" },
     ]
   }
 ];
@@ -276,38 +577,35 @@ export function getQuestionSetById(id: string): QuestionSet | undefined {
 }
 
 /**
- * Generator helper to expand question sets for speed modes:
- * - exam / instant: 20 questions, 4 mins (240s)
- * - speed-100-5m: 100 questions, 5 mins (300s)
- * - speed-100-10m: 100 questions, 10 mins (600s)
- * - speed-200-20m: 200 questions, 20 mins (1200s)
+ * Generator helper to expand or trim question sets for speed modes & selected question counts (10, 20, 50, 100, 200)
  */
-export function getCustomizedSet(setId: string, mode: PracticeMode): QuestionSet {
-  const base = getQuestionSetById(setId) || ABACUS_QUESTION_SETS[0];
+export function getCustomizedSet(setId: string, mode: PracticeMode, qCountChoice: number = 20): QuestionSet {
+  const base = getQuestionSetById(setId) || VEDIC_QUESTION_SETS[0];
 
-  let targetCount = 20;
-  let timeLimitSeconds = 240; // 4 mins default
-  let modeTag = "4-Min Timed Exam";
+  let targetCount = qCountChoice;
+  let timeLimitSeconds = 240; // 4 mins default for 20 Qs
 
+  if (qCountChoice === 10) {
+    timeLimitSeconds = 120; // 2 mins for 10 Qs
+  } else if (qCountChoice === 20) {
+    timeLimitSeconds = 240; // 4 mins for 20 Qs
+  } else if (qCountChoice === 50) {
+    timeLimitSeconds = 480; // 8 mins for 50 Qs
+  }
+
+  // Handle explicit speed sprint modes
   if (mode === "speed-100-5m") {
     targetCount = 100;
     timeLimitSeconds = 300; // 5 mins
-    modeTag = "100 Qs in 5 Mins Speed Sprint";
   } else if (mode === "speed-100-10m") {
     targetCount = 100;
     timeLimitSeconds = 600; // 10 mins
-    modeTag = "100 Qs in 10 Mins Speed Marathon";
   } else if (mode === "speed-200-20m") {
     targetCount = 200;
     timeLimitSeconds = 1200; // 20 mins
-    modeTag = "200 Qs in 20 Mins Ultimate Challenge";
-  } else if (mode === "instant") {
-    targetCount = 20;
-    timeLimitSeconds = 240;
-    modeTag = "Instant Feedback Mode";
   }
 
-  // Multiply/cycle base questions if needed to reach targetCount
+  // Expand or slice questions to match targetCount
   const expandedQuestions: Question[] = [];
   for (let i = 0; i < targetCount; i++) {
     const baseQ = base.questions[i % base.questions.length];

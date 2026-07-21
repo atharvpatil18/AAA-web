@@ -40,8 +40,10 @@ export interface LeadSubmission {
 
 export type PracticeCategory = "abacus" | "vedic";
 
+export type QuestionCountChoice = 10 | 20 | 50 | 100 | 200;
+
 export type PracticeMode =
-  | "exam" // 4 Min Timed (20 Qs)
+  | "exam" // 4 Min Timed
   | "instant" // Instant Feedback
   | "speed-100-5m" // 100 Questions in 5 Mins
   | "speed-100-10m" // 100 Questions in 10 Mins

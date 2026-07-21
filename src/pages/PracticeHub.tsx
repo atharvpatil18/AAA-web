@@ -6,33 +6,34 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ABACUS_QUESTION_SETS, VEDIC_QUESTION_SETS } from "../data/practiceData";
-import { PracticeCategory, PracticeMode } from "../types";
-import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award, Star } from "lucide-react";
+import { PracticeCategory, PracticeMode, QuestionCountChoice } from "../types";
+import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award, Star, Sliders, Layers } from "lucide-react";
 
 export default function PracticeHub() {
   const [activeCategory, setActiveCategory] = useState<PracticeCategory>("abacus");
   const [selectedMode, setSelectedMode] = useState<PracticeMode>("exam");
+  const [selectedCount, setSelectedCount] = useState<QuestionCountChoice>(20);
   const navigate = useNavigate();
 
   const currentSets = activeCategory === "abacus" ? ABACUS_QUESTION_SETS : VEDIC_QUESTION_SETS;
 
   const handleStartSet = (setId: string) => {
-    navigate(`/practice/session?setId=${setId}&mode=${selectedMode}`);
+    navigate(`/practice/session?setId=${setId}&mode=${selectedMode}&count=${selectedCount}`);
   };
 
   const modeOptions: { mode: PracticeMode; label: string; timeText: string; icon: React.ReactNode; color: string; badge: string }[] = [
     {
       mode: "exam",
-      label: "Standard Test (20 Qs)",
-      timeText: "4 Mins Timeline",
+      label: "Standard Test",
+      timeText: "Timed Timeline Test",
       icon: <Clock className="w-4 h-4 text-amber-400" />,
       color: "bg-slate-900 text-white border-slate-900",
-      badge: "4 Min Timed"
+      badge: "Timed Test"
     },
     {
       mode: "instant",
-      label: "Instant Feedback (20 Qs)",
-      timeText: "4 Mins + Per Q Feedback",
+      label: "Instant Feedback",
+      timeText: "Verify Answer Per Question",
       icon: <CheckCircle2 className="w-4 h-4 text-emerald-400" />,
       color: "bg-emerald-600 text-white border-emerald-600",
       badge: "Instant Check"
@@ -75,22 +76,22 @@ export default function PracticeHub() {
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider mb-4 shadow-sm animate-pulse">
             <Sparkles className="w-4 h-4 text-amber-400" />
-            🌟 High-Energy Speed & Accuracy Zone
+            🌟 High-Energy Abacus & Vedic Math Speed Zone
           </div>
           <h1 className="text-3xl md:text-5xl font-black font-display tracking-tight text-white mb-3 leading-tight">
             Abacus & Vedic Math <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-teal-300">Practice Hub</span>
           </h1>
           <p className="text-slate-300 max-w-2xl mx-auto text-sm md:text-base leading-relaxed font-medium">
-            Boost visual confidence, eliminate finger counting, and calculate faster than a calculator! Choose your speed sprint challenge below.
+            Master JVM-1 Vedic Math & Abacus levels! Choose 10 Questions, 20 Questions, or 50 Questions per set under your favorite mode.
           </p>
 
-          {/* Motivational Cheer Badge Bar */}
+          {/* Motivational Cheer Badges */}
           <div className="mt-6 flex flex-wrap justify-center items-center gap-3 text-xs font-bold text-amber-200">
             <span className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-lg flex items-center gap-1.5">
-              <Trophy className="w-3.5 h-3.5 text-amber-400" /> 4-Min Timed Drills
+              <Trophy className="w-3.5 h-3.5 text-amber-400" /> 10 Qs / 20 Qs / 50 Qs Options
             </span>
             <span className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-lg flex items-center gap-1.5">
-              <Rocket className="w-3.5 h-3.5 text-orange-400" /> 100 & 200 Questions Speed Sprints
+              <Rocket className="w-3.5 h-3.5 text-orange-400" /> JVM-1 Sutras & Conversions
             </span>
             <span className="bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-lg flex items-center gap-1.5">
               <Star className="w-3.5 h-3.5 text-yellow-400" /> Instant Verification & Analysis
@@ -131,7 +132,7 @@ export default function PracticeHub() {
             </div>
           </div>
 
-          {/* Mode Selector Header & Buttons (Supports 4-min test & 100/200 speed sprints) */}
+          {/* Mode Selector Header & Buttons */}
           <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-5 rounded-2xl text-white mb-8 border border-indigo-800/50 shadow-md">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4 border-b border-indigo-800/60 pb-3">
               <div>
@@ -139,11 +140,28 @@ export default function PracticeHub() {
                   <Flame className="w-5 h-5 text-orange-400 animate-bounce" />
                   Select Practice Challenge Mode:
                 </h3>
-                <p className="text-xs text-slate-300">Choose your test duration & speed target before starting any question set.</p>
+                <p className="text-xs text-slate-300">Choose mode type and question length (10 Qs, 20 Qs, 50 Qs).</p>
               </div>
-              <span className="bg-amber-400 text-slate-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
-                5 Modes Available
-              </span>
+              
+              {/* Question Count Selector (10 Qs, 20 Qs, 50 Qs) */}
+              <div className="flex items-center gap-2 bg-white/10 p-1 rounded-xl border border-white/20">
+                <span className="text-xs font-bold text-amber-300 px-2 flex items-center gap-1">
+                  <Layers className="w-3.5 h-3.5" /> Qs Count:
+                </span>
+                {([10, 20, 50] as QuestionCountChoice[]).map((count) => (
+                  <button
+                    key={count}
+                    onClick={() => setSelectedCount(count)}
+                    className={`px-3 py-1 rounded-lg font-black text-xs transition-all ${
+                      selectedCount === count
+                        ? "bg-vibrant-orange text-white shadow-sm"
+                        : "text-slate-300 hover:text-white hover:bg-white/10"
+                    }`}
+                  >
+                    {count} Qs
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
@@ -175,27 +193,31 @@ export default function PracticeHub() {
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-vibrant-orange" />
-                Level-Wise Question Sets ({currentSets.length})
+                {activeCategory === "vedic" ? "Vedic Math Topics (JVM-1 & Advanced)" : "Abacus Level-Wise Sets"} ({currentSets.length})
               </h2>
               <span className="text-xs text-slate-500 font-medium hidden sm:inline">
-                Active Mode: <span className="font-bold text-slate-800">{modeOptions.find(m => m.mode === selectedMode)?.badge}</span>
+                Selected: <span className="font-bold text-slate-800">{selectedCount} Questions</span> per set
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {currentSets.map((set) => {
-                const questionCountDisplay = selectedMode.startsWith("speed-100")
+                const effectiveQCount = selectedMode.startsWith("speed-100")
                   ? 100
                   : selectedMode === "speed-200-20m"
                   ? 200
-                  : 20;
+                  : selectedCount;
 
-                const timerDisplay = selectedMode === "speed-100-5m"
+                const timerText = selectedMode === "speed-100-5m"
                   ? "5 Mins"
                   : selectedMode === "speed-100-10m"
                   ? "10 Mins"
                   : selectedMode === "speed-200-20m"
                   ? "20 Mins"
+                  : selectedCount === 10
+                  ? "2 Mins"
+                  : selectedCount === 50
+                  ? "8 Mins"
                   : "4 Mins";
 
                 return (
@@ -203,16 +225,16 @@ export default function PracticeHub() {
                     key={set.id}
                     className="bg-white border-2 border-slate-200 hover:border-vibrant-orange/60 rounded-2xl p-6 transition-all hover:shadow-xl flex flex-col justify-between group relative overflow-hidden"
                   >
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-orange-500/10 to-transparent rounded-bl-full pointer-events-none"></div>
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-teal-500/10 to-transparent rounded-bl-full pointer-events-none"></div>
 
                     <div>
                       <div className="flex justify-between items-center mb-3">
-                        <span className="bg-orange-100 text-orange-800 text-xs font-black px-3 py-1 rounded-lg uppercase tracking-wider">
+                        <span className="bg-teal-100 text-teal-900 text-xs font-black px-3 py-1 rounded-lg uppercase tracking-wider">
                           {set.level}
                         </span>
                         <span className="flex items-center gap-1 text-xs text-slate-600 font-bold bg-slate-100 px-2.5 py-1 rounded-md">
                           <Clock className="w-3.5 h-3.5 text-vibrant-orange" />
-                          {timerDisplay} ({questionCountDisplay} Qs)
+                          {timerText} ({effectiveQCount} Qs)
                         </span>
                       </div>
 
@@ -226,13 +248,13 @@ export default function PracticeHub() {
 
                     <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                       <span className="text-xs font-semibold text-slate-500">
-                        Topic: <span className="text-slate-800 font-bold">{set.topic.split(". ")[1] || set.topic}</span>
+                        Topic: <span className="text-slate-800 font-bold">{set.topic}</span>
                       </span>
                       <button
                         onClick={() => handleStartSet(set.id)}
-                        className="bg-vibrant-orange hover:bg-vibrant-orange/90 text-white text-xs font-black px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer"
+                        className="bg-vibrant-teal hover:bg-vibrant-teal/90 text-white text-xs font-black px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer"
                       >
-                        Start Sprint
+                        Start {effectiveQCount} Qs
                         <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
