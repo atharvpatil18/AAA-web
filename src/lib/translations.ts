@@ -10,6 +10,7 @@ export const translations = {
     // Navbar
     navHome: "Home",
     navPrograms: "Programs",
+    navPractice: "Practice",
     navSuccess: "Our Success",
     navGallery: "Gallery",
     navNews: "News & Events",
@@ -833,6 +834,7 @@ export const translations = {
     // Navbar
     navHome: "होम",
     navPrograms: "कोर्सेस",
+    navPractice: "अभ्यास",
     navSuccess: "हमारी सफलता",
     navGallery: "गैलरी",
     navNews: "समाचार और कार्यक्रम",
@@ -1656,6 +1658,7 @@ export const translations = {
     // Navbar
     navHome: "मुख्यपृष्ठ",
     navPrograms: "कोर्सेस",
+    navPractice: "सराव (प्रॅक्टिस)",
     navSuccess: "आमचे यश",
     navGallery: "गॅलरी",
     navNews: "बातम्या आणि कार्यक्रम",

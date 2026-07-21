@@ -17,6 +17,9 @@ import CampaignPage from "./pages/CampaignPage";
 import Showcase from "./pages/Showcase";
 import NewsEvents from "./pages/NewsEvents";
 import InteractiveBrochure from "./pages/InteractiveBrochure";
+import PracticeHub from "./pages/PracticeHub";
+import PracticeSession from "./pages/PracticeSession";
+import PracticeResult from "./pages/PracticeResult";
 
 import { LanguageProvider } from "./lib/LanguageContext";
 
@@ -47,6 +50,9 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/mentor" element={<Mentor />} />
             <Route path="/programs" element={<Programs />} />
+            <Route path="/practice" element={<PracticeHub />} />
+            <Route path="/practice/session" element={<PracticeSession />} />
+            <Route path="/practice/results" element={<PracticeResult />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/showcase" element={<Showcase />} />
             <Route path="/gallery" element={<Showcase defaultTab="gallery" />} />
