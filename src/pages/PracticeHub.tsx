@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ABACUS_QUESTION_SETS, VEDIC_QUESTION_SETS } from "../data/practiceData";
 import { PracticeCategory, PracticeMode, QuestionCountChoice } from "../types";
-import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Calendar, ShieldCheck, ListOrdered } from "lucide-react";
+import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Calendar, ShieldCheck, ListOrdered, AlertCircle } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 
 export default function PracticeHub() {
@@ -15,10 +15,29 @@ export default function PracticeHub() {
   const [activeCategory, setActiveCategory] = useState<PracticeCategory>("abacus");
   const [selectedMode, setSelectedMode] = useState<PracticeMode>("exam");
   const [selectedCount, setSelectedCount] = useState<QuestionCountChoice>(20);
-  const [hubTab, setHubTab] = useState<"sets" | "performance" | "leaderboard">("sets");
+  const [hubTab, setHubTab] = useState<"sets" | "performance" | "leaderboard" | "admin">("sets");
   const [selectedSetLeaderboard, setSelectedSetLeaderboard] = useState<string>("abacus-jr1-direct-2row");
   const [attemptsList, setAttemptsList] = useState<any[]>([]);
   const navigate = useNavigate();
+
+  // Admin Approved Emails management state
+  const [approvedEmails, setApprovedEmails] = useState<string[]>([]);
+  const [newEmail, setNewEmail] = useState("");
+  const [adminSearch, setAdminSearch] = useState("");
+  const [adminError, setAdminError] = useState<string | null>(null);
+  const [adminSuccess, setAdminSuccess] = useState<string | null>(null);
+
+  // Load approved emails list
+  useEffect(() => {
+    const raw = localStorage.getItem("aaa_approved_emails");
+    if (raw) {
+      setApprovedEmails(JSON.parse(raw));
+    } else {
+      const defaultEmails = ["nitinkpatil@gmail.com", "admin@arnavabacus.com"];
+      localStorage.setItem("aaa_approved_emails", JSON.stringify(defaultEmails));
+      setApprovedEmails(defaultEmails);
+    }
+  }, [hubTab]);
 
   // Load and seed leaderboard stats dynamically
   useEffect(() => {
@@ -177,7 +196,7 @@ export default function PracticeHub() {
               <Medal className="w-4.5 h-4.5" />
               My Performance History
             </button>
-            <button
+             <button
               onClick={() => setHubTab("leaderboard")}
               className={`flex items-center gap-2 py-3.5 px-6 font-black text-sm border-b-4 transition-all whitespace-nowrap cursor-pointer ${
                 hubTab === "leaderboard"
@@ -188,6 +207,19 @@ export default function PracticeHub() {
               <Trophy className="w-4.5 h-4.5" />
               Leaderboards
             </button>
+            {currentUser && (currentUser.email === "admin@arnavabacus.com" || currentUser.email === "nitinkpatil@gmail.com") && (
+              <button
+                onClick={() => setHubTab("admin")}
+                className={`flex items-center gap-2 py-3.5 px-6 font-black text-sm border-b-4 transition-all whitespace-nowrap cursor-pointer ${
+                  hubTab === "admin"
+                    ? "border-vibrant-orange text-vibrant-orange"
+                    : "border-transparent text-slate-500 hover:text-slate-850"
+                }`}
+              >
+                <ShieldCheck className="w-4.5 h-4.5" />
+                Admin Portal
+              </button>
+            )}
           </div>
 
           {/* TAB 1: PRACTICE SETS */}
@@ -630,6 +662,158 @@ export default function PracticeHub() {
                   </div>
                 );
               })()}
+            </div>
+          )}
+
+          {/* TAB 4: ADMIN PORTAL */}
+          {hubTab === "admin" && currentUser && (currentUser.email === "admin@arnavabacus.com" || currentUser.email === "nitinkpatil@gmail.com") && (
+            <div className="space-y-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-4 mb-4 gap-4">
+                <div>
+                  <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-vibrant-teal" />
+                    Student Access & Verification Control
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Add or remove student email addresses approved to request OTP and log in.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search approved emails..."
+                      value={adminSearch}
+                      onChange={(e) => setAdminSearch(e.target.value)}
+                      className="pl-3 pr-8 py-2 border border-slate-200 rounded-xl text-xs font-semibold focus:border-vibrant-teal outline-none w-56 transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Success / Error Banners */}
+              {adminError && (
+                <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-3.5 text-xs font-bold flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                  <span>{adminError}</span>
+                </div>
+              )}
+              {adminSuccess && (
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl p-3.5 text-xs font-bold flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>{adminSuccess}</span>
+                </div>
+              )}
+
+              {/* Add New Email Form */}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setAdminError(null);
+                  setAdminSuccess(null);
+                  const emailToAdd = newEmail.trim().toLowerCase();
+                  if (!emailToAdd || !emailToAdd.includes("@")) {
+                    setAdminError("Please enter a valid email address.");
+                    return;
+                  }
+                  if (approvedEmails.includes(emailToAdd)) {
+                    setAdminError("This email address is already approved.");
+                    return;
+                  }
+
+                  const updatedList = [...approvedEmails, emailToAdd];
+                  localStorage.setItem("aaa_approved_emails", JSON.stringify(updatedList));
+                  setApprovedEmails(updatedList);
+                  setNewEmail("");
+                  setAdminSuccess(`Successfully registered ${emailToAdd} to approved student database!`);
+                }}
+                className="bg-slate-50 border border-slate-200 rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-end gap-4"
+              >
+                <div className="flex-1 w-full">
+                  <label className="block text-[11px] font-black text-slate-700 uppercase tracking-wider mb-2">
+                    Approve New Student Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    placeholder="Enter student email (e.g. rohan.patil@gmail.com)"
+                    className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm font-medium focus:border-vibrant-teal focus:ring-2 focus:ring-vibrant-teal/10 outline-none bg-white transition-all"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-vibrant-teal hover:bg-vibrant-teal/90 text-white font-black px-6 py-2.5 rounded-xl text-xs shadow-md active:scale-98 transition-all cursor-pointer whitespace-nowrap"
+                >
+                  Register Email
+                </button>
+              </form>
+
+              {/* Email List Table */}
+              <div className="border border-slate-200 rounded-2xl overflow-hidden bg-white">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-slate-50 border-b border-slate-200">
+                      <th className="py-3 px-6 text-xs font-black text-slate-700 uppercase tracking-wider">
+                        Approved Student Email
+                      </th>
+                      <th className="py-3 px-6 text-xs font-black text-slate-700 uppercase tracking-wider text-right">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(() => {
+                      const filtered = approvedEmails.filter(email => 
+                        email.toLowerCase().includes(adminSearch.toLowerCase().trim())
+                      );
+
+                      if (filtered.length === 0) {
+                        return (
+                          <tr>
+                            <td colSpan={2} className="py-8 text-center text-xs font-bold text-slate-400">
+                              No approved email matching "{adminSearch}" found.
+                            </td>
+                          </tr>
+                        );
+                      }
+
+                      return filtered.map((email, idx) => (
+                        <tr key={idx} className="border-b border-slate-100 last:border-b-0 hover:bg-slate-50/50 transition-colors">
+                          <td className="py-3.5 px-6 text-sm font-semibold text-slate-800">
+                            {email}
+                          </td>
+                          <td className="py-3.5 px-6 text-right">
+                            {email === "nitinkpatil@gmail.com" || email === "admin@arnavabacus.com" ? (
+                              <span className="text-[10px] text-slate-400 font-bold bg-slate-100 px-2 py-1 rounded-md">
+                                Protected Admin
+                              </span>
+                            ) : (
+                              <button
+                                onClick={() => {
+                                  if (confirm(`Are you sure you want to remove ${email} from approved list?`)) {
+                                    setAdminError(null);
+                                    setAdminSuccess(null);
+                                    const updatedList = approvedEmails.filter(e => e !== email);
+                                    localStorage.setItem("aaa_approved_emails", JSON.stringify(updatedList));
+                                    setApprovedEmails(updatedList);
+                                    setAdminSuccess(`Removed ${email} from approved list.`);
+                                  }
+                                }}
+                                className="text-xs font-bold text-red-600 hover:text-red-800 hover:underline cursor-pointer"
+                              >
+                                Revoke Access
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      ));
+                    })()}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
