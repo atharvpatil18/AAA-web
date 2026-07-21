@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (hasConfig) {
       try {
-        let response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -73,30 +73,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
           })
         });
-
-        // Auto-retry on the US server endpoint if we get "Account not found"
-        if (!response.ok) {
-          const checkText = await response.clone().text();
-          if (checkText.toLowerCase().includes("account not found")) {
-            console.log("Account not found on default endpoint. Retrying with US server endpoint...");
-            response = await fetch("https://api-us.emailjs.com/api/v1.0/email/send", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({
-                service_id: serviceId,
-                template_id: templateId,
-                user_id: publicKey,
-                template_params: {
-                  to_name: name,
-                  to_email: email,
-                  otp_code: generatedOTP
-                }
-              })
-            });
-          }
-        }
 
         if (response.ok) {
           console.log("Verification email sent successfully via EmailJS!");
