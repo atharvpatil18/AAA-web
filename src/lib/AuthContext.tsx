@@ -43,6 +43,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const sendEmailOTP = async (email: string, name: string) => {
+    // Check if the email is pre-approved in our database
+    const APPROVED_EMAILS_KEY = "aaa_approved_emails";
+    let approvedEmailsRaw = localStorage.getItem(APPROVED_EMAILS_KEY);
+    
+    // Seed default approved emails if they don't exist
+    if (!approvedEmailsRaw) {
+      const defaultApproved = ["nitinkpatil@gmail.com", "admin@arnavabacus.com"];
+      localStorage.setItem(APPROVED_EMAILS_KEY, JSON.stringify(defaultApproved));
+      approvedEmailsRaw = JSON.stringify(defaultApproved);
+    }
+
+    const approvedEmails: string[] = JSON.parse(approvedEmailsRaw);
+    const targetEmail = email.trim().toLowerCase();
+
+    if (!approvedEmails.map(e => e.toLowerCase().trim()).includes(targetEmail)) {
+      return {
+        success: false,
+        error: "Your email address is not registered in our student database. Please contact Arnav Abacus Academy to register.",
+        otp: ""
+      };
+    }
+
     // Generate a simple 6-digit OTP code
     const generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
     sessionStorage.setItem(`email_otp_${email}`, generatedOTP);
