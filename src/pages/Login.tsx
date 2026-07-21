@@ -61,9 +61,9 @@ export default function Login() {
         setOtpSent(true);
         setSimulatedOtp(res.otp);
         setSuccessMsg(`Verification code sent to ${cleanEmail}!`);
+      } else {
+        setError(res.error || "Could not send verification email.");
       }
-    } catch (err) {
-      setError("Could not send verification email.");
     } finally {
       setLoading(false);
     }

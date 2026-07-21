@@ -15,7 +15,7 @@ export interface User {
 interface AuthContextProps {
   currentUser: User | null;
   loading: boolean;
-  sendEmailOTP: (email: string, name: string) => Promise<{ success: boolean; otp: string }>;
+  sendEmailOTP: (email: string, name: string) => Promise<{ success: boolean; error?: string; otp: string }>;
   verifyEmailOTP: (email: string, name: string, otp: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
 }
@@ -76,18 +76,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (response.ok) {
           console.log("Verification email sent successfully via EmailJS!");
+          return { success: true, otp: generatedOTP };
         } else {
           const errMsg = await response.text();
-          console.warn("EmailJS gateway responded with error, falling back to simulator:", errMsg);
+          console.warn("EmailJS gateway responded with error:", errMsg);
+          return { success: false, error: `EmailJS Gateway Error: ${errMsg}`, otp: generatedOTP };
         }
-      } catch (err) {
-        console.error("EmailJS API request failed, falling back to simulator:", err);
+      } catch (err: any) {
+        console.error("EmailJS API request failed:", err);
+        return { success: false, error: `Network Connection Error: ${err.message || err}`, otp: generatedOTP };
       }
     } else {
       console.log("EmailJS keys not configured. Local simulated Email OTP code is:", generatedOTP);
+      return { success: true, otp: generatedOTP };
     }
-
-    return { success: true, otp: generatedOTP };
   };
 
   const verifyEmailOTP = async (email: string, name: string, otp: string) => {
