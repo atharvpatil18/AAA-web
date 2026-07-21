@@ -6,17 +6,17 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 export interface User {
-  id: string; // mobile number is the ID
+  id: string; // Email ID is the ID
   name: string;
-  mobile: string;
+  email: string;
   role: "student";
 }
 
 interface AuthContextProps {
   currentUser: User | null;
   loading: boolean;
-  sendOTP: (mobile: string) => Promise<{ success: boolean; otp: string }>;
-  verifyOTP: (mobile: string, name: string, otp: string) => Promise<{ success: boolean; error?: string }>;
+  sendEmailOTP: (email: string, name: string) => Promise<{ success: boolean; otp: string }>;
+  verifyEmailOTP: (email: string, name: string, otp: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
 }
 
@@ -42,58 +42,70 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(false);
   }, []);
 
-  const sendOTP = async (mobile: string) => {
+  const sendEmailOTP = async (email: string, name: string) => {
     // Generate a simple 6-digit OTP code
     const generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-    sessionStorage.setItem(`otp_${mobile}`, generatedOTP);
+    sessionStorage.setItem(`email_otp_${email}`, generatedOTP);
 
-    const apiKey = (import.meta as any).env.VITE_FAST2SMS_API_KEY;
-    if (apiKey && apiKey !== "YOUR_FAST2SMS_API_KEY_HERE" && apiKey.trim() !== "") {
+    const serviceId = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY;
+
+    const hasConfig = serviceId && serviceId !== "YOUR_SERVICE_ID_HERE" &&
+                      templateId && templateId !== "YOUR_TEMPLATE_ID_HERE" &&
+                      publicKey && publicKey !== "YOUR_PUBLIC_KEY_HERE";
+
+    if (hasConfig) {
       try {
-        const response = await fetch("https://www.fast2sms.com/dev/bulkV2", {
+        const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
           method: "POST",
           headers: {
-            "authorization": apiKey,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            "variables_values": generatedOTP,
-            "route": "otp",
-            "numbers": mobile
+            service_id: serviceId,
+            template_id: templateId,
+            user_id: publicKey,
+            template_params: {
+              to_name: name,
+              to_email: email,
+              otp_code: generatedOTP
+            }
           })
         });
-        const result = await response.json();
-        if (result.return) {
-          console.log("OTP successfully sent via Fast2SMS API:", result);
+
+        if (response.ok) {
+          console.log("Verification email sent successfully via EmailJS!");
         } else {
-          console.warn("Fast2SMS API error, using local simulator:", result);
+          const errMsg = await response.text();
+          console.warn("EmailJS gateway responded with error, falling back to simulator:", errMsg);
         }
       } catch (err) {
-        console.error("Fast2SMS API failed, using local simulator:", err);
+        console.error("EmailJS API request failed, falling back to simulator:", err);
       }
     } else {
-      console.log("No Fast2SMS API Key found, using local simulated OTP:", generatedOTP);
+      console.log("EmailJS keys not configured. Local simulated Email OTP code is:", generatedOTP);
     }
 
     return { success: true, otp: generatedOTP };
   };
 
-  const verifyOTP = async (mobile: string, name: string, otp: string) => {
-    const storedOtp = sessionStorage.getItem(`otp_${mobile}`);
+  const verifyEmailOTP = async (email: string, name: string, otp: string) => {
+    const storedOtp = sessionStorage.getItem(`email_otp_${email}`);
     if (!storedOtp || storedOtp !== otp) {
-      return { success: false, error: "Invalid OTP code. Please try again." };
+      return { success: false, error: "Invalid verification code. Please try again." };
     }
 
     const usersRaw = localStorage.getItem(USERS_DB_KEY);
     const users = usersRaw ? JSON.parse(usersRaw) : [];
 
-    let matched = users.find((u: any) => u.mobile === mobile);
+    let matched = users.find((u: any) => u.email === email);
     if (!matched) {
-      // Register new user with entered name
+      // Register new user with entered name and email
       matched = {
-        id: mobile,
-        name: name.trim() || `Student (${mobile.slice(-4)})`,
-        mobile: mobile,
+        id: email,
+        name: name.trim() || `Student (${email.split("@")[0]})`,
+        email: email,
         role: "student",
       };
       users.push(matched);
@@ -109,13 +121,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const userPayload: User = {
       id: matched.id,
       name: matched.name,
-      mobile: matched.mobile,
+      email: matched.email,
       role: matched.role
     };
 
     setCurrentUser(userPayload);
     localStorage.setItem(SESSION_KEY, JSON.stringify(userPayload));
-    sessionStorage.removeItem(`otp_${mobile}`);
+    sessionStorage.removeItem(`email_otp_${email}`);
 
     return { success: true };
   };
@@ -127,7 +139,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, loading, sendOTP, verifyOTP, logout }}>
+    <AuthContext.Provider value={{ currentUser, loading, sendEmailOTP, verifyEmailOTP, logout }}>
       {children}
     </AuthContext.Provider>
   );

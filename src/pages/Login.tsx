@@ -6,17 +6,17 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
-import { Phone, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield } from "lucide-react";
+import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield } from "lucide-react";
 
 export default function Login() {
-  const { sendOTP, verifyOTP } = useAuth();
+  const { sendEmailOTP, verifyEmailOTP } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/practice";
 
   // Form inputs
   const [userName, setUserName] = useState("");
-  const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
 
   // UI state
@@ -28,17 +28,27 @@ export default function Login() {
   const [otpSent, setOtpSent] = useState(false);
   const [simulatedOtp, setSimulatedOtp] = useState<string | null>(null);
 
+  const isConfigured = () => {
+    const serviceId = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY;
+
+    return serviceId && serviceId !== "YOUR_SERVICE_ID_HERE" &&
+           templateId && templateId !== "YOUR_TEMPLATE_ID_HERE" &&
+           publicKey && publicKey !== "YOUR_PUBLIC_KEY_HERE";
+  };
+
   const handleRequestOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     const nameStr = userName.trim();
-    const cleanMobile = mobile.trim();
+    const cleanEmail = email.trim();
 
     if (!nameStr) {
       setError("Please enter your name.");
       return;
     }
-    if (!cleanMobile || cleanMobile.length < 10) {
-      setError("Please enter a valid 10-digit mobile number.");
+    if (!cleanEmail || !cleanEmail.includes("@")) {
+      setError("Please enter a valid email address.");
       return;
     }
 
@@ -46,14 +56,14 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await sendOTP(cleanMobile);
+      const res = await sendEmailOTP(cleanEmail, nameStr);
       if (res.success) {
         setOtpSent(true);
         setSimulatedOtp(res.otp);
-        setSuccessMsg(`OTP sent to +91 ${cleanMobile}!`);
+        setSuccessMsg(`Verification code sent to ${cleanEmail}!`);
       }
     } catch (err) {
-      setError("Could not dispatch OTP code.");
+      setError("Could not send verification email.");
     } finally {
       setLoading(false);
     }
@@ -62,22 +72,22 @@ export default function Login() {
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!otp) {
-      setError("Please enter the 6-digit OTP code.");
+      setError("Please enter the 6-digit verification code.");
       return;
     }
     setError(null);
     setLoading(true);
 
     try {
-      const res = await verifyOTP(mobile, userName, otp);
+      const res = await verifyEmailOTP(email, userName, otp);
       if (res.success) {
         setSuccessMsg("Logged in successfully! Redirecting...");
         setTimeout(() => navigate(redirectTo), 1000);
       } else {
-        setError(res.error || "Invalid OTP code.");
+        setError(res.error || "Invalid verification code.");
       }
     } catch (err) {
-      setError("OTP verification failed.");
+      setError("Verification failed.");
     } finally {
       setLoading(false);
     }
@@ -101,7 +111,7 @@ export default function Login() {
             Access Arnav Abacus Practice Zone
           </h2>
           <p className="text-xs text-slate-300 mt-1">
-            Sign in with mobile OTP to join dynamic math drills & track scores
+            Sign in with email verification to join dynamic math drills & track scores
           </p>
         </div>
 
@@ -122,20 +132,20 @@ export default function Login() {
             </div>
           )}
 
-          {/* OTP Simulator SMS Toast Box */}
-          {simulatedOtp && otpSent && (!(import.meta as any).env.VITE_FAST2SMS_API_KEY || (import.meta as any).env.VITE_FAST2SMS_API_KEY === "YOUR_FAST2SMS_API_KEY_HERE") && (
+          {/* OTP Simulator Email Toast Box */}
+          {simulatedOtp && otpSent && !isConfigured() && (
             <div className="bg-amber-50 border-2 border-dashed border-amber-300 text-amber-900 rounded-xl p-4 mb-5 text-xs">
               <div className="font-bold flex items-center gap-1.5 text-amber-800 mb-1">
-                <ShieldCheck className="w-4 h-4 text-amber-600" /> Simulated SMS Gateway
+                <ShieldCheck className="w-4 h-4 text-amber-600" /> Simulated Email Gateway
               </div>
               <p className="text-slate-700">
-                OTP sent to +91 {mobile}: <span className="font-black font-mono text-base text-amber-900 tracking-wider bg-white px-2 py-0.5 rounded border border-amber-300/60 shadow-sm ml-1 select-all cursor-pointer">{simulatedOtp}</span>
+                OTP sent to {email}: <span className="font-black font-mono text-base text-amber-900 tracking-wider bg-white px-2 py-0.5 rounded border border-amber-300/60 shadow-sm ml-1 select-all cursor-pointer">{simulatedOtp}</span>
               </p>
               <p className="text-[10px] text-slate-500 mt-1">Click the code to copy.</p>
             </div>
           )}
 
-          {/* Mobile OTP Form */}
+          {/* Email OTP Form */}
           <div className="space-y-4">
             {!otpSent ? (
               <form onSubmit={handleRequestOTP} className="space-y-4">
@@ -159,19 +169,16 @@ export default function Login() {
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Mobile Number
+                    Email Address
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-xs text-slate-500">
-                      +91
-                    </span>
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
-                      type="tel"
-                      maxLength={10}
-                      value={mobile}
-                      onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
-                      placeholder="Enter 10-digit number"
-                      className="w-full pl-12 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-vibrant-teal focus:ring-2 focus:ring-vibrant-teal/10 font-medium text-sm outline-none transition-all"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter email id (e.g. student@gmail.com)"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-vibrant-teal focus:ring-2 focus:ring-vibrant-teal/10 font-medium text-sm outline-none transition-all"
                       required
                       disabled={loading}
                     />
@@ -182,7 +189,7 @@ export default function Login() {
                 <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 flex gap-2.5 text-[11px] text-slate-650 leading-relaxed font-medium">
                   <Shield className="w-4 h-4 text-vibrant-teal shrink-0 mt-0.5" />
                   <p>
-                    <span className="font-bold text-slate-800">Privacy Policy Disclaimer:</span> Your mobile number is processed strictly for local verification purposes and is <span className="font-bold text-vibrant-teal">not recorded or stored</span> by Arnav Abacus Academy on any databases or servers.
+                    <span className="font-bold text-slate-800">Privacy Policy Disclaimer:</span> Your email address is processed strictly for local verification purposes and is <span className="font-bold text-vibrant-teal">not stored or recorded</span> on any databases by Arnav Abacus Academy.
                   </p>
                 </div>
 
@@ -191,7 +198,7 @@ export default function Login() {
                   className="w-full bg-vibrant-teal hover:bg-vibrant-teal/90 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-98 transition-all cursor-pointer disabled:opacity-50"
                   disabled={loading}
                 >
-                  {loading ? "Requesting OTP..." : "Get OTP Code"}
+                  {loading ? "Requesting OTP..." : "Get Verification Code"}
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </form>
@@ -202,14 +209,14 @@ export default function Login() {
                     <span className="text-slate-400 font-bold">Candidate:</span> <span className="font-black text-slate-900">{userName}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 font-bold">Mobile:</span> <span className="font-bold font-mono text-slate-900">+91 {mobile}</span>
+                    <span className="text-slate-400 font-bold">Email:</span> <span className="font-bold font-mono text-slate-900">{email}</span>
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between items-center mb-1.5">
                     <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                      Enter 6-Digit OTP
+                      Enter 6-Digit OTP Code
                     </label>
                     <button
                       type="button"
