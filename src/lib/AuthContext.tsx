@@ -89,6 +89,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             template_id: templateId,
             user_id: publicKey,
             template_params: {
+              from_name: "Arnav Abacus Academy",
               to_name: name,
               to_email: email,
               otp_code: generatedOTP
