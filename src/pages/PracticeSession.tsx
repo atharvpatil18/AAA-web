@@ -258,6 +258,18 @@ export default function PracticeSession() {
             {/* Cyan Question Canvas (Exact background style from screenshot, mobile & text pad optimized) */}
             <div className="bg-[#dff0f2] border-2 border-[#bcdfe3] rounded-2xl p-3.5 sm:p-5 flex-grow flex flex-col items-center justify-center min-h-[220px] sm:min-h-[280px] relative shadow-sm">
               
+              {/* JR-1 Specific One's Place Rod Guidance Banner */}
+              {setId.startsWith("abacus-jr1-") && (
+                <div className="w-full bg-teal-600/90 text-white px-3 py-1.5 rounded-xl mb-3 flex items-center justify-between shadow-xs border border-teal-500/50 text-xs">
+                  <span className="font-black flex items-center gap-1.5 tracking-wide">
+                    🧮 Tool Guide: Use One's Place Rod (Units)
+                  </span>
+                  <span className="text-[10px] font-semibold text-teal-100 hidden sm:inline">
+                    Single-Digit Direct Calculation
+                  </span>
+                </div>
+              )}
+              
               {/* High-Energy Student Encouragement Banner */}
               <div className="bg-white/80 backdrop-blur-xs border border-teal-200 text-teal-800 text-[11px] font-bold px-3 py-0.5 rounded-full mb-2 flex items-center gap-1.5 shadow-xs">
                 <Smile className="w-3.5 h-3.5 text-orange-500" />

@@ -13,13 +13,13 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     category: "abacus",
     level: "JR-1",
     topic: "1. Add & Sub Single Digit Direct (3 Rows)",
-    description: "Practice 3 rows single-digit direct addition and subtraction without complements.",
+    description: "Practice 3 rows single-digit direct addition & subtraction without complements. Performed on One's Place Rod (Units Place).",
     questionCount: 20,
     timeLimitSeconds: 240,
     questions: [
-      { id: 1, numbers: [2, 5, -1], correctAnswer: 6, conceptTag: "JR-1 Direct 3 Rows" },
-      { id: 2, numbers: [4, 5, -3], correctAnswer: 6, conceptTag: "JR-1 Direct 3 Rows" },
-      { id: 3, numbers: [7, -2, 1], correctAnswer: 6, conceptTag: "JR-1 Direct 3 Rows" },
+      { id: 1, numbers: [2, 5, -1], correctAnswer: 6, conceptTag: "One's Place Rod (Direct Single Digit)" },
+      { id: 2, numbers: [4, 5, -3], correctAnswer: 6, conceptTag: "One's Place Rod (Direct Single Digit)" },
+      { id: 3, numbers: [7, -2, 1], correctAnswer: 6, conceptTag: "One's Place Rod (Direct Single Digit)" },
     ]
   },
   {
@@ -28,13 +28,13 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     category: "abacus",
     level: "JR-1",
     topic: "2. Add & Sub Single Digit Direct (4 Rows)",
-    description: "Practice 4 rows single-digit direct addition and subtraction without complements.",
+    description: "Practice 4 rows single-digit direct addition & subtraction without complements. Performed on One's Place Rod (Units Place).",
     questionCount: 20,
     timeLimitSeconds: 240,
     questions: [
-      { id: 1, numbers: [4, 5, -3, 2], correctAnswer: 8, conceptTag: "JR-1 Direct 4 Rows" },
-      { id: 2, numbers: [3, 5, -2, 1], correctAnswer: 7, conceptTag: "JR-1 Direct 4 Rows" },
-      { id: 3, numbers: [8, -3, 2, -5], correctAnswer: 2, conceptTag: "JR-1 Direct 4 Rows" },
+      { id: 1, numbers: [4, 5, -3, 2], correctAnswer: 8, conceptTag: "One's Place Rod (Direct Single Digit)" },
+      { id: 2, numbers: [3, 5, -2, 1], correctAnswer: 7, conceptTag: "One's Place Rod (Direct Single Digit)" },
+      { id: 3, numbers: [8, -3, 2, -5], correctAnswer: 2, conceptTag: "One's Place Rod (Direct Single Digit)" },
     ]
   },
   {
@@ -43,13 +43,13 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     category: "abacus",
     level: "JR-1",
     topic: "3. Add & Sub Single Digit Direct (5 Rows)",
-    description: "Practice 5 rows single-digit direct addition and subtraction without complements.",
+    description: "Practice 5 rows single-digit direct addition & subtraction without complements. Performed on One's Place Rod (Units Place).",
     questionCount: 20,
     timeLimitSeconds: 240,
     questions: [
-      { id: 1, numbers: [1, 2, 5, -3, 4], correctAnswer: 9, conceptTag: "JR-1 Direct 5 Rows" },
-      { id: 2, numbers: [2, 5, -1, 3, -4], correctAnswer: 5, conceptTag: "JR-1 Direct 5 Rows" },
-      { id: 3, numbers: [4, 5, -2, 1, -3], correctAnswer: 5, conceptTag: "JR-1 Direct 5 Rows" },
+      { id: 1, numbers: [1, 2, 5, -3, 4], correctAnswer: 9, conceptTag: "One's Place Rod (Direct Single Digit)" },
+      { id: 2, numbers: [2, 5, -1, 3, -4], correctAnswer: 5, conceptTag: "One's Place Rod (Direct Single Digit)" },
+      { id: 3, numbers: [4, 5, -2, 1, -3], correctAnswer: 5, conceptTag: "One's Place Rod (Direct Single Digit)" },
     ]
   },
   {
