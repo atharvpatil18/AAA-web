@@ -69,6 +69,93 @@ const ABACUS_LEVEL_INFO: Record<string, { primaryFocus: string; uniqueTopics: st
   },
 };
 
+const LEVEL_THEMES: Record<string, { gradient: string; badgeColor: string; tagIcon: string; rankBadge: string }> = {
+  "JR-0": {
+    gradient: "from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800",
+    badgeColor: "bg-emerald-950/60 text-emerald-200 border-emerald-400/40",
+    tagIcon: "🌱",
+    rankBadge: "BEAD MECHANICS FOUNDATION",
+  },
+  "JR-1": {
+    gradient: "from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-700 hover:to-indigo-800",
+    badgeColor: "bg-blue-950/60 text-blue-200 border-blue-400/40",
+    tagIcon: "⭐",
+    rankBadge: "ONE'S ROD DIRECT MATH",
+  },
+  "JR-2": {
+    gradient: "from-amber-600 via-orange-600 to-amber-700 hover:from-amber-700 hover:to-orange-800",
+    badgeColor: "bg-amber-950/60 text-amber-200 border-amber-400/40",
+    tagIcon: "🔥",
+    rankBadge: "FORMULA RULES (±5, ±10)",
+  },
+  "JR-3": {
+    gradient: "from-purple-600 via-fuchsia-600 to-purple-700 hover:from-purple-700 hover:to-fuchsia-800",
+    badgeColor: "bg-purple-950/60 text-purple-200 border-purple-400/40",
+    tagIcon: "🚀",
+    rankBadge: "MULTI-ROW DOUBLE DIGIT",
+  },
+  "SR-1": {
+    gradient: "from-cyan-600 via-teal-600 to-cyan-700 hover:from-cyan-700 hover:to-teal-800",
+    badgeColor: "bg-cyan-950/60 text-cyan-200 border-cyan-400/40",
+    tagIcon: "⚡",
+    rankBadge: "SINGLE DIGIT SPEED DRILLS",
+  },
+  "SR-2": {
+    gradient: "from-rose-600 via-pink-600 to-rose-700 hover:from-rose-700 hover:to-pink-800",
+    badgeColor: "bg-rose-950/60 text-rose-200 border-rose-400/40",
+    tagIcon: "💪",
+    rankBadge: "2D & 3D MASTER SUMS",
+  },
+  "SR-3": {
+    gradient: "from-indigo-600 via-violet-600 to-indigo-700 hover:from-indigo-700 hover:to-violet-800",
+    badgeColor: "bg-indigo-950/60 text-indigo-200 border-indigo-400/40",
+    tagIcon: "🎯",
+    rankBadge: "MULTI-DIGIT ENDURANCE",
+  },
+  "SR-4": {
+    gradient: "from-emerald-600 via-green-600 to-teal-700 hover:from-emerald-700 hover:to-green-800",
+    badgeColor: "bg-emerald-950/60 text-emerald-200 border-emerald-400/40",
+    tagIcon: "✖️",
+    rankBadge: "BASIC MULTIPLICATION",
+  },
+  "SR-5": {
+    gradient: "from-fuchsia-600 via-purple-600 to-pink-700 hover:from-fuchsia-700 hover:to-purple-800",
+    badgeColor: "bg-fuchsia-950/60 text-fuchsia-200 border-fuchsia-400/40",
+    tagIcon: "🔢",
+    rankBadge: "4-DIGIT MATH FOUNDATION",
+  },
+  "SR-6": {
+    gradient: "from-amber-600 via-orange-600 to-red-600 hover:from-amber-700 hover:to-red-700",
+    badgeColor: "bg-amber-950/60 text-amber-200 border-amber-400/40",
+    tagIcon: "💥",
+    rankBadge: "INTERMEDIATE MULTIPLICATION",
+  },
+  "SR-7": {
+    gradient: "from-blue-700 via-indigo-800 to-slate-900 hover:from-blue-800 hover:to-indigo-900",
+    badgeColor: "bg-slate-950/70 text-blue-200 border-blue-400/40",
+    tagIcon: "🏆",
+    rankBadge: "5-ROW MARATHON DRILLS",
+  },
+  "SR-8": {
+    gradient: "from-violet-700 via-purple-800 to-indigo-900 hover:from-violet-800 hover:to-purple-900",
+    badgeColor: "bg-purple-950/70 text-purple-200 border-purple-400/40",
+    tagIcon: "➗",
+    rankBadge: "DIVISION MASTER DRILLS",
+  },
+  "SR-9": {
+    gradient: "from-rose-700 via-red-700 to-orange-800 hover:from-rose-800 hover:to-red-800",
+    badgeColor: "bg-red-950/70 text-rose-200 border-rose-400/40",
+    tagIcon: "🔹",
+    rankBadge: "DECIMAL ADD & SUB",
+  },
+  "SR-10": {
+    gradient: "from-amber-600 via-purple-800 to-slate-950 hover:from-amber-700 hover:to-purple-900",
+    badgeColor: "bg-amber-950/80 text-amber-200 border-amber-400/40 ring-1 ring-amber-300/40",
+    tagIcon: "👑",
+    rankBadge: "GRANDMASTER MATHEMATICAL SUTRAS",
+  },
+};
+
 export default function PracticeHub() {
   const { currentUser } = useAuth();
   const [activeCategory, setActiveCategory] = useState<PracticeCategory>("abacus");
@@ -402,52 +489,71 @@ export default function PracticeHub() {
                     return acc;
                   }, {} as Record<string, typeof currentSets>);
 
-                  return Object.entries(groupedSets).map(([levelName, sets]) => {
-                    const isExpanded = expandedLevels[levelName] ?? false;
-                    const lvlInfo = ABACUS_LEVEL_INFO[levelName];
+                    return Object.entries(groupedSets).map(([levelName, sets]) => {
+                      const isExpanded = expandedLevels[levelName] ?? false;
+                      const lvlInfo = ABACUS_LEVEL_INFO[levelName];
+                      const theme = LEVEL_THEMES[levelName] || {
+                        gradient: "from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-orange-700",
+                        badgeColor: "bg-orange-950/60 text-orange-200 border-orange-400/40",
+                        tagIcon: "⚡",
+                        rankBadge: "PRACTICE LEVEL",
+                      };
 
-                        return (
-                          <div key={levelName} className="mb-6">
-                            {/* Collapsible Level Group Header Banner */}
-                            <div
-                              onClick={() => toggleLevel(levelName)}
-                              className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-5 py-4 rounded-2xl flex items-center justify-between shadow-md border border-orange-400/40 cursor-pointer transition-all active:scale-[0.99]"
-                            >
-                              <div className="flex items-center gap-3">
-                                <span className="bg-white/20 p-2.5 rounded-xl backdrop-blur-xs">
-                                  <Layers className="w-5 h-5 text-white" />
-                                </span>
-                                <div className="flex flex-col gap-0.5">
-                                  <div className="flex items-center gap-2 flex-wrap">
-                                    <h3 className="font-black text-base md:text-lg tracking-wide uppercase">
-                                      Category Level: {levelName}
-                                    </h3>
-                                    {lvlInfo && (
-                                      <span className="bg-white/20 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-white/30 hidden sm:inline-block">
-                                        🎯 Focus: {lvlInfo.primaryFocus}
-                                      </span>
-                                    )}
-                                  </div>
-                                  {lvlInfo && (
-                                    <p className="text-xs text-amber-100 font-semibold leading-tight">
-                                      📌 <span className="underline decoration-amber-300 font-bold">Unique Topics</span>: {lvlInfo.uniqueTopics}
-                                    </p>
-                                  )}
-                                  <p className="text-[11px] text-orange-100 font-medium">
-                                    {sets.length} Practice Topics • {isExpanded ? "Click to collapse" : "Click to expand & view topics"}
-                                  </p>
-                                </div>
+                      return (
+                        <div key={levelName} className="mb-6">
+                          {/* Collapsible Level Group Header Banner */}
+                          <div
+                            onClick={() => toggleLevel(levelName)}
+                            className={`bg-gradient-to-r ${theme.gradient} text-white p-4 sm:p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between shadow-lg border border-white/20 cursor-pointer transition-all duration-200 active:scale-[0.99] gap-3.5`}
+                          >
+                            <div className="flex items-start sm:items-center gap-3.5">
+                              <div className="bg-white/15 p-3 rounded-xl backdrop-blur-md border border-white/20 shadow-inner flex items-center justify-center shrink-0">
+                                <span className="text-xl">{theme.tagIcon}</span>
                               </div>
 
-                              <div className="flex items-center gap-3">
-                                <span className="bg-white text-orange-600 text-xs font-black px-3.5 py-1.5 rounded-xl shadow-xs hidden md:inline-block">
-                                  {sets.length} Topics
-                                </span>
-                                <span className="bg-white/20 p-1.5 rounded-xl">
-                                  {isExpanded ? <ChevronUp className="w-5 h-5 text-white" /> : <ChevronDown className="w-5 h-5 text-white" />}
-                                </span>
+                              <div className="flex flex-col gap-1">
+                                {/* Title Row with Rank Badge */}
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  <h3 className="font-black text-lg sm:text-xl tracking-tight text-white flex items-center gap-2 drop-shadow-sm">
+                                    LEVEL {levelName}
+                                  </h3>
+                                  <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-md border ${theme.badgeColor}`}>
+                                    {theme.rankBadge}
+                                  </span>
+                                </div>
+
+                                {/* Focus Area Pill */}
+                                {lvlInfo && (
+                                  <div className="flex items-center gap-1.5 text-xs text-white/90 font-medium flex-wrap">
+                                    <span className="font-bold text-amber-200">🎯 Focus:</span>
+                                    <span className="bg-black/20 text-white font-bold px-2.5 py-0.5 rounded-md backdrop-blur-xs border border-white/15">
+                                      {lvlInfo.primaryFocus}
+                                    </span>
+                                  </div>
+                                )}
+
+                                {/* Concise Unique Topics Line */}
+                                {lvlInfo && (
+                                  <p className="text-xs text-white/90 font-medium leading-normal flex items-center gap-1.5 flex-wrap">
+                                    <span className="font-bold text-yellow-300">📌 Topics:</span>
+                                    <span className="text-white font-semibold">{lvlInfo.uniqueTopics}</span>
+                                  </p>
+                                )}
                               </div>
                             </div>
+
+                            {/* Right Side Action Button */}
+                            <div className="flex items-center justify-between md:justify-end gap-3 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/15">
+                              <span className="bg-white/20 hover:bg-white/30 text-white text-xs font-black px-4 py-2 rounded-xl backdrop-blur-md border border-white/30 shadow-xs flex items-center gap-1.5">
+                                <span>{sets.length} Topics</span>
+                                <span className="text-amber-300 font-bold">•</span>
+                                <span className="text-amber-200">{isExpanded ? "Collapse" : "Explore"}</span>
+                              </span>
+                              <span className="bg-white/20 p-2 rounded-xl border border-white/30 shadow-xs">
+                                {isExpanded ? <ChevronUp className="w-5 h-5 text-white" /> : <ChevronDown className="w-5 h-5 text-white" />}
+                              </span>
+                            </div>
+                          </div>
 
                         {/* Expandable Sets Grid */}
                         {isExpanded && (
