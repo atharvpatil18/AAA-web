@@ -502,6 +502,38 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 1, numbers: [6, 6, -5, 7, -4, 8, -6], correctAnswer: 12, conceptTag: "SR-3 Single ± Mixed Complement" },
       { id: 2, numbers: [7, 7, -5, 8, -6, 9, -7], correctAnswer: 13, conceptTag: "SR-3 Single ± Mixed Complement" },
     ]
+  },
+
+  // SR-4 Curriculum Sets (Multiplication Drills)
+  {
+    id: "abacus-sr4-mult-sd-sd",
+    title: "MULTIPLICATION- S D x S D",
+    category: "abacus",
+    level: "SR-4",
+    topic: "8. Multiplication- S D x S D",
+    description: "Practice Single Digit × Single Digit multiplication on Abacus (e.g. 7 × 8).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "7 × 8", correctAnswer: 56, conceptTag: "SD × SD Multiplication" },
+      { id: 2, expression: "6 × 9", correctAnswer: 54, conceptTag: "SD × SD Multiplication" },
+      { id: 3, expression: "9 × 7", correctAnswer: 63, conceptTag: "SD × SD Multiplication" },
+    ]
+  },
+  {
+    id: "abacus-sr4-mult-sd-2d",
+    title: "MULTIPLICATION- S D x 2 D",
+    category: "abacus",
+    level: "SR-4",
+    topic: "9. Multiplication- S D x 2 D",
+    description: "Practice Single Digit × 2 Digit multiplication on Abacus (e.g. 43 × 6).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "43 × 6", correctAnswer: 258, conceptTag: "SD × 2D Multiplication" },
+      { id: 2, expression: "75 × 4", correctAnswer: 300, conceptTag: "SD × 2D Multiplication" },
+      { id: 3, expression: "82 × 7", correctAnswer: 574, conceptTag: "SD × 2D Multiplication" },
+    ]
   }
 ];
 
@@ -1046,10 +1078,34 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     !setId.startsWith("abacus-jr3-") &&
     !setId.startsWith("abacus-sr1-") &&
     !setId.startsWith("abacus-sr2-") &&
-    !setId.startsWith("abacus-sr3-")
+    !setId.startsWith("abacus-sr3-") &&
+    !setId.startsWith("abacus-sr4-")
   ) return null;
 
   const rng = createPRNG(`${seed}_${setId}_${qId}`);
+
+  // SR-4 Multiplication Generators
+  if (setId === "abacus-sr4-mult-sd-sd") {
+    const num1 = Math.floor(rng() * 8) + 2; // 2..9
+    const num2 = Math.floor(rng() * 8) + 2; // 2..9
+    return {
+      id: qId,
+      expression: `${num1} × ${num2}`,
+      correctAnswer: num1 * num2,
+      conceptTag: "SD × SD Multiplication"
+    };
+  }
+
+  if (setId === "abacus-sr4-mult-sd-2d") {
+    const num1 = Math.floor(rng() * 8) + 2; // 2..9
+    const num2 = Math.floor(rng() * 89) + 11; // 11..99
+    return {
+      id: qId,
+      expression: `${num2} × ${num1}`,
+      correctAnswer: num1 * num2,
+      conceptTag: "SD × 2D Multiplication"
+    };
+  }
 
   let rowCount = 4;
   let digitsMode: "single" | "double" | "triple" = "single";
