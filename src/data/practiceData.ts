@@ -666,6 +666,106 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 2, expression: "68 × 34", correctAnswer: 2312, conceptTag: "2D × 2D Multiplication" },
       { id: 3, expression: "85 × 72", correctAnswer: 6120, conceptTag: "2D × 2D Multiplication" },
     ]
+  },
+
+  // SR-7 Curriculum Sets
+  {
+    id: "abacus-sr7-single-direct-4-5row",
+    title: "ADD./SUB. S. D. 4-5 ROWS ± DIRECT",
+    category: "abacus",
+    level: "SR-7",
+    topic: "1. Add./Sub. S. D. 4-5 rows  ± Direct (without compliments)",
+    description: "Practice Single Digit (S.D.) 4 to 5 rows direct addition & subtraction without complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [2, 5, -1, 3], correctAnswer: 9, conceptTag: "SR-7 Single Direct" },
+      { id: 2, numbers: [4, 5, -3, 2, -1], correctAnswer: 7, conceptTag: "SR-7 Single Direct" },
+    ]
+  },
+  {
+    id: "abacus-sr7-single-plusminus5-6-7row",
+    title: "ADD./SUB. S.D. 6-7 ROWS ± 5 COMPLIMENT",
+    category: "abacus",
+    level: "SR-7",
+    topic: "2. Add./Sub. S.D. 6-7 rows ± 5 compliment",
+    description: "Practice Single Digit 6 to 7 rows using ±5 Small Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [4, 4, -3, 2, 4, -5, 3], correctAnswer: 9, conceptTag: "SR-7 Single ±5 Complement" },
+      { id: 2, numbers: [3, 3, 2, -5, 4, 1, -2], correctAnswer: 6, conceptTag: "SR-7 Single ±5 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr7-single-plusminus10-6-7row",
+    title: "ADD./SUB. S.D. 6-7 ROWS ± 10 COMPLIMENT",
+    category: "abacus",
+    level: "SR-7",
+    topic: "3. Add./Sub. S.D. 6-7 rows ± 10 compliment",
+    description: "Practice Single Digit 6 to 7 rows using ±10 Big Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [9, 9, -5, 8, -4, 7, -3], correctAnswer: 21, conceptTag: "SR-7 Single ±10 Complement" },
+      { id: 2, numbers: [8, 8, 4, -9, 7, 6, -5], correctAnswer: 19, conceptTag: "SR-7 Single ±10 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr7-single-mixed-6-7row",
+    title: "ADD./SUB. S.D. 6-7 ROWS ± MIXED COMPLIMENT",
+    category: "abacus",
+    level: "SR-7",
+    topic: "4. Add./Sub. S.D. 6-7 rows  ± Mixed compliment",
+    description: "Practice Single Digit 6 to 7 rows using ± Mixed Combination complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [6, 6, -5, 7, -4, 8, -6], correctAnswer: 12, conceptTag: "SR-7 Single ± Mixed Complement" },
+      { id: 2, numbers: [7, 7, -5, 8, -6, 9, -7], correctAnswer: 13, conceptTag: "SR-7 Single ± Mixed Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr7-double-allcomp-5row",
+    title: "ADD./SUB. 2D - 5 ROWS (ALL COMPLIMENTS)",
+    category: "abacus",
+    level: "SR-7",
+    topic: "5. Add./Sub. 2D - 5 rows (All compliments)",
+    description: "Practice 2 Digit (2D) 5 rows speed addition & subtraction using all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [48, 37, -25, 49, 18], correctAnswer: 127, conceptTag: "SR-7 Double 5 Rows All Complements" },
+      { id: 2, numbers: [59, 26, -44, 58, -20], correctAnswer: 79, conceptTag: "SR-7 Double 5 Rows All Complements" },
+    ]
+  },
+  {
+    id: "abacus-sr7-triple-allcomp-5row",
+    title: "ADD./SUB. 3D - 5 ROWS (ALL COMPLIMENTS)",
+    category: "abacus",
+    level: "SR-7",
+    topic: "6. Add./Sub. 3D - 5 rows (All compliments)",
+    description: "Practice 3 Digit (3D) 5 rows speed addition & subtraction using all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [485, 372, -240, 519, 120], correctAnswer: 1256, conceptTag: "SR-7 Triple 5 Rows All Complements" },
+      { id: 2, numbers: [624, 289, -350, 478, -210], correctAnswer: 831, conceptTag: "SR-7 Triple 5 Rows All Complements" },
+    ]
+  },
+  {
+    id: "abacus-sr7-quad-allcomp-5row",
+    title: "ADD./SUB. 4D - 5 ROWS (ALL COMPLIMENTS)",
+    category: "abacus",
+    level: "SR-7",
+    topic: "7. Add./Sub. 4D - 5 rows (All compliments)",
+    description: "Practice 4 Digit (4D, e.g. 1000-9999) 5 rows speed addition & subtraction using all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [4852, 3721, -2405, 5194, 1205], correctAnswer: 12567, conceptTag: "SR-7 Quad 5 Rows All Complements" },
+      { id: 2, numbers: [6248, 2891, -3504, 4783, -2100], correctAnswer: 8318, conceptTag: "SR-7 Quad 5 Rows All Complements" },
+    ]
   }
 ];
 
@@ -1213,7 +1313,8 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     !setId.startsWith("abacus-sr3-") &&
     !setId.startsWith("abacus-sr4-") &&
     !setId.startsWith("abacus-sr5-") &&
-    !setId.startsWith("abacus-sr6-")
+    !setId.startsWith("abacus-sr6-") &&
+    !setId.startsWith("abacus-sr7-")
   ) return null;
 
   const rng = createPRNG(`${seed}_${setId}_${qId}`);
@@ -1436,6 +1537,36 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     formulaType = "allComp";
   } else if (setId === "abacus-sr5-quad-allcomp-4row") {
     rowCount = 4;
+    digitsMode = "quad";
+    formulaType = "allComp";
+  }
+  // SR-7 Topics
+  else if (setId === "abacus-sr7-single-direct-4-5row") {
+    rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "single";
+    formulaType = "direct";
+  } else if (setId === "abacus-sr7-single-plusminus5-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "single";
+    formulaType = "plus5";
+  } else if (setId === "abacus-sr7-single-plusminus10-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "single";
+    formulaType = "plus10";
+  } else if (setId === "abacus-sr7-single-mixed-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "single";
+    formulaType = "plusMixed";
+  } else if (setId === "abacus-sr7-double-allcomp-5row") {
+    rowCount = 5;
+    digitsMode = "double";
+    formulaType = "allComp";
+  } else if (setId === "abacus-sr7-triple-allcomp-5row") {
+    rowCount = 5;
+    digitsMode = "triple";
+    formulaType = "allComp";
+  } else if (setId === "abacus-sr7-quad-allcomp-5row") {
+    rowCount = 5;
     digitsMode = "quad";
     formulaType = "allComp";
   }
