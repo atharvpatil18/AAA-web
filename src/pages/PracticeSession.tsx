@@ -19,8 +19,9 @@ export default function PracticeSession() {
   const mode = (searchParams.get("mode") as PracticeMode) || "exam";
   const qCount = Number(searchParams.get("count")) || 20;
 
-  // Load customized set based on mode and selected question count (10 Qs, 20 Qs, 50 Qs, 100 Qs, 200 Qs)
-  const questionSet = getCustomizedSet(setId, mode, qCount);
+  // Stable question set per attempt (questions are fixed during attempt, but different on next attempt)
+  const attemptSeedRef = useRef<string>(searchParams.get("seed") || `attempt_${Date.now()}`);
+  const [questionSet] = useState(() => getCustomizedSet(setId, mode, qCount, attemptSeedRef.current));
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, UserAnswer>>({});

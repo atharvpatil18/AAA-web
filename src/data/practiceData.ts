@@ -610,11 +610,31 @@ export function getQuestionSetById(id: string): QuestionSet | undefined {
 }
 
 /**
- * Dynamic math question generator for Abacus JR-2 topic sets.
- * Generates instant randomized numbers according to Abacus complement formulas.
+ * Simple Mulberry32 Seeded Pseudo-Random Number Generator.
+ * Guarantees that for a given attempt seed, question generation is 100% deterministic and fixed during the attempt,
+ * but changes completely on the next attempt!
  */
-export function generateDynamicAbacusQuestion(setId: string, qId: number): Question | null {
+function createPRNG(seedStr: string) {
+  let h = 0;
+  for (let i = 0; i < seedStr.length; i++) {
+    h = (Math.imul(31, h) + seedStr.charCodeAt(i)) | 0;
+  }
+  return function() {
+    let t = (h += 0x6D2B79F5);
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/**
+ * Dynamic math question generator for Abacus JR-2 topic sets.
+ * Generates deterministic numbers for a given attempt seed.
+ */
+export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: string = "attempt_default"): Question | null {
   if (!setId.startsWith("abacus-jr2-")) return null;
+
+  const rng = createPRNG(`${seed}_${setId}_${qId}`);
 
   let rowCount = 4;
   let formulaType: "direct" | "plus5" | "minus5" | "plus10" | "minus10" | "plusMixed" | "minusMixed" = "direct";
@@ -623,29 +643,29 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number): Quest
     rowCount = 4;
     formulaType = "direct";
   } else if (setId === "abacus-jr2-plus5-comp") {
-    rowCount = Math.random() > 0.5 ? 5 : 4;
+    rowCount = rng() > 0.5 ? 5 : 4;
     formulaType = "plus5";
   } else if (setId === "abacus-jr2-minus5-comp") {
-    rowCount = Math.random() > 0.5 ? 5 : 4;
+    rowCount = rng() > 0.5 ? 5 : 4;
     formulaType = "minus5";
   } else if (setId === "abacus-jr2-plus10-comp") {
     rowCount = 4;
     formulaType = "plus10";
   } else if (setId === "abacus-jr2-minus10-comp") {
-    rowCount = Math.random() > 0.5 ? 5 : 4;
+    rowCount = rng() > 0.5 ? 5 : 4;
     formulaType = "minus10";
   } else if (setId === "abacus-jr2-plus-mixed") {
-    rowCount = Math.random() > 0.5 ? 5 : 4;
+    rowCount = rng() > 0.5 ? 5 : 4;
     formulaType = "plusMixed";
   } else if (setId === "abacus-jr2-minus-mixed") {
-    rowCount = Math.random() > 0.5 ? 5 : 4;
+    rowCount = rng() > 0.5 ? 5 : 4;
     formulaType = "minusMixed";
   }
 
   // Attempt up to 30 times to generate a valid sequence
   for (let attempt = 0; attempt < 30; attempt++) {
     const numbers: number[] = [];
-    let currentTotal = Math.floor(Math.random() * 8) + 1; // start with 1..8
+    let currentTotal = Math.floor(rng() * 8) + 1; // start with 1..8
     numbers.push(currentTotal);
 
     for (let r = 1; r < rowCount; r++) {
@@ -661,27 +681,27 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number): Quest
           else if (nextTotal <= 9 && n < 0 && (currentTotal % 5) >= Math.abs(n)) candidates.push(n);
         } else if (formulaType === "plus5") {
           if (n > 0 && n <= 4 && (currentTotal % 5) + n >= 5 && currentTotal % 5 < 5 && nextTotal <= 9) candidates.push(n);
-          else if (Math.random() > 0.4 && nextTotal >= 0 && nextTotal <= 9) candidates.push(n);
+          else if (rng() > 0.4 && nextTotal >= 0 && nextTotal <= 9) candidates.push(n);
         } else if (formulaType === "minus5") {
           if (n < 0 && Math.abs(n) <= 4 && currentTotal >= 5 && (currentTotal % 5) < Math.abs(n)) candidates.push(n);
-          else if (Math.random() > 0.4 && nextTotal >= 0 && nextTotal <= 9) candidates.push(n);
+          else if (rng() > 0.4 && nextTotal >= 0 && nextTotal <= 9) candidates.push(n);
         } else if (formulaType === "plus10") {
           if (n > 0 && currentTotal + n >= 10 && currentTotal < 10) candidates.push(n);
-          else if (Math.random() > 0.4 && nextTotal >= 0) candidates.push(n);
+          else if (rng() > 0.4 && nextTotal >= 0) candidates.push(n);
         } else if (formulaType === "minus10") {
           if (n < 0 && currentTotal >= 10 && currentTotal + n < 10) candidates.push(n);
-          else if (Math.random() > 0.4 && nextTotal >= 0) candidates.push(n);
+          else if (rng() > 0.4 && nextTotal >= 0) candidates.push(n);
         } else if (formulaType === "plusMixed") {
           if (n >= 6 && currentTotal + n >= 10) candidates.push(n);
-          else if (Math.random() > 0.3 && nextTotal >= 0) candidates.push(n);
+          else if (rng() > 0.3 && nextTotal >= 0) candidates.push(n);
         } else if (formulaType === "minusMixed") {
           if (n <= -6 && currentTotal >= 10 && currentTotal + n < 10) candidates.push(n);
-          else if (Math.random() > 0.3 && nextTotal >= 0) candidates.push(n);
+          else if (rng() > 0.3 && nextTotal >= 0) candidates.push(n);
         }
       }
 
       if (candidates.length === 0) break;
-      const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+      const chosen = candidates[Math.floor(rng() * candidates.length)];
       numbers.push(chosen);
       currentTotal += chosen;
     }
@@ -691,7 +711,7 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number): Quest
         id: qId,
         numbers,
         correctAnswer: currentTotal,
-        conceptTag: `Dynamic Abacus ${formulaType.toUpperCase()}`
+        conceptTag: `Abacus ${formulaType.toUpperCase()}`
       };
     }
   }
@@ -708,7 +728,12 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number): Quest
 /**
  * Generator helper to expand or trim question sets for speed modes & selected question counts (10, 20, 50, 100, 200)
  */
-export function getCustomizedSet(setId: string, mode: PracticeMode, qCountChoice: number = 20): QuestionSet {
+export function getCustomizedSet(
+  setId: string,
+  mode: PracticeMode,
+  qCountChoice: number = 20,
+  seed: string = "attempt_default"
+): QuestionSet {
   const base = getQuestionSetById(setId) || ABACUS_QUESTION_SETS[0];
 
   let targetCount = qCountChoice;
@@ -734,10 +759,10 @@ export function getCustomizedSet(setId: string, mode: PracticeMode, qCountChoice
     timeLimitSeconds = 1200;
   }
 
-  // Dynamically synthesize questions on every attempt per instant
+  // Synthesize questions deterministically for the given attempt seed
   const expandedQuestions: Question[] = [];
   for (let i = 0; i < targetCount; i++) {
-    const dynamicQ = generateDynamicAbacusQuestion(setId, i + 1);
+    const dynamicQ = generateDynamicAbacusQuestion(setId, i + 1, seed);
     if (dynamicQ) {
       expandedQuestions.push(dynamicQ);
     } else {
