@@ -198,6 +198,164 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 1, numbers: [485, 372, -240, 519], correctAnswer: 1136, conceptTag: "Triple Digit Complements" },
       { id: 2, numbers: [624, 289, -350, 478, -120], correctAnswer: 921, conceptTag: "Triple Digit Complements" },
     ]
+  },
+
+  // SR-1 Curriculum Sets
+  {
+    id: "abacus-sr1-single-direct-5-6row",
+    title: "ADD & SUB SINGLE DIGIT DIRECT (5- 6 ROWS )",
+    category: "abacus",
+    level: "SR-1",
+    topic: "1.Add & sub single digit direct (5- 6 rows )",
+    description: "Practice 5 to 6 rows single digit direct addition and subtraction.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [7, -6, 1, 5, -2, 3], correctAnswer: 8, conceptTag: "SR-1 Direct Single" },
+      { id: 2, numbers: [4, 5, -3, 2, 1, -5], correctAnswer: 4, conceptTag: "SR-1 Direct Single" },
+    ]
+  },
+  {
+    id: "abacus-sr1-single-plus5-5-6row",
+    title: "ADD & SUB SINGLE DIGIT +5 COMP(5- 6 ROWS )",
+    category: "abacus",
+    level: "SR-1",
+    topic: "2.Add & sub single digit +5 comp(5- 6 rows )",
+    description: "Practice 5-6 rows single digit +5 Small Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [4, 4, -3, 2, 4, -5], correctAnswer: 6, conceptTag: "SR-1 +5 Complement" },
+      { id: 2, numbers: [3, 3, 2, -5, 4, 1], correctAnswer: 8, conceptTag: "SR-1 +5 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr1-single-minus5-5-6row",
+    title: "ADD & SUB SINGLE DIGIT -5 COMP(5- 6 ROWS )",
+    category: "abacus",
+    level: "SR-1",
+    topic: "3.Add & sub single digit -5 comp(5- 6 rows )",
+    description: "Practice 5-6 rows single digit -5 Small Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [6, -4, 2, 5, -3, 1], correctAnswer: 7, conceptTag: "SR-1 -5 Complement" },
+      { id: 2, numbers: [7, -3, 1, 4, -2, 2], correctAnswer: 9, conceptTag: "SR-1 -5 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr1-single-plus10-5-6row",
+    title: "ADD & SUB SINGLE DIGIT +10 COMP(5-6 ROWS )",
+    category: "abacus",
+    level: "SR-1",
+    topic: "4.Add & sub single digit +10 comp(5-6 rows )",
+    description: "Practice 5-6 rows single digit +10 Big Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [9, 9, -5, 2, 8, -4], correctAnswer: 19, conceptTag: "SR-1 +10 Complement" },
+      { id: 2, numbers: [8, 8, 3, -4, 7, 2], correctAnswer: 24, conceptTag: "SR-1 +10 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr1-single-minus10-5-6row",
+    title: "ADD & SUB SINGLE DIGIT -10 COMP(5-6 ROWS )",
+    category: "abacus",
+    level: "SR-1",
+    topic: "5.Add & sub single digit -10 comp(5-6 rows )",
+    description: "Practice 5-6 rows single digit -10 Big Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [15, -9, 4, 3, -7, 5], correctAnswer: 11, conceptTag: "SR-1 -10 Complement" },
+      { id: 2, numbers: [14, -8, 5, -2, -6, 4], correctAnswer: 7, conceptTag: "SR-1 -10 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr1-single-plus-mixed-5-6row",
+    title: "ADD & SUB SINGLE DIGIT + MIXED COMP(5-6 ROWS )",
+    category: "abacus",
+    level: "SR-1",
+    topic: "6.Add & sub single digit + Mixed comp(5-6 rows )",
+    description: "Practice 5-6 rows single digit + Mixed Combination complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [6, 6, -5, 2, 7, -4], correctAnswer: 12, conceptTag: "SR-1 + Mixed Complement" },
+      { id: 2, numbers: [7, 7, -5, 3, 8, -6], correctAnswer: 14, conceptTag: "SR-1 + Mixed Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr1-single-minus-mixed-5-6row",
+    title: "ADD & SUB SINGLE DIGIT - MIXED COMP(5-6 ROWS )",
+    category: "abacus",
+    level: "SR-1",
+    topic: "7.Add & sub single digit - Mixed comp(5-6 rows )",
+    description: "Practice 5-6 rows single digit - Mixed Combination complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [13, -6, 4, 5, -7, 2], correctAnswer: 11, conceptTag: "SR-1 - Mixed Complement" },
+      { id: 2, numbers: [14, -7, 3, -5, -6, 4], correctAnswer: 3, conceptTag: "SR-1 - Mixed Complement" },
+    ]
+  },
+
+  // SR-2 Curriculum Sets
+  {
+    id: "abacus-sr2-double-direct",
+    title: "ADD & SUB DOUBLE DIGIT DIRECT",
+    category: "abacus",
+    level: "SR-2",
+    topic: "1.Add & sub double digit direct",
+    description: "Practice 2-digit direct addition and subtraction speed drills.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [42, 55, -31, 23, 10], correctAnswer: 99, conceptTag: "SR-2 Double Direct" },
+      { id: 2, numbers: [34, 15, 50, -42, 21], correctAnswer: 78, conceptTag: "SR-2 Double Direct" },
+    ]
+  },
+  {
+    id: "abacus-sr2-double-allcomp",
+    title: "ADD & SUB DOUBLE DIGIT ALL COMPLEMENTS",
+    category: "abacus",
+    level: "SR-2",
+    topic: "2.Add & sub double digit all complements",
+    description: "Practice 2-digit addition and subtraction using all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [48, 37, -25, 49, 18], correctAnswer: 127, conceptTag: "SR-2 Double Complements" },
+      { id: 2, numbers: [59, 26, -44, 58, -20], correctAnswer: 79, conceptTag: "SR-2 Double Complements" },
+    ]
+  },
+  {
+    id: "abacus-sr2-single-allcomp",
+    title: "ADD & SUB SINGLE DIGIT ALL COMPLEMENTS",
+    category: "abacus",
+    level: "SR-2",
+    topic: "3.Add & sub single digit all complements",
+    description: "Practice multi-row single digit addition and subtraction with all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [9, 8, -5, 7, 6, -4, 3], correctAnswer: 24, conceptTag: "SR-2 Single Complements" },
+      { id: 2, numbers: [7, 6, -3, 8, 9, -5, 4], correctAnswer: 26, conceptTag: "SR-2 Single Complements" },
+    ]
+  },
+  {
+    id: "abacus-sr2-triple-allcomp",
+    title: "TRIPLE DIGIT DIRECT SUMS ALL COMPLEMENTS",
+    category: "abacus",
+    level: "SR-2",
+    topic: "4. Triple digit direct sums all complements",
+    description: "Practice 3-digit speed addition and subtraction using all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [485, 372, -240, 519, 120], correctAnswer: 1256, conceptTag: "SR-2 Triple Complements" },
+      { id: 2, numbers: [624, 289, -350, 478, -210], correctAnswer: 831, conceptTag: "SR-2 Triple Complements" },
+    ]
   }
 ];
 
@@ -706,7 +864,12 @@ function createPRNG(seedStr: string) {
  * Generates deterministic numbers for a given attempt seed.
  */
 export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: string = "attempt_default"): Question | null {
-  if (!setId.startsWith("abacus-jr2-") && !setId.startsWith("abacus-jr3-")) return null;
+  if (
+    !setId.startsWith("abacus-jr2-") &&
+    !setId.startsWith("abacus-jr3-") &&
+    !setId.startsWith("abacus-sr1-") &&
+    !setId.startsWith("abacus-sr2-")
+  ) return null;
 
   const rng = createPRNG(`${seed}_${setId}_${qId}`);
 
@@ -762,6 +925,54 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     formulaType = "allComp";
   } else if (setId === "abacus-jr3-triple-allcomp-4-5row") {
     rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "triple";
+    formulaType = "allComp";
+  }
+  // SR-1 Topics
+  else if (setId === "abacus-sr1-single-direct-5-6row") {
+    rowCount = rng() > 0.5 ? 6 : 5;
+    digitsMode = "single";
+    formulaType = "direct";
+  } else if (setId === "abacus-sr1-single-plus5-5-6row") {
+    rowCount = rng() > 0.5 ? 6 : 5;
+    digitsMode = "single";
+    formulaType = "plus5";
+  } else if (setId === "abacus-sr1-single-minus5-5-6row") {
+    rowCount = rng() > 0.5 ? 6 : 5;
+    digitsMode = "single";
+    formulaType = "minus5";
+  } else if (setId === "abacus-sr1-single-plus10-5-6row") {
+    rowCount = rng() > 0.5 ? 6 : 5;
+    digitsMode = "single";
+    formulaType = "plus10";
+  } else if (setId === "abacus-sr1-single-minus10-5-6row") {
+    rowCount = rng() > 0.5 ? 6 : 5;
+    digitsMode = "single";
+    formulaType = "minus10";
+  } else if (setId === "abacus-sr1-single-plus-mixed-5-6row") {
+    rowCount = rng() > 0.5 ? 6 : 5;
+    digitsMode = "single";
+    formulaType = "plusMixed";
+  } else if (setId === "abacus-sr1-single-minus-mixed-5-6row") {
+    rowCount = rng() > 0.5 ? 6 : 5;
+    digitsMode = "single";
+    formulaType = "minusMixed";
+  }
+  // SR-2 Topics
+  else if (setId === "abacus-sr2-double-direct") {
+    rowCount = 5;
+    digitsMode = "double";
+    formulaType = "direct";
+  } else if (setId === "abacus-sr2-double-allcomp") {
+    rowCount = 5;
+    digitsMode = "double";
+    formulaType = "allComp";
+  } else if (setId === "abacus-sr2-single-allcomp") {
+    rowCount = 7;
+    digitsMode = "single";
+    formulaType = "allComp";
+  } else if (setId === "abacus-sr2-triple-allcomp") {
+    rowCount = 5;
     digitsMode = "triple";
     formulaType = "allComp";
   }
