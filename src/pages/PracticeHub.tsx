@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ABACUS_QUESTION_SETS, VEDIC_QUESTION_SETS } from "../data/practiceData";
 import { PracticeCategory, PracticeMode, QuestionCountChoice } from "../types";
-import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Calendar, ShieldCheck, ListOrdered, AlertCircle } from "lucide-react";
+import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Calendar, ShieldCheck, ListOrdered, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 
 export default function PracticeHub() {
@@ -19,6 +19,16 @@ export default function PracticeHub() {
   const [selectedSetLeaderboard, setSelectedSetLeaderboard] = useState<string>("abacus-jr1-direct-2row");
   const [attemptsList, setAttemptsList] = useState<any[]>([]);
   const navigate = useNavigate();
+
+  // Collapsible state for Level Categories (JR-2, JR-3, etc.)
+  const [expandedLevels, setExpandedLevels] = useState<Record<string, boolean>>({});
+
+  const toggleLevel = (lvl: string) => {
+    setExpandedLevels((prev) => ({
+      ...prev,
+      [lvl]: !prev[lvl],
+    }));
+  };
 
   // Admin Approved Emails management state
   const [approvedEmails, setApprovedEmails] = useState<string[]>([]);
@@ -333,93 +343,108 @@ export default function PracticeHub() {
                     return acc;
                   }, {} as Record<string, typeof currentSets>);
 
-                  return Object.entries(groupedSets).map(([levelName, sets]) => (
-                    <div key={levelName} className="mb-10">
-                      {/* Level Group Header Banner */}
-                      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 text-white px-5 py-3.5 rounded-2xl mb-6 flex items-center justify-between shadow-md border border-orange-400/40">
-                        <div className="flex items-center gap-3">
-                          <span className="bg-white/20 p-2 rounded-xl backdrop-blur-xs">
-                            <Layers className="w-5 h-5 text-white" />
-                          </span>
-                          <div>
-                            <h3 className="font-black text-base md:text-lg tracking-wide uppercase flex items-center gap-2">
-                              Category Level: {levelName}
-                            </h3>
-                            <p className="text-xs text-orange-100 font-medium">
-                              {sets.length} Practice Topics arranged under Level {levelName}
-                            </p>
+                  return Object.entries(groupedSets).map(([levelName, sets]) => {
+                    const isExpanded = expandedLevels[levelName] ?? false;
+
+                    return (
+                      <div key={levelName} className="mb-6">
+                        {/* Collapsible Level Group Header Banner */}
+                        <div
+                          onClick={() => toggleLevel(levelName)}
+                          className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-5 py-3.5 rounded-2xl flex items-center justify-between shadow-md border border-orange-400/40 cursor-pointer transition-all active:scale-[0.99]"
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="bg-white/20 p-2 rounded-xl backdrop-blur-xs">
+                              <Layers className="w-5 h-5 text-white" />
+                            </span>
+                            <div>
+                              <h3 className="font-black text-base md:text-lg tracking-wide uppercase flex items-center gap-2">
+                                Category Level: {levelName}
+                              </h3>
+                              <p className="text-xs text-orange-100 font-medium">
+                                {sets.length} Practice Topics • {isExpanded ? "Click to collapse" : "Click to expand & view topics"}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-3">
+                            <span className="bg-white text-orange-600 text-xs font-black px-3.5 py-1.5 rounded-xl shadow-xs hidden sm:inline-block">
+                              {sets.length} Topics
+                            </span>
+                            <span className="bg-white/20 p-1.5 rounded-xl">
+                              {isExpanded ? <ChevronUp className="w-5 h-5 text-white" /> : <ChevronDown className="w-5 h-5 text-white" />}
+                            </span>
                           </div>
                         </div>
-                        <span className="bg-white text-orange-600 text-xs font-black px-3.5 py-1.5 rounded-xl shadow-xs">
-                          {sets.length} Topics
-                        </span>
-                      </div>
 
-                      {/* Sets Grid */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {sets.map((set) => {
-                          const effectiveQCount = selectedMode.startsWith("speed-100")
-                            ? 100
-                            : selectedMode === "speed-200-20m"
-                            ? 200
-                            : selectedCount;
+                        {/* Expandable Sets Grid */}
+                        {isExpanded && (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                            {sets.map((set) => {
+                              const effectiveQCount = selectedMode.startsWith("speed-100")
+                                ? 100
+                                : selectedMode === "speed-200-20m"
+                                ? 200
+                                : selectedCount;
 
-                          const timerText = selectedMode === "speed-100-5m"
-                            ? "5 Mins"
-                            : selectedMode === "speed-100-10m"
-                            ? "10 Mins"
-                            : selectedMode === "speed-200-20m"
-                            ? "20 Mins"
-                            : selectedCount === 10
-                            ? "2 Mins"
-                            : selectedCount === 50
-                            ? "8 Mins"
-                            : "4 Mins";
+                              const timerText = selectedMode === "speed-100-5m"
+                                ? "5 Mins"
+                                : selectedMode === "speed-100-10m"
+                                ? "10 Mins"
+                                : selectedMode === "speed-200-20m"
+                                ? "20 Mins"
+                                : selectedCount === 10
+                                ? "2 Mins"
+                                : selectedCount === 50
+                                ? "8 Mins"
+                                : "4 Mins";
 
-                          return (
-                            <div
-                              key={set.id}
-                              className="bg-white border-2 border-slate-200 hover:border-vibrant-orange/60 rounded-2xl p-6 transition-all hover:shadow-xl flex flex-col justify-between group relative overflow-hidden"
-                            >
-                              <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-teal-500/10 to-transparent rounded-bl-full pointer-events-none"></div>
-
-                              <div>
-                                <div className="flex justify-between items-center mb-3">
-                                  <span className="bg-orange-100 text-orange-900 text-xs font-black px-3 py-1 rounded-lg uppercase tracking-wider border border-orange-200">
-                                    {set.level}
-                                  </span>
-                                  <span className="flex items-center gap-1 text-xs text-slate-600 font-bold bg-slate-100 px-2.5 py-1 rounded-md">
-                                    <Clock className="w-3.5 h-3.5 text-vibrant-orange" />
-                                    {timerText} ({effectiveQCount} Qs)
-                                  </span>
-                                </div>
-
-                                <h3 className="font-black text-slate-900 text-base leading-snug group-hover:text-vibrant-orange transition-colors mb-2">
-                                  {set.title}
-                                </h3>
-                                <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-4">
-                                  {set.description}
-                                </p>
-                              </div>
-
-                              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                                <span className="text-xs font-semibold text-slate-500">
-                                  Topic: <span className="text-slate-800 font-bold">{set.topic}</span>
-                                </span>
-                                <button
-                                  onClick={() => handleStartSet(set.id)}
-                                  className="bg-vibrant-teal hover:bg-vibrant-teal/90 text-white text-xs font-black px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer"
+                              return (
+                                <div
+                                  key={set.id}
+                                  className="bg-white border-2 border-slate-200 hover:border-vibrant-orange/60 rounded-2xl p-6 transition-all hover:shadow-xl flex flex-col justify-between group relative overflow-hidden"
                                 >
-                                  Start {effectiveQCount} Qs
-                                  <ArrowRight className="w-4 h-4" />
-                                </button>
-                              </div>
-                            </div>
-                          );
-                        })}
+                                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-teal-500/10 to-transparent rounded-bl-full pointer-events-none"></div>
+
+                                  <div>
+                                    <div className="flex justify-between items-center mb-3">
+                                      <span className="bg-orange-100 text-orange-900 text-xs font-black px-3 py-1 rounded-lg uppercase tracking-wider border border-orange-200">
+                                        {set.level}
+                                      </span>
+                                      <span className="flex items-center gap-1 text-xs text-slate-600 font-bold bg-slate-100 px-2.5 py-1 rounded-md">
+                                        <Clock className="w-3.5 h-3.5 text-vibrant-orange" />
+                                        {timerText} ({effectiveQCount} Qs)
+                                      </span>
+                                    </div>
+
+                                    <h3 className="font-black text-slate-900 text-base leading-snug group-hover:text-vibrant-orange transition-colors mb-2">
+                                      {set.title}
+                                    </h3>
+                                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-4">
+                                      {set.description}
+                                    </p>
+                                  </div>
+
+                                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                    <span className="text-xs font-semibold text-slate-500">
+                                      Topic: <span className="text-slate-800 font-bold">{set.topic}</span>
+                                    </span>
+                                    <button
+                                      onClick={() => handleStartSet(set.id)}
+                                      className="bg-vibrant-teal hover:bg-vibrant-teal/90 text-white text-xs font-black px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer"
+                                    >
+                                      Start {effectiveQCount} Qs
+                                      <ArrowRight className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  ));
+                    );
+                  });
                 })()}
               </div>
             </div>
