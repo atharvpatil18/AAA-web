@@ -45,16 +45,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const sendEmailOTP = async (email: string, name: string) => {
     // Check if the email is pre-approved in our database
     const APPROVED_EMAILS_KEY = "aaa_approved_emails";
-    let approvedEmailsRaw = localStorage.getItem(APPROVED_EMAILS_KEY);
-    
-    // Seed default approved emails if they don't exist
-    if (!approvedEmailsRaw) {
-      const defaultApproved = ["nitinkpatil@gmail.com", "admin@arnavabacus.com"];
-      localStorage.setItem(APPROVED_EMAILS_KEY, JSON.stringify(defaultApproved));
-      approvedEmailsRaw = JSON.stringify(defaultApproved);
+    const DEFAULT_APPROVED = [
+      "nitinkpatil@gmail.com",
+      "admin@arnavabacus.com",
+      "nehaatharv@gmail.com",
+      "arnavabacus@gmail.com"
+    ];
+
+    let storedEmails: string[] = [];
+    const raw = localStorage.getItem(APPROVED_EMAILS_KEY);
+    if (raw) {
+      try {
+        storedEmails = JSON.parse(raw);
+      } catch (e) {
+        storedEmails = [];
+      }
+    } else {
+      localStorage.setItem(APPROVED_EMAILS_KEY, JSON.stringify(DEFAULT_APPROVED));
     }
 
-    const approvedEmails: string[] = JSON.parse(approvedEmailsRaw);
+    // Always merge default approved list with stored admin emails
+    const approvedEmails = Array.from(
+      new Set([
+        ...DEFAULT_APPROVED.map((e) => e.toLowerCase().trim()),
+        ...storedEmails.map((e) => e.toLowerCase().trim()),
+      ])
+    );
     const targetEmail = email.trim().toLowerCase();
 
     if (!approvedEmails.map(e => e.toLowerCase().trim()).includes(targetEmail)) {

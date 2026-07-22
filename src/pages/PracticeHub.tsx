@@ -185,11 +185,18 @@ export default function PracticeHub() {
 
   // Load approved emails list
   useEffect(() => {
+    const defaultEmails = ["nitinkpatil@gmail.com", "admin@arnavabacus.com", "nehaatharv@gmail.com", "arnavabacus@gmail.com"];
     const raw = localStorage.getItem("aaa_approved_emails");
     if (raw) {
-      setApprovedEmails(JSON.parse(raw));
+      try {
+        const stored = JSON.parse(raw);
+        const merged = Array.from(new Set([...defaultEmails, ...stored]));
+        localStorage.setItem("aaa_approved_emails", JSON.stringify(merged));
+        setApprovedEmails(merged);
+      } catch (e) {
+        setApprovedEmails(defaultEmails);
+      }
     } else {
-      const defaultEmails = ["nitinkpatil@gmail.com", "admin@arnavabacus.com"];
       localStorage.setItem("aaa_approved_emails", JSON.stringify(defaultEmails));
       setApprovedEmails(defaultEmails);
     }
