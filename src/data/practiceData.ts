@@ -860,6 +860,98 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 2, numbers: [128.4, 256.7, -94.2], correctAnswer: 290.9, conceptTag: "SR-9 Decimal Math" },
       { id: 3, numbers: [452.8, 381.5, -210.3], correctAnswer: 624, conceptTag: "SR-9 Decimal Math" },
     ]
+  },
+
+  // SR-10 Curriculum Sets
+  {
+    id: "abacus-sr10-decimal-mult",
+    title: "DECIMALS MULTIPLICATION",
+    category: "abacus",
+    level: "SR-10",
+    topic: "14, Decimals Multiplication",
+    description: "Practice multiplication with decimal numbers (e.g. 4.5 × 1.2 = 5.4).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "4.5 × 1.2", correctAnswer: 5.4, conceptTag: "Decimal Multiplication" },
+      { id: 2, expression: "3.6 × 2.5", correctAnswer: 9, conceptTag: "Decimal Multiplication" },
+      { id: 3, expression: "7.2 × 1.5", correctAnswer: 10.8, conceptTag: "Decimal Multiplication" },
+    ]
+  },
+  {
+    id: "abacus-sr10-decimal-div",
+    title: "DECIMAL DIVISION",
+    category: "abacus",
+    level: "SR-10",
+    topic: "15. Decimal Division",
+    description: "Practice division resulting in or involving decimals (e.g. 7.5 ÷ 1.5 = 5).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "7.5 ÷ 1.5", correctAnswer: 5, conceptTag: "Decimal Division" },
+      { id: 2, expression: "12.6 ÷ 0.3", correctAnswer: 42, conceptTag: "Decimal Division" },
+      { id: 3, expression: "9.6 ÷ 1.2", correctAnswer: 8, conceptTag: "Decimal Division" },
+    ]
+  },
+  {
+    id: "abacus-sr10-hcf",
+    title: "HCF (HIGHEST COMMON FACTOR)",
+    category: "abacus",
+    level: "SR-10",
+    topic: "16. HCF",
+    description: "Find the Highest Common Factor (HCF) of two numbers (e.g. HCF of 24 & 36 = 12).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "HCF of 24 & 36", correctAnswer: 12, conceptTag: "HCF Calculation" },
+      { id: 2, expression: "HCF of 18 & 45", correctAnswer: 9, conceptTag: "HCF Calculation" },
+      { id: 3, expression: "HCF of 32 & 48", correctAnswer: 16, conceptTag: "HCF Calculation" },
+    ]
+  },
+  {
+    id: "abacus-sr10-percentage",
+    title: "PERCENTAGE",
+    category: "abacus",
+    level: "SR-10",
+    topic: "17. Percentage",
+    description: "Calculate percentages mentally on Abacus (e.g. 25% of 160 = 40).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "25% of 160", correctAnswer: 40, conceptTag: "Percentage Calculation" },
+      { id: 2, expression: "15% of 200", correctAnswer: 30, conceptTag: "Percentage Calculation" },
+      { id: 3, expression: "50% of 340", correctAnswer: 170, conceptTag: "Percentage Calculation" },
+    ]
+  },
+  {
+    id: "abacus-sr10-lcm",
+    title: "LCM (LOWEST COMMON MULTIPLE)",
+    category: "abacus",
+    level: "SR-10",
+    topic: "18. LCM",
+    description: "Find the Lowest Common Multiple (LCM) of two numbers (e.g. LCM of 12 & 18 = 36).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "LCM of 12 & 18", correctAnswer: 36, conceptTag: "LCM Calculation" },
+      { id: 2, expression: "LCM of 8 & 12", correctAnswer: 24, conceptTag: "LCM Calculation" },
+      { id: 3, expression: "LCM of 15 & 20", correctAnswer: 60, conceptTag: "LCM Calculation" },
+    ]
+  },
+  {
+    id: "abacus-sr10-square-root",
+    title: "SQUARE ROOT",
+    category: "abacus",
+    level: "SR-10",
+    topic: "19. Square root",
+    description: "Calculate square roots of perfect squares mentally on Abacus (e.g. √1225 = 35).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "√1225", correctAnswer: 35, conceptTag: "Square Root Calculation" },
+      { id: 2, expression: "√784", correctAnswer: 28, conceptTag: "Square Root Calculation" },
+      { id: 3, expression: "√2025", correctAnswer: 45, conceptTag: "Square Root Calculation" },
+    ]
   }
 ];
 
@@ -1410,10 +1502,89 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     !setId.startsWith("abacus-sr6-") &&
     !setId.startsWith("abacus-sr7-") &&
     !setId.startsWith("abacus-sr8-") &&
-    !setId.startsWith("abacus-sr9-")
+    !setId.startsWith("abacus-sr9-") &&
+    !setId.startsWith("abacus-sr10-")
   ) return null;
 
   const rng = createPRNG(`${seed}_${setId}_${qId}`);
+
+  // SR-10 Generators
+  if (setId === "abacus-sr10-decimal-mult") {
+    const num1 = Math.round((Math.floor(rng() * 89) + 11) / 10 * 10) / 10;
+    const num2 = Math.round((Math.floor(rng() * 89) + 11) / 10 * 10) / 10;
+    const ans = Math.round(num1 * num2 * 100) / 100;
+    return {
+      id: qId,
+      expression: `${num1} × ${num2}`,
+      correctAnswer: ans,
+      conceptTag: "Decimal Multiplication"
+    };
+  }
+
+  if (setId === "abacus-sr10-decimal-div") {
+    const divisor = Math.round((Math.floor(rng() * 45) + 5) / 10 * 10) / 10;
+    const quotient = Math.floor(rng() * 49) + 2;
+    const dividend = Math.round(divisor * quotient * 100) / 100;
+    return {
+      id: qId,
+      expression: `${dividend} ÷ ${divisor}`,
+      correctAnswer: quotient,
+      conceptTag: "Decimal Division"
+    };
+  }
+
+  if (setId === "abacus-sr10-hcf") {
+    const hcfVal = Math.floor(rng() * 14) + 2;
+    const pairs = [[2, 3], [3, 4], [3, 5], [2, 5], [4, 5], [3, 7], [5, 7]];
+    const pair = pairs[Math.floor(rng() * pairs.length)];
+    const n1 = hcfVal * pair[0];
+    const n2 = hcfVal * pair[1];
+    return {
+      id: qId,
+      expression: `HCF of ${n1} & ${n2}`,
+      correctAnswer: hcfVal,
+      conceptTag: "HCF Calculation"
+    };
+  }
+
+  if (setId === "abacus-sr10-percentage") {
+    const percentages = [5, 10, 15, 20, 25, 30, 40, 50, 60, 75];
+    const p = percentages[Math.floor(rng() * percentages.length)];
+    const base = (Math.floor(rng() * 20) + 1) * 20;
+    const ans = Math.round((p / 100) * base);
+    return {
+      id: qId,
+      expression: `${p}% of ${base}`,
+      correctAnswer: ans,
+      conceptTag: "Percentage Calculation"
+    };
+  }
+
+  if (setId === "abacus-sr10-lcm") {
+    const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+    const smallPairs = [[6, 8], [8, 12], [12, 15], [9, 12], [10, 15], [12, 16], [14, 21], [15, 25]];
+    const pair = smallPairs[Math.floor(rng() * smallPairs.length)];
+    const n1 = pair[0];
+    const n2 = pair[1];
+    const lcmVal = (n1 * n2) / gcd(n1, n2);
+    return {
+      id: qId,
+      expression: `LCM of ${n1} & ${n2}`,
+      correctAnswer: lcmVal,
+      conceptTag: "LCM Calculation"
+    };
+  }
+
+  if (setId === "abacus-sr10-square-root") {
+    const root = Math.floor(rng() * 85) + 12;
+    const sq = root * root;
+    return {
+      id: qId,
+      expression: `√${sq}`,
+      correctAnswer: root,
+      conceptTag: "Square Root Calculation"
+    };
+  }
 
   // SR-9 Decimal Generator
   if (setId === "abacus-sr9-decimal-3d-4d-3row") {
