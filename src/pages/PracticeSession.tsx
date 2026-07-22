@@ -9,6 +9,7 @@ import { getCustomizedSet } from "../data/practiceData";
 import { UserAnswer, PracticeMode, Question } from "../types";
 import { Flag, ArrowLeft, ArrowRight, Clock, CheckCircle, HelpCircle, LayoutGrid, Sparkles, Trophy, Zap, Flame, Smile, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
+import SorobanQuizBeadCanvas from "../components/SorobanQuizBeadCanvas";
 
 export default function PracticeSession() {
   const { currentUser } = useAuth();
@@ -276,20 +277,51 @@ export default function PracticeSession() {
                 <span>Focus & Calculate with Photographic Confidence!</span>
               </div>
 
-              {/* Vertical Column Abacus Numbers or Horizontal Vedic Math Expression (Font size reduced by 4pt for text pad clearance) */}
-              {currentQuestion.numbers ? (
-                <div className="flex flex-col items-end text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 font-mono tracking-wider space-y-0.5 my-2 bg-white/70 px-5 py-3 rounded-xl border border-teal-200/60 shadow-xs">
-                  {currentQuestion.numbers.map((num, idx) => (
-                    <div key={idx} className="leading-tight">
-                      {num > 0 ? num : `- ${Math.abs(num)}`}
-                    </div>
-                  ))}
-                  <div className="w-full border-b-3 border-slate-900 my-1"></div>
+              {/* JR-0 Specific Visual Soroban Bead Canvas */}
+              {setId === "abacus-jr0-bead-identification" && (
+                <div className="w-full flex flex-col items-center">
+                  <span className="text-xs font-black text-amber-900 bg-amber-100 px-3 py-1 rounded-full mb-1">
+                    🔍 Identify the Number from the Beads below:
+                  </span>
+                  <SorobanQuizBeadCanvas
+                    value={currentQuestion.correctAnswer}
+                    digitsCount={currentQuestion.correctAnswer >= 100 ? 3 : currentQuestion.correctAnswer >= 10 ? 2 : 1}
+                    interactive={false}
+                  />
                 </div>
-              ) : (
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 font-mono my-4 tracking-wide bg-white/70 px-5 py-3 rounded-xl border border-teal-200/60 shadow-xs">
-                  {currentQuestion.expression} = ?
+              )}
+
+              {setId === "abacus-jr0-bead-representation" && (
+                <div className="w-full flex flex-col items-center">
+                  <div className="text-center bg-gradient-to-r from-amber-500 to-orange-500 text-white p-2 rounded-xl mb-1 shadow-xs w-full max-w-xs">
+                    <span className="text-[10px] uppercase font-bold text-amber-100 block">Target Number to Represent</span>
+                    <span className="text-2xl font-black font-mono tracking-wider">{currentQuestion.correctAnswer}</span>
+                  </div>
+                  <SorobanQuizBeadCanvas
+                    value={Number(currentInput) || 0}
+                    digitsCount={currentQuestion.correctAnswer >= 100 ? 3 : currentQuestion.correctAnswer >= 10 ? 2 : 1}
+                    interactive={true}
+                    onChange={(newVal) => handleInputChange(newVal.toString())}
+                  />
                 </div>
+              )}
+
+              {/* Vertical Column Abacus Numbers or Horizontal Vedic Math Expression */}
+              {!setId.startsWith("abacus-jr0-") && (
+                currentQuestion.numbers ? (
+                  <div className="flex flex-col items-end text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 font-mono tracking-wider space-y-0.5 my-2 bg-white/70 px-5 py-3 rounded-xl border border-teal-200/60 shadow-xs">
+                    {currentQuestion.numbers.map((num, idx) => (
+                      <div key={idx} className="leading-tight">
+                        {num > 0 ? num : `- ${Math.abs(num)}`}
+                      </div>
+                    ))}
+                    <div className="w-full border-b-3 border-slate-900 my-1"></div>
+                  </div>
+                ) : (
+                  <div className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 font-mono my-4 tracking-wide bg-white/70 px-5 py-3 rounded-xl border border-teal-200/60 shadow-xs">
+                    {currentQuestion.expression} = ?
+                  </div>
+                )
               )}
 
               {/* Answer Input Field (Mobile Text Pad Ready) */}

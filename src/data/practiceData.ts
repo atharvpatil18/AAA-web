@@ -6,6 +6,38 @@
 import { QuestionSet, Question, PracticeMode } from "../types";
 
 export const ABACUS_QUESTION_SETS: QuestionSet[] = [
+  // JR-0 Curriculum Sets (Abacus Bead Visual Drills for Beginners)
+  {
+    id: "abacus-jr0-bead-identification",
+    title: "IDENTIFY NUMBER FROM BEADS (1, 2, 3 DIGITS)",
+    category: "abacus",
+    level: "JR-0",
+    topic: "1. Identify Number from Beads (1, 2, 3 Digits)",
+    description: "Inspect the rendered Soroban abacus beads across Units, Tens & Hundreds rods and type the correct number.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, correctAnswer: 7, conceptTag: "Bead Identification (1 Digit)" },
+      { id: 2, correctAnswer: 34, conceptTag: "Bead Identification (2 Digits)" },
+      { id: 3, correctAnswer: 528, conceptTag: "Bead Identification (3 Digits)" },
+    ]
+  },
+  {
+    id: "abacus-jr0-bead-representation",
+    title: "REPRESENT NUMBER ON ABACUS TOOL (1, 2, 3 DIGITS)",
+    category: "abacus",
+    level: "JR-0",
+    topic: "2. Represent Number on Abacus Tool (1, 2, 3 Digits)",
+    description: "Given a target 1, 2, or 3-digit number, click the upper and lower beads on the interactive Soroban tool to match.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, correctAnswer: 4, conceptTag: "Bead Representation (1 Digit)" },
+      { id: 2, correctAnswer: 37, conceptTag: "Bead Representation (2 Digits)" },
+      { id: 3, correctAnswer: 582, conceptTag: "Bead Representation (3 Digits)" },
+    ]
+  },
+
   // JR-1 Curriculum Sets (Direct Single Digit Addition & Subtraction without Complements)
   {
     id: "abacus-jr1-direct-3row",
@@ -1491,6 +1523,7 @@ export function isValidDirectOnesMove(currentVal: number, n: number): boolean {
  */
 export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: string = "attempt_default"): Question | null {
   if (
+    !setId.startsWith("abacus-jr0-") &&
     !setId.startsWith("abacus-jr1-") &&
     !setId.startsWith("abacus-jr2-") &&
     !setId.startsWith("abacus-jr3-") &&
@@ -1507,6 +1540,29 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
   ) return null;
 
   const rng = createPRNG(`${seed}_${setId}_${qId}`);
+
+  // JR-0 Bead Identification & Representation Generators
+  if (setId === "abacus-jr0-bead-identification" || setId === "abacus-jr0-bead-representation") {
+    let targetNum = 0;
+    let tag = "";
+    if (qId <= 6) {
+      targetNum = Math.floor(rng() * 9) + 1; // 1..9
+      tag = "1 Digit";
+    } else if (qId <= 14) {
+      targetNum = Math.floor(rng() * 90) + 10; // 10..99
+      tag = "2 Digits";
+    } else {
+      targetNum = Math.floor(rng() * 900) + 100; // 100..999
+      tag = "3 Digits";
+    }
+
+    const isIdent = setId === "abacus-jr0-bead-identification";
+    return {
+      id: qId,
+      correctAnswer: targetNum,
+      conceptTag: `JR-0 Bead ${isIdent ? "Identification" : "Representation"} (${tag})`,
+    };
+  }
 
   // SR-10 Generators
   if (setId === "abacus-sr10-decimal-mult") {
