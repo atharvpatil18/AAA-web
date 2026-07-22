@@ -6,6 +6,22 @@
 import { QuestionSet, Question, PracticeMode } from "../types";
 
 export const ABACUS_QUESTION_SETS: QuestionSet[] = [
+  // JR-1 Curriculum Set
+  {
+    id: "abacus-jr1-direct-3-4-5row",
+    title: "ADD./ SUB. S.D. 3-4-5 ROWS ± DIRECT",
+    category: "abacus",
+    level: "JR-1",
+    topic: "1. Add./ Sub. S.D. 3-4-5 rows  ± Direct (without compliments)",
+    description: "Practice Single Digit (S.D.) 3, 4, or 5 rows direct addition and subtraction (without complements).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [2, 5, -1], correctAnswer: 6, conceptTag: "JR-1 Direct 3 Rows" },
+      { id: 2, numbers: [4, 5, -3, 2], correctAnswer: 8, conceptTag: "JR-1 Direct 4 Rows" },
+      { id: 3, numbers: [1, 2, 5, -3, 4], correctAnswer: 9, conceptTag: "JR-1 Direct 5 Rows" },
+    ]
+  },
   {
     id: "abacus-jr2-direct-4row",
     title: "ADD & SUB DIRECT (SINGLE DIGIT), 4 ROWS",
@@ -865,6 +881,7 @@ function createPRNG(seedStr: string) {
  */
 export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: string = "attempt_default"): Question | null {
   if (
+    !setId.startsWith("abacus-jr1-") &&
     !setId.startsWith("abacus-jr2-") &&
     !setId.startsWith("abacus-jr3-") &&
     !setId.startsWith("abacus-sr1-") &&
@@ -877,7 +894,13 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
   let digitsMode: "single" | "double" | "triple" = "single";
   let formulaType: "direct" | "plus5" | "minus5" | "plus10" | "minus10" | "plusMixed" | "minusMixed" | "allComp" = "direct";
 
-  if (setId === "abacus-jr2-direct-4row") {
+  // JR-1 Topic
+  if (setId === "abacus-jr1-direct-3-4-5row") {
+    const rVal = rng();
+    rowCount = rVal < 0.33 ? 3 : rVal < 0.66 ? 4 : 5;
+    digitsMode = "single";
+    formulaType = "direct";
+  } else if (setId === "abacus-jr2-direct-4row") {
     rowCount = 4;
     digitsMode = "single";
     formulaType = "direct";
