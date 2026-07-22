@@ -216,11 +216,11 @@ export default function PracticeHub() {
                     <span className={`text-base md:text-lg font-black mb-2.5 ${activeCategory === "abacus" ? "text-vibrant-orange" : "text-slate-800"}`}>
                       Abacus Practice
                     </span>
-                    <div className="w-full h-32 rounded-xl overflow-hidden border border-slate-200 shadow-xs relative bg-slate-50 flex items-center justify-center">
+                    <div className="w-full h-36 sm:h-40 rounded-xl overflow-hidden border border-slate-200 shadow-xs relative bg-slate-50 flex items-center justify-center">
                       <img
                         src="/images/abacus_practice_tab.jpg"
                         alt="Abacus Practice"
-                        className="w-full h-full object-contain p-1 transform hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                   </div>
