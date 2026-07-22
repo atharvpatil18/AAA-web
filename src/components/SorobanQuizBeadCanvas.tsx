@@ -4,6 +4,7 @@ interface SorobanQuizBeadCanvasProps {
   value: number; // Current numerical value to display or track (0 to 999)
   digitsCount?: 1 | 2 | 3; // 1-digit, 2-digit, or 3-digit rods
   interactive?: boolean; // If true, user can click beads to change value
+  showDigitsFooter?: boolean; // If true, renders bottom digit badges (default false to avoid giving away answers in identification)
   onChange?: (newValue: number) => void; // Callback when user moves beads in interactive mode
 }
 
@@ -16,6 +17,7 @@ export default function SorobanQuizBeadCanvas({
   value,
   digitsCount = 2,
   interactive = false,
+  showDigitsFooter = false,
   onChange,
 }: SorobanQuizBeadCanvasProps) {
   // Determine how many rods to show based on digitsCount or value size
@@ -228,25 +230,27 @@ export default function SorobanQuizBeadCanvas({
           </div>
         </div>
 
-        {/* Rod Digits Sub-Footer Display */}
-        <div className="flex justify-around mt-2">
-          {rods.map((rod, idx) => {
-            const digitVal = (rod.upper ? 5 : 0) + rod.lowerCount;
-            return (
-              <div
-                key={idx}
-                className="flex flex-col items-center bg-amber-900/90 border border-amber-700/60 px-3 py-1 rounded-lg shadow-inner"
-              >
-                <span className="text-xs font-bold text-amber-300">
-                  {rodLabels[idx].split(" ")[0]}:
-                </span>
-                <span className="text-lg font-black text-white font-mono leading-none">
-                  {digitVal}
-                </span>
-              </div>
-            );
-          })}
-        </div>
+        {/* Rod Digits Sub-Footer Display (Rendered only when showDigitsFooter is true) */}
+        {showDigitsFooter && (
+          <div className="flex justify-around mt-2">
+            {rods.map((rod, idx) => {
+              const digitVal = (rod.upper ? 5 : 0) + rod.lowerCount;
+              return (
+                <div
+                  key={idx}
+                  className="flex flex-col items-center bg-amber-900/90 border border-amber-700/60 px-3 py-1 rounded-lg shadow-inner"
+                >
+                  <span className="text-xs font-bold text-amber-300">
+                    {rodLabels[idx].split(" ")[0]}:
+                  </span>
+                  <span className="text-lg font-black text-white font-mono leading-none">
+                    {digitVal}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Guide Caption */}

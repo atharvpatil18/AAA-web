@@ -287,6 +287,7 @@ export default function PracticeSession() {
                     value={currentQuestion.correctAnswer}
                     digitsCount={currentQuestion.correctAnswer >= 100 ? 3 : currentQuestion.correctAnswer >= 10 ? 2 : 1}
                     interactive={false}
+                    showDigitsFooter={false}
                   />
                 </div>
               )}
@@ -301,6 +302,7 @@ export default function PracticeSession() {
                     value={Number(currentInput) || 0}
                     digitsCount={currentQuestion.correctAnswer >= 100 ? 3 : currentQuestion.correctAnswer >= 10 ? 2 : 1}
                     interactive={true}
+                    showDigitsFooter={true}
                     onChange={(newVal) => handleInputChange(newVal.toString())}
                   />
                 </div>
