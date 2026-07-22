@@ -906,7 +906,37 @@ function createPRNG(seedStr: string) {
 }
 
 /**
- * Dynamic math question generator for Abacus JR-2 topic sets.
+ * Checks if adding or subtracting single-digit 'n' from 'currentVal' can be performed
+ * DIRECTLY on the One's Place Rod of a 1-upper / 4-lower Soroban abacus WITHOUT COMPLEMENTS.
+ */
+export function isValidDirectOnesMove(currentVal: number, n: number): boolean {
+  if (n === 0) return false;
+  const nextVal = currentVal + n;
+  if (nextVal < 0 || nextVal > 9) return false;
+
+  const currentUpper = currentVal >= 5 ? 1 : 0;
+  const currentLower = currentVal % 5;
+
+  if (n > 0) {
+    if (n < 5) {
+      return currentLower + n <= 4;
+    } else {
+      const lowerNeeded = n - 5;
+      return currentUpper === 0 && currentLower + lowerNeeded <= 4;
+    }
+  } else {
+    const absN = Math.abs(n);
+    if (absN < 5) {
+      return currentLower >= absN;
+    } else {
+      const lowerSub = absN - 5;
+      return currentUpper === 1 && currentLower >= lowerSub;
+    }
+  }
+}
+
+/**
+ * Dynamic math question generator for Abacus JR-1, JR-2, JR-3, SR-1, SR-2 topic sets.
  * Generates deterministic numbers for a given attempt seed.
  */
 export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: string = "attempt_default"): Question | null {
@@ -924,7 +954,7 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
   let digitsMode: "single" | "double" | "triple" = "single";
   let formulaType: "direct" | "plus5" | "minus5" | "plus10" | "minus10" | "plusMixed" | "minusMixed" | "allComp" = "direct";
 
-  // JR-1 Topics (3 Rows, 4 Rows, 5 Rows Direct Addition/Subtraction without Complements)
+  // JR-1 Topics (3 Rows, 4 Rows, 5 Rows Direct Addition/Subtraction without Complements on One's Rod)
   if (setId === "abacus-jr1-direct-3row") {
     rowCount = 3;
     digitsMode = "single";
@@ -1037,8 +1067,10 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     formulaType = "allComp";
   }
 
-  // Attempt up to 30 times to generate a valid sequence
-  for (let attempt = 0; attempt < 30; attempt++) {
+  const isJR1 = setId.startsWith("abacus-jr1-");
+
+  // Attempt up to 50 times to generate a valid sequence
+  for (let attempt = 0; attempt < 50; attempt++) {
     const numbers: number[] = [];
     let minStart = 1;
     let maxStart = 8;
@@ -1065,17 +1097,25 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
         maxVal = 888;
       }
 
-      for (let subAttempt = 0; subAttempt < 25; subAttempt++) {
+      for (let subAttempt = 0; subAttempt < 40; subAttempt++) {
         let n = Math.floor(rng() * (maxVal - minVal + 1)) + minVal;
         if (n === 0) continue;
 
         if (digitsMode === "double" && Math.abs(n) < 10) continue;
         if (digitsMode === "triple" && Math.abs(n) < 100) continue;
 
-        const nextTotal = currentTotal + n;
-        if (nextTotal >= 0) {
-          candidate = n;
-          break;
+        // Strict physical Soroban bead validation for JR-1 direct ones rod
+        if (isJR1) {
+          if (isValidDirectOnesMove(currentTotal, n)) {
+            candidate = n;
+            break;
+          }
+        } else {
+          const nextTotal = currentTotal + n;
+          if (nextTotal >= 0) {
+            candidate = n;
+            break;
+          }
         }
       }
 
@@ -1084,22 +1124,31 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
       currentTotal += candidate;
     }
 
-    if (numbers.length === rowCount && currentTotal >= 0) {
+    if (numbers.length === rowCount && currentTotal >= 0 && currentTotal <= 9999) {
       return {
         id: qId,
         numbers,
         correctAnswer: currentTotal,
-        conceptTag: `Abacus JR ${digitsMode.toUpperCase()}`
+        conceptTag: isJR1 ? "One's Place Rod (Direct Single Digit)" : `Abacus JR ${digitsMode.toUpperCase()}`
       };
     }
   }
 
   // Fallback safe sequence if candidate loop exhausted
+  const fallbackNumbers =
+    rowCount === 3
+      ? [2, 5, -1]
+      : rowCount === 4
+      ? [2, 5, -1, 3]
+      : [1, 3, 5, -2];
+
+  const fallbackAns = fallbackNumbers.reduce((a, b) => a + b, 0);
+
   return {
     id: qId,
-    numbers: digitsMode === "triple" ? [452, 235, -123, 115] : digitsMode === "double" ? [42, 35, -21, 15] : [4, 5, -3, 2],
-    correctAnswer: digitsMode === "triple" ? 679 : digitsMode === "double" ? 71 : 8,
-    conceptTag: "Abacus Practice"
+    numbers: digitsMode === "triple" ? [452, 235, -123, 115] : digitsMode === "double" ? [42, 35, -21, 15] : fallbackNumbers,
+    correctAnswer: digitsMode === "triple" ? 679 : digitsMode === "double" ? 71 : fallbackAns,
+    conceptTag: isJR1 ? "One's Place Rod (Direct Single Digit)" : "Abacus Practice"
   };
 }
 
