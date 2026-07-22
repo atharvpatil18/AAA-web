@@ -402,6 +402,106 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 1, numbers: [485, 372, -240, 519, 120], correctAnswer: 1256, conceptTag: "SR-2 Triple Complements" },
       { id: 2, numbers: [624, 289, -350, 478, -210], correctAnswer: 831, conceptTag: "SR-2 Triple Complements" },
     ]
+  },
+
+  // SR-3 Curriculum Sets
+  {
+    id: "abacus-sr3-single-direct-4-5row",
+    title: "ADD./ SUB. S.D. 4-5 ROWS ± DIRECT",
+    category: "abacus",
+    level: "SR-3",
+    topic: "1. Add./ Sub. S.D. 4-5 rows ± Direct; (without compliments)",
+    description: "Practice Single Digit (S.D.) 4 to 5 rows direct addition & subtraction without complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [2, 5, -1, 3], correctAnswer: 9, conceptTag: "SR-3 Single Direct" },
+      { id: 2, numbers: [4, 5, -3, 2, -1], correctAnswer: 7, conceptTag: "SR-3 Single Direct" },
+    ]
+  },
+  {
+    id: "abacus-sr3-double-direct-5row",
+    title: "ADD./ SUB. 2 D. 5 ROWS ± DIRECT",
+    category: "abacus",
+    level: "SR-3",
+    topic: "2. Add./ Sub. 2 D. 5rows; ± Direct; (without compliments)",
+    description: "Practice 2-Digit (2 D.) 5 rows direct addition & subtraction without complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [42, 55, -31, 23, 10], correctAnswer: 99, conceptTag: "SR-3 Double Direct 5 Rows" },
+      { id: 2, numbers: [34, 15, 50, -42, 21], correctAnswer: 78, conceptTag: "SR-3 Double Direct 5 Rows" },
+    ]
+  },
+  {
+    id: "abacus-sr3-triple-direct-4row",
+    title: "ADD./ SUB. 3 D. 4 ROWS ± DIRECT",
+    category: "abacus",
+    level: "SR-3",
+    topic: "3. Add./ Sub. 3 D. 4 rows; ± Direct; (without compliments)",
+    description: "Practice 3-Digit (3 D.) 4 rows direct addition & subtraction without complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [421, 555, -321, 234], correctAnswer: 889, conceptTag: "SR-3 Triple Direct 4 Rows" },
+      { id: 2, numbers: [342, 150, 505, -421], correctAnswer: 576, conceptTag: "SR-3 Triple Direct 4 Rows" },
+    ]
+  },
+  {
+    id: "abacus-sr3-single-plusminus5-6-7row",
+    title: "ADD./ SUB. S.D. 6-7 ROWS ± 5 COMPLIMENT",
+    category: "abacus",
+    level: "SR-3",
+    topic: "4. Add./ Sub. S.D. 6-7 rows ± 5 compliment",
+    description: "Practice Single Digit 6 to 7 rows using ±5 Small Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [4, 4, -3, 2, 4, -5, 3], correctAnswer: 9, conceptTag: "SR-3 Single ±5 Complement" },
+      { id: 2, numbers: [3, 3, 2, -5, 4, 1, -2], correctAnswer: 6, conceptTag: "SR-3 Single ±5 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr3-double-plusminus5-3row",
+    title: "ADD./ SUB. 2 D. 3 ROWS ± 5 COMPLIMENT",
+    category: "abacus",
+    level: "SR-3",
+    topic: "5. Add./ Sub. 2 D. 3 rows ± 5 compliment",
+    description: "Practice 2-Digit 3 rows using ±5 Small Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [44, 44, -33], correctAnswer: 55, conceptTag: "SR-3 Double ±5 Complement" },
+      { id: 2, numbers: [33, 33, 22], correctAnswer: 88, conceptTag: "SR-3 Double ±5 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr3-single-plusminus10-6-7row",
+    title: "ADD./ SUB. S.D. 6-7 ROWS ± 10 COMPLIMENT",
+    category: "abacus",
+    level: "SR-3",
+    topic: "6. Add./ Sub. S.D. 6-7 rows ± 10 compliment",
+    description: "Practice Single Digit 6 to 7 rows using ±10 Big Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [9, 9, -5, 8, -4, 7, -3], correctAnswer: 21, conceptTag: "SR-3 Single ±10 Complement" },
+      { id: 2, numbers: [8, 8, 4, -9, 7, 6, -5], correctAnswer: 19, conceptTag: "SR-3 Single ±10 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr3-single-mixed-6-7row",
+    title: "ADD./ SUB. S.D.6-7 ROWS ± MIXED COMPLIMENT",
+    category: "abacus",
+    level: "SR-3",
+    topic: "7. Add./ Sub. S.D.6-7 rows ± Mixed compliment",
+    description: "Practice Single Digit 6 to 7 rows using ± Mixed Combination complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [6, 6, -5, 7, -4, 8, -6], correctAnswer: 12, conceptTag: "SR-3 Single ± Mixed Complement" },
+      { id: 2, numbers: [7, 7, -5, 8, -6, 9, -7], correctAnswer: 13, conceptTag: "SR-3 Single ± Mixed Complement" },
+    ]
   }
 ];
 
@@ -945,7 +1045,8 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     !setId.startsWith("abacus-jr2-") &&
     !setId.startsWith("abacus-jr3-") &&
     !setId.startsWith("abacus-sr1-") &&
-    !setId.startsWith("abacus-sr2-")
+    !setId.startsWith("abacus-sr2-") &&
+    !setId.startsWith("abacus-sr3-")
   ) return null;
 
   const rng = createPRNG(`${seed}_${setId}_${qId}`);
@@ -1065,6 +1166,36 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     rowCount = 5;
     digitsMode = "triple";
     formulaType = "allComp";
+  }
+  // SR-3 Topics
+  else if (setId === "abacus-sr3-single-direct-4-5row") {
+    rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "single";
+    formulaType = "direct";
+  } else if (setId === "abacus-sr3-double-direct-5row") {
+    rowCount = 5;
+    digitsMode = "double";
+    formulaType = "direct";
+  } else if (setId === "abacus-sr3-triple-direct-4row") {
+    rowCount = 4;
+    digitsMode = "triple";
+    formulaType = "direct";
+  } else if (setId === "abacus-sr3-single-plusminus5-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "single";
+    formulaType = "plus5";
+  } else if (setId === "abacus-sr3-double-plusminus5-3row") {
+    rowCount = 3;
+    digitsMode = "double";
+    formulaType = "plus5";
+  } else if (setId === "abacus-sr3-single-plusminus10-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "single";
+    formulaType = "plus10";
+  } else if (setId === "abacus-sr3-single-mixed-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "single";
+    formulaType = "plusMixed";
   }
 
   const isJR1 = setId.startsWith("abacus-jr1-");
