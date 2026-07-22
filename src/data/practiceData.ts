@@ -14,82 +14,115 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     topic: "1. ADD & SUB DIRECT (SINGLE DIGIT), 4 ROWS",
     description: "Practice direct single-digit addition and subtraction with 4 rows of numbers.",
     questionCount: 20,
-    timeLimitSeconds: 240, // 4 minutes
+    timeLimitSeconds: 240,
     questions: [
       { id: 1, numbers: [7, -6, 1, 5], correctAnswer: 7, conceptTag: "Direct Addition/Subtraction" },
       { id: 2, numbers: [4, -2, 1, 5], correctAnswer: 8, conceptTag: "Direct Addition/Subtraction" },
       { id: 3, numbers: [8, -3, 2, -5], correctAnswer: 2, conceptTag: "Direct Addition/Subtraction" },
       { id: 4, numbers: [3, 5, -2, 1], correctAnswer: 7, conceptTag: "Direct Addition/Subtraction" },
       { id: 5, numbers: [9, -5, 1, 3], correctAnswer: 8, conceptTag: "Direct Addition/Subtraction" },
-      { id: 6, numbers: [6, 2, -5, 1], correctAnswer: 4, conceptTag: "Direct Addition/Subtraction" },
-      { id: 7, numbers: [2, 7, -4, 1], correctAnswer: 6, conceptTag: "Direct Addition/Subtraction" },
-      { id: 8, numbers: [5, 3, -6, 2], correctAnswer: 4, conceptTag: "Direct Addition/Subtraction" },
-      { id: 9, numbers: [1, 8, -5, 2], correctAnswer: 6, conceptTag: "Direct Addition/Subtraction" },
-      { id: 10, numbers: [7, 2, -8, 5], correctAnswer: 6, conceptTag: "Direct Addition/Subtraction" },
-      { id: 11, numbers: [4, 5, -3, 2], correctAnswer: 8, conceptTag: "Direct Addition/Subtraction" },
-      { id: 12, numbers: [8, -6, 2, 5], correctAnswer: 9, conceptTag: "Direct Addition/Subtraction" },
-      { id: 13, numbers: [3, 1, 5, -4], correctAnswer: 5, conceptTag: "Direct Addition/Subtraction" },
-      { id: 14, numbers: [9, -7, 2, 5], correctAnswer: 9, conceptTag: "Direct Addition/Subtraction" },
-      { id: 15, numbers: [6, -1, 3, -5], correctAnswer: 3, conceptTag: "Direct Addition/Subtraction" },
-      { id: 16, numbers: [2, 2, 5, -4], correctAnswer: 5, conceptTag: "Direct Addition/Subtraction" },
-      { id: 17, numbers: [5, 4, -8, 3], correctAnswer: 4, conceptTag: "Direct Addition/Subtraction" },
-      { id: 18, numbers: [7, 1, -5, 2], correctAnswer: 5, conceptTag: "Direct Addition/Subtraction" },
-      { id: 19, numbers: [1, 3, 5, -7], correctAnswer: 2, conceptTag: "Direct Addition/Subtraction" },
-      { id: 20, numbers: [8, -5, 1, 5], correctAnswer: 9, conceptTag: "Direct Addition/Subtraction" },
     ]
   },
   {
-    id: "abacus-jr2-direct-6row",
-    title: "ADD & SUB DIRECT (SINGLE DIGIT), 6 ROWS",
+    id: "abacus-jr2-plus5-comp",
+    title: "ADD & SUB (SINGLE DIGIT), +5 COMP (4-5 ROWS)",
     category: "abacus",
     level: "JR-2",
-    topic: "2. ADD & SUB DIRECT (SINGLE DIGIT), 6 ROWS",
-    description: "6 rows single-digit direct speed test.",
+    topic: "2. ADD & SUB (SINGLE DIGIT), +5 COMP (4-5 ROWS)",
+    description: "Practice Small Friends addition complement formulas (+4=+5-1, +3=+5-2, +2=+5-3, +1=+5-4).",
     questionCount: 20,
     timeLimitSeconds: 240,
     questions: [
-      { id: 1, numbers: [7, -6, 1, 5, -1, -5], correctAnswer: 1, conceptTag: "Direct 6 Rows" },
-      { id: 2, numbers: [4, 5, -2, 1, -3, 2], correctAnswer: 7, conceptTag: "Direct 6 Rows" },
-      { id: 3, numbers: [8, -5, 1, 5, -4, 2], correctAnswer: 7, conceptTag: "Direct 6 Rows" },
-      { id: 4, numbers: [3, 1, 5, -2, 1, -5], correctAnswer: 3, conceptTag: "Direct 6 Rows" },
-      { id: 5, numbers: [9, -6, 1, 5, -7, 2], correctAnswer: 4, conceptTag: "Direct 6 Rows" },
-      { id: 6, numbers: [2, 7, -5, 1, 3, -4], correctAnswer: 4, conceptTag: "Direct 6 Rows" },
-      { id: 7, numbers: [6, 2, -3, 4, -5, 1], correctAnswer: 5, conceptTag: "Direct 6 Rows" },
-      { id: 8, numbers: [1, 3, 5, -6, 1, 5], correctAnswer: 9, conceptTag: "Direct 6 Rows" },
-      { id: 9, numbers: [5, 4, -7, 2, 5, -4], correctAnswer: 5, conceptTag: "Direct 6 Rows" },
-      { id: 10, numbers: [8, -2, -5, 3, 5, -4], correctAnswer: 5, conceptTag: "Direct 6 Rows" },
+      { id: 1, numbers: [4, 4, -3, 2], correctAnswer: 7, conceptTag: "+5 Complement" },
+      { id: 2, numbers: [3, 3, 2, -5], correctAnswer: 3, conceptTag: "+5 Complement" },
+      { id: 3, numbers: [2, 4, -5, 3], correctAnswer: 4, conceptTag: "+5 Complement" },
+      { id: 4, numbers: [4, 1, 4, -5], correctAnswer: 4, conceptTag: "+5 Complement" },
+      { id: 5, numbers: [1, 4, 3, -5], correctAnswer: 3, conceptTag: "+5 Complement" },
     ]
   },
   {
-    id: "abacus-small-friends-plus",
-    title: "SMALL FRIENDS (+5 CONCEPT)",
+    id: "abacus-jr2-minus5-comp",
+    title: "ADD & SUB (SINGLE DIGIT), -5 COMP (4-5 ROWS)",
     category: "abacus",
-    level: "JR-3",
-    topic: "3. SMALL FRIENDS ADDITION (+4=+5-1, +3=+5-2, +2=+5-3, +1=+5-4)",
-    description: "Master the 5-bead complement formulas for speed mental arithmetic.",
+    level: "JR-2",
+    topic: "3. ADD & SUB (SINGLE DIGIT), -5 COMP (4-5 ROWS)",
+    description: "Practice Small Friends subtraction complement formulas (-4=-5+1, -3=-5+2, -2=-5+3, -1=-5+4).",
     questionCount: 20,
     timeLimitSeconds: 240,
     questions: [
-      { id: 1, numbers: [4, 4, -3, 2], correctAnswer: 7, conceptTag: "Small Friend +4 (+5 - 1)" },
-      { id: 2, numbers: [3, 3, 2, -5], correctAnswer: 3, conceptTag: "Small Friend +3 (+5 - 2)" },
-      { id: 3, numbers: [4, 2, 3, -6], correctAnswer: 3, conceptTag: "Small Friend +2 (+5 - 3)" },
-      { id: 4, numbers: [4, 1, 4, -5], correctAnswer: 4, conceptTag: "Small Friend +1 (+5 - 4)" },
-      { id: 5, numbers: [2, 3, 4, -7], correctAnswer: 2, conceptTag: "Small Friends Mix" },
+      { id: 1, numbers: [6, -4, 2, 5], correctAnswer: 9, conceptTag: "-5 Complement" },
+      { id: 2, numbers: [7, -3, 1, 4], correctAnswer: 9, conceptTag: "-5 Complement" },
+      { id: 3, numbers: [5, -2, 3, -5], correctAnswer: 1, conceptTag: "-5 Complement" },
+      { id: 4, numbers: [8, -4, 2, -5], correctAnswer: 1, conceptTag: "-5 Complement" },
+      { id: 5, numbers: [5, -1, 4, -3], correctAnswer: 5, conceptTag: "-5 Complement" },
     ]
   },
   {
-    id: "abacus-big-friends",
-    title: "BIG FRIENDS (+10 CONCEPT)",
+    id: "abacus-jr2-plus10-comp",
+    title: "ADD & SUB (SINGLE DIGIT), +10 COMP (4 ROWS)",
     category: "abacus",
-    level: "SR-1",
-    topic: "4. BIG FRIENDS (+9=+10-1, +8=+10-2, +7=+10-3 ...)",
-    description: "Master 10-base carrying and borrowing techniques.",
+    level: "JR-2",
+    topic: "4. ADD & SUB (SINGLE DIGIT), +10 COMP (4 ROWS)",
+    description: "Practice Big Friends addition complement formulas (+9=+10-1, +8=+10-2, +7=+10-3...).",
     questionCount: 20,
     timeLimitSeconds: 240,
     questions: [
-      { id: 1, numbers: [9, 9, -5, 2], correctAnswer: 15, conceptTag: "Big Friend +9 (+10 - 1)" },
-      { id: 2, numbers: [8, 8, 3, -4], correctAnswer: 15, conceptTag: "Big Friend +8 (+10 - 2)" },
-      { id: 3, numbers: [7, 7, -3, 5], correctAnswer: 16, conceptTag: "Big Friend +7 (+10 - 3)" },
+      { id: 1, numbers: [9, 9, -5, 2], correctAnswer: 15, conceptTag: "+10 Complement" },
+      { id: 2, numbers: [8, 8, 3, -4], correctAnswer: 15, conceptTag: "+10 Complement" },
+      { id: 3, numbers: [7, 7, -3, 5], correctAnswer: 16, conceptTag: "+10 Complement" },
+      { id: 4, numbers: [6, 6, 2, -5], correctAnswer: 9, conceptTag: "+10 Complement" },
+      { id: 5, numbers: [5, 5, 4, -3], correctAnswer: 11, conceptTag: "+10 Complement" },
+    ]
+  },
+  {
+    id: "abacus-jr2-minus10-comp",
+    title: "ADD & SUB (SINGLE DIGIT), -10 COMP (4-5 ROWS)",
+    category: "abacus",
+    level: "JR-2",
+    topic: "5. ADD & SUB (SINGLE DIGIT), -10 COMP (4-5 ROWS)",
+    description: "Practice Big Friends subtraction complement formulas (-9=-10+1, -8=-10+2, -7=-10+3...).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [15, -9, 4, 3], correctAnswer: 13, conceptTag: "-10 Complement" },
+      { id: 2, numbers: [14, -8, 5, -2], correctAnswer: 9, conceptTag: "-10 Complement" },
+      { id: 3, numbers: [13, -7, 6, -5], correctAnswer: 7, conceptTag: "-10 Complement" },
+      { id: 4, numbers: [12, -6, 4, 5], correctAnswer: 15, conceptTag: "-10 Complement" },
+      { id: 5, numbers: [11, -5, 8, -4], correctAnswer: 10, conceptTag: "-10 Complement" },
+    ]
+  },
+  {
+    id: "abacus-jr2-plus-mixed",
+    title: "ADD & SUB (SINGLE DIGIT), + MIXED COMP",
+    category: "abacus",
+    level: "JR-2",
+    topic: "6. ADD & SUB (SINGLE DIGIT), + MIXED COMP",
+    description: "Practice Combination Addition formulas (+6=+11-5, +7=+12-5, +8=+13-5, +9=+14-5).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [6, 6, -5, 2], correctAnswer: 9, conceptTag: "+ Mixed Complement" },
+      { id: 2, numbers: [7, 7, -5, 3], correctAnswer: 12, conceptTag: "+ Mixed Complement" },
+      { id: 3, numbers: [8, 8, -6, 5], correctAnswer: 15, conceptTag: "+ Mixed Complement" },
+      { id: 4, numbers: [9, 9, -7, 4], correctAnswer: 15, conceptTag: "+ Mixed Complement" },
+      { id: 5, numbers: [5, 6, 7, -8], correctAnswer: 10, conceptTag: "+ Mixed Complement" },
+    ]
+  },
+  {
+    id: "abacus-jr2-minus-mixed",
+    title: "ADD & SUB (SINGLE DIGIT), - MIXED COMP",
+    category: "abacus",
+    level: "JR-2",
+    topic: "7. ADD & SUB (SINGLE DIGIT), - MIXED COMP",
+    description: "Practice Combination Subtraction formulas (-6=-11+5, -7=-12+5, -8=-13+5, -9=-14+5).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [13, -6, 4, 5], correctAnswer: 16, conceptTag: "- Mixed Complement" },
+      { id: 2, numbers: [14, -7, 3, -5], correctAnswer: 5, conceptTag: "- Mixed Complement" },
+      { id: 3, numbers: [15, -8, 6, -4], correctAnswer: 9, conceptTag: "- Mixed Complement" },
+      { id: 4, numbers: [16, -9, 5, 2], correctAnswer: 14, conceptTag: "- Mixed Complement" },
+      { id: 5, numbers: [12, -6, 7, -5], correctAnswer: 8, conceptTag: "- Mixed Complement" },
     ]
   }
 ];
@@ -577,42 +610,143 @@ export function getQuestionSetById(id: string): QuestionSet | undefined {
 }
 
 /**
+ * Dynamic math question generator for Abacus JR-2 topic sets.
+ * Generates instant randomized numbers according to Abacus complement formulas.
+ */
+export function generateDynamicAbacusQuestion(setId: string, qId: number): Question | null {
+  if (!setId.startsWith("abacus-jr2-")) return null;
+
+  let rowCount = 4;
+  let formulaType: "direct" | "plus5" | "minus5" | "plus10" | "minus10" | "plusMixed" | "minusMixed" = "direct";
+
+  if (setId === "abacus-jr2-direct-4row") {
+    rowCount = 4;
+    formulaType = "direct";
+  } else if (setId === "abacus-jr2-plus5-comp") {
+    rowCount = Math.random() > 0.5 ? 5 : 4;
+    formulaType = "plus5";
+  } else if (setId === "abacus-jr2-minus5-comp") {
+    rowCount = Math.random() > 0.5 ? 5 : 4;
+    formulaType = "minus5";
+  } else if (setId === "abacus-jr2-plus10-comp") {
+    rowCount = 4;
+    formulaType = "plus10";
+  } else if (setId === "abacus-jr2-minus10-comp") {
+    rowCount = Math.random() > 0.5 ? 5 : 4;
+    formulaType = "minus10";
+  } else if (setId === "abacus-jr2-plus-mixed") {
+    rowCount = Math.random() > 0.5 ? 5 : 4;
+    formulaType = "plusMixed";
+  } else if (setId === "abacus-jr2-minus-mixed") {
+    rowCount = Math.random() > 0.5 ? 5 : 4;
+    formulaType = "minusMixed";
+  }
+
+  // Attempt up to 30 times to generate a valid sequence
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const numbers: number[] = [];
+    let currentTotal = Math.floor(Math.random() * 8) + 1; // start with 1..8
+    numbers.push(currentTotal);
+
+    for (let r = 1; r < rowCount; r++) {
+      const candidates: number[] = [];
+
+      for (let n = -9; n <= 9; n++) {
+        if (n === 0) continue;
+        const nextTotal = currentTotal + n;
+        if (nextTotal < 0 || nextTotal > 99) continue;
+
+        if (formulaType === "direct") {
+          if (nextTotal <= 9 && n > 0 && (currentTotal % 5) + n <= 4) candidates.push(n);
+          else if (nextTotal <= 9 && n < 0 && (currentTotal % 5) >= Math.abs(n)) candidates.push(n);
+        } else if (formulaType === "plus5") {
+          if (n > 0 && n <= 4 && (currentTotal % 5) + n >= 5 && currentTotal % 5 < 5 && nextTotal <= 9) candidates.push(n);
+          else if (Math.random() > 0.4 && nextTotal >= 0 && nextTotal <= 9) candidates.push(n);
+        } else if (formulaType === "minus5") {
+          if (n < 0 && Math.abs(n) <= 4 && currentTotal >= 5 && (currentTotal % 5) < Math.abs(n)) candidates.push(n);
+          else if (Math.random() > 0.4 && nextTotal >= 0 && nextTotal <= 9) candidates.push(n);
+        } else if (formulaType === "plus10") {
+          if (n > 0 && currentTotal + n >= 10 && currentTotal < 10) candidates.push(n);
+          else if (Math.random() > 0.4 && nextTotal >= 0) candidates.push(n);
+        } else if (formulaType === "minus10") {
+          if (n < 0 && currentTotal >= 10 && currentTotal + n < 10) candidates.push(n);
+          else if (Math.random() > 0.4 && nextTotal >= 0) candidates.push(n);
+        } else if (formulaType === "plusMixed") {
+          if (n >= 6 && currentTotal + n >= 10) candidates.push(n);
+          else if (Math.random() > 0.3 && nextTotal >= 0) candidates.push(n);
+        } else if (formulaType === "minusMixed") {
+          if (n <= -6 && currentTotal >= 10 && currentTotal + n < 10) candidates.push(n);
+          else if (Math.random() > 0.3 && nextTotal >= 0) candidates.push(n);
+        }
+      }
+
+      if (candidates.length === 0) break;
+      const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+      numbers.push(chosen);
+      currentTotal += chosen;
+    }
+
+    if (numbers.length === rowCount && currentTotal >= 0) {
+      return {
+        id: qId,
+        numbers,
+        correctAnswer: currentTotal,
+        conceptTag: `Dynamic Abacus ${formulaType.toUpperCase()}`
+      };
+    }
+  }
+
+  // Fallback safe sequence if candidate loop exhausted
+  return {
+    id: qId,
+    numbers: [4, 5, -3, 2],
+    correctAnswer: 8,
+    conceptTag: "Abacus Practice"
+  };
+}
+
+/**
  * Generator helper to expand or trim question sets for speed modes & selected question counts (10, 20, 50, 100, 200)
  */
 export function getCustomizedSet(setId: string, mode: PracticeMode, qCountChoice: number = 20): QuestionSet {
-  const base = getQuestionSetById(setId) || VEDIC_QUESTION_SETS[0];
+  const base = getQuestionSetById(setId) || ABACUS_QUESTION_SETS[0];
 
   let targetCount = qCountChoice;
   let timeLimitSeconds = 240; // 4 mins default for 20 Qs
 
   if (qCountChoice === 10) {
-    timeLimitSeconds = 120; // 2 mins for 10 Qs
+    timeLimitSeconds = 120;
   } else if (qCountChoice === 20) {
-    timeLimitSeconds = 240; // 4 mins for 20 Qs
+    timeLimitSeconds = 240;
   } else if (qCountChoice === 50) {
-    timeLimitSeconds = 480; // 8 mins for 50 Qs
+    timeLimitSeconds = 480;
   }
 
   // Handle explicit speed sprint modes
   if (mode === "speed-100-5m") {
     targetCount = 100;
-    timeLimitSeconds = 300; // 5 mins
+    timeLimitSeconds = 300;
   } else if (mode === "speed-100-10m") {
     targetCount = 100;
-    timeLimitSeconds = 600; // 10 mins
+    timeLimitSeconds = 600;
   } else if (mode === "speed-200-20m") {
     targetCount = 200;
-    timeLimitSeconds = 1200; // 20 mins
+    timeLimitSeconds = 1200;
   }
 
-  // Expand or slice questions to match targetCount
+  // Dynamically synthesize questions on every attempt per instant
   const expandedQuestions: Question[] = [];
   for (let i = 0; i < targetCount; i++) {
-    const baseQ = base.questions[i % base.questions.length];
-    expandedQuestions.push({
-      ...baseQ,
-      id: i + 1,
-    });
+    const dynamicQ = generateDynamicAbacusQuestion(setId, i + 1);
+    if (dynamicQ) {
+      expandedQuestions.push(dynamicQ);
+    } else {
+      const baseQ = base.questions[i % base.questions.length];
+      expandedQuestions.push({
+        ...baseQ,
+        id: i + 1,
+      });
+    }
   }
 
   return {
