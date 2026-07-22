@@ -297,8 +297,8 @@ export default function PracticeSession() {
                 <input
                   ref={inputRef}
                   type="number"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
+                  step="any"
+                  inputMode="decimal"
                   placeholder="Type answer"
                   value={currentInput}
                   onChange={(e) => handleInputChange(e.target.value)}

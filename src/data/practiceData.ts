@@ -766,6 +766,100 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 1, numbers: [4852, 3721, -2405, 5194, 1205], correctAnswer: 12567, conceptTag: "SR-7 Quad 5 Rows All Complements" },
       { id: 2, numbers: [6248, 2891, -3504, 4783, -2100], correctAnswer: 8318, conceptTag: "SR-7 Quad 5 Rows All Complements" },
     ]
+  },
+
+  // SR-8 Curriculum Sets (Multiplication & Division Drills)
+  {
+    id: "abacus-sr8-mult-sd-3d",
+    title: "MULTIPLICATION- S.D. X 3 D.",
+    category: "abacus",
+    level: "SR-8",
+    topic: "8. Multiplication- S.D. X 3 D.",
+    description: "Practice Single Digit × 3 Digit multiplication on Abacus (e.g. 485 × 6).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "485 × 6", correctAnswer: 2910, conceptTag: "SD × 3D Multiplication" },
+      { id: 2, expression: "729 × 4", correctAnswer: 2916, conceptTag: "SD × 3D Multiplication" },
+      { id: 3, expression: "814 × 7", correctAnswer: 5698, conceptTag: "SD × 3D Multiplication" },
+    ]
+  },
+  {
+    id: "abacus-sr8-mult-2d-2d",
+    title: "MULTIPLICATION- 2 D. X 2 D.",
+    category: "abacus",
+    level: "SR-8",
+    topic: "9. Multiplication- 2 D. X 2 D.",
+    description: "Practice 2 Digit × 2 Digit multiplication on Abacus (e.g. 43 × 57).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "43 × 57", correctAnswer: 2451, conceptTag: "2D × 2D Multiplication" },
+      { id: 2, expression: "68 × 34", correctAnswer: 2312, conceptTag: "2D × 2D Multiplication" },
+      { id: 3, expression: "85 × 72", correctAnswer: 6120, conceptTag: "2D × 2D Multiplication" },
+    ]
+  },
+  {
+    id: "abacus-sr8-div-2d-1d",
+    title: "DIVISION  2D ÷ 1D",
+    category: "abacus",
+    level: "SR-8",
+    topic: "10. Division  2D ÷ 1D",
+    description: "Practice 2 Digit ÷ 1 Digit exact division on Abacus (e.g. 84 ÷ 4 = 21).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "84 ÷ 4", correctAnswer: 21, conceptTag: "2D ÷ 1D Division" },
+      { id: 2, expression: "96 ÷ 3", correctAnswer: 32, conceptTag: "2D ÷ 1D Division" },
+      { id: 3, expression: "75 ÷ 5", correctAnswer: 15, conceptTag: "2D ÷ 1D Division" },
+    ]
+  },
+  {
+    id: "abacus-sr8-div-3d-1d",
+    title: "DIVISION  3D ÷ 1D",
+    category: "abacus",
+    level: "SR-8",
+    topic: "11. Division  3D ÷ 1D",
+    description: "Practice 3 Digit ÷ 1 Digit exact division on Abacus (e.g. 468 ÷ 6 = 78).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "468 ÷ 6", correctAnswer: 78, conceptTag: "3D ÷ 1D Division" },
+      { id: 2, expression: "924 ÷ 4", correctAnswer: 231, conceptTag: "3D ÷ 1D Division" },
+      { id: 3, expression: "855 ÷ 9", correctAnswer: 95, conceptTag: "3D ÷ 1D Division" },
+    ]
+  },
+  {
+    id: "abacus-sr8-div-4d-1d",
+    title: "DIVISION  4D ÷ 1D",
+    category: "abacus",
+    level: "SR-8",
+    topic: "12. Division  4D ÷ 1D",
+    description: "Practice 4 Digit ÷ 1 Digit exact division on Abacus (e.g. 3456 ÷ 4 = 864).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "3456 ÷ 4", correctAnswer: 864, conceptTag: "4D ÷ 1D Division" },
+      { id: 2, expression: "7290 ÷ 9", correctAnswer: 810, conceptTag: "4D ÷ 1D Division" },
+      { id: 3, expression: "5425 ÷ 5", correctAnswer: 1085, conceptTag: "4D ÷ 1D Division" },
+    ]
+  },
+
+  // SR-9 Curriculum Set (Decimals Drill)
+  {
+    id: "abacus-sr9-decimal-3d-4d-3row",
+    title: "ADD./SUB. 3D & 4 D. - 3 ROWS DECIMALS",
+    category: "abacus",
+    level: "SR-9",
+    topic: "13.Add./Sub.  3D & 4 D. - 3 rows Decimals (All compliments)",
+    description: "Practice 3D & 4D 3-row decimal addition and subtraction with all complements (e.g. 45.2 + 37.8 - 12.5).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [45.2, 37.8, -12.5], correctAnswer: 70.5, conceptTag: "SR-9 Decimal Math" },
+      { id: 2, numbers: [128.4, 256.7, -94.2], correctAnswer: 290.9, conceptTag: "SR-9 Decimal Math" },
+      { id: 3, numbers: [452.8, 381.5, -210.3], correctAnswer: 624, conceptTag: "SR-9 Decimal Math" },
+    ]
   }
 ];
 
@@ -1314,12 +1408,50 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     !setId.startsWith("abacus-sr4-") &&
     !setId.startsWith("abacus-sr5-") &&
     !setId.startsWith("abacus-sr6-") &&
-    !setId.startsWith("abacus-sr7-")
+    !setId.startsWith("abacus-sr7-") &&
+    !setId.startsWith("abacus-sr8-") &&
+    !setId.startsWith("abacus-sr9-")
   ) return null;
 
   const rng = createPRNG(`${seed}_${setId}_${qId}`);
 
-  // SR-4 & SR-6 Multiplication Generators
+  // SR-9 Decimal Generator
+  if (setId === "abacus-sr9-decimal-3d-4d-3row") {
+    for (let attempt = 0; attempt < 50; attempt++) {
+      const is4D = rng() > 0.5;
+      const minVal = is4D ? 1000 : 100;
+      const maxVal = is4D ? 8999 : 899;
+
+      const n1Raw = Math.floor(rng() * (maxVal - minVal + 1)) + minVal;
+      const n2Raw = Math.floor(rng() * (maxVal - minVal + 1)) + minVal;
+      const n3Raw = Math.floor(rng() * (maxVal - minVal + 1)) + minVal;
+
+      const n1 = Math.round((n1Raw / 10) * 10) / 10;
+      let n2 = Math.round((n2Raw / 10) * 10) / 10;
+      let n3 = Math.round((n3Raw / 10) * 10) / 10;
+
+      if (rng() > 0.4) n2 = -n2;
+      if (rng() > 0.5) n3 = -n3;
+
+      const total = Math.round((n1 + n2 + n3) * 10) / 10;
+      if (total >= 0 && total <= 99999) {
+        return {
+          id: qId,
+          numbers: [n1, n2, n3],
+          correctAnswer: total,
+          conceptTag: "SR-9 3D/4D Decimal Math"
+        };
+      }
+    }
+    return {
+      id: qId,
+      numbers: [145.2, 237.8, -120.5],
+      correctAnswer: 262.5,
+      conceptTag: "SR-9 Decimal Math"
+    };
+  }
+
+  // SR-4 & SR-6 & SR-8 Multiplication / Division Generators
   if (setId === "abacus-sr4-mult-sd-sd") {
     const num1 = Math.floor(rng() * 8) + 2; // 2..9
     const num2 = Math.floor(rng() * 8) + 2; // 2..9
@@ -1342,7 +1474,7 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     };
   }
 
-  if (setId === "abacus-sr6-mult-sd-3d") {
+  if (setId === "abacus-sr6-mult-sd-3d" || setId === "abacus-sr8-mult-sd-3d") {
     const num1 = Math.floor(rng() * 8) + 2; // 2..9
     const num2 = Math.floor(rng() * 899) + 101; // 101..999
     return {
@@ -1353,7 +1485,7 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     };
   }
 
-  if (setId === "abacus-sr6-mult-2d-2d") {
+  if (setId === "abacus-sr6-mult-2d-2d" || setId === "abacus-sr8-mult-2d-2d") {
     const num1 = Math.floor(rng() * 89) + 11; // 11..99
     const num2 = Math.floor(rng() * 89) + 11; // 11..99
     return {
@@ -1361,6 +1493,50 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
       expression: `${num1} × ${num2}`,
       correctAnswer: num1 * num2,
       conceptTag: "2D × 2D Multiplication"
+    };
+  }
+
+  if (setId === "abacus-sr8-div-2d-1d") {
+    const divisor = Math.floor(rng() * 8) + 2; // 2..9
+    const quotient = Math.floor(rng() * 89) + 11; // 11..99
+    const dividend = divisor * quotient;
+    return {
+      id: qId,
+      expression: `${dividend} ÷ ${divisor}`,
+      correctAnswer: quotient,
+      conceptTag: "2D ÷ 1D Division"
+    };
+  }
+
+  if (setId === "abacus-sr8-div-3d-1d") {
+    const divisor = Math.floor(rng() * 8) + 2; // 2..9
+    let quotient = Math.floor(rng() * 89) + 11; // 11..99
+    let dividend = divisor * quotient;
+    if (dividend < 100) {
+      dividend += divisor * 20;
+      quotient = Math.floor(dividend / divisor);
+    }
+    return {
+      id: qId,
+      expression: `${dividend} ÷ ${divisor}`,
+      correctAnswer: quotient,
+      conceptTag: "3D ÷ 1D Division"
+    };
+  }
+
+  if (setId === "abacus-sr8-div-4d-1d") {
+    const divisor = Math.floor(rng() * 8) + 2; // 2..9
+    let quotient = Math.floor(rng() * 899) + 101; // 101..999
+    let dividend = divisor * quotient;
+    if (dividend < 1000) {
+      dividend += divisor * 200;
+      quotient = Math.floor(dividend / divisor);
+    }
+    return {
+      id: qId,
+      expression: `${dividend} ÷ ${divisor}`,
+      correctAnswer: quotient,
+      conceptTag: "4D ÷ 1D Division"
     };
   }
 
