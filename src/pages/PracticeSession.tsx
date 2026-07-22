@@ -253,46 +253,52 @@ export default function PracticeSession() {
               </button>
             </div>
 
-            {/* Cyan Question Canvas (Exact background style from screenshot, mobile optimized) */}
-            <div className="bg-[#dff0f2] border-2 border-[#bcdfe3] rounded-2xl p-4 sm:p-6 flex-grow flex flex-col items-center justify-center min-h-[320px] sm:min-h-[360px] relative shadow-sm">
+            {/* Cyan Question Canvas (Exact background style from screenshot, mobile & text pad optimized) */}
+            <div className="bg-[#dff0f2] border-2 border-[#bcdfe3] rounded-2xl p-3.5 sm:p-5 flex-grow flex flex-col items-center justify-center min-h-[220px] sm:min-h-[280px] relative shadow-sm">
               
               {/* High-Energy Student Encouragement Banner */}
-              <div className="bg-white/80 backdrop-blur-xs border border-teal-200 text-teal-800 text-xs font-bold px-3.5 py-1 rounded-full mb-3 flex items-center gap-1.5 shadow-xs">
+              <div className="bg-white/80 backdrop-blur-xs border border-teal-200 text-teal-800 text-[11px] font-bold px-3 py-0.5 rounded-full mb-2 flex items-center gap-1.5 shadow-xs">
                 <Smile className="w-3.5 h-3.5 text-orange-500" />
                 <span>Focus & Calculate with Photographic Confidence!</span>
               </div>
 
-              {/* Vertical Column Abacus Numbers or Horizontal Vedic Math Expression */}
+              {/* Vertical Column Abacus Numbers or Horizontal Vedic Math Expression (Font size reduced by 4pt for text pad clearance) */}
               {currentQuestion.numbers ? (
-                <div className="flex flex-col items-end text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 font-mono tracking-wider space-y-1 my-3 bg-white/60 px-6 py-4 rounded-xl border border-teal-200/60 shadow-xs">
+                <div className="flex flex-col items-end text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 font-mono tracking-wider space-y-0.5 my-2 bg-white/70 px-5 py-3 rounded-xl border border-teal-200/60 shadow-xs">
                   {currentQuestion.numbers.map((num, idx) => (
                     <div key={idx} className="leading-tight">
                       {num > 0 ? num : `- ${Math.abs(num)}`}
                     </div>
                   ))}
-                  <div className="w-full border-b-4 border-slate-900 my-1"></div>
+                  <div className="w-full border-b-3 border-slate-900 my-1"></div>
                 </div>
               ) : (
-                <div className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 font-mono my-6 tracking-wide bg-white/60 px-6 py-4 rounded-xl border border-teal-200/60 shadow-xs">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 font-mono my-4 tracking-wide bg-white/70 px-5 py-3 rounded-xl border border-teal-200/60 shadow-xs">
                   {currentQuestion.expression} = ?
                 </div>
               )}
 
-              {/* Answer Input Field */}
-              <div className="mt-2 w-full max-w-xs flex flex-col items-center gap-2">
+              {/* Answer Input Field (Mobile Text Pad Ready) */}
+              <div className="mt-1 w-full max-w-xs flex flex-col items-center gap-2">
                 <input
                   ref={inputRef}
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   placeholder="Type answer"
                   value={currentInput}
                   onChange={(e) => handleInputChange(e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       if (mode === "instant") handleCheckAnswer();
-                      if (currentIndex < questionSet.questions.length - 1) setCurrentIndex((prev) => prev + 1);
+                      if (currentIndex < questionSet.questions.length - 1) {
+                        setCurrentIndex((prev) => prev + 1);
+                      } else {
+                        setShowConfirmModal(true);
+                      }
                     }
                   }}
-                  className="w-full bg-white border-3 border-teal-500 focus:border-vibrant-orange text-center text-2xl sm:text-3xl font-black py-2.5 rounded-xl shadow-inner focus:outline-none focus:ring-4 focus:ring-orange-200 transition-all"
+                  className="w-full bg-white border-3 border-teal-500 focus:border-vibrant-orange text-center text-xl sm:text-2xl font-black py-2 rounded-xl shadow-inner focus:outline-none focus:ring-4 focus:ring-orange-200 transition-all"
                 />
 
                 {/* Instant Feedback Controls */}
@@ -300,7 +306,7 @@ export default function PracticeSession() {
                   <button
                     onClick={handleCheckAnswer}
                     disabled={!currentInput}
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-black text-xs py-2.5 rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center gap-1.5"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-black text-xs py-2 rounded-xl transition-all shadow-md cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     <CheckCircle className="w-4 h-4" />
                     Verify Answer
@@ -310,7 +316,7 @@ export default function PracticeSession() {
                 {/* Feedback Message */}
                 {instantFeedback && (
                   <div
-                    className={`mt-2 text-xs font-black px-4 py-2.5 rounded-xl w-full text-center shadow-xs animate-pulse ${
+                    className={`mt-1 text-xs font-black px-4 py-2 rounded-xl w-full text-center shadow-xs animate-pulse ${
                       instantFeedback.isCorrect ? "bg-emerald-100 text-emerald-900 border border-emerald-300" : "bg-red-100 text-red-900 border border-red-300"
                     }`}
                   >
@@ -320,11 +326,11 @@ export default function PracticeSession() {
               </div>
 
               {/* Navigation Controls */}
-              <div className="mt-6 flex items-center justify-between w-full pt-3 border-t border-[#c6e5e8]">
+              <div className="mt-4 flex items-center justify-between w-full pt-3 border-t border-[#c6e5e8]">
                 <button
                   onClick={() => setCurrentIndex((prev) => Math.max(0, prev - 1))}
                   disabled={currentIndex === 0}
-                  className="bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-800 font-bold px-3.5 py-2 rounded-xl text-xs border border-slate-300 cursor-pointer flex items-center gap-1 shadow-xs"
+                  className="bg-white hover:bg-slate-100 disabled:opacity-40 text-slate-800 font-bold px-3 py-1.5 rounded-xl text-xs border border-slate-300 cursor-pointer flex items-center gap-1 shadow-xs"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   Prev
@@ -334,14 +340,22 @@ export default function PracticeSession() {
                   {currentIndex + 1} / {questionSet.questions.length}
                 </span>
 
-                <button
-                  onClick={() => setCurrentIndex((prev) => Math.min(questionSet.questions.length - 1, prev + 1))}
-                  disabled={currentIndex === questionSet.questions.length - 1}
-                  className="bg-vibrant-orange hover:bg-vibrant-orange/90 disabled:opacity-40 text-white font-black px-4 py-2 rounded-xl text-xs transition-all cursor-pointer flex items-center gap-1 shadow-md"
-                >
-                  Next
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                {currentIndex < questionSet.questions.length - 1 ? (
+                  <button
+                    onClick={() => setCurrentIndex((prev) => prev + 1)}
+                    className="bg-vibrant-orange hover:bg-vibrant-orange/90 text-white font-black px-4 py-1.5 rounded-xl text-xs transition-all cursor-pointer flex items-center gap-1 shadow-md"
+                  >
+                    Next
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setShowConfirmModal(true)}
+                    className="bg-gradient-to-r from-orange-600 via-amber-600 to-slate-900 hover:from-orange-700 hover:to-slate-950 text-white font-black px-4 py-1.5 rounded-xl text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-lg animate-pulse"
+                  >
+                    Finish & Submit Attempt 🚀
+                  </button>
+                )}
               </div>
 
             </div>
