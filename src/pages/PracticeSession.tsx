@@ -152,6 +152,7 @@ export default function PracticeSession() {
       ...resultPayload,
       userId: currentUser?.id || "guest",
       userName: currentUser?.name || "Guest Student",
+      userEmail: currentUser?.email || "guest@arnavabacus.com",
     };
     try {
       const existingRaw = localStorage.getItem("aaa_leaderboard_attempts");

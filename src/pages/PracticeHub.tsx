@@ -39,47 +39,23 @@ export default function PracticeHub() {
     }
   }, [hubTab]);
 
-  // Load and seed leaderboard stats dynamically
+  // Load real leaderboard attempts (Mock data cleared)
   useEffect(() => {
     const rawAttempts = localStorage.getItem("aaa_leaderboard_attempts");
-    if (!rawAttempts) {
-      const seeded: any[] = [];
-      const allSets = [...ABACUS_QUESTION_SETS, ...VEDIC_QUESTION_SETS];
-      const mockNames = ["Priyah Patel", "Rohan Verma", "Karan Malhotra", "Ananya Iyer", "Dev Singhal", "Ishaan Roy"];
-      
-      allSets.forEach((set) => {
-        // Add mock attempts for each topic
-        const count = 3 + Math.floor(Math.random() * 3);
-        for (let i = 0; i < count; i++) {
-          const score = 60 + Math.floor(Math.random() * 41); // 60 to 100%
-          const time = 85 + Math.floor(Math.random() * 120); // 85 to 205s
-          const date = new Date(Date.now() - Math.random() * 10 * 24 * 3600 * 1000).toISOString();
-          seeded.push({
-            setId: set.id,
-            setTitle: set.title,
-            category: set.category,
-            level: set.level,
-            mode: "exam",
-            totalQuestions: 20,
-            correctCount: Math.round((score / 100) * 20),
-            wrongCount: 20 - Math.round((score / 100) * 20),
-            unansweredCount: 0,
-            scorePercentage: score,
-            timeTakenSeconds: time,
-            completedAt: date,
-            userId: `mock_${mockNames[i % mockNames.length].toLowerCase().replace(" ", "_")}`,
-            userName: mockNames[i % mockNames.length]
-          });
-        }
-      });
-      localStorage.setItem("aaa_leaderboard_attempts", JSON.stringify(seeded));
-      setAttemptsList(seeded);
-    } else {
+    if (rawAttempts) {
       try {
-        setAttemptsList(JSON.parse(rawAttempts));
+        const parsed = JSON.parse(rawAttempts);
+        // Filter out any leftover mock entries
+        const realOnly = parsed.filter((a: any) => !a.userId?.startsWith("mock_"));
+        localStorage.setItem("aaa_leaderboard_attempts", JSON.stringify(realOnly));
+        setAttemptsList(realOnly);
       } catch (e) {
         console.error("Failed to parse attempts", e);
+        setAttemptsList([]);
       }
+    } else {
+      localStorage.setItem("aaa_leaderboard_attempts", JSON.stringify([]));
+      setAttemptsList([]);
     }
   }, [hubTab]); // refresh list when user switches tabs
 
@@ -552,6 +528,7 @@ export default function PracticeHub() {
                 }
 
                 const top3 = filtered.slice(0, 3);
+                const isAdmin = currentUser && (currentUser.email === "admin@arnavabacus.com" || currentUser.email === "nitinkpatil@gmail.com");
 
                 return (
                   <div className="space-y-8">
@@ -568,6 +545,11 @@ export default function PracticeHub() {
                             <span className="absolute -top-2 -right-2 bg-slate-400 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-black border border-white">2</span>
                           </div>
                           <span className="text-xs font-black text-slate-800 line-clamp-1">{top3[1].userName}</span>
+                          {isAdmin && (
+                            <span className="text-[10px] font-mono font-bold text-vibrant-teal block line-clamp-1">
+                              {top3[1].userEmail || top3[1].userId}
+                            </span>
+                          )}
                           <span className="text-[10px] font-bold text-slate-500 font-mono">{top3[1].scorePercentage}% ({Math.floor(top3[1].timeTakenSeconds / 60)}m {top3[1].timeTakenSeconds % 60}s)</span>
                           <div className="w-full bg-slate-200 h-20 md:h-24 rounded-t-xl mt-3 flex items-center justify-center text-slate-600 font-black text-sm shadow-inner">
                             🥈 2nd
@@ -585,6 +567,11 @@ export default function PracticeHub() {
                             <span className="absolute -top-3 -right-3 bg-amber-400 text-slate-900 rounded-full w-7 h-7 flex items-center justify-center text-sm font-black border-2 border-white animate-bounce shadow">👑</span>
                           </div>
                           <span className="text-xs md:text-sm font-black text-slate-900 line-clamp-1">{top3[0].userName}</span>
+                          {isAdmin && (
+                            <span className="text-[10px] font-mono font-bold text-vibrant-teal block line-clamp-1">
+                              {top3[0].userEmail || top3[0].userId}
+                            </span>
+                          )}
                           <span className="text-xs font-black text-amber-600 font-mono">{top3[0].scorePercentage}% ({Math.floor(top3[0].timeTakenSeconds / 60)}m {top3[0].timeTakenSeconds % 60}s)</span>
                           <div className="w-full bg-gradient-to-b from-amber-400 to-amber-500 text-slate-900 h-28 md:h-32 rounded-t-2xl mt-3 flex items-center justify-center font-black text-base shadow-lg">
                             🥇 Champion
@@ -602,6 +589,11 @@ export default function PracticeHub() {
                             <span className="absolute -top-2 -right-2 bg-orange-400 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-black border border-white">3</span>
                           </div>
                           <span className="text-xs font-black text-slate-800 line-clamp-1">{top3[2].userName}</span>
+                          {isAdmin && (
+                            <span className="text-[10px] font-mono font-bold text-vibrant-teal block line-clamp-1">
+                              {top3[2].userEmail || top3[2].userId}
+                            </span>
+                          )}
                           <span className="text-[10px] font-bold text-slate-500 font-mono">{top3[2].scorePercentage}% ({Math.floor(top3[2].timeTakenSeconds / 60)}m {top3[2].timeTakenSeconds % 60}s)</span>
                           <div className="w-full bg-orange-200 h-16 md:h-20 rounded-t-xl mt-3 flex items-center justify-center text-orange-800 font-black text-sm shadow-inner">
                             🥉 3rd
@@ -637,9 +629,16 @@ export default function PracticeHub() {
                                 }`}>
                                   {index + 1}
                                 </span>
-                                <span className={`text-slate-900 ${isMe ? "font-black" : ""}`}>
-                                  {item.userName} {isMe && <span className="bg-amber-400 text-slate-900 text-[9px] font-black px-1.5 py-0.5 rounded-md ml-1.5 uppercase">You</span>}
-                                </span>
+                                <div className="flex flex-col">
+                                  <span className={`text-slate-900 ${isMe ? "font-black" : ""}`}>
+                                    {item.userName} {isMe && <span className="bg-amber-400 text-slate-900 text-[9px] font-black px-1.5 py-0.5 rounded-md ml-1.5 uppercase">You</span>}
+                                  </span>
+                                  {isAdmin && (
+                                    <span className="text-[10px] font-mono text-vibrant-teal font-bold block">
+                                      {item.userEmail || item.userId}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
 
                               <div className="flex items-center gap-6">
