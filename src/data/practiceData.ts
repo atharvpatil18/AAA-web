@@ -6,20 +6,50 @@
 import { QuestionSet, Question, PracticeMode } from "../types";
 
 export const ABACUS_QUESTION_SETS: QuestionSet[] = [
-  // JR-1 Curriculum Set
+  // JR-1 Curriculum Sets (Direct Single Digit Addition & Subtraction without Complements)
   {
-    id: "abacus-jr1-direct-3-4-5row",
-    title: "ADD./ SUB. S.D. 3-4-5 ROWS ± DIRECT",
+    id: "abacus-jr1-direct-3row",
+    title: "ADD & SUB SINGLE DIGIT DIRECT (3 ROWS)",
     category: "abacus",
     level: "JR-1",
-    topic: "1. Add./ Sub. S.D. 3-4-5 rows  ± Direct (without compliments)",
-    description: "Practice Single Digit (S.D.) 3, 4, or 5 rows direct addition and subtraction (without complements).",
+    topic: "1. Add & Sub Single Digit Direct (3 Rows)",
+    description: "Practice 3 rows single-digit direct addition and subtraction without complements.",
     questionCount: 20,
     timeLimitSeconds: 240,
     questions: [
       { id: 1, numbers: [2, 5, -1], correctAnswer: 6, conceptTag: "JR-1 Direct 3 Rows" },
-      { id: 2, numbers: [4, 5, -3, 2], correctAnswer: 8, conceptTag: "JR-1 Direct 4 Rows" },
-      { id: 3, numbers: [1, 2, 5, -3, 4], correctAnswer: 9, conceptTag: "JR-1 Direct 5 Rows" },
+      { id: 2, numbers: [4, 5, -3], correctAnswer: 6, conceptTag: "JR-1 Direct 3 Rows" },
+      { id: 3, numbers: [7, -2, 1], correctAnswer: 6, conceptTag: "JR-1 Direct 3 Rows" },
+    ]
+  },
+  {
+    id: "abacus-jr1-direct-4row",
+    title: "ADD & SUB SINGLE DIGIT DIRECT (4 ROWS)",
+    category: "abacus",
+    level: "JR-1",
+    topic: "2. Add & Sub Single Digit Direct (4 Rows)",
+    description: "Practice 4 rows single-digit direct addition and subtraction without complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [4, 5, -3, 2], correctAnswer: 8, conceptTag: "JR-1 Direct 4 Rows" },
+      { id: 2, numbers: [3, 5, -2, 1], correctAnswer: 7, conceptTag: "JR-1 Direct 4 Rows" },
+      { id: 3, numbers: [8, -3, 2, -5], correctAnswer: 2, conceptTag: "JR-1 Direct 4 Rows" },
+    ]
+  },
+  {
+    id: "abacus-jr1-direct-5row",
+    title: "ADD & SUB SINGLE DIGIT DIRECT (5 ROWS)",
+    category: "abacus",
+    level: "JR-1",
+    topic: "3. Add & Sub Single Digit Direct (5 Rows)",
+    description: "Practice 5 rows single-digit direct addition and subtraction without complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [1, 2, 5, -3, 4], correctAnswer: 9, conceptTag: "JR-1 Direct 5 Rows" },
+      { id: 2, numbers: [2, 5, -1, 3, -4], correctAnswer: 5, conceptTag: "JR-1 Direct 5 Rows" },
+      { id: 3, numbers: [4, 5, -2, 1, -3], correctAnswer: 5, conceptTag: "JR-1 Direct 5 Rows" },
     ]
   },
   {
@@ -894,10 +924,17 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
   let digitsMode: "single" | "double" | "triple" = "single";
   let formulaType: "direct" | "plus5" | "minus5" | "plus10" | "minus10" | "plusMixed" | "minusMixed" | "allComp" = "direct";
 
-  // JR-1 Topic
-  if (setId === "abacus-jr1-direct-3-4-5row") {
-    const rVal = rng();
-    rowCount = rVal < 0.33 ? 3 : rVal < 0.66 ? 4 : 5;
+  // JR-1 Topics (3 Rows, 4 Rows, 5 Rows Direct Addition/Subtraction without Complements)
+  if (setId === "abacus-jr1-direct-3row") {
+    rowCount = 3;
+    digitsMode = "single";
+    formulaType = "direct";
+  } else if (setId === "abacus-jr1-direct-4row") {
+    rowCount = 4;
+    digitsMode = "single";
+    formulaType = "direct";
+  } else if (setId === "abacus-jr1-direct-5row") {
+    rowCount = 5;
     digitsMode = "single";
     formulaType = "direct";
   } else if (setId === "abacus-jr2-direct-4row") {
