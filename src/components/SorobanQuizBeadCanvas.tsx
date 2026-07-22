@@ -8,8 +8,8 @@ interface SorobanQuizBeadCanvasProps {
 }
 
 interface RodState {
-  upper: boolean; // true if upper bead (5) is active (moved down to beam)
-  lowerCount: number; // 0 to 4 lower beads active (moved up to beam)
+  upper: boolean; // true if upper bead (5) is active (slid down to beam)
+  lowerCount: number; // 0 to 4 lower beads active (slid up to beam)
 }
 
 export default function SorobanQuizBeadCanvas({
@@ -73,12 +73,12 @@ export default function SorobanQuizBeadCanvas({
     }
   };
 
-  const handleLowerClick = (rodIdx: number, beadIndex: number) => {
+  const handleLowerClick = (rodIdx: number, beadNumber: number) => {
     if (!interactive) return;
     const nextRods = [...rods];
     const currentCount = nextRods[rodIdx].lowerCount;
-    // Clicking beadIndex (1..4): if already set to beadIndex, set to beadIndex - 1
-    const nextCount = currentCount === beadIndex ? beadIndex - 1 : beadIndex;
+    // Clicking beadNumber (1..4): if currentCount === beadNumber, toggle off to beadNumber - 1
+    const nextCount = currentCount === beadNumber ? beadNumber - 1 : beadNumber;
     nextRods[rodIdx] = {
       ...nextRods[rodIdx],
       lowerCount: nextCount,
@@ -92,21 +92,21 @@ export default function SorobanQuizBeadCanvas({
   // Label names for rods
   const rodLabels =
     numRods === 3
-      ? ["H (100s)", "T (10s)", "U (1s)"]
+      ? ["Hundreds (100s)", "Tens (10s)", "Units (1s)"]
       : numRods === 2
-      ? ["T (10s)", "U (1s)"]
-      : ["U (1s)"];
+      ? ["Tens (10s)", "Units (1s)"]
+      : ["Units (1s)"];
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-gradient-to-b from-amber-500/10 to-orange-500/10 rounded-2xl border-2 border-amber-300/80 shadow-md my-2 max-w-sm sm:max-w-md w-full">
+    <div className="flex flex-col items-center justify-center p-3 sm:p-4 bg-amber-500/10 rounded-2xl border-2 border-amber-300/80 shadow-md my-2 max-w-sm sm:max-w-md w-full">
       {/* Abacus Outer Wooden Frame */}
-      <div className="relative bg-amber-900 border-4 border-amber-950 rounded-xl p-3 shadow-xl w-full">
-        {/* Unit Rod Header Labels */}
+      <div className="relative bg-amber-950 border-4 border-amber-900 rounded-xl p-3 shadow-xl w-full">
+        {/* Rod Header Labels */}
         <div className="flex justify-around mb-2">
           {rodLabels.map((lbl, idx) => (
             <span
               key={idx}
-              className="text-[11px] font-black text-amber-200 uppercase tracking-widest bg-amber-950/80 px-2 py-0.5 rounded-md"
+              className="text-[10px] sm:text-xs font-black text-amber-200 uppercase tracking-wider bg-amber-900/90 px-2 py-0.5 rounded-md border border-amber-700/50 shadow-2xs"
             >
               {lbl}
             </span>
@@ -114,88 +114,149 @@ export default function SorobanQuizBeadCanvas({
         </div>
 
         {/* Abacus Inner Canvas Frame */}
-        <div className="relative bg-amber-100 rounded-lg border-2 border-amber-800/60 p-3 overflow-hidden shadow-inner">
-          {/* Middle Reckoning Beam (Divider Bar with Unit Dots) */}
-          <div className="absolute top-[38%] left-0 right-0 h-3.5 bg-amber-950 border-y border-amber-700 z-10 flex items-center justify-around shadow-sm">
-            {rods.map((_, idx) => (
-              <div
-                key={idx}
-                className="w-1.5 h-1.5 rounded-full bg-white shadow-xs"
-              />
-            ))}
-          </div>
-
-          {/* Rods Container */}
-          <div className="flex justify-around items-center min-h-[180px]">
+        <div className="relative bg-amber-50 rounded-lg border-2 border-amber-900/80 overflow-hidden shadow-inner flex flex-col items-stretch">
+          {/* UPPER DECK AREA (Height ~54px) */}
+          <div className="relative h-[54px] w-full bg-amber-100/50">
             {rods.map((rod, rodIdx) => (
               <div
                 key={rodIdx}
-                className="relative flex flex-col items-center h-44 w-12 cursor-pointer select-none"
+                className="absolute top-0 bottom-0 flex justify-center items-center select-none"
+                style={{
+                  left: `${(rodIdx / numRods) * 100}%`,
+                  width: `${(1 / numRods) * 100}%`,
+                }}
               >
                 {/* Vertical Metallic Rod Line */}
-                <div className="absolute top-0 bottom-0 w-1.5 bg-gradient-to-r from-slate-400 via-slate-200 to-slate-400 rounded-full z-0" />
+                <div className="absolute top-0 bottom-0 w-1.5 bg-gradient-to-r from-slate-400 via-slate-100 to-slate-400 z-0" />
 
-                {/* UPPER DECK (Value 5) - Height ~60px */}
-                <div className="relative w-full h-[60px] flex items-center justify-center z-20">
-                  <div
-                    onClick={() => handleUpperToggle(rodIdx)}
-                    className={`absolute w-10 h-5 rounded-full border border-amber-900 shadow-md transition-all duration-200 ${
-                      rod.upper
-                        ? "bottom-0 bg-gradient-to-r from-red-500 via-red-400 to-red-600 ring-2 ring-red-300" // Active: Slid down to beam
-                        : "top-0 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700" // Inactive: Slid up to top frame
-                    } ${
-                      interactive
-                        ? "hover:brightness-110 active:scale-95"
-                        : ""
-                    }`}
-                  >
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="w-8 h-1 bg-amber-200/50 rounded-full" />
-                    </div>
+                {/* UPPER BEAD (Value 5) - Bi-conical Ruby Red Bead */}
+                <div
+                  onClick={() => handleUpperToggle(rodIdx)}
+                  className={`absolute w-11 sm:w-12 h-6 rounded-full border-2 border-red-900 shadow-md transition-all duration-200 cursor-pointer z-10 ${
+                    rod.upper
+                      ? "bottom-1 bg-gradient-to-r from-red-600 via-rose-500 to-red-700 ring-2 ring-red-300 shadow-red-900/40" // ACTIVE: Slid down to touch beam
+                      : "top-1 bg-gradient-to-r from-amber-700 via-amber-600 to-amber-800 opacity-60 hover:opacity-90" // INACTIVE: Slid up to top frame
+                  } ${interactive ? "hover:scale-105 active:scale-95" : ""}`}
+                >
+                  {/* Bead Center Highlight Bar */}
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div
+                      className={`w-9 h-1 rounded-full ${
+                        rod.upper ? "bg-amber-200/80 shadow-xs" : "bg-amber-400/40"
+                      }`}
+                    />
                   </div>
                 </div>
+              </div>
+            ))}
+          </div>
 
-                {/* LOWER DECK (Value 1 each, 4 beads) - Height ~100px */}
-                <div className="relative w-full h-[100px] flex flex-col justify-between items-center z-20 mt-4">
-                  {[1, 2, 3, 4].map((beadIndex) => {
-                    const isActive = beadIndex <= rod.lowerCount;
+          {/* MIDDLE RECKONING BEAM (Divider Bar) */}
+          <div className="relative h-4 bg-amber-950 border-y-2 border-amber-800 z-30 flex items-center shadow-md">
+            {rods.map((_, rodIdx) => (
+              <div
+                key={rodIdx}
+                className="absolute flex justify-center items-center"
+                style={{
+                  left: `${(rodIdx / numRods) * 100}%`,
+                  width: `${(1 / numRods) * 100}%`,
+                }}
+              >
+                {/* Unit Alignment Dot on Beam */}
+                <div className="w-2 h-2 rounded-full bg-white border border-amber-900 shadow-xs" />
+              </div>
+            ))}
+          </div>
+
+          {/* LOWER DECK AREA (Height ~116px) */}
+          <div className="relative h-[116px] w-full bg-amber-100/50">
+            {rods.map((rod, rodIdx) => {
+              const activeCount = rod.lowerCount; // 0 to 4 active beads at top (beam)
+              return (
+                <div
+                  key={rodIdx}
+                  className="absolute top-0 bottom-0 flex justify-center items-center select-none"
+                  style={{
+                    left: `${(rodIdx / numRods) * 100}%`,
+                    width: `${(1 / numRods) * 100}%`,
+                  }}
+                >
+                  {/* Vertical Metallic Rod Line */}
+                  <div className="absolute top-0 bottom-0 w-1.5 bg-gradient-to-r from-slate-400 via-slate-100 to-slate-400 z-0" />
+
+                  {/* 4 LOWER BEADS (Value 1 each) */}
+                  {[1, 2, 3, 4].map((beadNum) => {
+                    const isActive = beadNum <= activeCount;
+                    
+                    // Position calculation:
+                    // If active: stacked tightly from top of lower deck (under beam):
+                    // beadNum 1 -> top 1px; beadNum 2 -> top 25px; beadNum 3 -> top 49px; beadNum 4 -> top 73px
+                    // If inactive: stacked tightly from bottom of lower deck (on bottom frame):
+                    // beadNum 4 -> bottom 1px; beadNum 3 -> bottom 25px; beadNum 2 -> bottom 49px; beadNum 1 -> bottom 73px
+                    
+                    const activeTopStyle = `${(beadNum - 1) * 24 + 2}px`;
+                    const inactiveBottomStyle = `${(4 - beadNum) * 24 + 2}px`;
+
                     return (
                       <div
-                        key={beadIndex}
-                        onClick={() => handleLowerClick(rodIdx, beadIndex)}
-                        className={`w-10 h-4.5 rounded-full border border-amber-900 shadow-md transition-all duration-200 ${
+                        key={beadNum}
+                        onClick={() => handleLowerClick(rodIdx, beadNum)}
+                        style={{
+                          top: isActive ? activeTopStyle : undefined,
+                          bottom: !isActive ? inactiveBottomStyle : undefined,
+                        }}
+                        className={`absolute w-11 sm:w-12 h-5.5 rounded-full border-2 border-amber-950 shadow-md transition-all duration-200 cursor-pointer z-10 ${
                           isActive
-                            ? "bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600 ring-2 ring-yellow-300 -translate-y-6" // Active: Slid up to beam
-                            : "bg-gradient-to-r from-amber-700 via-amber-600 to-amber-800 translate-y-0" // Inactive: Slid down to bottom frame
-                        } ${
-                          interactive
-                            ? "hover:brightness-110 active:scale-95"
-                            : ""
-                        }`}
+                            ? "bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 ring-2 ring-yellow-200 shadow-amber-900/40" // ACTIVE: Pushed UP to beam
+                            : "bg-gradient-to-r from-amber-800 via-amber-700 to-amber-900 opacity-60 hover:opacity-90" // INACTIVE: Pushed DOWN to bottom frame
+                        } ${interactive ? "hover:scale-105 active:scale-95" : ""}`}
                       >
+                        {/* Bead Center Highlight Bar */}
                         <div className="w-full h-full flex items-center justify-center">
-                          <div className="w-8 h-1 bg-amber-200/40 rounded-full" />
+                          <div
+                            className={`w-9 h-1 rounded-full ${
+                              isActive ? "bg-white/80 shadow-xs" : "bg-amber-400/30"
+                            }`}
+                          />
                         </div>
                       </div>
                     );
                   })}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
+        </div>
+
+        {/* Rod Digits Sub-Footer Display */}
+        <div className="flex justify-around mt-2">
+          {rods.map((rod, idx) => {
+            const digitVal = (rod.upper ? 5 : 0) + rod.lowerCount;
+            return (
+              <div
+                key={idx}
+                className="flex flex-col items-center bg-amber-900/90 border border-amber-700/60 px-3 py-1 rounded-lg shadow-inner"
+              >
+                <span className="text-xs font-bold text-amber-300">
+                  {rodLabels[idx].split(" ")[0]}:
+                </span>
+                <span className="text-lg font-black text-white font-mono leading-none">
+                  {digitVal}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Interactive Helper Text or Value Display */}
-      {interactive ? (
-        <div className="mt-2 text-xs font-bold text-amber-900 bg-amber-100/90 px-3 py-1 rounded-full border border-amber-300 flex items-center gap-1.5 shadow-xs">
-          <span>👆 Click beads to set target number</span>
-        </div>
-      ) : (
-        <div className="mt-2 text-xs font-bold text-slate-700 bg-white/90 px-3 py-1 rounded-full border border-slate-200 shadow-xs">
-          <span>Read the beads on Units, Tens & Hundreds rods</span>
-        </div>
-      )}
+      {/* Guide Caption */}
+      <div className="mt-2.5 text-center text-xs font-bold text-slate-800 bg-white/90 px-3 py-1.5 rounded-full border border-amber-200 shadow-xs flex items-center gap-1.5">
+        <span className="w-2.5 h-2.5 rounded-full bg-red-500 border border-red-700 inline-block" />
+        <span>Upper Bead = 5 (Touch Beam)</span>
+        <span className="text-slate-300">|</span>
+        <span className="w-2.5 h-2.5 rounded-full bg-yellow-400 border border-amber-700 inline-block" />
+        <span>Lower Bead = 1 (Touch Beam)</span>
+      </div>
     </div>
   );
 }
