@@ -10,55 +10,88 @@ import { PracticeCategory, PracticeMode, QuestionCountChoice } from "../types";
 import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Calendar, ShieldCheck, ListOrdered, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 import { syncStudentAttempts } from "../lib/cloudSync";
+import VedicLearningModal from "../components/VedicLearningModal";
 
 const ABACUS_LEVEL_INFO: Record<string, { primaryFocus: string; uniqueTopics: string }> = {
+  "SVM-6": {
+    primaryFocus: "Senior Teacher / Senior Vedic Math Level 6 - 40 Supreme Master Topics",
+    uniqueTopics: "Multi-digit Urdhva Tiryagbhyam (3Dx3D, 4Dx4D), Dhwajanka Flag Division Method, Dwandwa Yoga Duplex Squaring, Square Roots & Cube Roots by Vilokanam, Cubes & 4th Powers (N^4), & Vinculum Tables",
+  },
+  "SVM-5": {
+    primaryFocus: "Senior Teacher / Senior Vedic Math Level 5 - 35 Grand Master Topics",
+    uniqueTopics: "Nikhilam Base Multiplication Suite, Vinculum Conversion & Devinculation, Vedic Subtraction/Addition Base Methods, Paravartya & Nikhilam Divisions, & Yavadunam / Ekadhikena Squaring Suite",
+  },
+  "SVM-4": {
+    primaryFocus: "Senior Vedic Math Level 4 - 20 Advanced Multiplication Suite (Above 12 Yrs)",
+    uniqueTopics: "Nikhilam Base Method (Below/Above 10, 20-90, 100, 200-900), Mixed Above/Below, Different Bases, Multipliers (11, 12-19, 111, 222-999, 9s, 19-99), Special Sum of Units/Tens = 10, & General 2D x 2D",
+  },
+  "SVM-3": {
+    primaryFocus: "Senior Vedic Math Level 3 - 24 High-Speed Sutras & Matrix Math",
+    uniqueTopics: "Urdhva Tiryagbhyam, Antyayordashake'pi, Beejank, Divisibility Rules (2, 5, 10, 3), Multiplications (11, 111, 125, 1001, Teens, 9s), & 3x3 Grid Matrix",
+  },
+  "SVM-2": {
+    primaryFocus: "Senior Vedic Math Level 2 - 24 Advanced Sutras & Divisions",
+    uniqueTopics: "Multiplications (9, 5, 6, 15, 25, 50, 9s endings), Divisions (5, 9, 8, 99, 100, 1000, 25, 50), Nikhilam Subtraction, Time Arithmetic, & Rectangles/Squares Counting",
+  },
+  "SVM-1": {
+    primaryFocus: "Senior Vedic Math Level 1 - 25 Master Topics & Conversions",
+    uniqueTopics: "Table Formation, Unit Conversions (Paise/₹, cm/m, g/kg, mL/L, m/km, L/kL), Multiplications & Geometry",
+  },
+  "SVM-0": {
+    primaryFocus: "Senior Vedic Math Foundation Sutras & Shortcuts",
+    uniqueTopics: "Ekadhik, Ekanyunena, Balancing Rule, Dodging Tables, Rapid Multiplications, & Geometry Spatial Counting",
+  },
+  "JVM-1": {
+    primaryFocus: "Junior Vedic Math Sutras & Conversions",
+    uniqueTopics: "Rapid Addition, Ekadhik, Ekanyunena, Dodging Tables, Mult 11/101, & Unit Conversions",
+  },
   "JR-0": {
-    primaryFocus: "Foundation & Visual Bead Mechanics",
-    uniqueTopics: "Bead Reading & Interactive Bead Representation (1, 2, 3 Digits)",
+    primaryFocus: "Soroban Bead Mechanics (Goda & Ichidama)",
+    uniqueTopics: "Bead Reading, Rod Value Recognition, & Soroban Bead Placement (1, 2, 3 Digits)",
   },
   "JR-1": {
-    primaryFocus: "One's Place Rod Mastery (Direct Math)",
-    uniqueTopics: "Single-Digit Direct Addition & Subtraction (3, 4, 5 Rows)",
+    primaryFocus: "Soroban Direct Math (Chokusetsu - 直接)",
+    uniqueTopics: "Single-Digit Direct Addition & Subtraction (3, 4, 5 Rows) using Goda (5) and Ichidama (1) beads",
   },
   "JR-2": {
-    primaryFocus: "Single-Digit Formula Rules (±5, ±10)",
-    uniqueTopics: "Small Friends (+5/-5), Big Friends (+10/-10), & Mixed Complements",
+    primaryFocus: "Soroban Small & Big Friends (Goshin & Jushin)",
+    uniqueTopics: "Small Friends (+5/-5 Complements), Big Friends (+10/-10 Complements), & Mixed Combination Complements",
   },
   "JR-3": {
-    primaryFocus: "Multi-Row Single & Double-Digit Base",
-    uniqueTopics: "Single-Digit Speed Rows (6-7 Rows) & 2-Digit Foundation (4-7 Rows)",
+    primaryFocus: "Soroban Multi-Row Speed Drills & 2D Base",
+    uniqueTopics: "Single-Digit Speed Rows (6-7 Rows) & Double-Digit Soroban Foundation (4-7 Rows)",
   },
   "SR-1": {
-    primaryFocus: "Single-Digit Speed & Precision Drills",
-    uniqueTopics: "Single-Digit Speed Drills (5-6 Rows) with Formula Breakdown",
+    primaryFocus: "Soroban Single-Digit Speed & Precision",
+    uniqueTopics: "Single-Digit Speed Drills (5-6 Rows) with Goshin & Jushin Formula Breakdown",
   },
   "SR-2": {
-    primaryFocus: "Double & Triple Digit Master Drills",
-    uniqueTopics: "2D Direct/All Complements (5 Rows), 1D Marathon (7 Rows), 3D Speed",
+    primaryFocus: "Soroban Multi-Digit Master Complements",
+    uniqueTopics: "2D Direct/All Complements (5 Rows), 1D Marathon (7 Rows), & 3D Soroban Speed",
   },
   "SR-3": {
-    primaryFocus: "Multi-Digit Direct & Combination Drills",
+    primaryFocus: "Soroban Multi-Digit Direct & Combination Drills",
     uniqueTopics: "1D/2D/3D Direct Endurance (4-5 Rows) & 2D Short Complements (3 Rows)",
   },
   "SR-4": {
-    primaryFocus: "Basic Abacus Multiplication",
-    uniqueTopics: "Single Digit × Single Digit (SD × SD) & Single Digit × 2 Digit (SD × 2D)",
+    primaryFocus: "Soroban Multiplication (Kazan - 算盤掛け算)",
+    uniqueTopics: "Single Digit × Single Digit (SD × SD) & Single Digit × 2 Digit (SD × 2D) Rod Assignments",
   },
   "SR-5": {
-    primaryFocus: "4-Digit (Quad-Digit) Math Foundation",
+    primaryFocus: "4-Digit Soroban Quad-Digit Foundation",
     uniqueTopics: "4-Digit Direct Math (4 Rows) & 4-Digit All Complements (4 Rows)",
   },
   "SR-6": {
-    primaryFocus: "Intermediate Abacus Multiplication",
-    uniqueTopics: "Single Digit × 3 Digit (SD × 3D) & 2 Digit × 2 Digit (2D × 2D)",
+    primaryFocus: "Intermediate Soroban Multiplication",
+    uniqueTopics: "Single Digit × 3 Digit (SD × 3D) & 2 Digit × 2 Digit (2D × 2D) Cross-Rod Products",
   },
   "SR-7": {
-    primaryFocus: "Multi-Digit 5-Row Endurance Sums",
+    primaryFocus: "Soroban Multi-Digit 5-Row Endurance Sums",
     uniqueTopics: "2-Digit, 3-Digit, & 4-Digit 5-Row All Complements Endurance Sums",
   },
   "SR-8": {
-    primaryFocus: "Abacus Division Master Drills",
-    uniqueTopics: "Division: 2D ÷ 1D, 3D ÷ 1D, & 4D ÷ 1D",
+    primaryFocus: "Soroban Division (Wazan - 算盤割り算)",
+    uniqueTopics: "Soroban Division: 2D ÷ 1D, 3D ÷ 1D, & 4D ÷ 1D Quotient Rod Subtraction",
   },
   "SR-9": {
     primaryFocus: "Decimal Addition & Subtraction",
@@ -71,6 +104,54 @@ const ABACUS_LEVEL_INFO: Record<string, { primaryFocus: string; uniqueTopics: st
 };
 
 const LEVEL_THEMES: Record<string, { gradient: string; badgeColor: string; tagIcon: string; rankBadge: string }> = {
+  "SVM-6": {
+    gradient: "from-amber-500 via-orange-600 to-red-700 hover:from-amber-600 hover:to-red-800",
+    badgeColor: "bg-amber-950/60 text-amber-200 border-amber-400/40",
+    tagIcon: "👑",
+    rankBadge: "SVM-6 SUPREME MASTER SUITE",
+  },
+  "SVM-5": {
+    gradient: "from-fuchsia-600 via-rose-600 to-amber-600 hover:from-fuchsia-700 hover:to-amber-700",
+    badgeColor: "bg-fuchsia-950/60 text-fuchsia-200 border-fuchsia-400/40",
+    tagIcon: "🏆",
+    rankBadge: "SVM-5 GRAND MASTER SUITE",
+  },
+  "SVM-4": {
+    gradient: "from-indigo-600 via-purple-600 to-pink-700 hover:from-indigo-700 hover:to-pink-800",
+    badgeColor: "bg-indigo-950/60 text-indigo-200 border-indigo-400/40",
+    tagIcon: "👑",
+    rankBadge: "SVM-4 ADVANCED MULTIPLICATION SUITE",
+  },
+  "SVM-3": {
+    gradient: "from-emerald-600 via-teal-600 to-cyan-700 hover:from-emerald-700 hover:to-cyan-800",
+    badgeColor: "bg-emerald-950/60 text-emerald-200 border-emerald-400/40",
+    tagIcon: "💎",
+    rankBadge: "SVM-3 HIGH-SPEED MASTER",
+  },
+  "SVM-2": {
+    gradient: "from-rose-600 via-pink-600 to-purple-700 hover:from-rose-700 hover:to-purple-800",
+    badgeColor: "bg-rose-950/60 text-rose-200 border-rose-400/40",
+    tagIcon: "⚡",
+    rankBadge: "SVM-2 ADVANCED SUTRAS",
+  },
+  "SVM-1": {
+    gradient: "from-amber-600 via-orange-600 to-red-700 hover:from-amber-700 hover:to-red-800",
+    badgeColor: "bg-amber-950/60 text-amber-200 border-amber-400/40",
+    tagIcon: "🔥",
+    rankBadge: "SVM-1 MASTER SUTRAS",
+  },
+  "SVM-0": {
+    gradient: "from-violet-600 via-purple-600 to-indigo-700 hover:from-violet-700 hover:to-indigo-800",
+    badgeColor: "bg-purple-950/60 text-purple-200 border-purple-400/40",
+    tagIcon: "🔮",
+    rankBadge: "SVM-0 FOUNDATION SUTRAS",
+  },
+  "JVM-1": {
+    gradient: "from-teal-600 via-cyan-600 to-blue-700 hover:from-teal-700 hover:to-cyan-800",
+    badgeColor: "bg-teal-950/60 text-teal-200 border-teal-400/40",
+    tagIcon: "✨",
+    rankBadge: "JVM-1 VEDIC DRILLS",
+  },
   "JR-0": {
     gradient: "from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800",
     badgeColor: "bg-emerald-950/60 text-emerald-200 border-emerald-400/40",
@@ -169,6 +250,21 @@ export default function PracticeHub() {
 
   // Collapsible state for Level Categories (JR-2, JR-3, etc.)
   const [expandedLevels, setExpandedLevels] = useState<Record<string, boolean>>({});
+
+  // Learning Modal state for Concept & Sutra Lessons
+  const [learningModalState, setLearningModalState] = useState<{
+    isOpen: boolean;
+    topicTitle: string;
+    topicId: string;
+    setIdToStart: string;
+    category?: string;
+    level?: string;
+  }>({
+    isOpen: false,
+    topicTitle: "",
+    topicId: "",
+    setIdToStart: "",
+  });
 
   const toggleLevel = (lvl: string) => {
     setExpandedLevels((prev) => ({
@@ -616,17 +712,36 @@ export default function PracticeHub() {
                                     </p>
                                   </div>
 
-                                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                                    <span className="text-xs font-semibold text-slate-500">
+                                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                                    <span className="text-xs font-semibold text-slate-500 truncate">
                                       Topic: <span className="text-slate-800 font-bold">{set.topic}</span>
                                     </span>
-                                    <button
-                                      onClick={() => handleStartSet(set.id)}
-                                      className="bg-vibrant-teal hover:bg-vibrant-teal/90 text-white text-xs font-black px-4 py-2.5 rounded-xl flex items-center gap-1.5 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer"
-                                    >
-                                      Start {effectiveQCount} Qs
-                                      <ArrowRight className="w-4 h-4" />
-                                    </button>
+                                    <div className="flex items-center gap-2 shrink-0">
+                                      <button
+                                        onClick={() =>
+                                          setLearningModalState({
+                                            isOpen: true,
+                                            topicTitle: set.title,
+                                            topicId: set.id,
+                                            setIdToStart: set.id,
+                                            category: set.category,
+                                            level: set.level,
+                                          })
+                                        }
+                                        className="bg-purple-100 hover:bg-purple-200 text-purple-900 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition cursor-pointer border border-purple-300 shadow-xs"
+                                        title="Learn Concept & Rules"
+                                      >
+                                        <BookOpen className="w-3.5 h-3.5 text-purple-700" />
+                                        Learn
+                                      </button>
+                                      <button
+                                        onClick={() => handleStartSet(set.id)}
+                                        className="bg-vibrant-teal hover:bg-vibrant-teal/90 text-white text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer"
+                                      >
+                                        Start {effectiveQCount} Qs
+                                        <ArrowRight className="w-3.5 h-3.5" />
+                                      </button>
+                                    </div>
                                   </div>
                                 </div>
                               );
@@ -1105,9 +1220,19 @@ export default function PracticeHub() {
               </div>
             </div>
           )}
-
         </div>
       </div>
+
+      {/* Interactive Concept & Sutra Learning Modal */}
+      <VedicLearningModal
+        isOpen={learningModalState.isOpen}
+        onClose={() => setLearningModalState((prev) => ({ ...prev, isOpen: false }))}
+        onStartPractice={() => handleStartSet(learningModalState.setIdToStart)}
+        topicTitle={learningModalState.topicTitle}
+        topicId={learningModalState.topicId}
+        category={learningModalState.category}
+        level={learningModalState.level}
+      />
     </div>
   );
 }
