@@ -349,12 +349,20 @@ export default function PracticeSession() {
                     Next
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
-                ) : (
+                ) : currentInput.trim() !== "" ? (
                   <button
                     onClick={() => setShowConfirmModal(true)}
                     className="bg-gradient-to-r from-orange-600 via-amber-600 to-slate-900 hover:from-orange-700 hover:to-slate-950 text-white font-black px-4 py-1.5 rounded-xl text-xs transition-all cursor-pointer flex items-center gap-1.5 shadow-lg animate-pulse"
                   >
                     Finish & Submit Attempt 🚀
+                  </button>
+                ) : (
+                  <button
+                    disabled
+                    className="bg-vibrant-orange/50 text-white font-black px-4 py-1.5 rounded-xl text-xs cursor-not-allowed flex items-center gap-1 opacity-60"
+                  >
+                    Next
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>
