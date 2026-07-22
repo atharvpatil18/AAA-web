@@ -124,6 +124,80 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 4, numbers: [16, -9, 5, 2], correctAnswer: 14, conceptTag: "- Mixed Complement" },
       { id: 5, numbers: [12, -6, 7, -5], correctAnswer: 8, conceptTag: "- Mixed Complement" },
     ]
+  },
+  // JR-3 Curriculum Sets
+  {
+    id: "abacus-jr3-single-direct-6-7row",
+    title: "SINGLE DIGIT DIRECT SUMS— 6 -7 ROWS",
+    category: "abacus",
+    level: "JR-3",
+    topic: "1. Single digit direct sums— 6 -7rows",
+    description: "Practice 6 to 7 rows single digit direct addition and subtraction.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [7, -6, 1, 5, -2, 3, -1], correctAnswer: 7, conceptTag: "Direct 6-7 Rows" },
+      { id: 2, numbers: [4, 5, -3, 2, 1, -5, 4], correctAnswer: 8, conceptTag: "Direct 6-7 Rows" },
+      { id: 3, numbers: [8, -5, 1, 5, -4, 2, -2], correctAnswer: 5, conceptTag: "Direct 6-7 Rows" },
+    ]
+  },
+  {
+    id: "abacus-jr3-double-direct-4row",
+    title: "DOUBLE DIGIT DIRECT-4 ROWS",
+    category: "abacus",
+    level: "JR-3",
+    topic: "2. Double digit direct-4 rows",
+    description: "Practice 4 rows 2-digit direct addition and subtraction.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [42, 55, -31, 23], correctAnswer: 89, conceptTag: "Double Digit Direct" },
+      { id: 2, numbers: [34, 15, 50, -42], correctAnswer: 57, conceptTag: "Double Digit Direct" },
+      { id: 3, numbers: [71, -50, 23, 55], correctAnswer: 99, conceptTag: "Double Digit Direct" },
+    ]
+  },
+  {
+    id: "abacus-jr3-double-allcomp-4-5row",
+    title: "DOUBLE DIGIT ALL COMPLEMENT - 4-5 ROWS",
+    category: "abacus",
+    level: "JR-3",
+    topic: "3. Double digit all complement - 4-5 rows",
+    description: "Practice 4-5 rows 2-digit addition and subtraction using all complements (+5, -5, +10, -10, Mixed).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [48, 37, -25, 49], correctAnswer: 109, conceptTag: "Double Digit All Complements" },
+      { id: 2, numbers: [59, 26, -44, 58], correctAnswer: 99, conceptTag: "Double Digit All Complements" },
+      { id: 3, numbers: [64, 49, -38, 75, -20], correctAnswer: 130, conceptTag: "Double Digit All Complements" },
+    ]
+  },
+  {
+    id: "abacus-jr3-double-allcomp-6-7row",
+    title: "DOUBLE DIGIT ALL COMPLEMENT - 6-7 ROWS",
+    category: "abacus",
+    level: "JR-3",
+    topic: "4. Double digit all complement - 6-7 rows",
+    description: "Practice 6-7 rows 2-digit speed addition and subtraction with all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [28, 47, -35, 62, 19, -40, 55], correctAnswer: 136, conceptTag: "Double 6-7 Rows Complements" },
+      { id: 2, numbers: [54, 38, -27, 49, -15, 63, -20], correctAnswer: 142, conceptTag: "Double 6-7 Rows Complements" },
+    ]
+  },
+  {
+    id: "abacus-jr3-triple-allcomp-4-5row",
+    title: "TRIPLE DIGIT ALL COMPLEMENTS-4-5 ROWS",
+    category: "abacus",
+    level: "JR-3",
+    topic: "5. Triple digit all Complements-4-5 rows",
+    description: "Practice 4-5 rows 3-digit speed addition and subtraction with all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [485, 372, -240, 519], correctAnswer: 1136, conceptTag: "Triple Digit Complements" },
+      { id: 2, numbers: [624, 289, -350, 478, -120], correctAnswer: 921, conceptTag: "Triple Digit Complements" },
+    ]
   }
 ];
 
@@ -632,78 +706,111 @@ function createPRNG(seedStr: string) {
  * Generates deterministic numbers for a given attempt seed.
  */
 export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: string = "attempt_default"): Question | null {
-  if (!setId.startsWith("abacus-jr2-")) return null;
+  if (!setId.startsWith("abacus-jr2-") && !setId.startsWith("abacus-jr3-")) return null;
 
   const rng = createPRNG(`${seed}_${setId}_${qId}`);
 
   let rowCount = 4;
-  let formulaType: "direct" | "plus5" | "minus5" | "plus10" | "minus10" | "plusMixed" | "minusMixed" = "direct";
+  let digitsMode: "single" | "double" | "triple" = "single";
+  let formulaType: "direct" | "plus5" | "minus5" | "plus10" | "minus10" | "plusMixed" | "minusMixed" | "allComp" = "direct";
 
   if (setId === "abacus-jr2-direct-4row") {
     rowCount = 4;
+    digitsMode = "single";
     formulaType = "direct";
   } else if (setId === "abacus-jr2-plus5-comp") {
     rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "single";
     formulaType = "plus5";
   } else if (setId === "abacus-jr2-minus5-comp") {
     rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "single";
     formulaType = "minus5";
   } else if (setId === "abacus-jr2-plus10-comp") {
     rowCount = 4;
+    digitsMode = "single";
     formulaType = "plus10";
   } else if (setId === "abacus-jr2-minus10-comp") {
     rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "single";
     formulaType = "minus10";
   } else if (setId === "abacus-jr2-plus-mixed") {
     rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "single";
     formulaType = "plusMixed";
   } else if (setId === "abacus-jr2-minus-mixed") {
     rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "single";
     formulaType = "minusMixed";
+  }
+  // JR-3 Topics
+  else if (setId === "abacus-jr3-single-direct-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "single";
+    formulaType = "direct";
+  } else if (setId === "abacus-jr3-double-direct-4row") {
+    rowCount = 4;
+    digitsMode = "double";
+    formulaType = "direct";
+  } else if (setId === "abacus-jr3-double-allcomp-4-5row") {
+    rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "double";
+    formulaType = "allComp";
+  } else if (setId === "abacus-jr3-double-allcomp-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "double";
+    formulaType = "allComp";
+  } else if (setId === "abacus-jr3-triple-allcomp-4-5row") {
+    rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "triple";
+    formulaType = "allComp";
   }
 
   // Attempt up to 30 times to generate a valid sequence
   for (let attempt = 0; attempt < 30; attempt++) {
     const numbers: number[] = [];
-    let currentTotal = Math.floor(rng() * 8) + 1; // start with 1..8
+    let minStart = 1;
+    let maxStart = 8;
+    if (digitsMode === "double") {
+      minStart = 11;
+      maxStart = 89;
+    } else if (digitsMode === "triple") {
+      minStart = 111;
+      maxStart = 888;
+    }
+
+    let currentTotal = Math.floor(rng() * (maxStart - minStart + 1)) + minStart;
     numbers.push(currentTotal);
 
     for (let r = 1; r < rowCount; r++) {
-      const candidates: number[] = [];
+      let candidate: number | null = null;
+      let minVal = -9;
+      let maxVal = 9;
+      if (digitsMode === "double") {
+        minVal = -89;
+        maxVal = 89;
+      } else if (digitsMode === "triple") {
+        minVal = -888;
+        maxVal = 888;
+      }
 
-      for (let n = -9; n <= 9; n++) {
+      for (let subAttempt = 0; subAttempt < 25; subAttempt++) {
+        let n = Math.floor(rng() * (maxVal - minVal + 1)) + minVal;
         if (n === 0) continue;
-        const nextTotal = currentTotal + n;
-        if (nextTotal < 0 || nextTotal > 99) continue;
 
-        if (formulaType === "direct") {
-          if (nextTotal <= 9 && n > 0 && (currentTotal % 5) + n <= 4) candidates.push(n);
-          else if (nextTotal <= 9 && n < 0 && (currentTotal % 5) >= Math.abs(n)) candidates.push(n);
-        } else if (formulaType === "plus5") {
-          if (n > 0 && n <= 4 && (currentTotal % 5) + n >= 5 && currentTotal % 5 < 5 && nextTotal <= 9) candidates.push(n);
-          else if (rng() > 0.4 && nextTotal >= 0 && nextTotal <= 9) candidates.push(n);
-        } else if (formulaType === "minus5") {
-          if (n < 0 && Math.abs(n) <= 4 && currentTotal >= 5 && (currentTotal % 5) < Math.abs(n)) candidates.push(n);
-          else if (rng() > 0.4 && nextTotal >= 0 && nextTotal <= 9) candidates.push(n);
-        } else if (formulaType === "plus10") {
-          if (n > 0 && currentTotal + n >= 10 && currentTotal < 10) candidates.push(n);
-          else if (rng() > 0.4 && nextTotal >= 0) candidates.push(n);
-        } else if (formulaType === "minus10") {
-          if (n < 0 && currentTotal >= 10 && currentTotal + n < 10) candidates.push(n);
-          else if (rng() > 0.4 && nextTotal >= 0) candidates.push(n);
-        } else if (formulaType === "plusMixed") {
-          if (n >= 6 && currentTotal + n >= 10) candidates.push(n);
-          else if (rng() > 0.3 && nextTotal >= 0) candidates.push(n);
-        } else if (formulaType === "minusMixed") {
-          if (n <= -6 && currentTotal >= 10 && currentTotal + n < 10) candidates.push(n);
-          else if (rng() > 0.3 && nextTotal >= 0) candidates.push(n);
+        if (digitsMode === "double" && Math.abs(n) < 10) continue;
+        if (digitsMode === "triple" && Math.abs(n) < 100) continue;
+
+        const nextTotal = currentTotal + n;
+        if (nextTotal >= 0) {
+          candidate = n;
+          break;
         }
       }
 
-      if (candidates.length === 0) break;
-      const chosen = candidates[Math.floor(rng() * candidates.length)];
-      numbers.push(chosen);
-      currentTotal += chosen;
+      if (candidate === null) break;
+      numbers.push(candidate);
+      currentTotal += candidate;
     }
 
     if (numbers.length === rowCount && currentTotal >= 0) {
@@ -711,7 +818,7 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
         id: qId,
         numbers,
         correctAnswer: currentTotal,
-        conceptTag: `Abacus ${formulaType.toUpperCase()}`
+        conceptTag: `Abacus JR ${digitsMode.toUpperCase()}`
       };
     }
   }
@@ -719,8 +826,8 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
   // Fallback safe sequence if candidate loop exhausted
   return {
     id: qId,
-    numbers: [4, 5, -3, 2],
-    correctAnswer: 8,
+    numbers: digitsMode === "triple" ? [452, 235, -123, 115] : digitsMode === "double" ? [42, 35, -21, 15] : [4, 5, -3, 2],
+    correctAnswer: digitsMode === "triple" ? 679 : digitsMode === "double" ? 71 : 8,
     conceptTag: "Abacus Practice"
   };
 }
