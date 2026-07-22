@@ -634,6 +634,38 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 1, numbers: [4852, 3721, -2405, 5194], correctAnswer: 11362, conceptTag: "SR-5 Quad All Complements" },
       { id: 2, numbers: [6248, 2891, -3504, 4783], correctAnswer: 10418, conceptTag: "SR-5 Quad All Complements" },
     ]
+  },
+
+  // SR-6 Curriculum Sets (Multiplication Drills)
+  {
+    id: "abacus-sr6-mult-sd-3d",
+    title: "MULTIPLICATION  S. D. x 3 D.",
+    category: "abacus",
+    level: "SR-6",
+    topic: "8. Multiplication  S. D. x 3 D.",
+    description: "Practice Single Digit × 3 Digit multiplication on Abacus (e.g. 485 × 6).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "485 × 6", correctAnswer: 2910, conceptTag: "SD × 3D Multiplication" },
+      { id: 2, expression: "729 × 4", correctAnswer: 2916, conceptTag: "SD × 3D Multiplication" },
+      { id: 3, expression: "814 × 7", correctAnswer: 5698, conceptTag: "SD × 3D Multiplication" },
+    ]
+  },
+  {
+    id: "abacus-sr6-mult-2d-2d",
+    title: "MULTIPLICATION  2 D. x 2 D.",
+    category: "abacus",
+    level: "SR-6",
+    topic: "9. Multiplication  2 D. x 2 D.",
+    description: "Practice 2 Digit × 2 Digit multiplication on Abacus (e.g. 43 × 57).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "43 × 57", correctAnswer: 2451, conceptTag: "2D × 2D Multiplication" },
+      { id: 2, expression: "68 × 34", correctAnswer: 2312, conceptTag: "2D × 2D Multiplication" },
+      { id: 3, expression: "85 × 72", correctAnswer: 6120, conceptTag: "2D × 2D Multiplication" },
+    ]
   }
 ];
 
@@ -1180,12 +1212,13 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     !setId.startsWith("abacus-sr2-") &&
     !setId.startsWith("abacus-sr3-") &&
     !setId.startsWith("abacus-sr4-") &&
-    !setId.startsWith("abacus-sr5-")
+    !setId.startsWith("abacus-sr5-") &&
+    !setId.startsWith("abacus-sr6-")
   ) return null;
 
   const rng = createPRNG(`${seed}_${setId}_${qId}`);
 
-  // SR-4 Multiplication Generators
+  // SR-4 & SR-6 Multiplication Generators
   if (setId === "abacus-sr4-mult-sd-sd") {
     const num1 = Math.floor(rng() * 8) + 2; // 2..9
     const num2 = Math.floor(rng() * 8) + 2; // 2..9
@@ -1205,6 +1238,28 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
       expression: `${num2} × ${num1}`,
       correctAnswer: num1 * num2,
       conceptTag: "SD × 2D Multiplication"
+    };
+  }
+
+  if (setId === "abacus-sr6-mult-sd-3d") {
+    const num1 = Math.floor(rng() * 8) + 2; // 2..9
+    const num2 = Math.floor(rng() * 899) + 101; // 101..999
+    return {
+      id: qId,
+      expression: `${num2} × ${num1}`,
+      correctAnswer: num1 * num2,
+      conceptTag: "SD × 3D Multiplication"
+    };
+  }
+
+  if (setId === "abacus-sr6-mult-2d-2d") {
+    const num1 = Math.floor(rng() * 89) + 11; // 11..99
+    const num2 = Math.floor(rng() * 89) + 11; // 11..99
+    return {
+      id: qId,
+      expression: `${num1} × ${num2}`,
+      correctAnswer: num1 * num2,
+      conceptTag: "2D × 2D Multiplication"
     };
   }
 
