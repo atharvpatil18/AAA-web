@@ -9,6 +9,7 @@ import { ABACUS_QUESTION_SETS, VEDIC_QUESTION_SETS } from "../data/practiceData"
 import { PracticeCategory, PracticeMode, QuestionCountChoice } from "../types";
 import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Calendar, ShieldCheck, ListOrdered, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
+import { syncStudentAttempts } from "../lib/cloudSync";
 
 const ABACUS_LEVEL_INFO: Record<string, { primaryFocus: string; uniqueTopics: string }> = {
   "JR-0": {
@@ -202,25 +203,30 @@ export default function PracticeHub() {
     }
   }, [hubTab]);
 
-  // Load real leaderboard attempts (Mock data cleared)
+  // Load real leaderboard & personal performance attempts (with cross-device cloud sync)
   useEffect(() => {
-    const rawAttempts = localStorage.getItem("aaa_leaderboard_attempts");
-    if (rawAttempts) {
-      try {
-        const parsed = JSON.parse(rawAttempts);
-        // Filter out any leftover mock entries
-        const realOnly = parsed.filter((a: any) => !a.userId?.startsWith("mock_"));
-        localStorage.setItem("aaa_leaderboard_attempts", JSON.stringify(realOnly));
-        setAttemptsList(realOnly);
-      } catch (e) {
-        console.error("Failed to parse attempts", e);
-        setAttemptsList([]);
+    const loadAndSyncAttempts = async () => {
+      const rawAttempts = localStorage.getItem("aaa_leaderboard_attempts");
+      let currentLocal: any[] = [];
+      if (rawAttempts) {
+        try {
+          const parsed = JSON.parse(rawAttempts);
+          currentLocal = parsed.filter((a: any) => !a.userId?.startsWith("mock_"));
+          setAttemptsList(currentLocal);
+        } catch (e) {
+          console.error("Failed to parse attempts", e);
+        }
       }
-    } else {
-      localStorage.setItem("aaa_leaderboard_attempts", JSON.stringify([]));
-      setAttemptsList([]);
-    }
-  }, [hubTab]); // refresh list when user switches tabs
+
+      // Sync cloud attempts for logged in student email across mobile and desktop
+      if (currentUser?.email) {
+        const synced = await syncStudentAttempts(currentUser.email);
+        setAttemptsList(synced.filter((a: any) => !a.userId?.startsWith("mock_")));
+      }
+    };
+
+    loadAndSyncAttempts();
+  }, [hubTab, currentUser?.email]);
 
   const currentSets = activeCategory === "abacus" ? ABACUS_QUESTION_SETS : VEDIC_QUESTION_SETS;
 
@@ -649,40 +655,51 @@ export default function PracticeHub() {
                 </div>
               </div>
 
-              {attemptsList.filter((a) => a.userId === currentUser?.id).length === 0 ? (
-                <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-12 text-center max-w-lg mx-auto">
-                  <Medal className="w-12 h-12 text-slate-350 mx-auto mb-3" />
-                  <h3 className="text-base font-black text-slate-800">No Attempts Recorded Yet</h3>
-                  <p className="text-xs text-slate-500 mt-2 mb-6">
-                    Start training in Abacus levels or Vedic mathematics topics to build up your scorecard and track calculations!
-                  </p>
-                  <button
-                    onClick={() => setHubTab("sets")}
-                    className="bg-vibrant-orange hover:bg-vibrant-orange/90 text-white text-xs font-black px-5 py-3 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
-                  >
-                    View Practice Topics
-                  </button>
-                </div>
-              ) : (
-                <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs border-collapse">
-                      <thead>
-                        <tr className="bg-slate-900 text-white font-black uppercase tracking-wider">
-                          <th className="p-4">Practice Topic</th>
-                          <th className="p-4">Level</th>
-                          <th className="p-4">Mode</th>
-                          <th className="p-4 text-center">Score %</th>
-                          <th className="p-4 text-center">Correct Qs</th>
-                          <th className="p-4 text-center">Time Taken</th>
-                          <th className="p-4">Completed Date</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-250">
-                        {attemptsList
-                          .filter((a) => a.userId === currentUser?.id)
-                          .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime())
-                          .map((attempt, idx) => (
+              {(() => {
+                const userEmailLower = currentUser?.email?.toLowerCase().trim() || currentUser?.id?.toLowerCase().trim();
+                const userAttempts = attemptsList.filter(
+                  (a) =>
+                    a.userEmail?.toLowerCase().trim() === userEmailLower ||
+                    a.userId?.toLowerCase().trim() === userEmailLower
+                );
+
+                if (userAttempts.length === 0) {
+                  return (
+                    <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-12 text-center max-w-lg mx-auto">
+                      <Medal className="w-12 h-12 text-slate-350 mx-auto mb-3" />
+                      <h3 className="text-base font-black text-slate-800">No Attempts Recorded Yet</h3>
+                      <p className="text-xs text-slate-500 mt-2 mb-6">
+                        Start training in Abacus levels or Vedic mathematics topics to build up your scorecard and track calculations!
+                      </p>
+                      <button
+                        onClick={() => setHubTab("sets")}
+                        className="bg-vibrant-orange hover:bg-vibrant-orange/90 text-white text-xs font-black px-5 py-3 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
+                      >
+                        View Practice Topics
+                      </button>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-slate-900 text-white font-black uppercase tracking-wider">
+                            <th className="p-4">Practice Topic</th>
+                            <th className="p-4">Level</th>
+                            <th className="p-4">Mode</th>
+                            <th className="p-4 text-center">Score %</th>
+                            <th className="p-4 text-center">Correct Qs</th>
+                            <th className="p-4 text-center">Time Taken</th>
+                            <th className="p-4">Completed Date</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-250">
+                          {userAttempts
+                            .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime())
+                            .map((attempt, idx) => (
                             <tr key={idx} className="hover:bg-slate-50 font-medium text-slate-700">
                               <td className="p-4 font-bold text-slate-900">{attempt.setTitle}</td>
                               <td className="p-4">
@@ -719,13 +736,14 @@ export default function PracticeHub() {
                               </td>
                             </tr>
                           ))}
-                      </tbody>
-                    </table>
+                        </tbody>
+                      </table>
                   </div>
                 </div>
-              )}
-            </div>
-          )}
+              );
+            })()}
+          </div>
+        )}
 
           {/* TAB 3: LEADERBOARD */}
           {hubTab === "leaderboard" && (
