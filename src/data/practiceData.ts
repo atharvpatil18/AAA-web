@@ -800,43 +800,13 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     ]
   },
 
-  // SR-8 Curriculum Sets (Multiplication & Division Drills)
-  {
-    id: "abacus-sr8-mult-sd-3d",
-    title: "MULTIPLICATION- S.D. X 3 D.",
-    category: "abacus",
-    level: "SR-8",
-    topic: "8. Multiplication- S.D. X 3 D.",
-    description: "Practice Single Digit × 3 Digit multiplication on Abacus (e.g. 485 × 6).",
-    questionCount: 20,
-    timeLimitSeconds: 240,
-    questions: [
-      { id: 1, expression: "485 × 6", correctAnswer: 2910, conceptTag: "SD × 3D Multiplication" },
-      { id: 2, expression: "729 × 4", correctAnswer: 2916, conceptTag: "SD × 3D Multiplication" },
-      { id: 3, expression: "814 × 7", correctAnswer: 5698, conceptTag: "SD × 3D Multiplication" },
-    ]
-  },
-  {
-    id: "abacus-sr8-mult-2d-2d",
-    title: "MULTIPLICATION- 2 D. X 2 D.",
-    category: "abacus",
-    level: "SR-8",
-    topic: "9. Multiplication- 2 D. X 2 D.",
-    description: "Practice 2 Digit × 2 Digit multiplication on Abacus (e.g. 43 × 57).",
-    questionCount: 20,
-    timeLimitSeconds: 240,
-    questions: [
-      { id: 1, expression: "43 × 57", correctAnswer: 2451, conceptTag: "2D × 2D Multiplication" },
-      { id: 2, expression: "68 × 34", correctAnswer: 2312, conceptTag: "2D × 2D Multiplication" },
-      { id: 3, expression: "85 × 72", correctAnswer: 6120, conceptTag: "2D × 2D Multiplication" },
-    ]
-  },
+  // SR-8 Curriculum Sets (Division Master Drills)
   {
     id: "abacus-sr8-div-2d-1d",
-    title: "DIVISION  2D ÷ 1D",
+    title: "DIVISION 2D ÷ 1D",
     category: "abacus",
     level: "SR-8",
-    topic: "10. Division  2D ÷ 1D",
+    topic: "1. Division 2D ÷ 1D",
     description: "Practice 2 Digit ÷ 1 Digit exact division on Abacus (e.g. 84 ÷ 4 = 21).",
     questionCount: 20,
     timeLimitSeconds: 240,

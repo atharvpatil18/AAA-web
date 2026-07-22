@@ -10,6 +10,65 @@ import { PracticeCategory, PracticeMode, QuestionCountChoice } from "../types";
 import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Calendar, ShieldCheck, ListOrdered, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 
+const ABACUS_LEVEL_INFO: Record<string, { primaryFocus: string; uniqueTopics: string }> = {
+  "JR-0": {
+    primaryFocus: "Foundation & Visual Bead Mechanics",
+    uniqueTopics: "Bead Reading & Interactive Bead Representation (1, 2, 3 Digits)",
+  },
+  "JR-1": {
+    primaryFocus: "One's Place Rod Mastery (Direct Math)",
+    uniqueTopics: "Single-Digit Direct Addition & Subtraction (3, 4, 5 Rows)",
+  },
+  "JR-2": {
+    primaryFocus: "Single-Digit Formula Rules (±5, ±10)",
+    uniqueTopics: "Small Friends (+5/-5), Big Friends (+10/-10), & Mixed Complements",
+  },
+  "JR-3": {
+    primaryFocus: "Multi-Row Single & Double-Digit Base",
+    uniqueTopics: "Single-Digit Speed Rows (6-7 Rows) & 2-Digit Foundation (4-7 Rows)",
+  },
+  "SR-1": {
+    primaryFocus: "Single-Digit Speed & Precision Drills",
+    uniqueTopics: "Single-Digit Speed Drills (5-6 Rows) with Formula Breakdown",
+  },
+  "SR-2": {
+    primaryFocus: "Double & Triple Digit Master Drills",
+    uniqueTopics: "2D Direct/All Complements (5 Rows), 1D Marathon (7 Rows), 3D Speed",
+  },
+  "SR-3": {
+    primaryFocus: "Multi-Digit Direct & Combination Drills",
+    uniqueTopics: "1D/2D/3D Direct Endurance (4-5 Rows) & 2D Short Complements (3 Rows)",
+  },
+  "SR-4": {
+    primaryFocus: "Basic Abacus Multiplication",
+    uniqueTopics: "Single Digit × Single Digit (SD × SD) & Single Digit × 2 Digit (SD × 2D)",
+  },
+  "SR-5": {
+    primaryFocus: "4-Digit (Quad-Digit) Math Foundation",
+    uniqueTopics: "4-Digit Direct Math (4 Rows) & 4-Digit All Complements (4 Rows)",
+  },
+  "SR-6": {
+    primaryFocus: "Intermediate Abacus Multiplication",
+    uniqueTopics: "Single Digit × 3 Digit (SD × 3D) & 2 Digit × 2 Digit (2D × 2D)",
+  },
+  "SR-7": {
+    primaryFocus: "Multi-Digit 5-Row Endurance Sums",
+    uniqueTopics: "2-Digit, 3-Digit, & 4-Digit 5-Row All Complements Endurance Sums",
+  },
+  "SR-8": {
+    primaryFocus: "Abacus Division Master Drills",
+    uniqueTopics: "Division: 2D ÷ 1D, 3D ÷ 1D, & 4D ÷ 1D",
+  },
+  "SR-9": {
+    primaryFocus: "Decimal Addition & Subtraction",
+    uniqueTopics: "3D & 4D 3-Row Decimal Addition & Subtraction (All Complements)",
+  },
+  "SR-10": {
+    primaryFocus: "Advanced Mental Math & Mathematical Sutras",
+    uniqueTopics: "Decimals Mult/Div, HCF, Percentage, LCM, & Square Root",
+  },
+};
+
 export default function PracticeHub() {
   const { currentUser } = useAuth();
   const [activeCategory, setActiveCategory] = useState<PracticeCategory>("abacus");
@@ -345,37 +404,50 @@ export default function PracticeHub() {
 
                   return Object.entries(groupedSets).map(([levelName, sets]) => {
                     const isExpanded = expandedLevels[levelName] ?? false;
+                    const lvlInfo = ABACUS_LEVEL_INFO[levelName];
 
-                    return (
-                      <div key={levelName} className="mb-6">
-                        {/* Collapsible Level Group Header Banner */}
-                        <div
-                          onClick={() => toggleLevel(levelName)}
-                          className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-5 py-3.5 rounded-2xl flex items-center justify-between shadow-md border border-orange-400/40 cursor-pointer transition-all active:scale-[0.99]"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="bg-white/20 p-2 rounded-xl backdrop-blur-xs">
-                              <Layers className="w-5 h-5 text-white" />
-                            </span>
-                            <div>
-                              <h3 className="font-black text-base md:text-lg tracking-wide uppercase flex items-center gap-2">
-                                Category Level: {levelName}
-                              </h3>
-                              <p className="text-xs text-orange-100 font-medium">
-                                {sets.length} Practice Topics • {isExpanded ? "Click to collapse" : "Click to expand & view topics"}
-                              </p>
+                        return (
+                          <div key={levelName} className="mb-6">
+                            {/* Collapsible Level Group Header Banner */}
+                            <div
+                              onClick={() => toggleLevel(levelName)}
+                              className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-5 py-4 rounded-2xl flex items-center justify-between shadow-md border border-orange-400/40 cursor-pointer transition-all active:scale-[0.99]"
+                            >
+                              <div className="flex items-center gap-3">
+                                <span className="bg-white/20 p-2.5 rounded-xl backdrop-blur-xs">
+                                  <Layers className="w-5 h-5 text-white" />
+                                </span>
+                                <div className="flex flex-col gap-0.5">
+                                  <div className="flex items-center gap-2 flex-wrap">
+                                    <h3 className="font-black text-base md:text-lg tracking-wide uppercase">
+                                      Category Level: {levelName}
+                                    </h3>
+                                    {lvlInfo && (
+                                      <span className="bg-white/20 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-white/30 hidden sm:inline-block">
+                                        🎯 Focus: {lvlInfo.primaryFocus}
+                                      </span>
+                                    )}
+                                  </div>
+                                  {lvlInfo && (
+                                    <p className="text-xs text-amber-100 font-semibold leading-tight">
+                                      📌 <span className="underline decoration-amber-300 font-bold">Unique Topics</span>: {lvlInfo.uniqueTopics}
+                                    </p>
+                                  )}
+                                  <p className="text-[11px] text-orange-100 font-medium">
+                                    {sets.length} Practice Topics • {isExpanded ? "Click to collapse" : "Click to expand & view topics"}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-3">
+                                <span className="bg-white text-orange-600 text-xs font-black px-3.5 py-1.5 rounded-xl shadow-xs hidden md:inline-block">
+                                  {sets.length} Topics
+                                </span>
+                                <span className="bg-white/20 p-1.5 rounded-xl">
+                                  {isExpanded ? <ChevronUp className="w-5 h-5 text-white" /> : <ChevronDown className="w-5 h-5 text-white" />}
+                                </span>
+                              </div>
                             </div>
-                          </div>
-
-                          <div className="flex items-center gap-3">
-                            <span className="bg-white text-orange-600 text-xs font-black px-3.5 py-1.5 rounded-xl shadow-xs hidden sm:inline-block">
-                              {sets.length} Topics
-                            </span>
-                            <span className="bg-white/20 p-1.5 rounded-xl">
-                              {isExpanded ? <ChevronUp className="w-5 h-5 text-white" /> : <ChevronDown className="w-5 h-5 text-white" />}
-                            </span>
-                          </div>
-                        </div>
 
                         {/* Expandable Sets Grid */}
                         {isExpanded && (
