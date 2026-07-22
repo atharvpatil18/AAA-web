@@ -220,7 +220,7 @@ export default function PracticeHub() {
                       <img
                         src="/images/abacus_practice_tab.jpg"
                         alt="Abacus Practice"
-                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-contain p-1 transform hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                   </div>
