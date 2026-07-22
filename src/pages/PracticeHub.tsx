@@ -201,31 +201,48 @@ export default function PracticeHub() {
           {/* TAB 1: PRACTICE SETS */}
           {hubTab === "sets" && (
             <div>
-              {/* Category Tabs: Abacus vs Vedic Math */}
-              <div className="flex justify-center mb-8">
-                <div className="flex bg-slate-100 p-1.5 rounded-2xl gap-2 w-full max-w-md shadow-inner">
-                  <button
-                    onClick={() => setActiveCategory("abacus")}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-black text-sm md:text-base transition-all cursor-pointer ${
-                      activeCategory === "abacus"
-                        ? "bg-vibrant-orange text-white shadow-md scale-102"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Calculator className="w-5 h-5" />
+              {/* Category Tabs: Abacus vs Vedic Math with Custom Visual Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mb-8">
+                {/* Abacus Practice Card */}
+                <div
+                  onClick={() => setActiveCategory("abacus")}
+                  className={`bg-white rounded-2xl border-2 p-4 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 shadow-sm ${
+                    activeCategory === "abacus"
+                      ? "border-vibrant-orange ring-4 ring-orange-100 shadow-md scale-102"
+                      : "border-slate-200 hover:border-slate-300 opacity-80 hover:opacity-100"
+                  }`}
+                >
+                  <span className={`text-base md:text-lg font-black mb-2.5 ${activeCategory === "abacus" ? "text-vibrant-orange" : "text-slate-800"}`}>
                     Abacus Practice
-                  </button>
-                  <button
-                    onClick={() => setActiveCategory("vedic")}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-black text-sm md:text-base transition-all cursor-pointer ${
-                      activeCategory === "vedic"
-                        ? "bg-vibrant-teal text-white shadow-md scale-102"
-                        : "text-slate-600 hover:text-slate-900"
-                    }`}
-                  >
-                    <Zap className="w-5 h-5" />
-                    Vedic Math Practice
-                  </button>
+                  </span>
+                  <div className="w-full h-32 rounded-xl overflow-hidden border border-slate-200 shadow-xs relative bg-slate-50 flex items-center justify-center">
+                    <img
+                      src="/images/abacus_practice_tab.jpg"
+                      alt="Abacus Practice"
+                      className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                </div>
+
+                {/* Vedic Maths Practice Card */}
+                <div
+                  onClick={() => setActiveCategory("vedic")}
+                  className={`bg-white rounded-2xl border-2 p-4 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 shadow-sm ${
+                    activeCategory === "vedic"
+                      ? "border-vibrant-teal ring-4 ring-teal-100 shadow-md scale-102"
+                      : "border-slate-200 hover:border-slate-300 opacity-80 hover:opacity-100"
+                  }`}
+                >
+                  <span className={`text-base md:text-lg font-black mb-2.5 ${activeCategory === "vedic" ? "text-vibrant-teal" : "text-slate-800"}`}>
+                    Vedic Maths Practice
+                  </span>
+                  <div className="w-full h-32 rounded-xl overflow-hidden border border-slate-200 shadow-xs relative bg-white flex items-center justify-center p-2">
+                    <img
+                      src="/images/vedic_math_practice_tab.jpg"
+                      alt="Vedic Maths Practice"
+                      className="w-full h-full object-contain transform hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
                 </div>
               </div>
 
