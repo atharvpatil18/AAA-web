@@ -534,6 +534,106 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 2, expression: "75 × 4", correctAnswer: 300, conceptTag: "SD × 2D Multiplication" },
       { id: 3, expression: "82 × 7", correctAnswer: 574, conceptTag: "SD × 2D Multiplication" },
     ]
+  },
+
+  // SR-5 Curriculum Sets
+  {
+    id: "abacus-sr5-single-direct-4-5row",
+    title: "ADD./SUB. S. D. 4-5 ROWS ± DIRECT",
+    category: "abacus",
+    level: "SR-5",
+    topic: "1. Add./Sub. S. D. 4-5 rows  ± Direct (without compliments)",
+    description: "Practice Single Digit (S.D.) 4 to 5 rows direct addition & subtraction without complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [2, 5, -1, 3], correctAnswer: 9, conceptTag: "SR-5 Single Direct" },
+      { id: 2, numbers: [4, 5, -3, 2, -1], correctAnswer: 7, conceptTag: "SR-5 Single Direct" },
+    ]
+  },
+  {
+    id: "abacus-sr5-single-plusminus5-6-7row",
+    title: "ADD./SUB. S.D. 6-7 ROWS ± 5 COMPLIMENT",
+    category: "abacus",
+    level: "SR-5",
+    topic: "2. Add./Sub. S.D. 6-7 rows ± 5 compliment",
+    description: "Practice Single Digit 6 to 7 rows using ±5 Small Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [4, 4, -3, 2, 4, -5, 3], correctAnswer: 9, conceptTag: "SR-5 Single ±5 Complement" },
+      { id: 2, numbers: [3, 3, 2, -5, 4, 1, -2], correctAnswer: 6, conceptTag: "SR-5 Single ±5 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr5-single-plusminus10-6-7row",
+    title: "ADD./SUB. S.D. 6-7 ROWS ± 10 COMPLIMENT",
+    category: "abacus",
+    level: "SR-5",
+    topic: "3. Add./Sub. S.D. 6-7 rows ± 10 compliment",
+    description: "Practice Single Digit 6 to 7 rows using ±10 Big Friends complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [9, 9, -5, 8, -4, 7, -3], correctAnswer: 21, conceptTag: "SR-5 Single ±10 Complement" },
+      { id: 2, numbers: [8, 8, 4, -9, 7, 6, -5], correctAnswer: 19, conceptTag: "SR-5 Single ±10 Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr5-single-mixed-6-7row",
+    title: "ADD./SUB. S.D. 6-7 ROWS ± MIXED COMPLIMENT",
+    category: "abacus",
+    level: "SR-5",
+    topic: "4. Add./Sub. S.D. 6-7 rows ± Mixed compliment",
+    description: "Practice Single Digit 6 to 7 rows using ± Mixed Combination complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [6, 6, -5, 7, -4, 8, -6], correctAnswer: 12, conceptTag: "SR-5 Single ± Mixed Complement" },
+      { id: 2, numbers: [7, 7, -5, 8, -6, 9, -7], correctAnswer: 13, conceptTag: "SR-5 Single ± Mixed Complement" },
+    ]
+  },
+  {
+    id: "abacus-sr5-double-allcomp-5row",
+    title: "ADD./SUB. 2 D. 5 ROWS (ALL COMPLIMENTS)",
+    category: "abacus",
+    level: "SR-5",
+    topic: "5. Add./Sub. 2 D. 5 rows (All compliments)",
+    description: "Practice 2-Digit (2 D.) 5 rows speed addition & subtraction using all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [48, 37, -25, 49, 18], correctAnswer: 127, conceptTag: "SR-5 Double All Complements" },
+      { id: 2, numbers: [59, 26, -44, 58, -20], correctAnswer: 79, conceptTag: "SR-5 Double All Complements" },
+    ]
+  },
+  {
+    id: "abacus-sr5-triple-allcomp-4row",
+    title: "ADD./SUB. 3 D. 4 ROWS (ALL COMPLIMENTS)",
+    category: "abacus",
+    level: "SR-5",
+    topic: "6. Add./Sub. 3 D. 4 rows (All compliments)",
+    description: "Practice 3-Digit (3 D.) 4 rows speed addition & subtraction using all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [485, 372, -240, 519], correctAnswer: 1136, conceptTag: "SR-5 Triple All Complements" },
+      { id: 2, numbers: [624, 289, -350, 478], correctAnswer: 1041, conceptTag: "SR-5 Triple All Complements" },
+    ]
+  },
+  {
+    id: "abacus-sr5-quad-allcomp-4row",
+    title: "ADD./SUB. 4 D. 4 ROWS (ALL COMPLIMENTS)",
+    category: "abacus",
+    level: "SR-5",
+    topic: "7. Add./Sub. 4 D. 4 rows (All compliments)",
+    description: "Practice 4-Digit (4 D., e.g. 1000-9999) 4 rows speed addition & subtraction using all complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [4852, 3721, -2405, 5194], correctAnswer: 11362, conceptTag: "SR-5 Quad All Complements" },
+      { id: 2, numbers: [6248, 2891, -3504, 4783], correctAnswer: 10418, conceptTag: "SR-5 Quad All Complements" },
+    ]
   }
 ];
 
@@ -1079,7 +1179,8 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     !setId.startsWith("abacus-sr1-") &&
     !setId.startsWith("abacus-sr2-") &&
     !setId.startsWith("abacus-sr3-") &&
-    !setId.startsWith("abacus-sr4-")
+    !setId.startsWith("abacus-sr4-") &&
+    !setId.startsWith("abacus-sr5-")
   ) return null;
 
   const rng = createPRNG(`${seed}_${setId}_${qId}`);
@@ -1108,7 +1209,7 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
   }
 
   let rowCount = 4;
-  let digitsMode: "single" | "double" | "triple" = "single";
+  let digitsMode: "single" | "double" | "triple" | "quad" = "single";
   let formulaType: "direct" | "plus5" | "minus5" | "plus10" | "minus10" | "plusMixed" | "minusMixed" | "allComp" = "direct";
 
   // JR-1 Topics (3 Rows, 4 Rows, 5 Rows Direct Addition/Subtraction without Complements on One's Rod)
@@ -1253,6 +1354,36 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     digitsMode = "single";
     formulaType = "plusMixed";
   }
+  // SR-5 Topics
+  else if (setId === "abacus-sr5-single-direct-4-5row") {
+    rowCount = rng() > 0.5 ? 5 : 4;
+    digitsMode = "single";
+    formulaType = "direct";
+  } else if (setId === "abacus-sr5-single-plusminus5-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "single";
+    formulaType = "plus5";
+  } else if (setId === "abacus-sr5-single-plusminus10-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "single";
+    formulaType = "plus10";
+  } else if (setId === "abacus-sr5-single-mixed-6-7row") {
+    rowCount = rng() > 0.5 ? 7 : 6;
+    digitsMode = "single";
+    formulaType = "plusMixed";
+  } else if (setId === "abacus-sr5-double-allcomp-5row") {
+    rowCount = 5;
+    digitsMode = "double";
+    formulaType = "allComp";
+  } else if (setId === "abacus-sr5-triple-allcomp-4row") {
+    rowCount = 4;
+    digitsMode = "triple";
+    formulaType = "allComp";
+  } else if (setId === "abacus-sr5-quad-allcomp-4row") {
+    rowCount = 4;
+    digitsMode = "quad";
+    formulaType = "allComp";
+  }
 
   const isJR1 = setId.startsWith("abacus-jr1-");
 
@@ -1267,6 +1398,9 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
     } else if (digitsMode === "triple") {
       minStart = 111;
       maxStart = 888;
+    } else if (digitsMode === "quad") {
+      minStart = 1111;
+      maxStart = 8888;
     }
 
     let currentTotal = Math.floor(rng() * (maxStart - minStart + 1)) + minStart;
@@ -1282,6 +1416,9 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
       } else if (digitsMode === "triple") {
         minVal = -888;
         maxVal = 888;
+      } else if (digitsMode === "quad") {
+        minVal = -8888;
+        maxVal = 8888;
       }
 
       for (let subAttempt = 0; subAttempt < 40; subAttempt++) {
@@ -1290,6 +1427,7 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
 
         if (digitsMode === "double" && Math.abs(n) < 10) continue;
         if (digitsMode === "triple" && Math.abs(n) < 100) continue;
+        if (digitsMode === "quad" && Math.abs(n) < 1000) continue;
 
         // Strict physical Soroban bead validation for JR-1 direct ones rod
         if (isJR1) {
@@ -1311,7 +1449,7 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
       currentTotal += candidate;
     }
 
-    if (numbers.length === rowCount && currentTotal >= 0 && currentTotal <= 9999) {
+    if (numbers.length === rowCount && currentTotal >= 0 && currentTotal <= 99999) {
       return {
         id: qId,
         numbers,
@@ -1333,8 +1471,8 @@ export function generateDynamicAbacusQuestion(setId: string, qId: number, seed: 
 
   return {
     id: qId,
-    numbers: digitsMode === "triple" ? [452, 235, -123, 115] : digitsMode === "double" ? [42, 35, -21, 15] : fallbackNumbers,
-    correctAnswer: digitsMode === "triple" ? 679 : digitsMode === "double" ? 71 : fallbackAns,
+    numbers: digitsMode === "quad" ? [4852, 3721, -2405, 5194] : digitsMode === "triple" ? [452, 235, -123, 115] : digitsMode === "double" ? [42, 35, -21, 15] : fallbackNumbers,
+    correctAnswer: digitsMode === "quad" ? 11362 : digitsMode === "triple" ? 679 : digitsMode === "double" ? 71 : fallbackAns,
     conceptTag: isJR1 ? "One's Place Rod (Direct Single Digit)" : "Abacus Practice"
   };
 }
