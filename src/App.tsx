@@ -50,8 +50,11 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   const isGuestUser = Boolean(localStorage.getItem("aaa_guest_user"));
+  const isSessionOrResults = location.pathname.startsWith("/practice/session") || location.pathname.startsWith("/practice/results");
 
-  if (!currentUser && !isGuestUser) {
+  // /practice (Practice Hub catalog) is ONLY for registered student login (currentUser).
+  // Guest login users are restricted from viewing the Practice Hub page.
+  if (!currentUser && !(isGuestUser && isSessionOrResults)) {
     const fullPath = location.pathname + location.search;
     return <Navigate to={`/login?redirect=${encodeURIComponent(fullPath)}`} replace />;
   }
