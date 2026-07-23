@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
-import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield, Zap, Clock, Trophy, MessageSquare, Send, Star, CheckCircle2, Flame, ArrowDown, TrendingUp } from "lucide-react";
+import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield, Zap, Clock, Trophy, MessageSquare, Send, Star, CheckCircle2, Flame, ArrowDown, TrendingUp, Rocket } from "lucide-react";
 import { saveVisitorFeedback } from "../lib/cloudSync";
 import { validateSanitizedEmail, validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
 
@@ -480,80 +480,110 @@ export default function Login() {
                     <input
                       type="text"
                       value={guestName}
-                      onChange={(e) => setGuestName(e.target.value)}
+                  onChange={(e) => setGuestName(e.target.value)}
                       placeholder="Your Name (for Leaderboard)"
                       className="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition"
                     />
                   </div>
                 </div>
 
-                {/* Sample Drills Cards */}
-                <div>
-                  <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">
-                    Select 200-Question Sample Topic <span className="text-amber-600 font-bold">(20 Mins Marathon)</span>
-                  </label>
+                {/* Sample Drills Cards Redesigned for Students (100 Qs / 10 Mins Each Only) */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
+                      Select 100-Question Free Practice Topic <span className="text-amber-600 font-bold">(10 Mins Speed Drill)</span>
+                    </label>
+                    <span className="text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-300">
+                      ⚡ 100 Qs & 10 Mins Only
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-500 font-medium">
+                    🎯 Build high mental math focus, speed & calculation confidence! Your score will rank live on the leaderboard.
+                  </p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {/* SR-1 Topic 1 */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+                    {/* SR-1 Topic 1 Card */}
                     <div
                       onClick={() => setSelectedSampleSetId("abacus-sr1-single-direct-5-6row")}
-                      className={`p-4 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between ${
+                      className={`p-4 rounded-2xl border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between relative overflow-hidden group ${
                         selectedSampleSetId === "abacus-sr1-single-direct-5-6row"
-                          ? "border-amber-500 bg-amber-50/70 shadow-md ring-2 ring-amber-400/20"
-                          : "border-slate-200 bg-white hover:border-slate-300"
+                          ? "border-amber-500 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-amber-500/15 ring-4 ring-amber-400/25 shadow-lg scale-[1.01]"
+                          : "border-slate-200 bg-white hover:border-amber-400 hover:shadow-md"
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="bg-orange-100 text-orange-900 text-[10px] font-black px-2.5 py-0.5 rounded-md uppercase">
-                          Level SR-1 • Topic 1
+                        <span className="bg-orange-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-lg uppercase tracking-wide flex items-center gap-1 shadow-2xs">
+                          🧮 LEVEL SR-1 • TOPIC 1
                         </span>
-                        <span className="text-[10px] font-extrabold text-slate-600 flex items-center gap-1 bg-white px-2 py-0.5 rounded-md border border-slate-200">
-                          <Clock className="w-3 h-3 text-orange-500" /> 200 Qs / 20M
+                        <span className="text-[10px] font-black text-amber-950 bg-amber-100 px-2.5 py-0.5 rounded-lg border border-amber-300 flex items-center gap-1 shadow-2xs">
+                          <Clock className="w-3 h-3 text-orange-600" /> 100 Qs / 10 Mins
                         </span>
                       </div>
-                      <h4 className="font-black text-slate-900 text-sm leading-snug">
+
+                      <h4 className="font-black text-slate-900 text-sm leading-snug font-display group-hover:text-vibrant-orange transition-colors">
                         ADD & SUB SINGLE DIGIT DIRECT (5-6 ROWS)
                       </h4>
-                      <p className="text-[11px] text-slate-600 mt-1">
-                        Speed single-digit direct mental abacus calculations across 5 to 6 rows.
+
+                      <p className="text-[11px] text-slate-600 mt-1 font-medium leading-relaxed">
+                        ⚡ Speed single-digit direct mental abacus calculations across 5 to 6 rows. Build 10X focus & instant bead reflexes!
                       </p>
+
+                      <div className="mt-3 pt-2 border-t border-slate-200/80 flex items-center justify-between text-[10px] font-extrabold text-amber-800">
+                        <span>🎯 Single Digit Sprint</span>
+                        {selectedSampleSetId === "abacus-sr1-single-direct-5-6row" && (
+                          <span className="bg-amber-500 text-slate-950 px-2 py-0.5 rounded font-black">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
                     </div>
 
-                    {/* SR-2 Topic 1 */}
+                    {/* SR-2 Topic 1 Card */}
                     <div
                       onClick={() => setSelectedSampleSetId("abacus-sr2-double-direct")}
-                      className={`p-4 rounded-2xl border-2 transition cursor-pointer flex flex-col justify-between ${
+                      className={`p-4 rounded-2xl border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between relative overflow-hidden group ${
                         selectedSampleSetId === "abacus-sr2-double-direct"
-                          ? "border-amber-500 bg-amber-50/70 shadow-md ring-2 ring-amber-400/20"
-                          : "border-slate-200 bg-white hover:border-slate-300"
+                          ? "border-emerald-500 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-emerald-500/15 ring-4 ring-emerald-400/25 shadow-lg scale-[1.01]"
+                          : "border-slate-200 bg-white hover:border-emerald-400 hover:shadow-md"
                       }`}
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="bg-amber-100 text-amber-900 text-[10px] font-black px-2.5 py-0.5 rounded-md uppercase">
-                          Level SR-2 • Topic 1
+                        <span className="bg-emerald-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-lg uppercase tracking-wide flex items-center gap-1 shadow-2xs">
+                          🔢 LEVEL SR-2 • TOPIC 1
                         </span>
-                        <span className="text-[10px] font-extrabold text-slate-600 flex items-center gap-1 bg-white px-2 py-0.5 rounded-md border border-slate-200">
-                          <Clock className="w-3 h-3 text-orange-500" /> 200 Qs / 20M
+                        <span className="text-[10px] font-black text-emerald-950 bg-emerald-100 px-2.5 py-0.5 rounded-lg border border-emerald-300 flex items-center gap-1 shadow-2xs">
+                          <Clock className="w-3 h-3 text-emerald-600" /> 100 Qs / 10 Mins
                         </span>
                       </div>
-                      <h4 className="font-black text-slate-900 text-sm leading-snug">
+
+                      <h4 className="font-black text-slate-900 text-sm leading-snug font-display group-hover:text-emerald-700 transition-colors">
                         ADD & SUB DOUBLE DIGIT DIRECT
                       </h4>
-                      <p className="text-[11px] text-slate-600 mt-1">
-                        Speed 2-digit direct addition and subtraction mental drills.
+
+                      <p className="text-[11px] text-slate-600 mt-1 font-medium leading-relaxed">
+                        🚀 Master 2-digit direct addition & subtraction mental drills. Challenge your brain & reach top leaderboard rank!
                       </p>
+
+                      <div className="mt-3 pt-2 border-t border-slate-200/80 flex items-center justify-between text-[10px] font-extrabold text-emerald-800">
+                        <span>🚀 Double Digit Challenge</span>
+                        {selectedSampleSetId === "abacus-sr2-double-direct" && (
+                          <span className="bg-emerald-600 text-white px-2 py-0.5 rounded font-black">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Launch Button */}
+                {/* High Energy Student Launch Button */}
                 <button
                   type="submit"
-                  className="w-full py-3.5 px-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-sm rounded-2xl shadow-xl hover:shadow-2xl active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer border border-amber-300"
+                  className="w-full py-4 px-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-sm rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.01] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300"
                 >
-                  <Zap className="w-4 h-4 fill-slate-950" />
-                  START FREE SAMPLE PRACTICE (200 QUESTIONS / 20 MINS)
-                  <ArrowRight className="w-4 h-4" />
+                  <Rocket className="w-5 h-5 fill-slate-950 animate-bounce" />
+                  START FREE SAMPLE PRACTICE (100 QUESTIONS / 10 MINS)
+                  <ArrowRight className="w-5 h-5" />
                 </button>
               </form>
 
