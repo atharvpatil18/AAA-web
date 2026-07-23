@@ -8,6 +8,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
 import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield, Zap, Clock, Trophy, MessageSquare, Send, Star, CheckCircle2, Flame, ArrowDown, TrendingUp } from "lucide-react";
 import { saveVisitorFeedback } from "../lib/cloudSync";
+import { validateSanitizedEmail, validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
 
 export default function Login() {
   const { sendEmailOTP, verifyEmailOTP } = useAuth();
@@ -52,23 +53,28 @@ export default function Login() {
 
   const handleRequestOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    const nameStr = userName.trim();
-    const cleanEmail = email.trim();
+    
+    // Security & Anti-Spam / Anti-Vulgarity Validation
+    const nameVal = validateSanitizedName(userName);
+    if (!nameVal.valid) {
+      setError(nameVal.error || "Please enter a valid student name.");
+      return;
+    }
 
-    if (!nameStr) {
-      setError("Please enter your name.");
+    const emailVal = validateSanitizedEmail(email);
+    if (!emailVal.valid) {
+      setError(emailVal.error || "Please enter a valid email address.");
       return;
     }
-    if (!cleanEmail || !cleanEmail.includes("@")) {
-      setError("Please enter a valid email address.");
-      return;
-    }
+
+    const cleanName = nameVal.sanitized;
+    const cleanEmail = emailVal.sanitized;
 
     setError(null);
     setLoading(true);
 
     try {
-      const res = await sendEmailOTP(cleanEmail, nameStr);
+      const res = await sendEmailOTP(cleanEmail, cleanName);
       if (res.success) {
         setOtpSent(true);
         setSimulatedOtp(res.otp);
@@ -83,7 +89,8 @@ export default function Login() {
 
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!otp) {
+    const cleanOtp = otp.trim().replace(/\D/g, "");
+    if (!cleanOtp || cleanOtp.length !== 6) {
       setError("Please enter the 6-digit verification code.");
       return;
     }
@@ -91,7 +98,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await verifyEmailOTP(email, userName, otp);
+      const res = await verifyEmailOTP(email, userName, cleanOtp);
       if (res.success) {
         setSuccessMsg("Logged in successfully! Redirecting...");
         setTimeout(() => navigate(redirectTo), 1000);
@@ -107,13 +114,27 @@ export default function Login() {
 
   const handleStartGuestPractice = (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanEmail = guestEmail.trim().toLowerCase();
-    if (!cleanEmail || !cleanEmail.includes("@")) {
-      setError("Please enter your email address for guest practice session.");
+
+    // Security & Anti-Spam / Anti-Vulgarity Validation for Guest Mode
+    const emailVal = validateSanitizedEmail(guestEmail);
+    if (!emailVal.valid) {
+      setError(emailVal.error || "Please enter a valid email address.");
       return;
     }
+
+    let displayName = emailVal.sanitized.split("@")[0];
+    if (guestName.trim()) {
+      const nameVal = validateSanitizedName(guestName);
+      if (!nameVal.valid) {
+        setError(nameVal.error || "Please enter a valid student name.");
+        return;
+      }
+      displayName = nameVal.sanitized;
+    }
+
+    const cleanEmail = emailVal.sanitized;
     setError(null);
-    const displayName = guestName.trim() || cleanEmail.split("@")[0];
+
     localStorage.setItem("aaa_guest_user", JSON.stringify({ email: cleanEmail, name: displayName }));
 
     // Automatically record visitor login / inquiry into Admin Feedback Manager
@@ -129,20 +150,36 @@ export default function Login() {
 
   const handleGuestFeedbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanEmail = guestEmail.trim().toLowerCase();
-    if (!cleanEmail || !cleanEmail.includes("@")) {
-      setError("Please enter your email address above to submit feedback.");
+
+    const emailVal = validateSanitizedEmail(guestEmail);
+    if (!emailVal.valid) {
+      setError(emailVal.error || "Please enter your email address above to submit feedback.");
       return;
     }
-    if (!feedbackMsg.trim()) {
-      setError("Please write your message or feedback.");
+
+    const msgVal = validateSanitizedMessage(feedbackMsg);
+    if (!msgVal.valid) {
+      setError(msgVal.error || "Please enter a valid feedback message.");
       return;
     }
+
+    let displayName = emailVal.sanitized.split("@")[0];
+    if (guestName.trim()) {
+      const nameVal = validateSanitizedName(guestName);
+      if (nameVal.valid) {
+        displayName = nameVal.sanitized;
+      }
+    }
+
+    const cleanEmail = emailVal.sanitized;
+    const cleanMsg = msgVal.sanitized;
+
+    setError(null);
     await saveVisitorFeedback({
       guestEmail: cleanEmail,
-      guestName: guestName.trim() || cleanEmail.split("@")[0],
+      guestName: displayName,
       rating: feedbackRating,
-      message: feedbackMsg,
+      message: cleanMsg,
     });
     setFeedbackSubmitted(true);
     setFeedbackMsg("");

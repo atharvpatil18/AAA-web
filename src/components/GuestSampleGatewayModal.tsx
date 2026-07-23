@@ -6,6 +6,7 @@
 import React, { useState } from "react";
 import { X, Sparkles, Mail, MessageSquare, Send, CheckCircle2, Trophy, Clock, Zap, Star, ShieldCheck, ArrowRight } from "lucide-react";
 import { saveVisitorFeedback } from "../lib/cloudSync";
+import { validateSanitizedEmail, validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
 
 interface GuestSampleGatewayModalProps {
   isOpen: boolean;
@@ -35,13 +36,25 @@ export default function GuestSampleGatewayModal({
 
   const handleStart = (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanEmail = guestEmail.trim().toLowerCase();
-    if (!cleanEmail || !cleanEmail.includes("@")) {
-      setErrorMsg("Please enter a valid email address.");
+
+    const emailVal = validateSanitizedEmail(guestEmail);
+    if (!emailVal.valid) {
+      setErrorMsg(emailVal.error || "Please enter a valid email address.");
       return;
     }
+
+    let displayName = emailVal.sanitized.split("@")[0];
+    if (guestName.trim()) {
+      const nameVal = validateSanitizedName(guestName);
+      if (!nameVal.valid) {
+        setErrorMsg(nameVal.error || "Please enter a valid student name.");
+        return;
+      }
+      displayName = nameVal.sanitized;
+    }
+
+    const cleanEmail = emailVal.sanitized;
     setErrorMsg("");
-    const displayName = guestName.trim() || cleanEmail.split("@")[0];
 
     // Automatically record visitor login / inquiry into Admin Feedback Manager
     saveVisitorFeedback({
@@ -56,23 +69,37 @@ export default function GuestSampleGatewayModal({
 
   const handleFeedbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const cleanEmail = guestEmail.trim().toLowerCase();
-    if (!cleanEmail || !cleanEmail.includes("@")) {
-      setErrorMsg("Please enter your Email ID above to submit feedback.");
+
+    const emailVal = validateSanitizedEmail(guestEmail);
+    if (!emailVal.valid) {
+      setErrorMsg(emailVal.error || "Please enter your Email ID above to submit feedback.");
       return;
     }
-    if (!feedbackMsg.trim()) {
-      setErrorMsg("Please write a message or feedback.");
+
+    const msgVal = validateSanitizedMessage(feedbackMsg);
+    if (!msgVal.valid) {
+      setErrorMsg(msgVal.error || "Please write a valid message or feedback.");
       return;
     }
+
+    let displayName = emailVal.sanitized.split("@")[0];
+    if (guestName.trim()) {
+      const nameVal = validateSanitizedName(guestName);
+      if (nameVal.valid) {
+        displayName = nameVal.sanitized;
+      }
+    }
+
+    const cleanEmail = emailVal.sanitized;
+    const cleanMsg = msgVal.sanitized;
 
     setFeedbackSubmitting(true);
     try {
       await saveVisitorFeedback({
         guestEmail: cleanEmail,
-        guestName: guestName.trim() || cleanEmail.split("@")[0],
+        guestName: displayName,
         rating: feedbackRating,
-        message: feedbackMsg,
+        message: cleanMsg,
       });
       setFeedbackSubmitted(true);
       setFeedbackMsg("");

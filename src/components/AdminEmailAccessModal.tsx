@@ -19,6 +19,7 @@ import {
   deleteVisitorFeedback,
   syncVisitorFeedbacksFromCloud,
 } from "../lib/cloudSync";
+import { validateSanitizedEmail, validateSanitizedName } from "../lib/securitySanitizer";
 
 interface AdminEmailAccessModalProps {
   isOpen: boolean;
@@ -146,11 +147,23 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
     setError(null);
     setSuccess(null);
 
-    const cleanEmail = email.trim().toLowerCase();
-    if (!cleanEmail || !cleanEmail.includes("@")) {
-      setError("Please enter a valid email address.");
+    const emailVal = validateSanitizedEmail(email);
+    if (!emailVal.valid) {
+      setError(emailVal.error || "Please enter a valid student email address.");
       return;
     }
+
+    let cleanStudentName = "Student User";
+    if (studentName.trim()) {
+      const nameVal = validateSanitizedName(studentName);
+      if (!nameVal.valid) {
+        setError(nameVal.error || "Please enter a valid student name.");
+        return;
+      }
+      cleanStudentName = nameVal.sanitized;
+    }
+
+    const cleanEmail = emailVal.sanitized;
 
     if (!isAdmin && permissions.length === 0) {
       setError("Please add at least one course & level access rule.");
@@ -159,7 +172,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
 
     const recordToSave: ApprovedEmailRecord = {
       email: cleanEmail,
-      studentName: studentName.trim() || cleanEmail.split("@")[0],
+      studentName: cleanStudentName,
       isAdmin,
       permissions: isAdmin ? [{ course: "abacus", levels: ["ALL"], accessMode: "both" }, { course: "vedic", levels: ["ALL"], accessMode: "both" }] : permissions,
     };

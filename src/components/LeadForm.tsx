@@ -8,6 +8,7 @@ import { trackLeadFormSubmission } from "../lib/analytics";
 import { Sparkles, Gift, Send, Landmark, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
 import { jsPDF } from "jspdf";
+import { validateSanitizedName } from "../lib/securitySanitizer";
 
 interface LeadFormProps {
   sourceCampaign?: string;
@@ -493,12 +494,16 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     e.preventDefault();
     setValidationError("");
 
-    if (!parentName.trim()) {
-      setValidationError(t("formNameError"));
+    // Security & Anti-Vulgarity Validation
+    const parentVal = validateSanitizedName(parentName);
+    if (!parentVal.valid) {
+      setValidationError(parentVal.error || "Please enter a valid parent name.");
       return;
     }
-    if (!studentName.trim()) {
-      setValidationError(language === "hi" ? "कृपया छात्र का नाम दर्ज करें।" : language === "mr" ? "कृपया विद्यार्थ्याचे नाव टाईप करा." : "Please enter student's name.");
+
+    const studentVal = validateSanitizedName(studentName);
+    if (!studentVal.valid) {
+      setValidationError(studentVal.error || "Please enter a valid student name.");
       return;
     }
 
