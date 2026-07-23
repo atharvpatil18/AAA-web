@@ -50,9 +50,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   const isGuestUser = Boolean(localStorage.getItem("aaa_guest_user"));
-  const isPracticePath = location.pathname === "/practice";
 
-  if (!currentUser && !isGuestUser && !isPracticePath) {
+  if (!currentUser && !isGuestUser) {
     const fullPath = location.pathname + location.search;
     return <Navigate to={`/login?redirect=${encodeURIComponent(fullPath)}`} replace />;
   }

@@ -521,46 +521,54 @@ export default function PracticeHub() {
           {hubTab === "sets" && (
             <div>
               {/* Access Control Status Banner */}
-              <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-800/60 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2.5 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30 shrink-0">
-                    <ShieldCheck className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <h4 className="font-bold text-sm text-white">
-                        {currentUser ? `Access Account: ${currentUser.email}` : "Guest Mode (Standard Practice Access)"}
-                      </h4>
-                      {isUserAdmin(currentUser?.email) && (
-                        <span className="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-black border border-amber-500/30 uppercase">
-                          Root Admin
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-xs text-slate-300 mt-0.5">
-                      {(() => {
-                        if (!currentUser) return "Log in with an approved email address to sync progress & access assigned courses/levels.";
-                        if (isUserAdmin(currentUser.email)) return "Root Administrator Access: Full access to all Abacus & Vedic Math courses, levels, quiz & learn modes.";
-                        const rec = getApprovedRecord(currentUser.email);
-                        if (!rec || !rec.permissions || rec.permissions.length === 0) return "No specific level permissions configured for this email. Contact your instructor.";
-                        return rec.permissions
-                          .map((p) => `${p.course.toUpperCase()} (${p.levels.join(", ")}) [Mode: ${p.accessMode.toUpperCase()}]`)
-                          .join(" • ");
-                      })()}
-                    </p>
-                  </div>
-                </div>
+              {(() => {
+                const guestObj = JSON.parse(localStorage.getItem("aaa_guest_user") || "{}");
+                const activeEmail = currentUser?.email || guestObj.email;
+                if (!activeEmail) return null;
 
-                {isUserAdmin(currentUser?.email) && (
-                  <button
-                    onClick={() => setIsAdminModalOpen(true)}
-                    className="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition-all shrink-0 flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <ShieldCheck className="w-4 h-4" />
-                    Manage Student Email Access
-                  </button>
-                )}
-              </div>
+                return (
+                  <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-800/60 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md">
+                    <div className="flex items-center space-x-3">
+                      <div className="p-2.5 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30 shrink-0">
+                        <ShieldCheck className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h4 className="font-bold text-sm text-white">
+                            {currentUser ? `Access Account: ${currentUser.email}` : `Guest Practice Session: ${guestObj.email}`}
+                          </h4>
+                          {isUserAdmin(currentUser?.email) && (
+                            <span className="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-black border border-amber-500/30 uppercase">
+                              Root Admin
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-slate-300 mt-0.5">
+                          {(() => {
+                            if (!currentUser) return "Logged in for free sample practice drills. Progress & leaderboard scores are saved under your email.";
+                            if (isUserAdmin(currentUser.email)) return "Root Administrator Access: Full access to all Abacus & Vedic Math courses, levels, quiz & learn modes.";
+                            const rec = getApprovedRecord(currentUser.email);
+                            if (!rec || !rec.permissions || rec.permissions.length === 0) return "No specific level permissions configured for this email. Contact your instructor.";
+                            return rec.permissions
+                              .map((p) => `${p.course.toUpperCase()} (${p.levels.join(", ")}) [Mode: ${p.accessMode.toUpperCase()}]`)
+                              .join(" • ");
+                          })()}
+                        </p>
+                      </div>
+                    </div>
+
+                    {isUserAdmin(currentUser?.email) && (
+                      <button
+                        onClick={() => setIsAdminModalOpen(true)}
+                        className="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition-all shrink-0 flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <ShieldCheck className="w-4 h-4" />
+                        Manage Student Email Access
+                      </button>
+                    )}
+                  </div>
+                );
+              })()}
 
               {accessNotice && (
                 <div className="mb-6 p-3 bg-red-950/90 border border-red-500/60 text-red-200 text-xs rounded-xl flex items-center justify-between shadow-md">
