@@ -37,6 +37,20 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 3, correctAnswer: 582, conceptTag: "Bead Representation (3 Digits)" },
     ]
   },
+  {
+    id: "abacus-jr0-overall",
+    title: "JR-0-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "JR-0",
+    topic: "3. JR-0-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all JR-0 topics: Bead Identification and Bead Representation across 1, 2, and 3 Digits.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, correctAnswer: 7, conceptTag: "JR-0 Overall (Bead Identification)" },
+      { id: 2, correctAnswer: 4, conceptTag: "JR-0 Overall (Bead Representation)" },
+    ]
+  },
 
   // JR-1 Curriculum Sets (Direct Single Digit Addition & Subtraction without Complements)
   {
@@ -82,6 +96,21 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 1, numbers: [1, 2, 5, -3, 4], correctAnswer: 9, conceptTag: "One's Place Rod (Direct Single Digit)" },
       { id: 2, numbers: [2, 5, -1, 3, -4], correctAnswer: 5, conceptTag: "One's Place Rod (Direct Single Digit)" },
       { id: 3, numbers: [4, 5, -2, 1, -3], correctAnswer: 5, conceptTag: "One's Place Rod (Direct Single Digit)" },
+    ]
+  },
+  {
+    id: "abacus-jr1-overall",
+    title: "JR-1-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "JR-1",
+    topic: "4. JR-1-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all JR-1 topics: Direct Single-Digit Addition & Subtraction across 3 Rows, 4 Rows, and 5 Rows.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [2, 5, -1], correctAnswer: 6, conceptTag: "JR-1 Overall (Direct 3 Rows)" },
+      { id: 2, numbers: [4, 5, -3, 2], correctAnswer: 8, conceptTag: "JR-1 Overall (Direct 4 Rows)" },
+      { id: 3, numbers: [1, 2, 5, -3, 4], correctAnswer: 9, conceptTag: "JR-1 Overall (Direct 5 Rows)" },
     ]
   },
   {
@@ -203,6 +232,25 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 5, numbers: [12, -6, 7, -5], correctAnswer: 8, conceptTag: "- Mixed Complement" },
     ]
   },
+  {
+    id: "abacus-jr2-overall",
+    title: "JR-2-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "JR-2",
+    topic: "8. JR-2-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all 7 JR-2 topics: Direct Math, +5/-5 Small Friends Complements, +10/-10 Big Friends Complements, and Mixed Combination Complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [7, -6, 1, 5], correctAnswer: 7, conceptTag: "Direct Addition/Subtraction" },
+      { id: 2, numbers: [4, 4, -3, 2], correctAnswer: 7, conceptTag: "+5 Complement" },
+      { id: 3, numbers: [6, -4, 2, 5], correctAnswer: 9, conceptTag: "-5 Complement" },
+      { id: 4, numbers: [9, 9, -5, 2], correctAnswer: 15, conceptTag: "+10 Complement" },
+      { id: 5, numbers: [15, -9, 4, 3], correctAnswer: 13, conceptTag: "-10 Complement" },
+      { id: 6, numbers: [6, 6, -5, 2], correctAnswer: 9, conceptTag: "+ Mixed Complement" },
+      { id: 7, numbers: [13, -6, 4, 5], correctAnswer: 16, conceptTag: "- Mixed Complement" },
+    ]
+  },
   // JR-3 Curriculum Sets
   {
     id: "abacus-jr3-single-direct-6-7row",
@@ -275,6 +323,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     questions: [
       { id: 1, numbers: [485, 372, -240, 519], correctAnswer: 1136, conceptTag: "Triple Digit Complements" },
       { id: 2, numbers: [624, 289, -350, 478, -120], correctAnswer: 921, conceptTag: "Triple Digit Complements" },
+    ]
+  },
+  {
+    id: "abacus-jr3-overall",
+    title: "JR-3-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "JR-3",
+    topic: "6. JR-3-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all JR-3 topics: Single-Digit Direct 6-7 Rows, Double-Digit Direct, Double-Digit Complements (4-7 Rows), and Triple-Digit Complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [2, 5, -1, 3, -4, 2], correctAnswer: 7, conceptTag: "JR-3 Overall" }
     ]
   },
 
@@ -377,6 +438,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 2, numbers: [14, -7, 3, -5, -6, 4], correctAnswer: 3, conceptTag: "SR-1 - Mixed Complement" },
     ]
   },
+  {
+    id: "abacus-sr1-overall",
+    title: "SR-1-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "SR-1",
+    topic: "8. SR-1-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all SR-1 topics: Single-Digit Direct, +5/-5 Complements, +10/-10 Complements, and Mixed Combination Complements (5-6 Rows).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [2, 5, -1, 3, 4], correctAnswer: 13, conceptTag: "SR-1 Overall" }
+    ]
+  },
 
   // SR-2 Curriculum Sets
   {
@@ -433,6 +507,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     questions: [
       { id: 1, numbers: [485, 372, -240, 519, 120], correctAnswer: 1256, conceptTag: "SR-2 Triple Complements" },
       { id: 2, numbers: [624, 289, -350, 478, -210], correctAnswer: 831, conceptTag: "SR-2 Triple Complements" },
+    ]
+  },
+  {
+    id: "abacus-sr2-overall",
+    title: "SR-2-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "SR-2",
+    topic: "5. SR-2-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all SR-2 topics: Double-Digit Direct, Double-Digit All Complements, Single-Digit 7-Row Marathon, and Triple-Digit Complements.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [42, 35, -21, 15], correctAnswer: 71, conceptTag: "SR-2 Overall" }
     ]
   },
 
@@ -535,6 +622,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 2, numbers: [7, 7, -5, 8, -6, 9, -7], correctAnswer: 13, conceptTag: "SR-3 Single ± Mixed Complement" },
     ]
   },
+  {
+    id: "abacus-sr3-overall",
+    title: "SR-3-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "SR-3",
+    topic: "8. SR-3-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all SR-3 topics: Single/Double/Triple Direct, Single/Double ±5 Complements, Single ±10 Complements, and Mixed Drills.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [4, 5, -2, 3], correctAnswer: 10, conceptTag: "SR-3 Overall" }
+    ]
+  },
 
   // SR-4 Curriculum Sets (Multiplication Drills)
   {
@@ -565,6 +665,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 1, expression: "43 × 6", correctAnswer: 258, conceptTag: "SD × 2D Multiplication" },
       { id: 2, expression: "75 × 4", correctAnswer: 300, conceptTag: "SD × 2D Multiplication" },
       { id: 3, expression: "82 × 7", correctAnswer: 574, conceptTag: "SD × 2D Multiplication" },
+    ]
+  },
+  {
+    id: "abacus-sr4-overall",
+    title: "SR-4-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "SR-4",
+    topic: "3. SR-4-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all SR-4 topics: Single Digit × Single Digit (SD × SD) and Single Digit × Double Digit (SD × 2D) Multiplication.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "7 × 8", correctAnswer: 56, conceptTag: "SR-4 Overall" }
     ]
   },
 
@@ -667,6 +780,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 2, numbers: [6248, 2891, -3504, 4783], correctAnswer: 10418, conceptTag: "SR-5 Quad All Complements" },
     ]
   },
+  {
+    id: "abacus-sr5-overall",
+    title: "SR-5-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "SR-5",
+    topic: "8. SR-5-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all SR-5 topics: Single-Digit Direct/Complements, Double-Digit All Complements, Triple-Digit All Complements, and 4-Digit Quad Math.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [452, 235, -123, 115], correctAnswer: 679, conceptTag: "SR-5 Overall" }
+    ]
+  },
 
   // SR-6 Curriculum Sets (Multiplication Drills)
   {
@@ -697,6 +823,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 1, expression: "43 × 57", correctAnswer: 2451, conceptTag: "2D × 2D Multiplication" },
       { id: 2, expression: "68 × 34", correctAnswer: 2312, conceptTag: "2D × 2D Multiplication" },
       { id: 3, expression: "85 × 72", correctAnswer: 6120, conceptTag: "2D × 2D Multiplication" },
+    ]
+  },
+  {
+    id: "abacus-sr6-overall",
+    title: "SR-6-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "SR-6",
+    topic: "3. SR-6-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all SR-6 topics: Single Digit × Triple Digit (SD × 3D) and Double Digit × Double Digit (2D × 2D) Multiplication.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "34 × 56", correctAnswer: 1904, conceptTag: "SR-6 Overall" }
     ]
   },
 
@@ -799,6 +938,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 2, numbers: [6248, 2891, -3504, 4783, -2100], correctAnswer: 8318, conceptTag: "SR-7 Quad 5 Rows All Complements" },
     ]
   },
+  {
+    id: "abacus-sr7-overall",
+    title: "SR-7-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "SR-7",
+    topic: "8. SR-7-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all SR-7 topics: Single-Digit Direct/Complements, Double-Digit 5-Row, Triple-Digit 5-Row, and Quad 4-Digit 5-Row Endurance Sums.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [1452, 2378, -1205, 3110, 4200], correctAnswer: 9935, conceptTag: "SR-7 Overall" }
+    ]
+  },
 
   // SR-8 Curriculum Sets (Division Master Drills)
   {
@@ -846,6 +998,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 3, expression: "5425 ÷ 5", correctAnswer: 1085, conceptTag: "4D ÷ 1D Division" },
     ]
   },
+  {
+    id: "abacus-sr8-overall",
+    title: "SR-8-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "SR-8",
+    topic: "6. SR-8-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all SR-8 topics: Soroban Division (2D÷1D, 3D÷1D, 4D÷1D) and Advanced Multiplications (SD×3D, 2D×2D).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "144 ÷ 12", correctAnswer: 12, conceptTag: "SR-8 Overall" }
+    ]
+  },
 
   // SR-9 Curriculum Set (Decimals Drill)
   {
@@ -861,6 +1026,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 1, numbers: [45.2, 37.8, -12.5], correctAnswer: 70.5, conceptTag: "SR-9 Decimal Math" },
       { id: 2, numbers: [128.4, 256.7, -94.2], correctAnswer: 290.9, conceptTag: "SR-9 Decimal Math" },
       { id: 3, numbers: [452.8, 381.5, -210.3], correctAnswer: 624, conceptTag: "SR-9 Decimal Math" },
+    ]
+  },
+  {
+    id: "abacus-sr9-overall",
+    title: "SR-9-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "SR-9",
+    topic: "2. SR-9-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all SR-9 topics: 3-Digit and 4-Digit 3-Row Decimal Addition & Subtraction (All Complements).",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [45.2, 37.8, -12.5], correctAnswer: 70.5, conceptTag: "SR-9 Overall" }
     ]
   },
 
@@ -953,6 +1131,19 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
       { id: 1, expression: "√1225", correctAnswer: 35, conceptTag: "Square Root Calculation" },
       { id: 2, expression: "√784", correctAnswer: 28, conceptTag: "Square Root Calculation" },
       { id: 3, expression: "√2025", correctAnswer: 45, conceptTag: "Square Root Calculation" },
+    ]
+  },
+  {
+    id: "abacus-sr10-overall",
+    title: "SR-10-Overall (Comprehensive Level Master Quiz)",
+    category: "abacus",
+    level: "SR-10",
+    topic: "7. SR-10-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all SR-10 topics: Decimal Multiplication, Decimal Division, HCF, Percentage, LCM, and Square Root Calculations.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "√1225", correctAnswer: 35, conceptTag: "SR-10 Overall" }
     ]
   }
 ];
@@ -1181,6 +1372,19 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
       { id: 10, expression: "20⁴", correctAnswer: 160000, conceptTag: "20⁴ = 160000", explanation: "160000" },
     ]
   },
+  {
+    id: "vedic-svm6-overall",
+    title: "SVM-6-Overall (Comprehensive Level Master Quiz)",
+    category: "vedic",
+    level: "SVM-6",
+    topic: "15. SVM-6-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all Senior Vedic Math Level 6 topics: Supreme Master Suite.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "456 × 999", correctAnswer: 455544, conceptTag: "SVM-6 Overall" }
+    ]
+  },
 
   // ==========================================
   // SVM-5 LEVEL (Senior Vedic Math Level 5 - 35 Topics - Grand Master Suite)
@@ -1381,6 +1585,19 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
       { id: 8, expression: "52²", correctAnswer: 2704, conceptTag: "(25+2) | (2^2) = 27 | 04", explanation: "25+2=27, 2^2=04 -> 2704" },
       { id: 9, expression: "55²", correctAnswer: 3025, conceptTag: "(25+5) | (5^2) = 30 | 25", explanation: "25+5=30, 5^2=25 -> 3025" },
       { id: 10, expression: "50²", correctAnswer: 2500, conceptTag: "(25+0) | (0^2) = 25 | 00", explanation: "2500" },
+    ]
+  },
+  {
+    id: "vedic-svm5-overall",
+    title: "SVM-5-Overall (Comprehensive Level Master Quiz)",
+    category: "vedic",
+    level: "SVM-5",
+    topic: "15. SVM-5-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all Senior Vedic Math Level 5 topics: Grand Master Suite.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "992 × 995", correctAnswer: 987040, conceptTag: "SVM-5 Overall" }
     ]
   },
 
@@ -1825,6 +2042,19 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
       { id: 8, expression: "84 × 15", correctAnswer: 1260, conceptTag: "(8x1) | (8x5 + 4x1) | (4x5)", explanation: "8 | 44 | 20 -> 1260" },
       { id: 9, expression: "92 × 27", correctAnswer: 2484, conceptTag: "(9x2) | (9x7 + 2x2) | (2x7)", explanation: "18 | 67 | 14 -> 2484" },
       { id: 10, expression: "47 × 63", correctAnswer: 2961, conceptTag: "(4x6) | (4x3 + 7x6) | (7x3)", explanation: "24 | 54 | 21 -> 2961" },
+    ]
+  },
+  {
+    id: "vedic-svm4-overall",
+    title: "SVM-4-Overall (Comprehensive Level Master Quiz)",
+    category: "vedic",
+    level: "SVM-4",
+    topic: "16. SVM-4-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all Senior Vedic Math Level 4 topics: Advanced Multiplication Suite.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "97 × 96", correctAnswer: 9312, conceptTag: "SVM-4 Overall" }
     ]
   },
 
@@ -2359,6 +2589,19 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
       { id: 10, expression: "Column 3 sum in Magic Square (8,1,6 / 3,5,7 / 4,9,2)", correctAnswer: 15, conceptTag: "6 + 7 + 2 = 15", explanation: "6 + 7 + 2 = 15" },
     ]
   },
+  {
+    id: "vedic-svm3-overall",
+    title: "SVM-3-Overall (Comprehensive Level Master Quiz)",
+    category: "vedic",
+    level: "SVM-3",
+    topic: "12. SVM-3-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all Senior Vedic Math Level 3 topics: Urdhva Tiryagbhyam, Beejank, Divisibility Rules.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "23 × 27", correctAnswer: 621, conceptTag: "SVM-3 Overall" }
+    ]
+  },
 
   // ==========================================
   // SVM-2 LEVEL (Senior Vedic Math Level 2 - 24 Topics)
@@ -2889,6 +3132,19 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
       { id: 8, expression: "Squares in 3 × 5 Grid", correctAnswer: 26, conceptTag: "3x5 + 2x4 + 1x3 = 15+8+3", explanation: "15 + 8 + 3 = 26 squares" },
       { id: 9, expression: "Squares in 6 × 6 Grid", correctAnswer: 91, conceptTag: "36+25+16+9+4+1 = 91", explanation: "36 + 25 + 16 + 9 + 4 + 1 = 91 squares" },
       { id: 10, expression: "Squares in 2 × 5 Grid", correctAnswer: 14, conceptTag: "2x5 + 1x4 = 10 + 4 = 14", explanation: "10 + 4 = 14 squares" },
+    ]
+  },
+  {
+    id: "vedic-svm2-overall",
+    title: "SVM-2-Overall (Comprehensive Level Master Quiz)",
+    category: "vedic",
+    level: "SVM-2",
+    topic: "15. SVM-2-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all Senior Vedic Math Level 2 topics: Special Multiplications, Division Sutras, Time Arithmetic.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "123 ÷ 9", correctAnswer: 13, conceptTag: "SVM-2 Overall" }
     ]
   },
 
@@ -3445,6 +3701,19 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
       { id: 10, expression: "10 × 10 Grid of independent circles", correctAnswer: 100, conceptTag: "Grid Count 10x10", explanation: "10 x 10 = 100 circles" },
     ]
   },
+  {
+    id: "vedic-svm1-overall",
+    title: "SVM-1-Overall (Comprehensive Level Master Quiz)",
+    category: "vedic",
+    level: "SVM-1",
+    topic: "10. SVM-1-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all Senior Vedic Math Level 1 topics: Table Formation, Unit Conversions, Multiplications.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "5.4 m = ? cm", correctAnswer: 540, conceptTag: "SVM-1 Overall" }
+    ]
+  },
 
   // ==========================================
   // SVM-0 LEVEL (Senior Vedic Math Level 0)
@@ -3711,6 +3980,19 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
       { id: 8, expression: "1 Center Circle + 2 Concentric Rings of 4 circles each", correctAnswer: 9, conceptTag: "Center + 2x4 Rings", explanation: "1 + 4 + 4 = 9 circles" },
       { id: 9, expression: "5 × 5 Grid of independent circles", correctAnswer: 25, conceptTag: "Grid Count 5x5", explanation: "5 x 5 = 25 circles" },
       { id: 10, expression: "1 Center Circle + 8 surrounding ring circles", correctAnswer: 9, conceptTag: "Central + Ring", explanation: "1 + 8 = 9 circles" },
+    ]
+  },
+  {
+    id: "vedic-svm0-overall",
+    title: "SVM-0-Overall (Comprehensive Level Master Quiz)",
+    category: "vedic",
+    level: "SVM-0",
+    topic: "9. SVM-0-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all Senior Vedic Math Level 0 topics: Foundation Sutras, Ekadhik, Ekanyunena, Balancing Rule.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "35 × 35", correctAnswer: 1225, conceptTag: "SVM-0 Overall" }
     ]
   },
 
@@ -4183,6 +4465,19 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
       { id: 3, expression: "14 × 12", correctAnswer: 168, conceptTag: "Criss-Cross 2x2" },
       { id: 4, expression: "23 × 12", correctAnswer: 276, conceptTag: "Criss-Cross 2x2" },
       { id: 5, expression: "32 × 21", correctAnswer: 672, conceptTag: "Criss-Cross 2x2" },
+    ]
+  },
+  {
+    id: "vedic-jvm1-overall",
+    title: "JVM-1-Overall (Comprehensive Level Master Quiz)",
+    category: "vedic",
+    level: "JVM-1",
+    topic: "11. JVM-1-Overall: Combined All-Topics Quiz",
+    description: "Comprehensive master quiz combining all Junior Vedic Math Level 1 topics: Rapid Addition, Ekadhikena, Ekanyunena, Dodging Tables, Multiplications, Unit Conversions.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, expression: "45 × 11", correctAnswer: 495, conceptTag: "JVM-1 Overall" }
     ]
   }
 ];
@@ -4828,16 +5123,54 @@ export function getCustomizedSet(
 
   // Synthesize questions deterministically for the given attempt seed
   const expandedQuestions: Question[] = [];
-  for (let i = 0; i < targetCount; i++) {
-    const dynamicQ = generateDynamicAbacusQuestion(setId, i + 1, seed);
-    if (dynamicQ) {
-      expandedQuestions.push(dynamicQ);
-    } else {
-      const baseQ = base.questions[i % base.questions.length];
-      expandedQuestions.push({
-        ...baseQ,
-        id: i + 1,
-      });
+
+  if (setId.endsWith("-overall")) {
+    const allSets = getAllQuestionSets();
+    const siblingSets = allSets.filter(
+      (s) => s.category === base.category && s.level === base.level && !s.id.endsWith("-overall")
+    );
+
+    if (siblingSets.length > 0) {
+      for (let i = 0; i < targetCount; i++) {
+        const sibling = siblingSets[i % siblingSets.length];
+        const dynamicQ = generateDynamicAbacusQuestion(sibling.id, i + 1, seed);
+
+        if (dynamicQ) {
+          expandedQuestions.push({
+            ...dynamicQ,
+            id: i + 1,
+            conceptTag: `${base.level} Overall [${sibling.title}]`,
+          });
+        } else if (sibling.questions && sibling.questions.length > 0) {
+          const siblingQ = sibling.questions[i % sibling.questions.length];
+          expandedQuestions.push({
+            ...siblingQ,
+            id: i + 1,
+            conceptTag: `${base.level} Overall [${sibling.title}]`,
+          });
+        } else {
+          const baseQ = base.questions[i % base.questions.length];
+          expandedQuestions.push({
+            ...baseQ,
+            id: i + 1,
+          });
+        }
+      }
+    }
+  }
+
+  if (expandedQuestions.length === 0) {
+    for (let i = 0; i < targetCount; i++) {
+      const dynamicQ = generateDynamicAbacusQuestion(setId, i + 1, seed);
+      if (dynamicQ) {
+        expandedQuestions.push(dynamicQ);
+      } else {
+        const baseQ = base.questions[i % base.questions.length];
+        expandedQuestions.push({
+          ...baseQ,
+          id: i + 1,
+        });
+      }
     }
   }
 
