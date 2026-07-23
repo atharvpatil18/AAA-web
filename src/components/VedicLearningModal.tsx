@@ -3484,10 +3484,10 @@ export default function VedicLearningModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="p-5 bg-slate-950 border-t border-purple-500/20 flex items-center justify-between">
+        <div className="p-4 sm:p-5 bg-slate-950 border-t border-purple-500/20 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-slate-400 hover:text-white text-sm font-semibold transition"
+            className="w-full sm:w-auto px-4 py-2 text-slate-400 hover:text-white text-sm font-semibold transition text-center"
           >
             Close Lesson
           </button>
@@ -3497,7 +3497,7 @@ export default function VedicLearningModal({
               onClose();
               onStartPractice();
             }}
-            className="px-6 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-purple-600/30 flex items-center gap-2 transition"
+            className="w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2 transition"
           >
             Start Practice Drills <ArrowRight className="w-4 h-4" />
           </button>

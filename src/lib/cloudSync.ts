@@ -23,8 +23,8 @@ export interface AttemptRecord {
 
 const LOCAL_STORAGE_KEY = "aaa_leaderboard_attempts";
 
-// High-availability public endpoint key prefix for cross-device synchronization
-const CLOUD_SYNC_URL = "https://kvdb.io/8xV4kP7N9jL2mQ5w1E3rT/";
+// High-availability public endpoint for cross-device attempt synchronization
+const CLOUD_SYNC_URL = "https://api.restful-api.dev/objects/ff8081819f7e10ae019f8fb6a60a1b6f";
 
 /**
  * Save an attempt locally AND sync to the cloud for the student's email across mobile and desktop.
@@ -53,32 +53,33 @@ export async function saveStudentAttempt(attempt: AttemptRecord): Promise<void> 
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localAttempts));
   }
 
-  // 2. Sync attempt to cloud key matching user email
-  if (targetEmail && targetEmail !== "guest@arnavabacus.com") {
-    try {
-      const emailKey = encodeURIComponent(`student_attempts_${targetEmail}`);
-      let cloudAttempts: AttemptRecord[] = [];
-      try {
-        const res = await fetch(`${CLOUD_SYNC_URL}${emailKey}`);
-        if (res.ok) {
-          cloudAttempts = await res.json();
-        }
-      } catch (e) {
-        cloudAttempts = [];
+  // 2. Sync attempts to cloud
+  try {
+    const res = await fetch(CLOUD_SYNC_URL);
+    let cloudAttempts: AttemptRecord[] = [];
+    if (res.ok) {
+      const payload = await res.json();
+      if (Array.isArray(payload)) {
+        cloudAttempts = payload;
+      } else if (payload?.data?.attempts && Array.isArray(payload.data.attempts)) {
+        cloudAttempts = payload.data.attempts;
       }
-
-      const cloudDup = cloudAttempts.some((a) => a.completedAt === attempt.completedAt);
-      if (!cloudDup) {
-        cloudAttempts.push(attempt);
-        await fetch(`${CLOUD_SYNC_URL}${emailKey}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(cloudAttempts),
-        });
-      }
-    } catch (e) {
-      console.warn("Cloud sync backup warning:", e);
     }
+
+    const cloudDup = cloudAttempts.some((a) => a.completedAt === attempt.completedAt);
+    if (!cloudDup) {
+      cloudAttempts.push(attempt);
+      await fetch(CLOUD_SYNC_URL, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: "aaa_leaderboard_attempts",
+          data: { attempts: cloudAttempts },
+        }),
+      });
+    }
+  } catch (e) {
+    console.warn("Cloud sync backup warning:", e);
   }
 }
 
@@ -94,18 +95,18 @@ export async function syncStudentAttempts(userEmail?: string): Promise<AttemptRe
     localAttempts = [];
   }
 
-  if (!userEmail || userEmail === "guest@arnavabacus.com") {
-    return localAttempts;
-  }
-
-  const targetEmail = userEmail.trim().toLowerCase();
-  const emailKey = encodeURIComponent(`student_attempts_${targetEmail}`);
-
   try {
-    const res = await fetch(`${CLOUD_SYNC_URL}${emailKey}`);
+    const res = await fetch(CLOUD_SYNC_URL);
     if (res.ok) {
-      const cloudAttempts: AttemptRecord[] = await res.json();
-      if (Array.isArray(cloudAttempts) && cloudAttempts.length > 0) {
+      const payload = await res.json();
+      let cloudAttempts: AttemptRecord[] = [];
+      if (Array.isArray(payload)) {
+        cloudAttempts = payload;
+      } else if (payload?.data?.attempts && Array.isArray(payload.data.attempts)) {
+        cloudAttempts = payload.data.attempts;
+      }
+
+      if (cloudAttempts.length > 0) {
         // Merge cloud attempts into local attempts (deduplicate)
         const mergedMap = new Map<string, AttemptRecord>();
 

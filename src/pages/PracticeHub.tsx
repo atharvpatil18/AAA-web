@@ -12,7 +12,7 @@ import { useAuth } from "../lib/AuthContext";
 import { syncStudentAttempts } from "../lib/cloudSync";
 import VedicLearningModal from "../components/VedicLearningModal";
 import AdminEmailAccessModal from "../components/AdminEmailAccessModal";
-import { checkUserAccess, isUserAdmin, getApprovedRecord, ACCESS_UPDATED_EVENT } from "../lib/accessControl";
+import { checkUserAccess, isUserAdmin, getApprovedRecord, syncApprovedRecordsFromCloud, ACCESS_UPDATED_EVENT } from "../lib/accessControl";
 
 const ABACUS_LEVEL_INFO: Record<string, { primaryFocus: string; uniqueTopics: string }> = {
   "SVM-6": {
@@ -258,8 +258,9 @@ export default function PracticeHub() {
   useEffect(() => {
     const handleUpdate = () => setAccessVer((v) => v + 1);
     window.addEventListener(ACCESS_UPDATED_EVENT, handleUpdate);
+    syncApprovedRecordsFromCloud();
     return () => window.removeEventListener(ACCESS_UPDATED_EVENT, handleUpdate);
-  }, []);
+  }, [currentUser]);
 
   const handleCategoryClick = (cat: PracticeCategory) => {
     const userAdmin = isUserAdmin(currentUser?.email);

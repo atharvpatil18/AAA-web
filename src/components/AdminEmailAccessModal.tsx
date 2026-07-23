@@ -10,6 +10,7 @@ import {
   getAllApprovedRecords,
   saveApprovedRecord,
   deleteApprovedRecord,
+  syncApprovedRecordsFromCloud,
   ACCESS_UPDATED_EVENT,
 } from "../lib/accessControl";
 
@@ -174,6 +175,23 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
     resetForm();
   };
 
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const handleManualSync = async () => {
+    setIsSyncing(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      await syncApprovedRecordsFromCloud();
+      setRecords(getAllApprovedRecords());
+      setSuccess("Successfully synced access permissions with cloud server!");
+    } catch (e) {
+      setError("Cloud sync encountered a network issue.");
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   const filteredRecords = records.filter(
@@ -183,40 +201,51 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in overflow-y-auto">
-      <div className="relative w-full max-w-5xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in overflow-y-auto">
+      <div className="relative w-full max-w-5xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden my-4 sm:my-8 max-h-[92vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-amber-900/40 via-purple-900/40 to-slate-900 border-b border-slate-700/60">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-amber-900/40 via-purple-900/40 to-slate-900 border-b border-slate-700/60 gap-3 shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="p-2.5 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30">
-              <ShieldCheck className="w-6 h-6" />
+            <div className="p-2 sm:p-2.5 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30 shrink-0">
+              <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-white tracking-wide">
+              <h2 className="text-lg sm:text-xl font-bold text-white tracking-wide">
                 Student Access Control Manager
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-[11px] sm:text-xs text-slate-400 leading-tight">
                 Grant approved email permissions for Abacus & Vedic Math courses, levels, and modes (Quiz / Learn).
               </p>
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center justify-between sm:justify-end gap-2">
+            <button
+              onClick={handleManualSync}
+              disabled={isSyncing}
+              className="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all disabled:opacity-50"
+              title="Sync with cloud database across mobile & desktop"
+            >
+              <Key className={`w-3.5 h-3.5 ${isSyncing ? "animate-spin" : ""}`} />
+              <span>{isSyncing ? "Syncing..." : "Sync Cloud Now"}</span>
+            </button>
+            <button
+              onClick={onClose}
+              className="p-1.5 sm:p-2 text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Content Body Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-800">
+        <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-800 overflow-y-auto flex-1">
           {/* Left Form Column */}
-          <div className="lg:col-span-6 p-6 space-y-5 bg-slate-900/60">
+          <div className="lg:col-span-6 p-4 sm:p-6 space-y-4 sm:space-y-5 bg-slate-900/60">
             <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-amber-300 flex items-center gap-2">
-                <UserPlus className="w-4 h-4 text-amber-400" />
-                {editingEmail ? `Edit Access: ${editingEmail}` : "Add New Student Email Permission"}
+              <h3 className="text-sm sm:text-base font-semibold text-amber-300 flex items-center gap-2">
+                <UserPlus className="w-4 h-4 text-amber-400 shrink-0" />
+                {editingEmail ? `Edit Access: ${editingEmail}` : "Add New Student Permission"}
               </h3>
               {editingEmail && (
                 <button
@@ -266,7 +295,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                   type="text"
                   value={studentName}
                   onChange={(e) => setStudentName(e.target.value)}
-                  placeholder="e.g. Aarav Patel"
+                  placeholder="e.g. Leena"
                   className="w-full px-3 py-2 text-sm bg-slate-950 border border-slate-700 text-white rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none"
                 />
               </div>
@@ -290,7 +319,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
               </div>
 
               {!isAdmin && (
-                <div className="space-y-4 pt-2">
+                <div className="space-y-4 pt-1">
                   <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                     <span className="text-xs font-bold text-slate-200">
                       Assigned Course & Level Permissions
@@ -322,10 +351,10 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                           </button>
                         )}
 
-                        {/* Course & Access Mode Selection */}
-                        <div className="grid grid-cols-2 gap-2">
+                        {/* Course & Access Mode Selection - Responsive 1 column on mobile, 2 columns on sm+ */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-[11px] text-slate-400 mb-1">
+                            <label className="block text-[11px] font-medium text-slate-300 mb-1">
                               Selected Course
                             </label>
                             <select
@@ -333,7 +362,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                               onChange={(e) =>
                                 handleRuleCourseChange(idx, e.target.value as "abacus" | "vedic")
                               }
-                              className="w-full px-2.5 py-1.5 text-xs bg-slate-900 border border-slate-700 text-white rounded-lg outline-none"
+                              className="w-full px-2.5 py-2 text-xs bg-slate-900 border border-slate-700 text-white rounded-lg outline-none focus:ring-1 focus:ring-amber-500"
                             >
                               <option value="abacus">Abacus Course</option>
                               <option value="vedic">Vedic Math Course</option>
@@ -341,7 +370,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                           </div>
 
                           <div>
-                            <label className="block text-[11px] text-slate-400 mb-1">
+                            <label className="block text-[11px] font-medium text-slate-300 mb-1">
                               Defined Access Mode
                             </label>
                             <select
@@ -349,7 +378,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                               onChange={(e) =>
                                 handleRuleAccessModeChange(idx, e.target.value as AccessFeatureMode)
                               }
-                              className="w-full px-2.5 py-1.5 text-xs bg-slate-900 border border-slate-700 text-white rounded-lg outline-none"
+                              className="w-full px-2.5 py-2 text-xs bg-slate-900 border border-slate-700 text-white rounded-lg outline-none focus:ring-1 focus:ring-amber-500"
                             >
                               <option value="both">Both (Quiz + Learn)</option>
                               <option value="quiz">Quiz Only</option>
@@ -361,13 +390,13 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                         {/* Levels Selector */}
                         <div>
                           <div className="flex items-center justify-between mb-1.5">
-                            <label className="text-[11px] text-slate-400">
+                            <label className="text-[11px] font-medium text-slate-300">
                               Selected Level(s)
                             </label>
                             <button
                               type="button"
                               onClick={() => handleLevelToggle(idx, "ALL")}
-                              className={`text-[10px] px-2 py-0.5 rounded ${
+                              className={`text-[10px] px-2 py-0.5 rounded transition-colors ${
                                 rule.levels.includes("ALL")
                                   ? "bg-amber-500 text-slate-950 font-bold"
                                   : "bg-slate-800 text-slate-400 hover:text-slate-200"
@@ -377,7 +406,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                             </button>
                           </div>
 
-                          <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto p-1.5 bg-slate-900/90 rounded-lg border border-slate-800">
+                          <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto p-2 bg-slate-900/90 rounded-lg border border-slate-800">
                             {availableLevels.map((lvl) => {
                               const isSelected =
                                 rule.levels.includes("ALL") || rule.levels.includes(lvl);
@@ -386,10 +415,10 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                                   type="button"
                                   key={lvl}
                                   onClick={() => handleLevelToggle(idx, lvl)}
-                                  className={`text-[11px] px-2 py-1 rounded-md transition-all font-medium ${
+                                  className={`text-[11px] px-2.5 py-1 rounded-md transition-all font-semibold touch-manipulation ${
                                     isSelected
-                                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
-                                      : "bg-slate-800/60 text-slate-400 border border-transparent hover:bg-slate-800"
+                                      ? "bg-amber-500/20 text-amber-300 border border-amber-500/50 shadow-sm"
+                                      : "bg-slate-800/80 text-slate-400 border border-transparent hover:bg-slate-800"
                                   }`}
                                 >
                                   {lvl}
@@ -407,7 +436,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-2.5 px-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-bold text-sm rounded-xl shadow-lg transition-all"
+                  className="w-full py-3 px-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-sm rounded-xl shadow-lg transition-all"
                 >
                   {editingEmail ? "Save Updated Permissions" : "Grant Approved Access"}
                 </button>
@@ -416,24 +445,24 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
           </div>
 
           {/* Right Records List Column */}
-          <div className="lg:col-span-6 p-6 space-y-4 bg-slate-950/40">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-semibold text-slate-200">
+          <div className="lg:col-span-6 p-4 sm:p-6 space-y-4 bg-slate-950/40">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+              <h3 className="text-sm sm:text-base font-semibold text-slate-200">
                 Approved Emails ({records.length})
               </h3>
-              <div className="relative w-48">
+              <div className="relative w-full sm:w-48">
                 <Search className="w-3.5 h-3.5 absolute left-2.5 top-2.5 text-slate-500" />
                 <input
                   type="text"
                   placeholder="Search email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-900 border border-slate-700 text-white rounded-lg outline-none"
+                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-900 border border-slate-700 text-white rounded-lg outline-none focus:border-amber-500"
                 />
               </div>
             </div>
 
-            <div className="space-y-3 max-h-[440px] overflow-y-auto pr-1">
+            <div className="space-y-3 max-h-[480px] overflow-y-auto pr-1">
               {filteredRecords.length === 0 ? (
                 <div className="py-12 text-center text-slate-500 text-xs">
                   No approved student emails match search.
@@ -487,9 +516,9 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                         {r.permissions.map((p, i) => (
                           <div
                             key={i}
-                            className="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700 flex items-center gap-1"
+                            className="text-[10px] bg-slate-800/90 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700 flex items-center gap-1"
                           >
-                            <span className="font-semibold text-amber-400 uppercase">
+                            <span className="font-bold text-amber-400 uppercase">
                               {p.course}:
                             </span>
                             <span>{p.levels.join(", ")}</span>

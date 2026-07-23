@@ -4,7 +4,7 @@
  */
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { getAllApprovedRecords, isUserAdmin } from "./accessControl";
+import { getAllApprovedRecords, isUserAdmin, syncApprovedRecordsFromCloud } from "./accessControl";
 
 export interface User {
   id: string; // Email ID is the ID
@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Restore session
+  // Restore session & sync cloud permissions
   useEffect(() => {
     const session = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY);
     if (session) {
@@ -42,6 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     }
     setLoading(false);
+    syncApprovedRecordsFromCloud();
   }, []);
 
   const sendEmailOTP = async (email: string, name: string) => {

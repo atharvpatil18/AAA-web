@@ -15,6 +15,8 @@ export const SYSTEM_ROOT_ADMINS = [
 
 export const DEFAULT_ADMIN_EMAILS = SYSTEM_ROOT_ADMINS;
 
+export const CLOUD_SYNC_URL = "https://api.restful-api.dev/objects/ff8081819f7e10ae019f8fb60f291b6c";
+
 const DEFAULT_INITIAL_RECORDS: ApprovedEmailRecord[] = [
   ...SYSTEM_ROOT_ADMINS.map((email) => ({
     email: email.toLowerCase(),
@@ -25,7 +27,32 @@ const DEFAULT_INITIAL_RECORDS: ApprovedEmailRecord[] = [
       { course: "vedic" as const, levels: ["ALL"], accessMode: "both" as const },
     ],
   })),
+  {
+    email: "nehaatharv@gmail.com",
+    studentName: "Leena",
+    isAdmin: false,
+    permissions: [
+      { course: "abacus" as const, levels: ["SR-1", "SR-2"], accessMode: "both" as const },
+      { course: "vedic" as const, levels: ["JVM-1"], accessMode: "both" as const },
+    ],
+  },
 ];
+
+// BroadcastChannel for real-time cross-tab synchronization
+let broadcastChannel: BroadcastChannel | null = null;
+try {
+  if (typeof BroadcastChannel !== "undefined") {
+    broadcastChannel = new BroadcastChannel("aaa_access_control_channel");
+    broadcastChannel.onmessage = (event) => {
+      if (event.data?.type === "ACCESS_UPDATED" && event.data?.records) {
+        localStorage.setItem(ACCESS_DB_KEY, JSON.stringify(event.data.records));
+        window.dispatchEvent(new CustomEvent(ACCESS_UPDATED_EVENT));
+      }
+    };
+  }
+} catch (e) {
+  // BroadcastChannel unavailable
+}
 
 /**
  * Retrieves all approved email records from localStorage.
@@ -42,7 +69,7 @@ export function getAllApprovedRecords(): ApprovedEmailRecord[] {
     }
   }
 
-  // Ensure root admins exist in the list if DB is empty
+  // Ensure initial records exist in the list if DB is empty
   if (records.length === 0) {
     records = [...DEFAULT_INITIAL_RECORDS];
     localStorage.setItem(ACCESS_DB_KEY, JSON.stringify(records));
@@ -190,7 +217,88 @@ export function checkUserAccess(
 }
 
 /**
- * Saves or updates an approved email record in localStorage.
+ * Asynchronously pushes current approved records to cloud storage.
+ */
+export async function pushApprovedRecordsToCloud(records?: ApprovedEmailRecord[]): Promise<void> {
+  const currentRecords = records || getAllApprovedRecords();
+  try {
+    await fetch(CLOUD_SYNC_URL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "aaa_approved_email_access_db",
+        data: { records: currentRecords },
+      }),
+    });
+
+    if (broadcastChannel) {
+      broadcastChannel.postMessage({ type: "ACCESS_UPDATED", records: currentRecords });
+    }
+  } catch (e) {
+    console.warn("Failed to push approved records to cloud:", e);
+  }
+}
+
+/**
+ * Downloads and merges approved email records from cloud storage across all devices.
+ */
+export async function syncApprovedRecordsFromCloud(): Promise<ApprovedEmailRecord[]> {
+  const localRecords = getAllApprovedRecords();
+  try {
+    const res = await fetch(CLOUD_SYNC_URL);
+    if (res.ok) {
+      const payload = await res.json();
+      let cloudRecords: ApprovedEmailRecord[] = [];
+      if (Array.isArray(payload)) {
+        cloudRecords = payload;
+      } else if (payload?.data?.records && Array.isArray(payload.data.records)) {
+        cloudRecords = payload.data.records;
+      }
+
+      if (cloudRecords.length > 0) {
+        const recordMap = new Map<string, ApprovedEmailRecord>();
+
+        // 1. Default initial records first
+        DEFAULT_INITIAL_RECORDS.forEach((r) => recordMap.set(r.email.trim().toLowerCase(), r));
+
+        // 2. Cloud records take highest precedence for student updates across devices
+        cloudRecords.forEach((r) => {
+          if (r && r.email) {
+            recordMap.set(r.email.trim().toLowerCase(), r);
+          }
+        });
+
+        // 3. Ensure root admins always retain admin rights
+        SYSTEM_ROOT_ADMINS.forEach((adminEmail) => {
+          const cleanAdmin = adminEmail.toLowerCase().trim();
+          const existing = recordMap.get(cleanAdmin);
+          if (existing) {
+            existing.isAdmin = true;
+          }
+        });
+
+        const merged = Array.from(recordMap.values());
+        const currRaw = JSON.stringify(localRecords);
+        const nextRaw = JSON.stringify(merged);
+
+        if (currRaw !== nextRaw) {
+          localStorage.setItem(ACCESS_DB_KEY, nextRaw);
+          window.dispatchEvent(new CustomEvent(ACCESS_UPDATED_EVENT));
+          if (broadcastChannel) {
+            broadcastChannel.postMessage({ type: "ACCESS_UPDATED", records: merged });
+          }
+        }
+        return merged;
+      }
+    }
+  } catch (e) {
+    console.warn("Cloud access sync warning:", e);
+  }
+  return localRecords;
+}
+
+/**
+ * Saves or updates an approved email record in localStorage and cloud storage.
  */
 export function saveApprovedRecord(record: ApprovedEmailRecord): void {
   const records = getAllApprovedRecords();
@@ -211,10 +319,11 @@ export function saveApprovedRecord(record: ApprovedEmailRecord): void {
 
   localStorage.setItem(ACCESS_DB_KEY, JSON.stringify(records));
   window.dispatchEvent(new CustomEvent(ACCESS_UPDATED_EVENT));
+  pushApprovedRecordsToCloud(records);
 }
 
 /**
- * Deletes an approved email record from localStorage.
+ * Deletes an approved email record from localStorage and cloud storage.
  */
 export function deleteApprovedRecord(email: string): boolean {
   const cleanEmail = email.trim().toLowerCase();
@@ -230,6 +339,7 @@ export function deleteApprovedRecord(email: string): boolean {
   if (filtered.length !== records.length) {
     localStorage.setItem(ACCESS_DB_KEY, JSON.stringify(filtered));
     window.dispatchEvent(new CustomEvent(ACCESS_UPDATED_EVENT));
+    pushApprovedRecordsToCloud(filtered);
     return true;
   }
   return false;
