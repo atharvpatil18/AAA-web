@@ -6,7 +6,7 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
-import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield, Zap, Clock, Trophy, MessageSquare, Send, Star, CheckCircle2 } from "lucide-react";
+import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield, Zap, Clock, Trophy, MessageSquare, Send, Star, CheckCircle2, Flame, ArrowDown, TrendingUp } from "lucide-react";
 import { saveVisitorFeedback } from "../lib/cloudSync";
 
 export default function Login() {
@@ -148,6 +148,52 @@ export default function Login() {
 
       <div className={`w-full ${authMode === "guest" ? "max-w-2xl" : "max-w-md"} bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden relative z-10 transition-all duration-300`}>
         
+        {/* Out-of-the-Box Viral Advertisement & Business SEO Hook Banner */}
+        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 text-slate-950 border-b border-amber-300 relative overflow-hidden">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <div className="bg-slate-950 text-amber-400 p-2 rounded-xl shrink-0 shadow-lg animate-pulse">
+                <Flame className="w-5 h-5 fill-amber-400 text-amber-400" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="bg-slate-950 text-amber-400 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow">
+                    🔥 WAKAD PUNE #1 SPEED MATH TRIAL
+                  </span>
+                  <span className="text-[10px] font-extrabold text-slate-950 bg-white/40 px-2 py-0.5 rounded-md backdrop-blur-xs">
+                    NO OTP REQUIRED
+                  </span>
+                </div>
+                <h3 className="text-xs sm:text-sm font-black tracking-tight text-slate-950 mt-0.5">
+                  Test 10X Mental Calculation Speed (200 Qs / 20 Mins)
+                </h3>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode("guest");
+                setError(null);
+              }}
+              className="bg-slate-950 hover:bg-slate-900 text-amber-400 text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-amber-400 shrink-0"
+            >
+              <Zap className="w-3.5 h-3.5 fill-amber-400" />
+              TRY FREE
+              <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
+            </button>
+          </div>
+
+          <p className="text-[10px] font-extrabold text-slate-900/90 mt-2 pt-2 border-t border-slate-950/10 flex items-center justify-between flex-wrap gap-1">
+            <span>
+              🏆 <strong className="font-black">Arnav Abacus Academy (Wakad, Pune, India)</strong> — Best Abacus & Vedic Maths Brain Development
+            </span>
+            <span className="text-[9px] font-black bg-slate-950/10 px-2 py-0.5 rounded text-slate-950">
+              📍 Wakad Center • Instant Rank
+            </span>
+          </p>
+        </div>
+
         {/* Visual Brand Header Banner */}
         <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white p-6 text-center border-b border-purple-900/40">
           <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider mb-2">
@@ -164,15 +210,15 @@ export default function Login() {
           </p>
         </div>
 
-        {/* Toggle Switch Bar */}
-        <div className="p-2 bg-slate-100 border-b border-slate-200 flex gap-1">
+        {/* Toggle Switch Bar with Dynamic Flashing Callout & Arrow */}
+        <div className="p-3 bg-slate-100 border-b border-slate-200 flex gap-2 relative">
           <button
             type="button"
             onClick={() => {
               setAuthMode("student");
               setError(null);
             }}
-            className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+            className={`flex-1 py-3 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
               authMode === "student"
                 ? "bg-slate-900 text-white shadow-md"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
@@ -182,21 +228,32 @@ export default function Login() {
             Student Login (OTP)
           </button>
 
-          <button
-            type="button"
-            onClick={() => {
-              setAuthMode("guest");
-              setError(null);
-            }}
-            className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-              authMode === "guest"
-                ? "bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 shadow-md font-extrabold"
-                : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
-            }`}
-          >
-            <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-            Free Guest Practice Trial
-          </button>
+          {/* Flashing Callout & Arrow Container for Free Guest Practice Trial */}
+          <div className="relative flex-1">
+            {authMode === "student" && (
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex items-center gap-1 bg-slate-950 text-amber-300 border-2 border-amber-400 text-[9px] font-black px-2.5 py-0.5 rounded-full shadow-2xl animate-bounce tracking-wider whitespace-nowrap">
+                <Flame className="w-3 h-3 text-orange-400 fill-orange-400 animate-pulse" />
+                <span>CLICK HERE (NO OTP)</span>
+                <ArrowDown className="w-3 h-3 text-amber-300 animate-bounce" />
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode("guest");
+                setError(null);
+              }}
+              className={`w-full py-3 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                authMode === "guest"
+                  ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 shadow-lg font-black border border-amber-300"
+                  : "bg-gradient-to-r from-amber-400/30 via-orange-400/30 to-amber-400/30 text-amber-950 border-2 border-amber-500 hover:bg-amber-400/40 ring-4 ring-amber-400/40 animate-pulse font-black shadow-md"
+              }`}
+            >
+              <Zap className="w-4 h-4 text-amber-600 fill-amber-600 animate-bounce" />
+              Free Guest Practice Trial
+            </button>
+          </div>
         </div>
 
         <div className="p-6 md:p-8">
