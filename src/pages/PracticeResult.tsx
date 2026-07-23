@@ -99,44 +99,28 @@ export default function PracticeResult() {
 
           {/* Key Metrics Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-            <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-center shadow-xs">
-              <CheckCircle2 className="w-6 h-6 text-emerald-600 mx-auto mb-1" />
-              <span className="block text-3xl font-black text-emerald-900">{result.correctCount}</span>
-              <span className="text-xs font-bold text-emerald-700">Correct Answers</span>
+            <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl text-center">
+              <span className="text-xs text-slate-500 font-bold uppercase block">Correct</span>
+              <span className="text-2xl font-black text-emerald-600">{result.correctCount}</span>
             </div>
-
-            <div className="bg-red-50 border border-red-200 p-4 rounded-2xl text-center shadow-xs">
-              <XCircle className="w-6 h-6 text-red-600 mx-auto mb-1" />
-              <span className="block text-3xl font-black text-red-900">{result.wrongCount}</span>
-              <span className="text-xs font-bold text-red-700">Incorrect</span>
+            <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl text-center">
+              <span className="text-xs text-slate-500 font-bold uppercase block">Incorrect</span>
+              <span className="text-2xl font-black text-red-500">{result.wrongCount}</span>
             </div>
-
-            <div className="bg-slate-100 border border-slate-200 p-4 rounded-2xl text-center shadow-xs">
-              <HelpCircle className="w-6 h-6 text-slate-500 mx-auto mb-1" />
-              <span className="block text-3xl font-black text-slate-800">{result.unansweredCount}</span>
-              <span className="text-xs font-bold text-slate-600">Unanswered</span>
+            <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl text-center">
+              <span className="text-xs text-slate-500 font-bold uppercase block">Unanswered</span>
+              <span className="text-2xl font-black text-slate-600">{result.unansweredCount}</span>
             </div>
-
-            <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-center shadow-xs">
-              <Clock className="w-6 h-6 text-amber-600 mx-auto mb-1" />
-              <span className="block text-2xl font-black text-amber-900">{formatTime(result.timeTakenSeconds)}</span>
-              <span className="text-xs font-bold text-amber-700">Time Spent</span>
+            <div className="bg-slate-50 border border-slate-200 p-4 rounded-2xl text-center">
+              <span className="text-xs text-slate-500 font-bold uppercase block">Time Taken</span>
+              <span className="text-2xl font-black text-teal-600">{formatTime(result.timeTakenSeconds)}</span>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-            <button
-              onClick={() => navigate(`/practice/session?setId=${result.setId}&mode=${result.mode}`)}
-              className="bg-vibrant-orange hover:bg-vibrant-orange/90 text-white font-black px-6 py-3 rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all active:scale-95"
-            >
-              <RefreshCw className="w-4 h-4" />
-              Retake Speed Sprint
-            </button>
-
+          <div className="mt-6 flex flex-wrap gap-3 justify-center md:justify-end">
             <button
               onClick={() => navigate("/practice")}
-              className="bg-slate-900 hover:bg-slate-800 text-white font-black px-6 py-3 rounded-xl text-xs flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Practice Hub

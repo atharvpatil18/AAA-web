@@ -12,6 +12,7 @@ import { useAuth } from "../lib/AuthContext";
 import { syncStudentAttempts } from "../lib/cloudSync";
 import VedicLearningModal from "../components/VedicLearningModal";
 import AdminEmailAccessModal from "../components/AdminEmailAccessModal";
+import GuestSampleGatewayModal from "../components/GuestSampleGatewayModal";
 import { checkUserAccess, isUserAdmin, getApprovedRecord, syncApprovedRecordsFromCloud, ACCESS_UPDATED_EVENT } from "../lib/accessControl";
 
 const ABACUS_LEVEL_INFO: Record<string, { primaryFocus: string; uniqueTopics: string }> = {
@@ -250,6 +251,10 @@ export default function PracticeHub() {
   const [attemptsList, setAttemptsList] = useState<any[]>([]);
   const navigate = useNavigate();
 
+  // Guest Gateway states
+  const [isGuestGatewayOpen, setIsGuestGatewayOpen] = useState(false);
+  const [guestInitialSetId, setGuestInitialSetId] = useState("abacus-sr1-single-direct-5-6row");
+
   // Access Control states
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
   const [accessNotice, setAccessNotice] = useState<string | null>(null);
@@ -363,7 +368,19 @@ export default function PracticeHub() {
   const currentSets = activeCategory === "abacus" ? ABACUS_QUESTION_SETS : VEDIC_QUESTION_SETS;
 
   const handleStartSet = (setId: string) => {
+    if (!currentUser) {
+      setGuestInitialSetId(setId);
+      setIsGuestGatewayOpen(true);
+      return;
+    }
     navigate(`/practice/session?setId=${setId}&mode=${selectedMode}&count=${selectedCount}`);
+  };
+
+  const handleStartGuestSamplePractice = (guestEmail: string, guestName: string, setId: string) => {
+    const guestObj = { email: guestEmail, name: guestName };
+    localStorage.setItem("aaa_guest_user", JSON.stringify(guestObj));
+    setIsGuestGatewayOpen(false);
+    navigate(`/practice/session?setId=${setId}&mode=speed-200-20m&count=200`);
   };
 
   const modeOptions: { mode: PracticeMode; label: string; timeText: string; icon: React.ReactNode; color: string; badge: string }[] = [
@@ -665,6 +682,32 @@ export default function PracticeHub() {
                     );
                   })}
                 </div>
+              </div>
+
+              {/* Free Visitor Sample Practice Banner */}
+              <div className="mb-8 p-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 rounded-3xl shadow-xl border-2 border-amber-300 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="absolute -right-8 -bottom-8 w-40 h-40 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div className="space-y-1 z-10">
+                  <div className="inline-flex items-center gap-1.5 bg-slate-950 text-amber-400 text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                    <Sparkles className="w-3.5 h-3.5" /> FREE GUEST TRIAL
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight">
+                    Try Sample Practice Drills (200 Questions / 20 Mins)
+                  </h3>
+                  <p className="text-xs sm:text-sm font-semibold text-slate-900/90 max-w-xl">
+                    Experience speed math drills from Level SR-1 & SR-2 with email login. Record your score on the live leaderboard and request course access!
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => setIsGuestGatewayOpen(true)}
+                  className="z-10 bg-slate-950 hover:bg-slate-900 text-amber-400 text-xs sm:text-sm font-black px-5 py-3 rounded-2xl flex items-center gap-2 shadow-2xl hover:shadow-amber-500/20 active:scale-95 transition-all cursor-pointer border border-amber-400/40 shrink-0"
+                >
+                  <Zap className="w-4 h-4 fill-amber-400" />
+                  START FREE SAMPLE PRACTICE
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
 
               {/* Question Sets Grouped by Level */}
@@ -1374,6 +1417,14 @@ export default function PracticeHub() {
       <AdminEmailAccessModal
         isOpen={isAdminModalOpen}
         onClose={() => setIsAdminModalOpen(false)}
+      />
+
+      {/* Guest Sample Practice Gateway Modal */}
+      <GuestSampleGatewayModal
+        isOpen={isGuestGatewayOpen}
+        onClose={() => setIsGuestGatewayOpen(false)}
+        initialSetId={guestInitialSetId}
+        onStartSamplePractice={handleStartGuestSamplePractice}
       />
     </div>
   );

@@ -131,3 +131,112 @@ export async function syncStudentAttempts(userEmail?: string): Promise<AttemptRe
 
   return localAttempts;
 }
+
+export interface VisitorFeedback {
+  id: string;
+  guestEmail: string;
+  guestName?: string;
+  rating: number; // 1 to 5
+  message: string;
+  sampleScore?: string;
+  submittedAt: string;
+}
+
+const FEEDBACK_STORAGE_KEY = "aaa_visitor_feedbacks";
+const FEEDBACK_CLOUD_URL = "https://api.restful-api.dev/objects/ff8081819f7e10ae019f901cda041bef";
+
+export function getAllVisitorFeedbacks(): VisitorFeedback[] {
+  try {
+    const raw = localStorage.getItem(FEEDBACK_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+export async function saveVisitorFeedback(feedback: Omit<VisitorFeedback, "id" | "submittedAt"> & { id?: string; submittedAt?: string }): Promise<VisitorFeedback> {
+  const fullFeedback: VisitorFeedback = {
+    id: feedback.id || `fb_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+    guestEmail: feedback.guestEmail.trim().toLowerCase(),
+    guestName: feedback.guestName?.trim() || feedback.guestEmail.split("@")[0],
+    rating: feedback.rating || 5,
+    message: feedback.message.trim(),
+    sampleScore: feedback.sampleScore,
+    submittedAt: feedback.submittedAt || new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
+  };
+
+  const current = getAllVisitorFeedbacks();
+  current.unshift(fullFeedback);
+  localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(current));
+
+  // Sync to cloud
+  try {
+    const res = await fetch(FEEDBACK_CLOUD_URL);
+    let cloudList: VisitorFeedback[] = [];
+    if (res.ok) {
+      const payload = await res.json();
+      if (Array.isArray(payload)) cloudList = payload;
+      else if (payload?.data?.feedbacks && Array.isArray(payload.data.feedbacks)) cloudList = payload.data.feedbacks;
+    }
+    cloudList.unshift(fullFeedback);
+    await fetch(FEEDBACK_CLOUD_URL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "aaa_visitor_feedback",
+        data: { feedbacks: cloudList },
+      }),
+    });
+  } catch (e) {
+    console.warn("Visitor feedback cloud sync warning:", e);
+  }
+
+  return fullFeedback;
+}
+
+export async function syncVisitorFeedbacksFromCloud(): Promise<VisitorFeedback[]> {
+  const localList = getAllVisitorFeedbacks();
+  try {
+    const res = await fetch(FEEDBACK_CLOUD_URL);
+    if (res.ok) {
+      const payload = await res.json();
+      let cloudList: VisitorFeedback[] = [];
+      if (Array.isArray(payload)) cloudList = payload;
+      else if (payload?.data?.feedbacks && Array.isArray(payload.data.feedbacks)) cloudList = payload.data.feedbacks;
+
+      if (cloudList.length > 0) {
+        const map = new Map<string, VisitorFeedback>();
+        localList.forEach((fb) => map.set(fb.id, fb));
+        cloudList.forEach((fb) => map.set(fb.id, fb));
+        const merged = Array.from(map.values()).sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+        localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(merged));
+        return merged;
+      }
+    }
+  } catch (e) {
+    console.warn("Cloud feedback sync warning:", e);
+  }
+  return localList;
+}
+
+export async function deleteVisitorFeedback(id: string): Promise<VisitorFeedback[]> {
+  const current = getAllVisitorFeedbacks();
+  const updated = current.filter((f) => f.id !== id);
+  localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(updated));
+
+  // Sync deletion to cloud
+  try {
+    await fetch(FEEDBACK_CLOUD_URL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: "aaa_visitor_feedback",
+        data: { feedbacks: updated },
+      }),
+    });
+  } catch (e) {
+    console.warn("Visitor feedback cloud deletion warning:", e);
+  }
+
+  return updated;
+}
