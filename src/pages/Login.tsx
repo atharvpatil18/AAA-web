@@ -6,7 +6,8 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
-import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield } from "lucide-react";
+import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield, Zap } from "lucide-react";
+import GuestSampleGatewayModal from "../components/GuestSampleGatewayModal";
 
 export default function Login() {
   const { sendEmailOTP, verifyEmailOTP } = useAuth();
@@ -23,6 +24,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [isGuestModalOpen, setIsGuestModalOpen] = useState(false);
 
   // Workflow states
   const [otpSent, setOtpSent] = useState(false);
@@ -265,8 +267,38 @@ export default function Login() {
             )}
           </div>
 
+          {/* Free Visitor Sample Practice Trial Card */}
+          <div className="mt-6 pt-6 border-t border-slate-200 text-center space-y-3">
+            <div className="inline-flex items-center gap-1 bg-amber-100 text-amber-900 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">
+              <Zap className="w-3 h-3 text-amber-600 fill-amber-600" /> Free Guest Trial
+            </div>
+            <h3 className="text-sm font-black text-slate-900">
+              Want to try a practice drill without OTP?
+            </h3>
+            <p className="text-xs text-slate-500 font-medium">
+              Take a 200-question sample practice drill from Level SR-1 or SR-2 with instant email login!
+            </p>
+            <button
+              onClick={() => setIsGuestModalOpen(true)}
+              className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-98 transition-all cursor-pointer border border-amber-300"
+            >
+              <Sparkles className="w-4 h-4 fill-slate-950" />
+              START FREE SAMPLE PRACTICE (200 Qs / 20 MINS)
+            </button>
+          </div>
+
         </div>
       </div>
+
+      <GuestSampleGatewayModal
+        isOpen={isGuestModalOpen}
+        onClose={() => setIsGuestModalOpen(false)}
+        onStartSamplePractice={(guestEmail, guestName, setId) => {
+          localStorage.setItem("aaa_guest_user", JSON.stringify({ email: guestEmail, name: guestName }));
+          setIsGuestModalOpen(false);
+          navigate(`/practice/session?setId=${setId}&mode=speed-200-20m&count=200`);
+        }}
+      />
     </div>
   );
 }
