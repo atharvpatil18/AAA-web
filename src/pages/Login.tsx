@@ -142,10 +142,10 @@ export default function Login() {
       guestEmail: cleanEmail,
       guestName: displayName,
       rating: 5,
-      message: `⚡ Sample Visitor Practice Access: Started 200 Qs / 20 Mins drill (${selectedSampleSetId}).`,
+      message: `⚡ Sample Visitor Practice Access: Started 100 Qs / 10 Mins drill (${selectedSampleSetId}).`,
     });
 
-    navigate(`/practice/session?setId=${selectedSampleSetId}&mode=speed-200-20m&count=200`);
+    navigate(`/practice/session?setId=${selectedSampleSetId}&mode=speed-100-10m&count=100`);
   };
 
   const handleGuestFeedbackSubmit = async (e: React.FormEvent) => {
@@ -211,7 +211,7 @@ export default function Login() {
                   </span>
                 </div>
                 <h3 className="text-xs sm:text-sm font-black tracking-tight text-slate-950 mt-0.5">
-                  Test 10X Mental Calculation Speed (200 Qs / 20 Mins)
+                  Test 10X Mental Calculation Speed (100 Qs / 10 Mins)
                 </h3>
               </div>
             </div>
@@ -247,12 +247,12 @@ export default function Login() {
             {authMode === "student" ? "Academy Student & Parent Portal" : "Free Visitor Sample Practice Gateway"}
           </div>
           <h2 className="text-xl sm:text-2xl font-black font-display tracking-tight text-white">
-            {authMode === "student" ? "Access Arnav Abacus Practice Zone" : "Free Sample Practice Drills (200 Qs / 20 Mins)"}
+            {authMode === "student" ? "Access Arnav Abacus Practice Zone" : "Free Sample Practice Drills (100 Qs / 10 Mins)"}
           </h2>
           <p className="text-xs text-slate-300 mt-1 max-w-lg mx-auto">
             {authMode === "student"
               ? "Sign in with email verification to join dynamic math drills & track scores"
-              : "Experience 200-question marathon drills! Enter email to log in instantly & track live leaderboard rank."}
+              : "Experience 100-question speed drills! Enter email to log in instantly & track live leaderboard rank."}
           </p>
         </div>
 
@@ -306,9 +306,14 @@ export default function Login() {
           
           {/* Error and Success notifications */}
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-3.5 flex items-center gap-2 mb-4 text-xs font-bold animate-pulse">
-              <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
-              <span>{error}</span>
+            <div className="mb-6 p-3.5 bg-red-50 border-2 border-red-200 text-red-700 text-xs font-black rounded-xl flex items-center justify-between shadow-xs">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                <span>{error}</span>
+              </div>
+              <button type="button" onClick={() => setError(null)} className="text-red-400 hover:text-red-600">
+                &times;
+              </button>
             </div>
           )}
 

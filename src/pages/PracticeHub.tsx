@@ -387,7 +387,7 @@ export default function PracticeHub() {
     const guestObj = { email: guestEmail, name: guestName };
     localStorage.setItem("aaa_guest_user", JSON.stringify(guestObj));
     setIsGuestGatewayOpen(false);
-    navigate(`/practice/session?setId=${setId}&mode=speed-200-20m&count=200`);
+    navigate(`/practice/session?setId=${setId}&mode=speed-100-10m&count=100`);
   };
 
   const modeOptions: { mode: PracticeMode; label: string; timeText: string; icon: React.ReactNode; color: string; badge: string }[] = [
@@ -708,7 +708,7 @@ export default function PracticeHub() {
                     <Sparkles className="w-3.5 h-3.5" /> FREE GUEST TRIAL
                   </div>
                   <h3 className="text-xl sm:text-2xl font-black tracking-tight">
-                    Try Sample Practice Drills (200 Questions / 20 Mins)
+                    Try Sample Practice Drills (100 Questions / 10 Mins)
                   </h3>
                   <p className="text-xs sm:text-sm font-semibold text-slate-900/90 max-w-xl">
                     Experience speed math drills from Level SR-1 & SR-2 with email login. Record your score on the live leaderboard and request course access!

@@ -137,10 +137,10 @@ export default function GuestSampleGatewayModal({
             </span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
-            Free Sample Practice Drills
+            Free Sample Practice Drills (100 Qs / 10 Mins)
           </h2>
           <p className="text-xs sm:text-sm font-semibold text-slate-900/90 mt-1">
-            Experience 200-question marathon drills! Enter your Email to log in instantly & track your live rank on the leaderboard.
+            Experience 100-question speed drills! Enter your Email to log in instantly & track your live rank on the leaderboard.
           </p>
         </div>
 
@@ -190,7 +190,7 @@ export default function GuestSampleGatewayModal({
             {/* Topic Selection Cards */}
             <div>
               <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-2">
-                Select 200-Question Sample Practice Topic <span className="text-amber-600 font-bold">(20 Mins Marathon)</span>
+                Select 100-Question Sample Practice Topic <span className="text-amber-600 font-bold">(10 Mins Speed Drill)</span>
               </label>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -204,17 +204,17 @@ export default function GuestSampleGatewayModal({
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="bg-orange-100 text-orange-900 text-[10px] font-black px-2.5 py-0.5 rounded-md uppercase">
-                      Level SR-1 • Topic 1
+                    <span className="bg-orange-100 text-orange-950 text-[10px] font-black px-2.5 py-0.5 rounded-md uppercase border border-orange-200 flex items-center gap-1">
+                      🧮 Level SR-1 • Topic 1
                     </span>
-                    <span className="text-[10px] font-extrabold text-slate-600 flex items-center gap-1 bg-white px-2 py-0.5 rounded-md border border-slate-200">
-                      <Clock className="w-3 h-3 text-orange-500" /> 200 Qs / 20M
+                    <span className="text-[10px] font-extrabold text-slate-700 flex items-center gap-1 bg-white px-2 py-0.5 rounded-md border border-slate-200 shadow-2xs">
+                      <Clock className="w-3 h-3 text-orange-500" /> 100 Qs / 10M
                     </span>
                   </div>
                   <h4 className="font-black text-slate-900 text-sm leading-snug">
                     ADD & SUB SINGLE DIGIT DIRECT (5-6 ROWS)
                   </h4>
-                  <p className="text-[11px] text-slate-600 mt-1">
+                  <p className="text-[11px] text-slate-600 mt-1 font-medium">
                     Speed single-digit direct mental abacus calculations across 5 to 6 rows.
                   </p>
                 </div>
@@ -229,17 +229,17 @@ export default function GuestSampleGatewayModal({
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="bg-amber-100 text-amber-900 text-[10px] font-black px-2.5 py-0.5 rounded-md uppercase">
-                      Level SR-2 • Topic 1
+                    <span className="bg-amber-100 text-amber-950 text-[10px] font-black px-2.5 py-0.5 rounded-md uppercase border border-amber-200 flex items-center gap-1">
+                      🔢 Level SR-2 • Topic 1
                     </span>
-                    <span className="text-[10px] font-extrabold text-slate-600 flex items-center gap-1 bg-white px-2 py-0.5 rounded-md border border-slate-200">
-                      <Clock className="w-3 h-3 text-orange-500" /> 200 Qs / 20M
+                    <span className="text-[10px] font-extrabold text-slate-700 flex items-center gap-1 bg-white px-2 py-0.5 rounded-md border border-slate-200 shadow-2xs">
+                      <Clock className="w-3 h-3 text-orange-500" /> 100 Qs / 10M
                     </span>
                   </div>
                   <h4 className="font-black text-slate-900 text-sm leading-snug">
                     ADD & SUB DOUBLE DIGIT DIRECT
                   </h4>
-                  <p className="text-[11px] text-slate-600 mt-1">
+                  <p className="text-[11px] text-slate-600 mt-1 font-medium">
                     Speed 2-digit direct addition and subtraction mental drills.
                   </p>
                 </div>
@@ -252,7 +252,7 @@ export default function GuestSampleGatewayModal({
               className="w-full py-3.5 px-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-sm rounded-2xl shadow-xl hover:shadow-2xl active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer border border-amber-300"
             >
               <Zap className="w-4 h-4 fill-slate-950" />
-              START SAMPLE PRACTICE (200 QUESTIONS / 20 MINS)
+              START SAMPLE PRACTICE (100 QUESTIONS / 10 MINS)
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
