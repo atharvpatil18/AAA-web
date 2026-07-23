@@ -23,8 +23,8 @@ export interface AttemptRecord {
 
 const LOCAL_STORAGE_KEY = "aaa_leaderboard_attempts";
 
-// High-availability public endpoint for cross-device attempt synchronization
-const CLOUD_SYNC_URL = "https://api.restful-api.dev/objects/ff8081819f7e10ae019f8fb6a60a1b6f";
+// High-availability persistent cloud endpoint for cross-device attempt synchronization
+const CLOUD_SYNC_URL = "https://jsonblob.com/api/jsonBlob/019f9065-ec4f-7d60-b80c-07b7f039afe6";
 
 /**
  * Save an attempt locally AND sync to the cloud for the student's email across mobile and desktop.
@@ -55,12 +55,14 @@ export async function saveStudentAttempt(attempt: AttemptRecord): Promise<void> 
 
   // 2. Sync attempts to cloud
   try {
-    const res = await fetch(CLOUD_SYNC_URL);
+    const res = await fetch(CLOUD_SYNC_URL, { headers: { Accept: "application/json" } });
     let cloudAttempts: AttemptRecord[] = [];
     if (res.ok) {
       const payload = await res.json();
       if (Array.isArray(payload)) {
         cloudAttempts = payload;
+      } else if (payload?.attempts && Array.isArray(payload.attempts)) {
+        cloudAttempts = payload.attempts;
       } else if (payload?.data?.attempts && Array.isArray(payload.data.attempts)) {
         cloudAttempts = payload.data.attempts;
       }
@@ -71,11 +73,8 @@ export async function saveStudentAttempt(attempt: AttemptRecord): Promise<void> 
       cloudAttempts.push(attempt);
       await fetch(CLOUD_SYNC_URL, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: "aaa_leaderboard_attempts",
-          data: { attempts: cloudAttempts },
-        }),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ attempts: cloudAttempts }),
       });
     }
   } catch (e) {
@@ -96,12 +95,14 @@ export async function syncStudentAttempts(userEmail?: string): Promise<AttemptRe
   }
 
   try {
-    const res = await fetch(CLOUD_SYNC_URL);
+    const res = await fetch(CLOUD_SYNC_URL, { headers: { Accept: "application/json" } });
     if (res.ok) {
       const payload = await res.json();
       let cloudAttempts: AttemptRecord[] = [];
       if (Array.isArray(payload)) {
         cloudAttempts = payload;
+      } else if (payload?.attempts && Array.isArray(payload.attempts)) {
+        cloudAttempts = payload.attempts;
       } else if (payload?.data?.attempts && Array.isArray(payload.data.attempts)) {
         cloudAttempts = payload.data.attempts;
       }
@@ -144,7 +145,7 @@ export interface VisitorFeedback {
 }
 
 const FEEDBACK_STORAGE_KEY = "aaa_visitor_feedbacks";
-const FEEDBACK_CLOUD_URL = "https://api.restful-api.dev/objects/ff8081819f7e10ae019f901cda041bef";
+const FEEDBACK_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019f9065-e9bf-7d21-9a83-c484961c2904";
 
 export function getAllVisitorFeedbacks(): VisitorFeedback[] {
   try {
@@ -188,11 +189,12 @@ export async function saveVisitorFeedback(
 
   // Sync to cloud
   try {
-    const res = await fetch(FEEDBACK_CLOUD_URL);
+    const res = await fetch(FEEDBACK_CLOUD_URL, { headers: { Accept: "application/json" } });
     let cloudList: VisitorFeedback[] = [];
     if (res.ok) {
       const payload = await res.json();
       if (Array.isArray(payload)) cloudList = payload;
+      else if (payload?.feedbacks && Array.isArray(payload.feedbacks)) cloudList = payload.feedbacks;
       else if (payload?.data?.feedbacks && Array.isArray(payload.data.feedbacks)) cloudList = payload.data.feedbacks;
     }
 
@@ -207,11 +209,8 @@ export async function saveVisitorFeedback(
 
     await fetch(FEEDBACK_CLOUD_URL, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: "aaa_visitor_feedback",
-        data: { feedbacks: cloudList },
-      }),
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ feedbacks: cloudList }),
     });
   } catch (e) {
     console.warn("Visitor feedback cloud sync warning:", e);
@@ -223,11 +222,12 @@ export async function saveVisitorFeedback(
 export async function syncVisitorFeedbacksFromCloud(): Promise<VisitorFeedback[]> {
   const localList = getAllVisitorFeedbacks();
   try {
-    const res = await fetch(FEEDBACK_CLOUD_URL);
+    const res = await fetch(FEEDBACK_CLOUD_URL, { headers: { Accept: "application/json" } });
     if (res.ok) {
       const payload = await res.json();
       let cloudList: VisitorFeedback[] = [];
       if (Array.isArray(payload)) cloudList = payload;
+      else if (payload?.feedbacks && Array.isArray(payload.feedbacks)) cloudList = payload.feedbacks;
       else if (payload?.data?.feedbacks && Array.isArray(payload.data.feedbacks)) cloudList = payload.data.feedbacks;
 
       if (cloudList.length > 0) {
@@ -260,11 +260,8 @@ export async function deleteVisitorFeedback(id: string): Promise<VisitorFeedback
   try {
     await fetch(FEEDBACK_CLOUD_URL, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: "aaa_visitor_feedback",
-        data: { feedbacks: updated },
-      }),
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ feedbacks: updated }),
     });
   } catch (e) {
     console.warn("Visitor feedback cloud deletion warning:", e);

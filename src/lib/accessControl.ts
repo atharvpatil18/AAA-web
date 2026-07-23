@@ -15,7 +15,7 @@ export const SYSTEM_ROOT_ADMINS = [
 
 export const DEFAULT_ADMIN_EMAILS = SYSTEM_ROOT_ADMINS;
 
-export const CLOUD_SYNC_URL = "https://api.restful-api.dev/objects/ff8081819f7e10ae019f8fb60f291b6c";
+export const CLOUD_SYNC_URL = "https://jsonblob.com/api/jsonBlob/019f9065-eead-71b5-8f27-38e3c8ebc1f4";
 
 const DEFAULT_INITIAL_RECORDS: ApprovedEmailRecord[] = [
   ...SYSTEM_ROOT_ADMINS.map((email) => ({
@@ -71,7 +71,7 @@ export function getAllApprovedRecords(): ApprovedEmailRecord[] {
 
   // Ensure initial records exist in the list if DB is empty
   if (records.length === 0) {
-    records = [...DEFAULT_INITIAL_RECORDS];
+    records = DEFAULT_INITIAL_RECORDS;
     localStorage.setItem(ACCESS_DB_KEY, JSON.stringify(records));
   }
 
