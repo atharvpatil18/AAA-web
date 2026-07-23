@@ -34,111 +34,77 @@ interface TopicContent {
 }
 
 const TOPIC_LESSONS: Record<string, TopicContent> = {
-  "5 compliment": {
-    sutraName: "Soroban 5-Complement Small Friends (五の補数 - Goshin)",
-    englishMeaning: "Using upper bead (Goda = 5) when lower beads (Ichidama = 1) are busy",
-    summary: "On the Japanese Soroban (算盤), when you lack sufficient lower beads (Ichidama) to add, move the upper bead (Goda = 5) DOWN to the beam with your index finger, and move the Small Friend complement lower beads DOWN away from the beam: +4 = +5 - 1, +3 = +5 - 2, +2 = +5 - 3, +1 = +5 - 4.",
+  "Soroban Bead Reading": {
+    sutraName: "Soroban Bead Reading & Value Recognition (玉の読み方 - Tama no Yomikata)",
+    englishMeaning: "Reading values touching the beam (Reiki) across unit, tens, and hundreds rods",
+    summary: "On the Japanese Soroban (算盤), beads represent active numbers ONLY when pushed toward the horizontal beam (Reiki). Each upper bead (Goda = 五玉) represents 5, and each lower bead (Ichidama = 一玉) represents 1.",
     keySteps: [
-      "+4 = Move Goda (+5) DOWN to beam, Move 1 Ichidama (-1) DOWN",
-      "+3 = Move Goda (+5) DOWN to beam, Move 2 Ichidama (-2) DOWN",
-      "+2 = Move Goda (+5) DOWN to beam, Move 3 Ichidama (-3) DOWN",
-      "+1 = Move Goda (+5) DOWN to beam, Move 4 Ichidama (-4) DOWN",
-      "Finger rule: Use Index finger for upper bead (Goda) and all subtraction movements."
+      "Upper Bead (Goda = 5): Active when pushed DOWN to the beam.",
+      "Lower Beads (Ichidama = 1): Active when pushed UP to the beam.",
+      "Single Rod Value = (Goda active ? 5 : 0) + (Number of Ichidama active).",
+      "Multi-digit Value = (Hundreds Rod) | (Tens Rod) | (Unit Rod)."
     ],
     workedExample: {
-      problem: "Calculate 4 + 3 on Soroban",
+      problem: "Read the number on a 2-rod Soroban with Tens rod = 1 Goda + 2 Ichidama, and Unit rod = 3 Ichidama",
       steps: [
-        { label: "Step 1: Set 4 (Ichidama)", detail: "Move 4 lower beads UP to beam using THUMB." },
-        { label: "Step 2: Add 3 (Goshin formula: +5 - 2)", detail: "Move upper bead (Goda) DOWN (+5) & move 2 lower beads DOWN (-2) using INDEX FINGER." }
+        { label: "Step 1: Calculate Tens Rod", detail: "Goda (5) + 2 Ichidama (2) = 7 (Value = 70)" },
+        { label: "Step 2: Calculate Unit Rod", detail: "3 Ichidama (3) = 3" },
+        { label: "Step 3: Combine Rods", detail: "70 + 3 = 73" }
       ],
-      finalAnswer: "7"
+      finalAnswer: "73"
     },
     warmupQuestions: [
       {
-        question: "In Soroban Goshin (5-Complement), what is the formula for +3?",
-        options: ["+5 - 2", "+5 - 1", "+10 - 7", "+5 - 3"],
-        correct: "+5 - 2",
-        explanation: "Soroban Small Friend formula for +3 is +5 - 2."
+        question: "What number is shown on a Soroban rod when 1 Goda (upper bead) and 4 Ichidama (lower beads) touch the beam?",
+        options: [9, 5, 4, 8],
+        correct: 9,
+        explanation: "Goda (5) + 4 Ichidama (4) = 9."
       },
       {
-        question: "Which finger is used on Soroban to move lower beads (Ichidama) UP to the beam?",
-        options: ["Thumb", "Index Finger", "Middle Finger", "Ring Finger"],
-        correct: "Thumb",
-        explanation: "Soroban technique uses the Thumb exclusively for pushing lower beads (Ichidama) UP."
+        question: "What is the name of the horizontal accounting beam on the Japanese Soroban?",
+        options: ["Reiki (梁)", "Goda (五玉)", "Ichidama (一玉)", "Keta (桁)"],
+        correct: "Reiki (梁)",
+        explanation: "The horizontal dividing bar is called Reiki (梁)."
       }
     ]
   },
-  "10 compliment": {
-    sutraName: "Soroban 10-Complement Big Friends (十の補数 - Jushin)",
-    englishMeaning: "Carrying 1 bead to the left rod (+10) when current rod reaches capacity",
-    summary: "When a Soroban rod reaches 9 and cannot fit more beads, add 1 bead UP to the next left rod (+10) using your thumb, and subtract the Big Friend complement on the current rod using your index finger: +9 = +10 - 1, +8 = +10 - 2, +7 = +10 - 3 ... +1 = +10 - 9.",
+  "Soroban Bead Representation": {
+    sutraName: "Soroban Bead Setting & Representation (盤面の置き方 - Rekkai)",
+    englishMeaning: "Setting multi-digit numbers onto Soroban rods using correct finger technique",
+    summary: "To represent a number on the Soroban, clear the frame (Soroeru), then move lower beads (Ichidama) UP with the THUMB and upper bead (Goda) DOWN with the INDEX FINGER on assigned unit and tens rods.",
     keySteps: [
-      "+9 = Add 1 on left rod (+10), Subtract 1 on current rod (-1)",
-      "+8 = Add 1 on left rod (+10), Subtract 2 on current rod (-2)",
-      "+7 = Add 1 on left rod (+10), Subtract 3 on current rod (-3)",
-      "+6 = Add 1 on left rod (+10), Subtract 4 on current rod (-4)",
-      "Subtraction Jushin: -9 = -10 + 1, -8 = -10 + 2, -7 = -10 + 3, -6 = -10 + 4."
+      "Clear Soroban (Yubi-hara): Tilt frame and slide index finger left to right along Reiki to reset.",
+      "Set Ichidama (1 to 4): Move lower beads UP with THUMB.",
+      "Set Goda (5): Move upper bead DOWN with INDEX FINGER.",
+      "Set 6 to 9: Pinch Goda DOWN and Ichidama UP together (Pinch move)."
     ],
     workedExample: {
-      problem: "Calculate 9 + 4 on Soroban",
+      problem: "Represent the number 48 on Soroban rods",
       steps: [
-        { label: "Step 1: Set 9", detail: "Upper bead (Goda) DOWN + 4 lower beads (Ichidama) UP." },
-        { label: "Step 2: Add 4 (Jushin formula: +10 - 6)", detail: "Add 1 lower bead UP on left rod (+10), clear current rod (-6)." }
+        { label: "Step 1: Tens Rod (4)", detail: "Push 4 lower beads (Ichidama) UP using THUMB." },
+        { label: "Step 2: Unit Rod (8)", detail: "Pinch 1 upper bead (Goda = 5) DOWN and 3 lower beads (Ichidama = 3) UP together." }
       ],
-      finalAnswer: "13"
+      finalAnswer: "48 represented on Tens and Unit rods"
     },
     warmupQuestions: [
       {
-        question: "In Soroban Jushin (10-Complement), what is the formula for +8?",
-        options: ["+10 - 2", "+5 - 2", "+10 - 8", "+10 - 3"],
-        correct: "+10 - 2",
-        explanation: "Soroban Big Friend formula for +8 is +10 - 2."
+        question: "Which finger technique is used to set the number 8 (5 + 3) simultaneously on a rod?",
+        options: ["Pinch motion (Index finger DOWN + Thumb UP)", "Thumb only", "Index finger only", "Middle finger"],
+        correct: "Pinch motion (Index finger DOWN + Thumb UP)",
+        explanation: "Setting 6, 7, 8, 9 uses a simultaneous pinch motion of index finger (Goda) and thumb (Ichidama)."
       },
       {
-        question: "Calculate 8 + 7 using Soroban Big Friend Jushin:",
-        options: [14, 15, 16, 13],
-        correct: 15,
-        explanation: "8 + (+10 - 3) = 15."
+        question: "To set 4 on a rod, how many Ichidama are pushed UP?",
+        options: [4, 1, 3, 5],
+        correct: 4,
+        explanation: "4 Ichidama (lower beads) pushed UP to the beam = 4."
       }
     ]
   },
-  "Mixed compliment": {
-    sutraName: "Soroban Combination Friends (複合補数 - Shingoshin)",
-    englishMeaning: "Combining upper bead (Goda) and left rod (+10) together",
-    summary: "Used when adding 6, 7, 8, 9 and lower beads on the current rod are busy: +6 = +10 - 5 + 1, +7 = +10 - 5 + 2, +8 = +10 - 5 + 3, +9 = +10 - 5 + 4.",
-    keySteps: [
-      "+6 = Add 1 on left rod (+10), Move Goda UP (-5), Add 1 Ichidama (+1)",
-      "+7 = Add 1 on left rod (+10), Move Goda UP (-5), Add 2 Ichidama (+2)",
-      "+8 = Add 1 on left rod (+10), Move Goda UP (-5), Add 3 Ichidama (+3)",
-      "+9 = Add 1 on left rod (+10), Move Goda UP (-5), Add 4 Ichidama (+4)"
-    ],
-    workedExample: {
-      problem: "Calculate 6 + 7 on Soroban",
-      steps: [
-        { label: "Step 1: Set 6", detail: "Upper bead (Goda) DOWN + 1 lower bead (Ichidama) UP." },
-        { label: "Step 2: Add 7 (Shingoshin formula: +10 - 5 + 2)", detail: "Left rod +10, Upper bead UP (-5), 2 lower beads UP (+2)." }
-      ],
-      finalAnswer: "13"
-    },
-    warmupQuestions: [
-      {
-        question: "In Soroban Shingoshin (Combination), what is the formula for +7?",
-        options: ["+10 - 5 + 2", "+10 - 3", "+5 - 2", "+10 - 5 + 3"],
-        correct: "+10 - 5 + 2",
-        explanation: "Combination formula for +7 is +10 - 5 + 2."
-      },
-      {
-        question: "Calculate 7 + 8 using Soroban Combination formula:",
-        options: [14, 15, 16, 17],
-        correct: 15,
-        explanation: "7 + (+10 - 5 + 3) = 15."
-      }
-    ]
-  },
-  "Direct": {
+  "Soroban Direct Bead Method": {
     sutraName: "Soroban Direct Bead Method (直接 - Chokusetsu)",
     englishMeaning: "Direct bead manipulation without complements",
-    summary: "On the Soroban, direct addition/subtraction moves upper beads (Goda = 5) or lower beads (Ichidama = 1) directly toward or away from the horizontal beam (Reiki).",
+    summary: "On the Soroban, direct addition/subtraction moves upper beads (Goda = 5) or lower beads (Ichidama = 1) directly toward or away from the horizontal beam (Reiki) without requiring carries or complements.",
     keySteps: [
       "Add lower beads (Ichidama): Push UP toward beam using THUMB.",
       "Add upper bead (Goda): Push DOWN toward beam using INDEX FINGER.",
@@ -157,56 +123,254 @@ const TOPIC_LESSONS: Record<string, TopicContent> = {
     warmupQuestions: [
       {
         question: "What is the total value when 1 Goda (upper bead) and 3 Ichidama (lower beads) touch the beam?",
-        options: [7, 8, 9, 6],
+        options: [8, 7, 9, 6],
         correct: 8,
         explanation: "Goda (5) + 3 Ichidama (3) = 8."
       },
       {
         question: "Calculate 4 + 5 - 2 directly on Soroban:",
-        options: [6, 7, 8, 5],
+        options: [7, 6, 8, 5],
         correct: 7,
         explanation: "4 + 5 - 2 = 7."
       }
     ]
   },
-  "Division": {
-    sutraName: "Soroban Division (算盤割り算 - Wazan)",
-    englishMeaning: "Setting dividend, quotient rods, and product subtraction",
-    summary: "Set dividend on rightmost rods and divisor on left rods. Determine quotient digit, place on quotient rod, and subtract product (Quotient x Divisor) using Soroban complements.",
+  "Soroban Addition 5-Complement": {
+    sutraName: "Soroban +5 Addition Small Friends (五の加算補数 - Goshin)",
+    englishMeaning: "Using upper bead (Goda = 5) when lower beads (Ichidama = 1) are insufficient",
+    summary: "On the Japanese Soroban, when lower beads (Ichidama) are insufficient to add, move upper bead (Goda = 5) DOWN to beam (+5) with index finger, and subtract Small Friend complement lower beads (- complement) DOWN away from beam.",
     keySteps: [
-      "Set divisor on left rod, dividend on right rods.",
-      "Estimate quotient digit.",
-      "Place quotient digit on assigned quotient rod.",
-      "Subtract product (Quotient x Divisor) from dividend rods using Jushin / Goshin."
+      "+4 = Move Goda (+5) DOWN to beam, Move 1 Ichidama (-1) DOWN",
+      "+3 = Move Goda (+5) DOWN to beam, Move 2 Ichidama (-2) DOWN",
+      "+2 = Move Goda (+5) DOWN to beam, Move 3 Ichidama (-3) DOWN",
+      "+1 = Move Goda (+5) DOWN to beam, Move 4 Ichidama (-4) DOWN"
     ],
     workedExample: {
-      problem: "Divide 48 ÷ 6 on Soroban",
+      problem: "Calculate 4 + 3 on Soroban",
       steps: [
-        { label: "Step 1: Set 48 on Rods 2 & 1", detail: "Dividend = 48" },
-        { label: "Step 2: Quotient digit 8", detail: "8 x 6 = 48" },
-        { label: "Step 3: Subtract 48", detail: "48 - 48 = 0" }
+        { label: "Step 1: Set 4 (Ichidama)", detail: "Move 4 lower beads UP to beam using THUMB." },
+        { label: "Step 2: Add 3 (Goshin formula: +5 - 2)", detail: "Move upper bead (Goda) DOWN (+5) & move 2 lower beads DOWN (-2) using INDEX FINGER." }
       ],
-      finalAnswer: "Quotient = 8, Remainder = 0"
+      finalAnswer: "7"
     },
     warmupQuestions: [
       {
-        question: "What is 36 ÷ 4 on Soroban Wazan?",
-        options: [8, 9, 7, 6],
-        correct: 9,
-        explanation: "36 ÷ 4 = 9."
+        question: "In Soroban Goshin (+5 Complement), what is the formula for +3?",
+        options: ["+5 - 2", "+5 - 1", "+10 - 7", "+5 - 3"],
+        correct: "+5 - 2",
+        explanation: "Soroban Small Friend formula for +3 is +5 - 2."
       },
       {
-        question: "What is 144 ÷ 12?",
-        options: [11, 12, 13, 14],
-        correct: 12,
-        explanation: "144 ÷ 12 = 12."
+        question: "Calculate 4 + 4 using Soroban +5 Complement:",
+        options: [8, 7, 9, 6],
+        correct: 8,
+        explanation: "4 + (+5 - 1) = 8."
       }
     ]
   },
-  "Multiplication": {
+  "Soroban Subtraction 5-Complement": {
+    sutraName: "Soroban -5 Subtraction Small Friends (五の減算補数 - Goshin)",
+    englishMeaning: "Subtracting when Goda (5) is active and Ichidama (1) lower beads are insufficient",
+    summary: "When subtracting 1, 2, 3, or 4 on a rod where Goda (5) is active, move Goda UP away from beam (-5) using index finger, and add Small Friend complement lower beads (+ complement) UP to beam using thumb.",
+    keySteps: [
+      "-4 = Move Goda (-5) UP away from beam, Move 1 Ichidama (+1) UP",
+      "-3 = Move Goda (-5) UP away from beam, Move 2 Ichidama (+2) UP",
+      "-2 = Move Goda (-5) UP away from beam, Move 3 Ichidama (+3) UP",
+      "-1 = Move Goda (-5) UP away from beam, Move 4 Ichidama (+4) UP"
+    ],
+    workedExample: {
+      problem: "Calculate 6 - 2 on Soroban",
+      steps: [
+        { label: "Step 1: Set 6", detail: "Goda (5) DOWN + 1 Ichidama (1) UP." },
+        { label: "Step 2: Subtract 2 (Formula: -5 + 3)", detail: "Move Goda UP (-5) with index finger & push 3 Ichidama UP (+3) with thumb." }
+      ],
+      finalAnswer: "4"
+    },
+    warmupQuestions: [
+      {
+        question: "In Soroban Subtraction Goshin (-5 Complement), what is the formula for -3?",
+        options: ["-5 + 2", "-5 + 1", "-10 + 7", "-5 - 2"],
+        correct: "-5 + 2",
+        explanation: "Soroban Small Friend subtraction formula for -3 is -5 + 2."
+      },
+      {
+        question: "Calculate 7 - 4 using -5 Complement:",
+        options: [3, 2, 4, 1],
+        correct: 3,
+        explanation: "7 - 4 = 7 + (-5 + 1) = 3."
+      }
+    ]
+  },
+  "Soroban Addition 10-Complement": {
+    sutraName: "Soroban +10 Addition Big Friends (十の加算補数 - Jushin)",
+    englishMeaning: "Carrying 1 bead to the left rod (+10) when current rod reaches capacity",
+    summary: "When a Soroban rod reaches capacity (cannot fit required beads), add 1 lower bead UP on the next left rod (+10) using thumb, and subtract Big Friend complement on current rod using index finger.",
+    keySteps: [
+      "+9 = Add 1 on left rod (+10), Subtract 1 on current rod (-1)",
+      "+8 = Add 1 on left rod (+10), Subtract 2 on current rod (-2)",
+      "+7 = Add 1 on left rod (+10), Subtract 3 on current rod (-3)",
+      "+6 = Add 1 on left rod (+10), Subtract 4 on current rod (-4)",
+      "+5 = Add 1 on left rod (+10), Subtract 5 on current rod (-5)"
+    ],
+    workedExample: {
+      problem: "Calculate 9 + 4 on Soroban",
+      steps: [
+        { label: "Step 1: Set 9", detail: "Goda DOWN + 4 Ichidama UP." },
+        { label: "Step 2: Add 4 (Jushin formula: +10 - 6)", detail: "Add 1 lower bead UP on left rod (+10), clear current rod (-6)." }
+      ],
+      finalAnswer: "13"
+    },
+    warmupQuestions: [
+      {
+        question: "In Soroban Jushin (+10 Complement), what is the formula for +8?",
+        options: ["+10 - 2", "+5 - 2", "+10 - 8", "+10 - 3"],
+        correct: "+10 - 2",
+        explanation: "Soroban Big Friend formula for +8 is +10 - 2."
+      },
+      {
+        question: "Calculate 8 + 7 using Soroban Big Friend Jushin:",
+        options: [15, 14, 16, 13],
+        correct: 15,
+        explanation: "8 + (+10 - 3) = 15."
+      }
+    ]
+  },
+  "Soroban Subtraction 10-Complement": {
+    sutraName: "Soroban -10 Subtraction Big Friends (十の減算補数 - Jushin)",
+    englishMeaning: "Borrowing 1 bead from the left rod (-10) when current rod is insufficient",
+    summary: "When subtracting on a rod where beads are insufficient, subtract 1 bead DOWN from the left rod (-10) using index finger, and add the Big Friend complement on the current rod.",
+    keySteps: [
+      "-9 = Subtract 1 on left rod (-10), Add 1 on current rod (+1)",
+      "-8 = Subtract 1 on left rod (-10), Add 2 on current rod (+2)",
+      "-7 = Subtract 1 on left rod (-10), Add 3 on current rod (+3)",
+      "-6 = Subtract 1 on left rod (-10), Add 4 on current rod (+4)",
+      "-5 = Subtract 1 on left rod (-10), Add 5 on current rod (+5)"
+    ],
+    workedExample: {
+      problem: "Calculate 13 - 7 on Soroban",
+      steps: [
+        { label: "Step 1: Set 13", detail: "Tens rod = 1, Unit rod = 3." },
+        { label: "Step 2: Subtract 7 (Jushin formula: -10 + 3)", detail: "Subtract 1 on Tens rod (-10) & add 3 on Unit rod (+3)." }
+      ],
+      finalAnswer: "6"
+    },
+    warmupQuestions: [
+      {
+        question: "In Soroban Subtraction Jushin (-10 Complement), what is the formula for -7?",
+        options: ["-10 + 3", "-10 - 3", "-5 + 2", "-10 + 7"],
+        correct: "-10 + 3",
+        explanation: "Soroban Big Friend subtraction formula for -7 is -10 + 3."
+      },
+      {
+        question: "Calculate 14 - 8 using -10 Complement:",
+        options: [6, 5, 7, 4],
+        correct: 6,
+        explanation: "14 - 8 = 14 + (-10 + 2) = 6."
+      }
+    ]
+  },
+  "Soroban Addition Mixed Complement": {
+    sutraName: "Soroban + Mixed Combination Friends (複合加算補数 - Shingoshin)",
+    englishMeaning: "Combining upper bead (Goda) and left rod (+10) together for addition",
+    summary: "Used when adding 6, 7, 8, 9 and lower beads on the current rod are busy: +6 = +10 - 5 + 1, +7 = +10 - 5 + 2, +8 = +10 - 5 + 3, +9 = +10 - 5 + 4.",
+    keySteps: [
+      "+6 = Add 1 on left rod (+10), Move Goda UP (-5), Add 1 Ichidama (+1)",
+      "+7 = Add 1 on left rod (+10), Move Goda UP (-5), Add 2 Ichidama (+2)",
+      "+8 = Add 1 on left rod (+10), Move Goda UP (-5), Add 3 Ichidama (+3)",
+      "+9 = Add 1 on left rod (+10), Move Goda UP (-5), Add 4 Ichidama (+4)"
+    ],
+    workedExample: {
+      problem: "Calculate 6 + 7 on Soroban",
+      steps: [
+        { label: "Step 1: Set 6", detail: "Goda DOWN + 1 Ichidama UP." },
+        { label: "Step 2: Add 7 (Shingoshin formula: +10 - 5 + 2)", detail: "Left rod +10, Goda UP (-5), 2 Ichidama UP (+2)." }
+      ],
+      finalAnswer: "13"
+    },
+    warmupQuestions: [
+      {
+        question: "In Soroban Shingoshin (+ Mixed Combination), what is the formula for +7?",
+        options: ["+10 - 5 + 2", "+10 - 3", "+5 - 2", "+10 - 5 + 3"],
+        correct: "+10 - 5 + 2",
+        explanation: "Combination formula for +7 is +10 - 5 + 2."
+      },
+      {
+        question: "Calculate 7 + 8 using Soroban Combination formula:",
+        options: [15, 14, 16, 17],
+        correct: 15,
+        explanation: "7 + (+10 - 5 + 3) = 15."
+      }
+    ]
+  },
+  "Soroban Subtraction Mixed Complement": {
+    sutraName: "Soroban - Mixed Combination Friends (複合減算補数 - Shingoshin)",
+    englishMeaning: "Combining upper bead (Goda) and left rod (-10) together for subtraction",
+    summary: "Used when subtracting 6, 7, 8, 9 and lower beads on current rod are insufficient: -6 = -10 + 5 - 1, -7 = -10 + 5 - 2, -8 = -10 + 5 - 3, -9 = -10 + 5 - 4.",
+    keySteps: [
+      "-6 = Subtract 1 on left rod (-10), Move Goda DOWN (+5), Subtract 1 Ichidama (-1)",
+      "-7 = Subtract 1 on left rod (-10), Move Goda DOWN (+5), Subtract 2 Ichidama (-2)",
+      "-8 = Subtract 1 on left rod (-10), Move Goda DOWN (+5), Subtract 3 Ichidama (-3)",
+      "-9 = Subtract 1 on left rod (-10), Move Goda DOWN (+5), Subtract 4 Ichidama (-4)"
+    ],
+    workedExample: {
+      problem: "Calculate 13 - 7 on Soroban using Mixed Subtraction",
+      steps: [
+        { label: "Step 1: Set 13", detail: "Tens rod = 1, Unit rod = 3." },
+        { label: "Step 2: Subtract 7 (Formula: -10 + 5 - 2)", detail: "Subtract 1 on Tens rod (-10), Move Goda DOWN on Unit rod (+5), Subtract 2 Ichidama (-2)." }
+      ],
+      finalAnswer: "6"
+    },
+    warmupQuestions: [
+      {
+        question: "In Soroban Subtraction Shingoshin (- Mixed Combination), what is the formula for -7?",
+        options: ["-10 + 5 - 2", "-10 + 3", "-5 + 2", "-10 + 5 - 3"],
+        correct: "-10 + 5 - 2",
+        explanation: "Mixed subtraction formula for -7 is -10 + 5 - 2."
+      },
+      {
+        question: "Calculate 12 - 6 using Mixed Subtraction formula:",
+        options: [6, 5, 7, 4],
+        correct: 6,
+        explanation: "12 - 6 = 12 + (-10 + 5 - 1) = 6."
+      }
+    ]
+  },
+  "Soroban Multi-Digit All Complements": {
+    sutraName: "Soroban Multi-Digit All Complements Mastery (全補数併用 - Zen Hosuu)",
+    englishMeaning: "Combining Goshin (5-comp), Jushin (10-comp), and Shingoshin across 2D, 3D, and 4D rods",
+    summary: "Multi-digit multi-row Soroban calculation applies unit-by-unit carry and borrow operations across adjacent rods seamlessly, processing numbers column by column from left to right.",
+    keySteps: [
+      "Process Left to Right (Tens/Hundreds rod first, then Unit rod).",
+      "Apply Goshin (±5), Jushin (±10), or Shingoshin (±Mixed) as needed per rod.",
+      "Maintain active rod focus without losing mental carry counts."
+    ],
+    workedExample: {
+      problem: "Calculate 48 + 37 on Soroban",
+      steps: [
+        { label: "Step 1: Tens Rod (40 + 30)", detail: "40 + 30 (+50 - 20) = 70" },
+        { label: "Step 2: Unit Rod (8 + 7)", detail: "70 + 8 = 78, then 78 + 7 (+10 - 5 + 2) = 85" }
+      ],
+      finalAnswer: "85"
+    },
+    warmupQuestions: [
+      {
+        question: "In multi-digit Soroban addition, which column is calculated first?",
+        options: ["Leftmost column (Highest place value)", "Unit column only", "Rightmost column", "Any random column"],
+        correct: "Leftmost column (Highest place value)",
+        explanation: "Soroban calculation processes numbers from Left to Right (highest to lowest place value)."
+      },
+      {
+        question: "Calculate 64 + 29 on Soroban:",
+        options: [93, 83, 94, 92],
+        correct: 93,
+        explanation: "60+20=80, 4+9(+10-1)=13 -> 80+13 = 93."
+      }
+    ]
+  },
+  "Soroban Multiplication": {
     sutraName: "Soroban Multiplication (算盤掛け算 - Kazan)",
     englishMeaning: "Partial products on assigned Soroban rods",
-    summary: "Multiplication on Soroban breaks multiplicand into digits. Multiply each digit by multiplier and add partial products to target rods using Soroban complements.",
+    summary: "Multiplication on Soroban (Kazan) breaks the multiplicand into digits. Multiply each digit by multiplier and place partial products on target rods, adding products using Goshin/Jushin complements.",
     keySteps: [
       "Assign rods: Multiplicand (left), Multiplier (right), Product (center).",
       "Multiply Tens digit x Multiplier -> place on Rods 3 & 2.",
@@ -225,38 +389,239 @@ const TOPIC_LESSONS: Record<string, TopicContent> = {
     warmupQuestions: [
       {
         question: "What is 42 x 5 on Soroban Kazan?",
-        options: [200, 210, 220, 190],
+        options: [210, 200, 220, 190],
         correct: 210,
         explanation: "40x5=200 + 2x5=10 -> 210."
       },
       {
-        question: "What is 25 x 4?",
+        question: "What is 25 x 4 on Soroban?",
         options: [100, 90, 110, 80],
         correct: 100,
         explanation: "25 x 4 = 100."
       }
     ]
   },
-  "Percentage": {
-    sutraName: "Abacus Percentage Scaling",
-    englishMeaning: "Rate per hundred formula (N x P / 100)",
-    summary: "Percentage represents parts per 100. Calculate by multiplying number N by percentage rate P on abacus rods, then shift decimal 2 rods left.",
+  "Soroban Division": {
+    sutraName: "Soroban Division (算盤割り算 - Wazan)",
+    englishMeaning: "Setting dividend, quotient rods, and product subtraction",
+    summary: "Set dividend on rightmost rods and divisor on left rods. Determine quotient digit, place on assigned quotient rod, and subtract product (Quotient x Divisor) using Soroban complements.",
     keySteps: [
-      "Multiply Number N by Percentage rate P: (N x P).",
-      "Divide by 100 (shift decimal point 2 rods left)."
+      "Set divisor on left rod, dividend on right rods.",
+      "Estimate quotient digit.",
+      "Place quotient digit on assigned quotient rod.",
+      "Subtract product (Quotient x Divisor) from dividend rods using Jushin / Goshin."
     ],
     workedExample: {
-      problem: "Find 15% of 400",
+      problem: "Divide 48 ÷ 6 on Soroban Wazan",
+      steps: [
+        { label: "Step 1: Set 48 on Rods 2 & 1", detail: "Dividend = 48" },
+        { label: "Step 2: Quotient digit 8", detail: "8 x 6 = 48" },
+        { label: "Step 3: Subtract 48", detail: "48 - 48 = 0" }
+      ],
+      finalAnswer: "Quotient = 8, Remainder = 0"
+    },
+    warmupQuestions: [
+      {
+        question: "What is 36 ÷ 4 on Soroban Wazan?",
+        options: [9, 8, 7, 6],
+        correct: 9,
+        explanation: "36 ÷ 4 = 9."
+      },
+      {
+        question: "What is 144 ÷ 12 on Soroban?",
+        options: [12, 11, 13, 14],
+        correct: 12,
+        explanation: "144 ÷ 12 = 12."
+      }
+    ]
+  },
+  "Soroban Decimal Addition & Subtraction": {
+    sutraName: "Soroban Decimal Addition & Subtraction (小数加減算 - Shousu Kagensan)",
+    englishMeaning: "Setting fixed unit rod (一の位) and operating on tenths and hundredths rods",
+    summary: "Decimal calculations on the Soroban designate a unit rod marked with an alignment dot (Unit rod). Tenths are placed 1 rod to the right ($R_{-1}$), and hundredths 2 rods right ($R_{-2}$).",
+    keySteps: [
+      "Select unit rod with alignment dot (一の位の型).",
+      "Place whole numbers to left of unit rod ($R_1, R_2, R_3$).",
+      "Place decimal values to right of unit rod ($R_{-1}, R_{-2}$).",
+      "Perform addition/subtraction using standard Goshin/Jushin complements."
+    ],
+    workedExample: {
+      problem: "Calculate 4.25 + 3.80 on Soroban",
+      steps: [
+        { label: "Step 1: Whole Numbers (4 + 3)", detail: "Unit rod = 4 + 3 = 7" },
+        { label: "Step 2: Tenths (0.2 + 0.8)", detail: "Tenths rod = 0.2 + 0.8 = 1.0 (Carry 1 to Unit rod -> 7+1 = 8)" },
+        { label: "Step 3: Hundredths (0.05 + 0)", detail: "Hundredths rod = 0.05" }
+      ],
+      finalAnswer: "8.05"
+    },
+    warmupQuestions: [
+      {
+        question: "On a Soroban with a designated unit rod, on which rod are tenths (0.1) set?",
+        options: ["1 rod to the RIGHT of unit rod", "1 rod to the LEFT of unit rod", "Same unit rod", "2 rods to the left"],
+        correct: "1 rod to the RIGHT of unit rod",
+        explanation: "Decimal places (tenths, hundredths) are positioned to the right of the unit rod."
+      },
+      {
+        question: "Calculate 6.5 + 2.5 on Soroban:",
+        options: [9.0, 8.5, 9.5, 8.0],
+        correct: 9.0,
+        explanation: "6+2=8, 0.5+0.5=1.0 -> 8+1 = 9.0."
+      }
+    ]
+  },
+  "Soroban Decimal Multiplication": {
+    sutraName: "Soroban Decimal Multiplication (小数掛け算 - Shousu Kakesan)",
+    englishMeaning: "Multiplying decimal factors on Soroban rods and determining product unit rod",
+    summary: "Multiply multiplicand and multiplier as whole numbers on Soroban, then determine the product's unit rod location using index formula: $I_{product} = I_A + I_B$.",
+    keySteps: [
+      "Count digits before decimal: $d_A$ and $d_B$.",
+      "Multiply numbers as integers on Soroban rods.",
+      "Set unit rod index = $d_A + d_B$."
+    ],
+    workedExample: {
+      problem: "Multiply 2.5 x 1.4 on Soroban",
+      steps: [
+        { label: "Step 1: Integer multiplication", detail: "25 x 14 = 350" },
+        { label: "Step 2: Decimal rod shift", detail: "Shift decimal 2 places left -> 3.50" }
+      ],
+      finalAnswer: "3.5"
+    },
+    warmupQuestions: [
+      {
+        question: "What is 1.5 x 4 on Soroban?",
+        options: [6.0, 5.5, 6.5, 5.0],
+        correct: 6.0,
+        explanation: "15 x 4 = 60 -> 6.0."
+      },
+      {
+        question: "What is 0.5 x 0.8?",
+        options: [0.4, 0.04, 4.0, 0.45],
+        correct: 0.4,
+        explanation: "5 x 8 = 40 -> 0.40."
+      }
+    ]
+  },
+  "Soroban Decimal Division": {
+    sutraName: "Soroban Decimal Division (小数割り算 - Shousu Warisan)",
+    englishMeaning: "Dividing decimal dividend by divisor and shifting quotient decimal rod",
+    summary: "In Soroban decimal division, shift divisor and dividend to integers, perform standard Wazan division, and place quotient relative to the unit rod.",
+    keySteps: [
+      "Shift divisor to integer by multiplying by $10^k$.",
+      "Multiply dividend by $10^k$.",
+      "Perform Wazan quotient subtraction.",
+      "Identify decimal unit rod."
+    ],
+    workedExample: {
+      problem: "Divide 7.5 ÷ 1.5 on Soroban",
+      steps: [
+        { label: "Step 1: Shift decimals", detail: "75 ÷ 15" },
+        { label: "Step 2: Wazan Quotient", detail: "75 ÷ 15 = 5" }
+      ],
+      finalAnswer: "5"
+    },
+    warmupQuestions: [
+      {
+        question: "What is 8.4 ÷ 2 on Soroban?",
+        options: [4.2, 4.1, 4.4, 4.0],
+        correct: 4.2,
+        explanation: "8.4 ÷ 2 = 4.2."
+      },
+      {
+        question: "What is 1.2 ÷ 0.3?",
+        options: [4, 0.4, 40, 0.04],
+        correct: 4,
+        explanation: "12 ÷ 3 = 4."
+      }
+    ]
+  },
+  "Soroban HCF": {
+    sutraName: "Soroban Highest Common Factor (最大公約数 - Saidai Kouyakusuu)",
+    englishMeaning: "Finding HCF via Soroban Euclidean division and prime factor reduction",
+    summary: "To find HCF of two numbers on Soroban, perform repeated rod division (Euclidean Algorithm) until remainder is zero; the final non-zero divisor is the HCF.",
+    keySteps: [
+      "Set larger number A and smaller number B on Soroban rods.",
+      "Divide A by B to find remainder R.",
+      "Replace A with B and B with R.",
+      "Repeat until remainder R = 0. Final divisor = HCF."
+    ],
+    workedExample: {
+      problem: "Find HCF of 36 and 48 on Soroban",
+      steps: [
+        { label: "Step 1: 48 ÷ 36", detail: "Quotient = 1, Remainder = 12" },
+        { label: "Step 2: 36 ÷ 12", detail: "Quotient = 3, Remainder = 0" },
+        { label: "Step 3: Final Divisor", detail: "HCF = 12" }
+      ],
+      finalAnswer: "HCF = 12"
+    },
+    warmupQuestions: [
+      {
+        question: "What is the HCF of 24 and 36?",
+        options: [12, 6, 4, 18],
+        correct: 12,
+        explanation: "36 ÷ 24 = R12, 24 ÷ 12 = R0 -> HCF = 12."
+      },
+      {
+        question: "What is the HCF of 15 and 25?",
+        options: [5, 3, 15, 1],
+        correct: 5,
+        explanation: "25 ÷ 15 = R10, 15 ÷ 10 = R5, 10 ÷ 5 = R0 -> HCF = 5."
+      }
+    ]
+  },
+  "Soroban LCM": {
+    sutraName: "Soroban Lowest Common Multiple (最小公倍数 - Saishou Koubaisuu)",
+    englishMeaning: "Finding LCM using Soroban product scaling: (A x B) / HCF",
+    summary: "Calculate LCM on Soroban by finding HCF first, then multiplying A x B on Soroban Kazan rods and dividing product by HCF.",
+    keySteps: [
+      "Find HCF(A, B).",
+      "Multiply A x B on Soroban rods.",
+      "Divide product by HCF on Soroban Wazan rods."
+    ],
+    workedExample: {
+      problem: "Find LCM of 12 and 18",
+      steps: [
+        { label: "Step 1: Find HCF(12, 18)", detail: "HCF = 6" },
+        { label: "Step 2: Multiply 12 x 18", detail: "216" },
+        { label: "Step 3: Divide 216 ÷ 6", detail: "36" }
+      ],
+      finalAnswer: "LCM = 36"
+    },
+    warmupQuestions: [
+      {
+        question: "What is the LCM of 8 and 12?",
+        options: [24, 48, 16, 36],
+        correct: 24,
+        explanation: "(8 x 12) / 4 = 96 / 4 = 24."
+      },
+      {
+        question: "What is the LCM of 5 and 10?",
+        options: [10, 50, 15, 20],
+        correct: 10,
+        explanation: "LCM(5, 10) = 10."
+      }
+    ]
+  },
+  "Soroban Percentage": {
+    sutraName: "Soroban Percentage Calculation (割合 / 百分率 - Hyakubunritsu)",
+    englishMeaning: "Rate per hundred formula (Base N x Rate P / 100) on Soroban rods",
+    summary: "Percentage represents rate per 100. Multiply Base number N by percentage rate P on Soroban Kazan rods, then shift decimal 2 rods left (divide by 100).",
+    keySteps: [
+      "Set Base number N and Rate P.",
+      "Multiply N x P on Soroban rods.",
+      "Divide by 100 (Shift decimal point 2 rods left)."
+    ],
+    workedExample: {
+      problem: "Find 15% of 400 on Soroban",
       steps: [
         { label: "Step 1: Multiply 400 x 15", detail: "400 x 15 = 6000" },
-        { label: "Step 2: Divide by 100", detail: "6000 ÷ 100 = 60" }
+        { label: "Step 2: Shift 2 decimal rods left", detail: "6000 ÷ 100 = 60" }
       ],
       finalAnswer: "60"
     },
     warmupQuestions: [
       {
-        question: "What is 20% of 250?",
-        options: [40, 50, 60, 45],
+        question: "What is 20% of 250 on Soroban?",
+        options: [50, 40, 60, 45],
         correct: 50,
         explanation: "(250 x 20) ÷ 100 = 5000 ÷ 100 = 50."
       },
@@ -268,18 +633,19 @@ const TOPIC_LESSONS: Record<string, TopicContent> = {
       }
     ]
   },
-  "Square root": {
-    sutraName: "Abacus Square Root Extraction",
-    englishMeaning: "2-rod pairing square root method",
-    summary: "Group digits into pairs from right. Find nearest square for left group, set root digit, and subtract square. Double the root and divide remainder.",
+  "Soroban Square Root": {
+    sutraName: "Soroban Square Root Extraction (開平法 - Kaihei-hou)",
+    englishMeaning: "Japanese Soroban traditional 2-rod pairing square root method",
+    summary: "Traditional Japanese Soroban Kaihei-hou extracts square roots by grouping digits into 2-digit pairs from right to left, placing root digit on assigned root rod, and subtracting square.",
     keySteps: [
-      "Pair digits from right.",
-      "Find largest root digit r such that r² <= left pair.",
-      "Subtract r² and bring down next pair.",
-      "Determine next root digit."
+      "Group digits into 2-digit pairs from right to left (e.g. 20 | 25).",
+      "Find largest square integer $r^2 \le$ left group.",
+      "Place root digit $r$ on assigned root rod.",
+      "Subtract $r^2$ from left group and bring down next pair.",
+      "Double root digit and estimate next root quotient."
     ],
     workedExample: {
-      problem: "Find √2025 on Abacus",
+      problem: "Find √2025 on Soroban using Kaihei-hou",
       steps: [
         { label: "Step 1: Pair 20 | 25", detail: "Nearest square to 20 is 16 (4²)" },
         { label: "Step 2: Remainder 425", detail: "Root ends in 5 -> 45" },
@@ -289,7 +655,7 @@ const TOPIC_LESSONS: Record<string, TopicContent> = {
     },
     warmupQuestions: [
       {
-        question: "What is √1225?",
+        question: "What is √1225 on Soroban Kaihei-hou?",
         options: [35, 25, 45, 30],
         correct: 35,
         explanation: "3x4=12 -> 35."
@@ -2766,6 +3132,39 @@ const TOPIC_LESSONS: Record<string, TopicContent> = {
   }
 };
 
+function getSorobanLessonKey(title: string, id: string): string {
+  const t = title.toLowerCase();
+  const i = id.toLowerCase();
+
+  if (i.includes("identification") || t.includes("identify")) return "Soroban Bead Reading";
+  if (i.includes("representation") || t.includes("represent")) return "Soroban Bead Representation";
+  
+  if (i.includes("minus5") || t.includes("-5 comp") || t.includes("- 5 comp") || t.includes("-5 compliment") || t.includes("- 5 compliment")) return "Soroban Subtraction 5-Complement";
+  if (i.includes("plus5") || t.includes("+5 comp") || t.includes("+ 5 comp") || t.includes("+5 compliment") || t.includes("+ 5 compliment") || t.includes("5 compliment") || t.includes("5 comp")) return "Soroban Addition 5-Complement";
+  
+  if (i.includes("minus10") || t.includes("-10 comp") || t.includes("- 10 comp") || t.includes("-10 compliment") || t.includes("- 10 compliment")) return "Soroban Subtraction 10-Complement";
+  if (i.includes("plus10") || t.includes("+10 comp") || t.includes("+ 10 comp") || t.includes("+10 compliment") || t.includes("+ 10 compliment") || t.includes("10 compliment") || t.includes("10 comp")) return "Soroban Addition 10-Complement";
+  
+  if (i.includes("minus-mixed") || t.includes("- mixed") || t.includes("-mixed")) return "Soroban Subtraction Mixed Complement";
+  if (i.includes("plus-mixed") || t.includes("+ mixed") || t.includes("+mixed") || t.includes("mixed comp") || t.includes("mixed compliment")) return "Soroban Addition Mixed Complement";
+  
+  if (i.includes("allcomp") || t.includes("all complement") || t.includes("all compliments") || t.includes("all compliment")) return "Soroban Multi-Digit All Complements";
+
+  if (i.includes("decimal-mult") || (t.includes("decimal") && t.includes("multiplication"))) return "Soroban Decimal Multiplication";
+  if (i.includes("decimal-div") || (t.includes("decimal") && t.includes("division"))) return "Soroban Decimal Division";
+  if (i.includes("decimal") || t.includes("decimal")) return "Soroban Decimal Addition & Subtraction";
+
+  if (i.includes("hcf") || t.includes("hcf")) return "Soroban HCF";
+  if (i.includes("lcm") || t.includes("lcm")) return "Soroban LCM";
+  if (i.includes("percentage") || t.includes("percentage")) return "Soroban Percentage";
+  if (i.includes("square-root") || t.includes("square root")) return "Soroban Square Root";
+
+  if (i.includes("mult") || t.includes("multiplication") || t.includes("x")) return "Soroban Multiplication";
+  if (i.includes("div") || t.includes("division") || t.includes("÷")) return "Soroban Division";
+
+  return "Soroban Direct Bead Method";
+}
+
 interface VedicLearningModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -2809,11 +3208,13 @@ export default function VedicLearningModal({
     topicTitle.toLowerCase().includes("add & sub");
 
   // Match lesson content key
-  const matchedKey = Object.keys(TOPIC_LESSONS).find(
-    (key) => topicTitle.toLowerCase().includes(key.toLowerCase()) || topicId.toLowerCase().includes(key.toLowerCase())
-  ) || (isAbacus ? "Direct" : "Addition");
+  const matchedKey = isAbacus
+    ? getSorobanLessonKey(topicTitle, topicId)
+    : Object.keys(TOPIC_LESSONS).find(
+        (key) => topicTitle.toLowerCase().includes(key.toLowerCase()) || topicId.toLowerCase().includes(key.toLowerCase())
+      ) || "Addition";
 
-  const lesson = TOPIC_LESSONS[matchedKey];
+  const lesson = TOPIC_LESSONS[matchedKey] || TOPIC_LESSONS["Soroban Direct Bead Method"];
 
   const handleSelectQuizOption = (qIdx: number, opt: number | string) => {
     setUserQuizAnswers((prev) => ({ ...prev, [qIdx]: opt }));
