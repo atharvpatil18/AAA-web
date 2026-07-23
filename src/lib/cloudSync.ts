@@ -140,6 +140,7 @@ export interface VisitorFeedback {
   message: string;
   sampleScore?: string;
   submittedAt: string;
+  timestamp?: number;
 }
 
 const FEEDBACK_STORAGE_KEY = "aaa_visitor_feedbacks";
@@ -154,19 +155,35 @@ export function getAllVisitorFeedbacks(): VisitorFeedback[] {
   }
 }
 
-export async function saveVisitorFeedback(feedback: Omit<VisitorFeedback, "id" | "submittedAt"> & { id?: string; submittedAt?: string }): Promise<VisitorFeedback> {
+export async function saveVisitorFeedback(
+  feedback: Omit<VisitorFeedback, "id" | "submittedAt"> & { id?: string; submittedAt?: string; timestamp?: number }
+): Promise<VisitorFeedback> {
+  const now = new Date();
+  const ts = feedback.timestamp || now.getTime();
   const fullFeedback: VisitorFeedback = {
-    id: feedback.id || `fb_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+    id: feedback.id || `fb_${ts}_${Math.random().toString(36).substr(2, 5)}`,
     guestEmail: feedback.guestEmail.trim().toLowerCase(),
     guestName: feedback.guestName?.trim() || feedback.guestEmail.split("@")[0],
     rating: feedback.rating || 5,
     message: feedback.message.trim(),
     sampleScore: feedback.sampleScore,
-    submittedAt: feedback.submittedAt || new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
+    submittedAt: feedback.submittedAt || now.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
+    timestamp: ts,
   };
 
   const current = getAllVisitorFeedbacks();
-  current.unshift(fullFeedback);
+  
+  // Check duplicate by ID or same email+message within 5s
+  const existsIndex = current.findIndex(
+    (f) => f.id === fullFeedback.id || (f.guestEmail === fullFeedback.guestEmail && f.message === fullFeedback.message && Math.abs((f.timestamp || 0) - ts) < 5000)
+  );
+
+  if (existsIndex >= 0) {
+    current[existsIndex] = fullFeedback;
+  } else {
+    current.unshift(fullFeedback);
+  }
+
   localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(current));
 
   // Sync to cloud
@@ -178,7 +195,16 @@ export async function saveVisitorFeedback(feedback: Omit<VisitorFeedback, "id" |
       if (Array.isArray(payload)) cloudList = payload;
       else if (payload?.data?.feedbacks && Array.isArray(payload.data.feedbacks)) cloudList = payload.data.feedbacks;
     }
-    cloudList.unshift(fullFeedback);
+
+    const cIndex = cloudList.findIndex(
+      (f) => f.id === fullFeedback.id || (f.guestEmail === fullFeedback.guestEmail && f.message === fullFeedback.message && Math.abs((f.timestamp || 0) - ts) < 5000)
+    );
+    if (cIndex >= 0) {
+      cloudList[cIndex] = fullFeedback;
+    } else {
+      cloudList.unshift(fullFeedback);
+    }
+
     await fetch(FEEDBACK_CLOUD_URL, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -206,9 +232,15 @@ export async function syncVisitorFeedbacksFromCloud(): Promise<VisitorFeedback[]
 
       if (cloudList.length > 0) {
         const map = new Map<string, VisitorFeedback>();
-        localList.forEach((fb) => map.set(fb.id, fb));
-        cloudList.forEach((fb) => map.set(fb.id, fb));
-        const merged = Array.from(map.values()).sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+        localList.forEach((fb) => map.set(fb.id || `${fb.guestEmail}_${fb.submittedAt}`, fb));
+        cloudList.forEach((fb) => map.set(fb.id || `${fb.guestEmail}_${fb.submittedAt}`, fb));
+
+        const merged = Array.from(map.values()).sort((a, b) => {
+          const tA = a.timestamp || (a.submittedAt ? new Date(a.submittedAt).getTime() : 0) || 0;
+          const tB = b.timestamp || (b.submittedAt ? new Date(b.submittedAt).getTime() : 0) || 0;
+          return tB - tA;
+        });
+
         localStorage.setItem(FEEDBACK_STORAGE_KEY, JSON.stringify(merged));
         return merged;
       }

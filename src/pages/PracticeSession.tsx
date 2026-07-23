@@ -10,7 +10,7 @@ import { UserAnswer, PracticeMode, Question } from "../types";
 import { Flag, ArrowLeft, ArrowRight, Clock, CheckCircle, HelpCircle, LayoutGrid, Sparkles, Trophy, Zap, Flame, Smile, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 import SorobanQuizBeadCanvas from "../components/SorobanQuizBeadCanvas";
-import { saveStudentAttempt } from "../lib/cloudSync";
+import { saveStudentAttempt, saveVisitorFeedback } from "../lib/cloudSync";
 import { checkUserAccess } from "../lib/accessControl";
 
 export default function PracticeSession() {
@@ -174,6 +174,17 @@ export default function PracticeSession() {
       userEmail: activeEmail,
     };
     saveStudentAttempt(attemptRecord);
+
+    // Auto-record sample visitor test into Admin Visitor Feedback Manager
+    if (!currentUser && activeEmail && activeEmail.includes("@")) {
+      saveVisitorFeedback({
+        guestEmail: activeEmail,
+        guestName: activeName,
+        rating: scorePercentage >= 75 ? 5 : 4,
+        message: `🎯 Completed Sample Practice Drill: ${questionSet.title} (${questionSet.level}) — Score: ${scorePercentage}% (${correctCount}/${questionSet.questions.length} Correct).`,
+        sampleScore: `${scorePercentage}% (${correctCount}/${questionSet.questions.length})`,
+      });
+    }
 
     sessionStorage.setItem("last_practice_result", JSON.stringify(resultPayload));
     navigate("/practice/results");

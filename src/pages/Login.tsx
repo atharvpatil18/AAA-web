@@ -115,6 +115,15 @@ export default function Login() {
     setError(null);
     const displayName = guestName.trim() || cleanEmail.split("@")[0];
     localStorage.setItem("aaa_guest_user", JSON.stringify({ email: cleanEmail, name: displayName }));
+
+    // Automatically record visitor login / inquiry into Admin Feedback Manager
+    saveVisitorFeedback({
+      guestEmail: cleanEmail,
+      guestName: displayName,
+      rating: 5,
+      message: `⚡ Sample Visitor Practice Access: Started 200 Qs / 20 Mins drill (${selectedSampleSetId}).`,
+    });
+
     navigate(`/practice/session?setId=${selectedSampleSetId}&mode=speed-200-20m&count=200`);
   };
 

@@ -42,6 +42,15 @@ export default function GuestSampleGatewayModal({
     }
     setErrorMsg("");
     const displayName = guestName.trim() || cleanEmail.split("@")[0];
+
+    // Automatically record visitor login / inquiry into Admin Feedback Manager
+    saveVisitorFeedback({
+      guestEmail: cleanEmail,
+      guestName: displayName,
+      rating: 5,
+      message: `⚡ Sample Visitor Practice Access: Started 200 Qs / 20 Mins drill (${selectedSetId}).`,
+    });
+
     onStartSamplePractice(cleanEmail, displayName, selectedSetId);
   };
 
