@@ -40,6 +40,22 @@ export interface LeadSubmission {
 
 export type PracticeCategory = "abacus" | "vedic";
 
+export type AccessFeatureMode = "quiz" | "learn" | "both";
+export type CourseType = "abacus" | "vedic" | "both";
+
+export interface LevelPermission {
+  course: "abacus" | "vedic";
+  levels: string[]; // e.g. ["JR-1", "JR-2"] or ["ALL"]
+  accessMode: AccessFeatureMode; // "quiz" | "learn" | "both"
+}
+
+export interface ApprovedEmailRecord {
+  email: string;
+  studentName?: string;
+  isAdmin?: boolean;
+  permissions: LevelPermission[];
+}
+
 export type QuestionCountChoice = 10 | 20 | 50 | 100 | 200;
 
 export type PracticeMode =

@@ -4,6 +4,7 @@
  */
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { getAllApprovedRecords, isUserAdmin } from "./accessControl";
 
 export interface User {
   id: string; // Email ID is the ID
@@ -15,6 +16,7 @@ export interface User {
 interface AuthContextProps {
   currentUser: User | null;
   loading: boolean;
+  isAdmin: boolean;
   sendEmailOTP: (email: string, name: string) => Promise<{ success: boolean; error?: string; otp: string }>;
   verifyEmailOTP: (email: string, name: string, otp: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
@@ -43,7 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const sendEmailOTP = async (email: string, name: string) => {
-    // Check if the email is pre-approved in our database
+    // Check if the email is pre-approved in our database (legacy list + new accessControl db)
     const APPROVED_EMAILS_KEY = "aaa_approved_emails";
     const DEFAULT_APPROVED = [
       "nitinkpatil@gmail.com",
@@ -60,20 +62,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } catch (e) {
         storedEmails = [];
       }
-    } else {
-      localStorage.setItem(APPROVED_EMAILS_KEY, JSON.stringify(DEFAULT_APPROVED));
     }
 
-    // Always merge default approved list with stored admin emails
+    const accessRecords = getAllApprovedRecords();
+    const accessEmails = accessRecords.map((r) => r.email.toLowerCase().trim());
+
+    // Always merge default approved list with stored admin emails & accessControl DB records
     const approvedEmails = Array.from(
       new Set([
         ...DEFAULT_APPROVED.map((e) => e.toLowerCase().trim()),
         ...storedEmails.map((e) => e.toLowerCase().trim()),
+        ...accessEmails,
       ])
     );
     const targetEmail = email.trim().toLowerCase();
 
-    if (!approvedEmails.map(e => e.toLowerCase().trim()).includes(targetEmail)) {
+    if (!approvedEmails.includes(targetEmail)) {
       return {
         success: false,
         error: "Your email address is not registered in our student database. Please contact Arnav Abacus Academy to register.",
@@ -179,8 +183,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     sessionStorage.removeItem(SESSION_KEY);
   };
 
+  const userIsAdmin = isUserAdmin(currentUser?.email);
+
   return (
-    <AuthContext.Provider value={{ currentUser, loading, sendEmailOTP, verifyEmailOTP, logout }}>
+    <AuthContext.Provider value={{ currentUser, loading, isAdmin: userIsAdmin, sendEmailOTP, verifyEmailOTP, logout }}>
       {children}
     </AuthContext.Provider>
   );

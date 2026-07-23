@@ -7,10 +7,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ABACUS_QUESTION_SETS, VEDIC_QUESTION_SETS } from "../data/practiceData";
 import { PracticeCategory, PracticeMode, QuestionCountChoice } from "../types";
-import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Calendar, ShieldCheck, ListOrdered, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Calendar, ShieldCheck, ListOrdered, AlertCircle, ChevronDown, ChevronUp, Lock, Shield, Key } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 import { syncStudentAttempts } from "../lib/cloudSync";
 import VedicLearningModal from "../components/VedicLearningModal";
+import AdminEmailAccessModal from "../components/AdminEmailAccessModal";
+import { checkUserAccess, isUserAdmin, getApprovedRecord, ACCESS_UPDATED_EVENT } from "../lib/accessControl";
 
 const ABACUS_LEVEL_INFO: Record<string, { primaryFocus: string; uniqueTopics: string }> = {
   "SVM-6": {
@@ -248,6 +250,39 @@ export default function PracticeHub() {
   const [attemptsList, setAttemptsList] = useState<any[]>([]);
   const navigate = useNavigate();
 
+  // Access Control states
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [accessNotice, setAccessNotice] = useState<string | null>(null);
+  const [, setAccessVer] = useState(0);
+
+  useEffect(() => {
+    const handleUpdate = () => setAccessVer((v) => v + 1);
+    window.addEventListener(ACCESS_UPDATED_EVENT, handleUpdate);
+    return () => window.removeEventListener(ACCESS_UPDATED_EVENT, handleUpdate);
+  }, []);
+
+  const handleCategoryClick = (cat: PracticeCategory) => {
+    const userAdmin = isUserAdmin(currentUser?.email);
+    if (currentUser?.email && !userAdmin) {
+      const rec = getApprovedRecord(currentUser.email);
+      if (rec && rec.permissions) {
+        const hasPerm = rec.permissions.some(
+          (p) => p.course === cat || (p.course as string) === "both"
+        );
+        if (!hasPerm) {
+          setAccessNotice(
+            `Access Restricted: Your email (${currentUser.email}) does not have access to the ${
+              cat === "abacus" ? "Abacus" : "Vedic Math"
+            } course.`
+          );
+          return;
+        }
+      }
+    }
+    setAccessNotice(null);
+    setActiveCategory(cat);
+  };
+
   // Collapsible state for Level Categories (JR-2, JR-3, etc.)
   const [expandedLevels, setExpandedLevels] = useState<Record<string, boolean>>({});
 
@@ -448,7 +483,7 @@ export default function PracticeHub() {
               <Trophy className="w-4.5 h-4.5" />
               Leaderboards
             </button>
-            {currentUser && (currentUser.email === "admin@arnavabacus.com" || currentUser.email === "nitinkpatil@gmail.com") && (
+            {currentUser && isUserAdmin(currentUser.email) && (
               <button
                 onClick={() => setHubTab("admin")}
                 className={`flex items-center gap-2 py-3.5 px-6 font-black text-sm border-b-4 transition-all whitespace-nowrap cursor-pointer ${
@@ -466,11 +501,65 @@ export default function PracticeHub() {
           {/* TAB 1: PRACTICE SETS */}
           {hubTab === "sets" && (
             <div>
+              {/* Access Control Status Banner */}
+              <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-800/60 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2.5 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30 shrink-0">
+                    <ShieldCheck className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h4 className="font-bold text-sm text-white">
+                        {currentUser ? `Access Account: ${currentUser.email}` : "Guest Mode (Standard Practice Access)"}
+                      </h4>
+                      {isUserAdmin(currentUser?.email) && (
+                        <span className="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-black border border-amber-500/30 uppercase">
+                          Root Admin
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-slate-300 mt-0.5">
+                      {(() => {
+                        if (!currentUser) return "Log in with an approved email address to sync progress & access assigned courses/levels.";
+                        if (isUserAdmin(currentUser.email)) return "Root Administrator Access: Full access to all Abacus & Vedic Math courses, levels, quiz & learn modes.";
+                        const rec = getApprovedRecord(currentUser.email);
+                        if (!rec || !rec.permissions || rec.permissions.length === 0) return "No specific level permissions configured for this email. Contact your instructor.";
+                        return rec.permissions
+                          .map((p) => `${p.course.toUpperCase()} (${p.levels.join(", ")}) [Mode: ${p.accessMode.toUpperCase()}]`)
+                          .join(" • ");
+                      })()}
+                    </p>
+                  </div>
+                </div>
+
+                {isUserAdmin(currentUser?.email) && (
+                  <button
+                    onClick={() => setIsAdminModalOpen(true)}
+                    className="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-bold text-xs rounded-xl shadow-lg transition-all shrink-0 flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <ShieldCheck className="w-4 h-4" />
+                    Manage Student Email Access
+                  </button>
+                )}
+              </div>
+
+              {accessNotice && (
+                <div className="mb-6 p-3 bg-red-950/90 border border-red-500/60 text-red-200 text-xs rounded-xl flex items-center justify-between shadow-md">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                    <span>{accessNotice}</span>
+                  </div>
+                  <button onClick={() => setAccessNotice(null)} className="text-xs underline text-red-300 font-bold">
+                    Dismiss
+                  </button>
+                </div>
+              )}
+
               {/* Category Tabs: Abacus vs Vedic Math with Custom Visual Cards & Subtext */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mb-8">
                 {/* Abacus Practice Card */}
                 <div
-                  onClick={() => setActiveCategory("abacus")}
+                  onClick={() => handleCategoryClick("abacus")}
                   className={`bg-white rounded-2xl border-2 p-4 flex flex-col items-center justify-between cursor-pointer transition-all duration-200 shadow-sm ${
                     activeCategory === "abacus"
                       ? "border-vibrant-orange ring-4 ring-orange-100 shadow-md scale-102"
@@ -496,7 +585,7 @@ export default function PracticeHub() {
 
                 {/* Vedic Maths Practice Card */}
                 <div
-                  onClick={() => setActiveCategory("vedic")}
+                  onClick={() => handleCategoryClick("vedic")}
                   className={`bg-white rounded-2xl border-2 p-4 flex flex-col items-center justify-between cursor-pointer transition-all duration-200 shadow-sm ${
                     activeCategory === "vedic"
                       ? "border-vibrant-teal ring-4 ring-teal-100 shadow-md scale-102"
@@ -608,6 +697,10 @@ export default function PracticeHub() {
                         rankBadge: "PRACTICE LEVEL",
                       };
 
+                      const quizAccess = checkUserAccess(currentUser?.email, activeCategory, levelName, "quiz");
+                      const learnAccess = checkUserAccess(currentUser?.email, activeCategory, levelName, "learn");
+                      const isLevelAssigned = quizAccess.isLevelAllowed || learnAccess.isLevelAllowed;
+
                       return (
                         <div key={levelName} className="mb-6">
                           {/* Collapsible Level Group Header Banner */}
@@ -621,7 +714,7 @@ export default function PracticeHub() {
                               </div>
 
                               <div className="flex flex-col gap-1">
-                                {/* Title Row with Rank Badge */}
+                                {/* Title Row with Rank Badge & Access Status */}
                                 <div className="flex items-center gap-2 flex-wrap">
                                   <h3 className="font-black text-lg sm:text-xl tracking-tight text-white flex items-center gap-2 drop-shadow-sm">
                                     LEVEL {levelName}
@@ -629,6 +722,11 @@ export default function PracticeHub() {
                                   <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-md border ${theme.badgeColor}`}>
                                     {theme.rankBadge}
                                   </span>
+                                  {currentUser && !isLevelAssigned && (
+                                    <span className="bg-red-950/90 text-red-200 border border-red-500/50 text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-md flex items-center gap-1 shadow-sm">
+                                      <Lock className="w-3 h-3 text-red-400" /> LOCKED - NOT ASSIGNED
+                                    </span>
+                                  )}
                                 </div>
 
                                 {/* Focus Area Pill */}
@@ -686,6 +784,9 @@ export default function PracticeHub() {
                                 ? "8 Mins"
                                 : "4 Mins";
 
+                              const canLearn = learnAccess.allowed;
+                              const canQuiz = quizAccess.allowed;
+
                               return (
                                 <div
                                   key={set.id}
@@ -718,7 +819,8 @@ export default function PracticeHub() {
                                     </span>
                                     <div className="flex items-center gap-2 shrink-0">
                                       <button
-                                        onClick={() =>
+                                        onClick={() => {
+                                          if (!canLearn) return;
                                           setLearningModalState({
                                             isOpen: true,
                                             topicTitle: set.title,
@@ -726,20 +828,34 @@ export default function PracticeHub() {
                                             setIdToStart: set.id,
                                             category: set.category,
                                             level: set.level,
-                                          })
+                                          });
+                                        }}
+                                        disabled={!canLearn}
+                                        className={
+                                          canLearn
+                                            ? "bg-purple-100 hover:bg-purple-200 text-purple-900 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition cursor-pointer border border-purple-300 shadow-xs"
+                                            : "bg-slate-100 text-slate-400 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 border border-slate-200 cursor-not-allowed opacity-60"
                                         }
-                                        className="bg-purple-100 hover:bg-purple-200 text-purple-900 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition cursor-pointer border border-purple-300 shadow-xs"
-                                        title="Learn Concept & Rules"
+                                        title={canLearn ? "Learn Concept & Rules" : learnAccess.reason || "Learn mode restricted"}
                                       >
-                                        <BookOpen className="w-3.5 h-3.5 text-purple-700" />
+                                        {canLearn ? <BookOpen className="w-3.5 h-3.5 text-purple-700" /> : <Lock className="w-3.5 h-3.5 text-slate-400" />}
                                         Learn
                                       </button>
                                       <button
-                                        onClick={() => handleStartSet(set.id)}
-                                        className="bg-vibrant-teal hover:bg-vibrant-teal/90 text-white text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer"
+                                        onClick={() => {
+                                          if (!canQuiz) return;
+                                          handleStartSet(set.id);
+                                        }}
+                                        disabled={!canQuiz}
+                                        className={
+                                          canQuiz
+                                            ? "bg-vibrant-teal hover:bg-vibrant-teal/90 text-white text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer"
+                                            : "bg-slate-200 text-slate-400 text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-not-allowed border border-slate-300 opacity-60"
+                                        }
+                                        title={canQuiz ? "Start Quiz Session" : quizAccess.reason || "Quiz mode restricted"}
                                       >
-                                        Start {effectiveQCount} Qs
-                                        <ArrowRight className="w-3.5 h-3.5" />
+                                        {canQuiz ? <ArrowRight className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5 text-slate-400" />}
+                                        {canQuiz ? `Start ${effectiveQCount} Qs` : "Quiz Locked"}
                                       </button>
                                     </div>
                                   </div>
@@ -1232,6 +1348,12 @@ export default function PracticeHub() {
         topicId={learningModalState.topicId}
         category={learningModalState.category}
         level={learningModalState.level}
+      />
+
+      {/* Admin Student Email Access Control Modal */}
+      <AdminEmailAccessModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
       />
     </div>
   );

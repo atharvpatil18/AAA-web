@@ -11,6 +11,7 @@ import { Flag, ArrowLeft, ArrowRight, Clock, CheckCircle, HelpCircle, LayoutGrid
 import { useAuth } from "../lib/AuthContext";
 import SorobanQuizBeadCanvas from "../components/SorobanQuizBeadCanvas";
 import { saveStudentAttempt } from "../lib/cloudSync";
+import { checkUserAccess } from "../lib/accessControl";
 
 export default function PracticeSession() {
   const { currentUser } = useAuth();
@@ -24,6 +25,17 @@ export default function PracticeSession() {
   // Stable question set per attempt (questions are fixed during attempt, but different on next attempt)
   const attemptSeedRef = useRef<string>(searchParams.get("seed") || `attempt_${Date.now()}`);
   const [questionSet] = useState(() => getCustomizedSet(setId, mode, qCount, attemptSeedRef.current));
+
+  // Access Guard
+  useEffect(() => {
+    if (currentUser?.email && questionSet) {
+      const access = checkUserAccess(currentUser.email, questionSet.category, questionSet.level, "quiz");
+      if (!access.allowed) {
+        alert(`Access Restricted: ${access.reason || "Quiz access is restricted for this level."}`);
+        navigate("/practice");
+      }
+    }
+  }, [currentUser?.email, questionSet, navigate]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, UserAnswer>>({});
