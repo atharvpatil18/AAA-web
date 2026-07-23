@@ -343,6 +343,9 @@ export default function PracticeHub() {
   // Load real leaderboard & personal performance attempts (with cross-device cloud sync)
   useEffect(() => {
     const loadAndSyncAttempts = async () => {
+      const guestObj = JSON.parse(localStorage.getItem("aaa_guest_user") || "{}");
+      const activeEmail = currentUser?.email || guestObj.email;
+
       const rawAttempts = localStorage.getItem("aaa_leaderboard_attempts");
       let currentLocal: any[] = [];
       if (rawAttempts) {
@@ -355,11 +358,9 @@ export default function PracticeHub() {
         }
       }
 
-      // Sync cloud attempts for logged in student email across mobile and desktop
-      if (currentUser?.email) {
-        const synced = await syncStudentAttempts(currentUser.email);
-        setAttemptsList(synced.filter((a: any) => !a.userId?.startsWith("mock_")));
-      }
+      // Always sync cloud attempts across mobile & desktop for active student/guest email or global leaderboard
+      const synced = await syncStudentAttempts(activeEmail);
+      setAttemptsList(synced.filter((a: any) => !a.userId?.startsWith("mock_")));
     };
 
     loadAndSyncAttempts();
@@ -935,109 +936,115 @@ export default function PracticeHub() {
             </div>
           )}
 
-          {/* TAB 2: MY PERFORMANCE */}
+          {/* TAB 2: PERFORMANCE STATISTICS */}
           {hubTab === "performance" && (
             <div className="space-y-6">
-              <div className="flex justify-between items-center border-b pb-4">
-                <div>
-                  <h2 className="text-xl font-black text-slate-900">
-                    Your Personal Practice Statistics
-                  </h2>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    Logged-in student: <span className="font-bold text-slate-800">{currentUser?.name}</span> ({currentUser?.id})
-                  </p>
-                </div>
-              </div>
-
               {(() => {
-                const userEmailLower = currentUser?.email?.toLowerCase().trim() || currentUser?.id?.toLowerCase().trim();
-                const userAttempts = attemptsList.filter(
-                  (a) =>
-                    a.userEmail?.toLowerCase().trim() === userEmailLower ||
-                    a.userId?.toLowerCase().trim() === userEmailLower
-                );
+                const guestObj = JSON.parse(localStorage.getItem("aaa_guest_user") || "{}");
+                const activeEmail = (currentUser?.email || guestObj.email || "").toLowerCase().trim();
+                const activeName = currentUser?.name || guestObj.name || (activeEmail ? activeEmail.split("@")[0] : "Guest Candidate");
 
-                if (userAttempts.length === 0) {
-                  return (
-                    <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-12 text-center max-w-lg mx-auto">
-                      <Medal className="w-12 h-12 text-slate-350 mx-auto mb-3" />
-                      <h3 className="text-base font-black text-slate-800">No Attempts Recorded Yet</h3>
-                      <p className="text-xs text-slate-500 mt-2 mb-6">
-                        Start training in Abacus levels or Vedic mathematics topics to build up your scorecard and track calculations!
-                      </p>
-                      <button
-                        onClick={() => setHubTab("sets")}
-                        className="bg-vibrant-orange hover:bg-vibrant-orange/90 text-white text-xs font-black px-5 py-3 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
-                      >
-                        View Practice Topics
-                      </button>
-                    </div>
-                  );
-                }
+                const userAttempts = attemptsList.filter((a) => {
+                  if (!activeEmail) return false;
+                  const eMatch = a.userEmail && a.userEmail.toLowerCase().trim() === activeEmail;
+                  const idMatch = a.userId && a.userId.toLowerCase().trim() === activeEmail;
+                  return eMatch || idMatch;
+                });
 
                 return (
-                  <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs border-collapse">
-                        <thead>
-                          <tr className="bg-slate-900 text-white font-black uppercase tracking-wider">
-                            <th className="p-4">Practice Topic</th>
-                            <th className="p-4">Level</th>
-                            <th className="p-4">Mode</th>
-                            <th className="p-4 text-center">Score %</th>
-                            <th className="p-4 text-center">Correct Qs</th>
-                            <th className="p-4 text-center">Time Taken</th>
-                            <th className="p-4">Completed Date</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-250">
-                          {userAttempts
-                            .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime())
-                            .map((attempt, idx) => (
-                            <tr key={idx} className="hover:bg-slate-50 font-medium text-slate-700">
-                              <td className="p-4 font-bold text-slate-900">{attempt.setTitle}</td>
-                              <td className="p-4">
-                                <span className="bg-teal-100 text-teal-800 text-[10px] font-black px-2 py-0.5 rounded">
-                                  {attempt.level}
-                                </span>
-                              </td>
-                              <td className="p-4 font-mono font-bold uppercase text-[10px] text-slate-500">
-                                {attempt.mode}
-                              </td>
-                              <td className="p-4 text-center">
-                                <span
-                                  className={`font-black text-sm px-2.5 py-1 rounded-lg ${
-                                    attempt.scorePercentage >= 90
-                                      ? "bg-emerald-100 text-emerald-800"
-                                      : attempt.scorePercentage >= 75
-                                      ? "bg-blue-100 text-blue-800"
-                                      : attempt.scorePercentage >= 50
-                                      ? "bg-amber-100 text-amber-800"
-                                      : "bg-red-100 text-red-800"
-                                  }`}
-                                >
-                                  {attempt.scorePercentage}%
-                                </span>
-                              </td>
-                              <td className="p-4 text-center font-bold">
-                                {attempt.correctCount} / {attempt.totalQuestions}
-                              </td>
-                              <td className="p-4 text-center font-mono font-bold text-slate-800">
-                                {Math.floor(attempt.timeTakenSeconds / 60)}m {attempt.timeTakenSeconds % 60}s
-                              </td>
-                              <td className="p-4 text-slate-500 font-mono text-[11px]">
-                                {new Date(attempt.completedAt).toLocaleString()}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                  </div>
-                </div>
-              );
-            })()}
-          </div>
-        )}
+                  <>
+                    <div className="flex justify-between items-center border-b pb-4">
+                      <div>
+                        <h2 className="text-xl font-black text-slate-900">
+                          Your Personal Practice Statistics
+                        </h2>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          Active User: <span className="font-bold text-slate-800">{activeName}</span> ({activeEmail || "Unregistered Visitor"})
+                        </p>
+                      </div>
+                    </div>
+
+                    {userAttempts.length === 0 ? (
+                      <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-12 text-center max-w-lg mx-auto">
+                        <Medal className="w-12 h-12 text-slate-350 mx-auto mb-3" />
+                        <h3 className="text-base font-black text-slate-800">No Attempts Recorded Yet</h3>
+                        <p className="text-xs text-slate-500 mt-2 mb-6">
+                          {activeEmail
+                            ? `No practice sessions found for ${activeEmail}. Start a practice drill to build your scorecard!`
+                            : "Enter your email ID or log in to view your saved practice statistics!"}
+                        </p>
+                        <button
+                          onClick={() => setHubTab("sets")}
+                          className="bg-vibrant-orange hover:bg-vibrant-orange/90 text-white text-xs font-black px-5 py-3 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
+                        >
+                          View Practice Topics
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-left text-xs border-collapse">
+                            <thead>
+                              <tr className="bg-slate-900 text-white font-black uppercase tracking-wider">
+                                <th className="p-4">Practice Topic</th>
+                                <th className="p-4">Level</th>
+                                <th className="p-4">Mode</th>
+                                <th className="p-4 text-center">Score %</th>
+                                <th className="p-4 text-center">Correct Qs</th>
+                                <th className="p-4 text-center">Time Taken</th>
+                                <th className="p-4">Completed Date</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-250">
+                              {userAttempts
+                                .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime())
+                                .map((attempt, idx) => (
+                                <tr key={idx} className="hover:bg-slate-50 font-medium text-slate-700">
+                                  <td className="p-4 font-bold text-slate-900">{attempt.setTitle}</td>
+                                  <td className="p-4">
+                                    <span className="bg-teal-100 text-teal-800 text-[10px] font-black px-2 py-0.5 rounded">
+                                      {attempt.level}
+                                    </span>
+                                  </td>
+                                  <td className="p-4 font-mono font-bold uppercase text-[10px] text-slate-500">
+                                    {attempt.mode}
+                                  </td>
+                                  <td className="p-4 text-center">
+                                    <span
+                                      className={`font-black text-sm px-2.5 py-1 rounded-lg ${
+                                        attempt.scorePercentage >= 90
+                                          ? "bg-emerald-100 text-emerald-800"
+                                          : attempt.scorePercentage >= 75
+                                          ? "bg-blue-100 text-blue-800"
+                                          : attempt.scorePercentage >= 50
+                                          ? "bg-amber-100 text-amber-800"
+                                          : "bg-red-100 text-red-800"
+                                      }`}
+                                    >
+                                      {attempt.scorePercentage}%
+                                    </span>
+                                  </td>
+                                  <td className="p-4 text-center font-bold">
+                                    {attempt.correctCount} / {attempt.totalQuestions}
+                                  </td>
+                                  <td className="p-4 text-center font-mono font-bold text-slate-800">
+                                    {Math.floor(attempt.timeTakenSeconds / 60)}m {attempt.timeTakenSeconds % 60}s
+                                  </td>
+                                  <td className="p-4 text-slate-500 font-mono text-[11px]">
+                                    {new Date(attempt.completedAt).toLocaleString()}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
+            </div>
+          )}
 
           {/* TAB 3: LEADERBOARD */}
           {hubTab === "leaderboard" && (
@@ -1193,12 +1200,18 @@ export default function PracticeHub() {
                       </div>
                       <div className="divide-y divide-slate-150">
                         {filtered.map((item, index) => {
-                          const isMe = item.userId === currentUser?.id;
+                          const guestObj = JSON.parse(localStorage.getItem("aaa_guest_user") || "{}");
+                          const activeEmail = (currentUser?.email || guestObj.email || "").toLowerCase().trim();
+                          const isMe = Boolean(
+                            activeEmail &&
+                              ((item.userEmail && item.userEmail.toLowerCase().trim() === activeEmail) ||
+                                (item.userId && item.userId.toLowerCase().trim() === activeEmail))
+                          );
                           return (
                             <div
                               key={index}
                               className={`flex items-center justify-between p-4 transition-colors text-xs font-medium text-slate-700 ${
-                                isMe ? "bg-amber-50/50 border-y-2 border-amber-350 font-bold" : "hover:bg-slate-50"
+                                isMe ? "bg-amber-100/70 border-y-2 border-amber-400 font-bold" : "hover:bg-slate-50"
                               }`}
                             >
                               <div className="flex items-center gap-4">
@@ -1217,11 +1230,9 @@ export default function PracticeHub() {
                                   <span className={`text-slate-900 ${isMe ? "font-black" : ""}`}>
                                     {item.userName} {isMe && <span className="bg-amber-400 text-slate-900 text-[9px] font-black px-1.5 py-0.5 rounded-md ml-1.5 uppercase">You</span>}
                                   </span>
-                                  {isAdmin && (
-                                    <span className="text-[10px] font-mono text-vibrant-teal font-bold block">
-                                      {item.userEmail || item.userId}
-                                    </span>
-                                  )}
+                                  <span className="text-[10px] font-mono text-slate-500 font-bold block">
+                                    {item.userEmail || item.userId}
+                                  </span>
                                 </div>
                               </div>
 

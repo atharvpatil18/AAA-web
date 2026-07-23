@@ -162,12 +162,16 @@ export default function PracticeSession() {
       questions: questionSet.questions,
     };
 
-    // Store in global attempts DB and sync across mobile/desktop via student email
+    // Store in global attempts DB and sync across mobile/desktop via student email or guest email
+    const guestObj = JSON.parse(localStorage.getItem("aaa_guest_user") || "{}");
+    const activeEmail = (currentUser?.email || guestObj.email || "guest_visitor@arnavabacus.com").toLowerCase().trim();
+    const activeName = currentUser?.name || guestObj.name || (activeEmail.includes("@") ? activeEmail.split("@")[0] : "Guest Candidate");
+
     const attemptRecord = {
       ...resultPayload,
-      userId: currentUser?.id || "guest",
-      userName: currentUser?.name || "Guest Student",
-      userEmail: currentUser?.email || "guest@arnavabacus.com",
+      userId: currentUser?.id || activeEmail,
+      userName: activeName,
+      userEmail: activeEmail,
     };
     saveStudentAttempt(attemptRecord);
 
