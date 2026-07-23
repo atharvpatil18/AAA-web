@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { ABACUS_QUESTION_SETS, VEDIC_QUESTION_SETS } from "../data/practiceData";
 import { PracticeCategory, PracticeMode, QuestionCountChoice } from "../types";
-import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Calendar, ShieldCheck, ListOrdered, AlertCircle, ChevronDown, ChevronUp, Lock, Shield, Key } from "lucide-react";
+import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Users, Calendar, ShieldCheck, ListOrdered, AlertCircle, ChevronDown, ChevronUp, Lock, Shield, Key } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 import { syncStudentAttempts } from "../lib/cloudSync";
 import VedicLearningModal from "../components/VedicLearningModal";
@@ -251,6 +251,7 @@ export default function PracticeHub() {
   const [activeCategory, setActiveCategory] = useState<PracticeCategory>("abacus");
   const [selectedMode, setSelectedMode] = useState<PracticeMode>("exam");
   const [selectedCount, setSelectedCount] = useState<QuestionCountChoice>(20);
+  const [ageFilter, setAgeFilter] = useState<"all" | "junior" | "senior">("all");
   const [hubTab, setHubTab] = useState<"sets" | "performance" | "leaderboard" | "admin">("sets");
   const [selectedSetLeaderboard, setSelectedSetLeaderboard] = useState<string>("abacus-jr1-direct-2row");
   const [attemptsList, setAttemptsList] = useState<any[]>([]);
@@ -724,20 +725,62 @@ export default function PracticeHub() {
                 </button>
               </div>
 
-              {/* Question Sets Grouped by Level */}
+              {/* Question Sets Grouped by Level with Age Group Filters (Ages 4-8 & Ages 9-14) */}
               <div>
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                {/* Kid-Friendly Age Group & Topic Header Bar */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 bg-slate-100 p-3.5 rounded-2xl border border-slate-200 shadow-xs">
+                  <div className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-vibrant-orange" />
-                    {activeCategory === "vedic" ? "Vedic Math Topics (JVM-1 & Advanced)" : "Abacus Level-Wise Sets"} ({currentSets.length})
-                  </h2>
-                  <span className="text-xs text-slate-500 font-medium hidden sm:inline">
-                    Selected: <span className="font-bold text-slate-800">{selectedCount} Questions</span> per set
-                  </span>
+                    <h2 className="text-lg font-black text-slate-900">
+                      {activeCategory === "vedic" ? "Vedic Math Level Curriculum" : "Abacus Level Curriculum"}
+                    </h2>
+                    <span className="text-xs font-bold text-slate-700 bg-white px-2.5 py-0.5 rounded-full border border-slate-200">
+                      {currentSets.length} Sets
+                    </span>
+                  </div>
+
+                  {/* Age Group Filter Tabs for Kids Aged 4-14 Years */}
+                  <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-300 shadow-xs w-full sm:w-auto overflow-x-auto">
+                    <span className="text-[11px] font-black text-slate-700 uppercase px-2 tracking-wider flex items-center gap-1">
+                      <Users className="w-3.5 h-3.5 text-vibrant-orange" /> Age Filter:
+                    </span>
+                    <button
+                      onClick={() => setAgeFilter("all")}
+                      className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                        ageFilter === "all"
+                          ? "bg-slate-900 text-white shadow-xs"
+                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      }`}
+                    >
+                      🌈 All Levels (4-14 Yrs)
+                    </button>
+                    <button
+                      onClick={() => setAgeFilter("junior")}
+                      className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                        ageFilter === "junior"
+                          ? "bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-xs font-black"
+                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      }`}
+                    >
+                      👧👦 Junior (Ages 4–8)
+                    </button>
+                    <button
+                      onClick={() => setAgeFilter("senior")}
+                      className={`px-3 py-1 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                        ageFilter === "senior"
+                          ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-xs"
+                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      }`}
+                    >
+                      🎓⚡ Senior (Ages 9–14)
+                    </button>
+                  </div>
                 </div>
 
                 {(() => {
-                  // Group sets by level (e.g. JR-2, JR-3, SR-1, JVM-1, Level 1)
+                  const isJuniorLevelName = (lvl: string) => ["JR-0", "JR-1", "JR-2", "JR-3", "JVM-1"].includes(lvl);
+
+                  // Group sets by level
                   const groupedSets = currentSets.reduce((acc, set) => {
                     const lvl = set.level || "General";
                     if (!acc[lvl]) acc[lvl] = [];
@@ -745,82 +788,112 @@ export default function PracticeHub() {
                     return acc;
                   }, {} as Record<string, typeof currentSets>);
 
-                    return Object.entries(groupedSets).map(([levelName, sets]) => {
-                      const isExpanded = expandedLevels[levelName] ?? false;
-                      const lvlInfo = ABACUS_LEVEL_INFO[levelName];
-                      const theme = LEVEL_THEMES[levelName] || {
-                        gradient: "from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-orange-700",
-                        badgeColor: "bg-orange-950/60 text-orange-200 border-orange-400/40",
-                        tagIcon: "⚡",
-                        rankBadge: "PRACTICE LEVEL",
-                      };
+                  const filteredEntries = Object.entries(groupedSets).filter(([levelName]) => {
+                    if (ageFilter === "junior") return isJuniorLevelName(levelName);
+                    if (ageFilter === "senior") return !isJuniorLevelName(levelName);
+                    return true;
+                  });
 
-                      const quizAccess = checkUserAccess(currentUser?.email, activeCategory, levelName, "quiz");
-                      const learnAccess = checkUserAccess(currentUser?.email, activeCategory, levelName, "learn");
-                      const isLevelAssigned = quizAccess.isLevelAllowed || learnAccess.isLevelAllowed;
+                  if (filteredEntries.length === 0) {
+                    return (
+                      <div className="p-8 text-center bg-white rounded-3xl border border-slate-200 text-slate-500 text-sm font-semibold">
+                        No levels found for the selected age filter. Switch to <strong>All Levels</strong> to view available sets.
+                      </div>
+                    );
+                  }
 
-                      return (
-                        <div key={levelName} className="mb-6">
-                          {/* Collapsible Level Group Header Banner */}
-                          <div
-                            onClick={() => toggleLevel(levelName)}
-                            className={`bg-gradient-to-r ${theme.gradient} text-white p-4 sm:p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between shadow-lg border border-white/20 cursor-pointer transition-all duration-200 active:scale-[0.99] gap-3.5`}
-                          >
-                            <div className="flex items-start sm:items-center gap-3.5">
-                              <div className="bg-white/15 p-3 rounded-xl backdrop-blur-md border border-white/20 shadow-inner flex items-center justify-center shrink-0">
-                                <span className="text-xl">{theme.tagIcon}</span>
-                              </div>
+                  return filteredEntries.map(([levelName, sets]) => {
+                    const isJunior = isJuniorLevelName(levelName);
+                    // Default to expanded for active kid view
+                    const isExpanded = expandedLevels[levelName] ?? true;
+                    const lvlInfo = ABACUS_LEVEL_INFO[levelName];
+                    const theme = LEVEL_THEMES[levelName] || {
+                      gradient: "from-orange-500 via-amber-500 to-orange-600 hover:from-orange-600 hover:to-orange-700",
+                      badgeColor: "bg-orange-950/60 text-orange-200 border-orange-400/40",
+                      tagIcon: "⚡",
+                      rankBadge: "PRACTICE LEVEL",
+                    };
 
-                              <div className="flex flex-col gap-1">
-                                {/* Title Row with Rank Badge & Access Status */}
-                                <div className="flex items-center gap-2 flex-wrap">
-                                  <h3 className="font-black text-lg sm:text-xl tracking-tight text-white flex items-center gap-2 drop-shadow-sm">
-                                    LEVEL {levelName}
-                                  </h3>
-                                  <span className={`text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-md border ${theme.badgeColor}`}>
-                                    {theme.rankBadge}
-                                  </span>
-                                  {currentUser && !isLevelAssigned && (
-                                    <span className="bg-red-950/90 text-red-200 border border-red-500/50 text-[10px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-md flex items-center gap-1 shadow-sm">
-                                      <Lock className="w-3 h-3 text-red-400" /> LOCKED - NOT ASSIGNED
-                                    </span>
-                                  )}
-                                </div>
+                    const quizAccess = checkUserAccess(currentUser?.email, activeCategory, levelName, "quiz");
+                    const learnAccess = checkUserAccess(currentUser?.email, activeCategory, levelName, "learn");
+                    const isLevelAssigned = quizAccess.isLevelAllowed || learnAccess.isLevelAllowed;
 
-                                {/* Focus Area Pill */}
-                                {lvlInfo && (
-                                  <div className="flex items-center gap-1.5 text-xs text-white/90 font-medium flex-wrap">
-                                    <span className="font-bold text-amber-200">🎯 Focus:</span>
-                                    <span className="bg-black/20 text-white font-bold px-2.5 py-0.5 rounded-md backdrop-blur-xs border border-white/15">
-                                      {lvlInfo.primaryFocus}
-                                    </span>
-                                  </div>
-                                )}
+                    return (
+                      <div key={levelName} className="mb-8">
+                        {/* Collapsible Level Group Header Banner with Kid Age Indicators */}
+                        <div
+                          onClick={() => toggleLevel(levelName)}
+                          className={`bg-gradient-to-r ${theme.gradient} text-white p-5 rounded-3xl flex flex-col md:flex-row md:items-center justify-between shadow-xl border-2 border-white/20 cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.005] active:scale-[0.995] gap-4 relative overflow-hidden`}
+                        >
+                          {/* Background Glow Sphere */}
+                          <div className="absolute -right-10 -bottom-10 w-36 h-36 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
 
-                                {/* Concise Unique Topics Line */}
-                                {lvlInfo && (
-                                  <p className="text-xs text-white/90 font-medium leading-normal flex items-center gap-1.5 flex-wrap">
-                                    <span className="font-bold text-yellow-300">📌 Topics:</span>
-                                    <span className="text-white font-semibold">{lvlInfo.uniqueTopics}</span>
-                                  </p>
-                                )}
-                              </div>
+                          <div className="flex items-start sm:items-center gap-4 relative z-10">
+                            <div className="bg-white/20 p-3.5 rounded-2xl backdrop-blur-md border border-white/30 shadow-inner flex items-center justify-center shrink-0 text-2xl">
+                              {theme.tagIcon}
                             </div>
 
-                            {/* Right Side Action Button */}
-                            <div className="flex items-center justify-between md:justify-end gap-3 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/15">
-                              <span className="bg-white/20 hover:bg-white/30 text-white text-xs font-black px-4 py-2 rounded-xl backdrop-blur-md border border-white/30 shadow-xs flex items-center gap-1.5">
-                                <span>{sets.length} Topics</span>
-                                <span className="text-amber-300 font-bold">•</span>
-                                <span className="text-amber-200">{isExpanded ? "Collapse" : "Explore"}</span>
-                              </span>
-                              <span className="bg-white/20 p-2 rounded-xl border border-white/30 shadow-xs">
-                                {isExpanded ? <ChevronUp className="w-5 h-5 text-white" /> : <ChevronDown className="w-5 h-5 text-white" />}
-                              </span>
+                            <div className="flex flex-col gap-1.5">
+                              {/* Title Row with Age Badge & Access Status */}
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <h3 className="font-black text-xl sm:text-2xl tracking-tight text-white flex items-center gap-2 drop-shadow-sm font-display">
+                                  LEVEL {levelName}
+                                </h3>
+
+                                <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-lg border ${theme.badgeColor} shadow-xs`}>
+                                  {theme.rankBadge}
+                                </span>
+
+                                {/* Age Badge */}
+                                <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg shadow-xs flex items-center gap-1 border ${
+                                  isJunior
+                                    ? "bg-amber-400 text-slate-950 border-amber-300"
+                                    : "bg-purple-900/80 text-purple-200 border-purple-400/50"
+                                }`}>
+                                  {isJunior ? "👧👦 AGES 4–8 YRS (JUNIOR STAR)" : "🎓⚡ AGES 9–14 YRS (SENIOR CHAMPION)"}
+                                </span>
+
+                                {currentUser && !isLevelAssigned && (
+                                  <span className="bg-red-950/90 text-red-200 border border-red-500/50 text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+                                    <Lock className="w-3.5 h-3.5 text-red-400" /> LOCKED - NOT ASSIGNED
+                                  </span>
+                                )}
+                              </div>
+
+                              {/* Focus Area Pill */}
+                              {lvlInfo && (
+                                <div className="flex items-center gap-2 text-xs text-white/90 font-medium flex-wrap">
+                                  <span className="font-bold text-amber-200">🎯 Learning Goal:</span>
+                                  <span className="bg-black/25 text-white font-extrabold px-3 py-0.5 rounded-lg backdrop-blur-xs border border-white/20">
+                                    {lvlInfo.primaryFocus}
+                                  </span>
+                                </div>
+                              )}
+
+                              {/* Unique Topics Summary */}
+                              {lvlInfo && (
+                                <p className="text-xs text-white/90 font-medium leading-relaxed flex items-center gap-1.5 flex-wrap">
+                                  <span className="font-bold text-yellow-300">📌 Covered Formulae & Topics:</span>
+                                  <span className="text-white font-semibold bg-white/10 px-2 py-0.5 rounded-md backdrop-blur-xs">{lvlInfo.uniqueTopics}</span>
+                                </p>
+                              )}
                             </div>
                           </div>
 
-                        {/* Expandable Sets Grid */}
+                          {/* Right Side Control Pills */}
+                          <div className="flex items-center justify-between md:justify-end gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-white/20 relative z-10">
+                            <span className="bg-white/20 hover:bg-white/30 text-white text-xs font-black px-4 py-2 rounded-2xl backdrop-blur-md border border-white/30 shadow-xs flex items-center gap-1.5">
+                              <span>{sets.length} Practice Topics</span>
+                              <span className="text-amber-300 font-bold">•</span>
+                              <span className="text-amber-200">{isExpanded ? "Hide Sets" : "View Sets"}</span>
+                            </span>
+                            <span className="bg-white/20 p-2.5 rounded-2xl border border-white/30 shadow-xs">
+                              {isExpanded ? <ChevronUp className="w-5 h-5 text-white" /> : <ChevronDown className="w-5 h-5 text-white" />}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Expandable Topics Grid for Kids Aged 4 to 14 Years */}
                         {isExpanded && (
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                             {sets.map((set) => {
@@ -851,88 +924,99 @@ export default function PracticeHub() {
                                   key={set.id}
                                   className={
                                     isOverallSet
-                                      ? "bg-gradient-to-br from-amber-500/10 via-amber-50/60 to-orange-500/10 border-2 border-amber-400 hover:border-amber-500 rounded-2xl p-6 transition-all hover:shadow-2xl flex flex-col justify-between group relative overflow-hidden ring-2 ring-amber-400/30"
-                                      : "bg-white border-2 border-slate-200 hover:border-vibrant-orange/60 rounded-2xl p-6 transition-all hover:shadow-xl flex flex-col justify-between group relative overflow-hidden"
+                                      ? "bg-gradient-to-br from-amber-500/15 via-amber-50/80 to-orange-500/15 border-3 border-amber-400 hover:border-amber-500 rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl flex flex-col justify-between group relative overflow-hidden ring-4 ring-amber-400/20"
+                                      : "bg-white border-2 border-slate-200 hover:border-vibrant-orange rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl flex flex-col justify-between group relative overflow-hidden"
                                   }
                                 >
-                                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-amber-400/20 via-orange-400/10 to-transparent rounded-bl-full pointer-events-none"></div>
+                                  {/* Decorative Card Accent */}
+                                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-400/20 via-orange-400/10 to-transparent rounded-bl-full pointer-events-none"></div>
 
                                   <div>
-                                    <div className="flex justify-between items-center mb-3 flex-wrap gap-1">
+                                    {/* Topic Header Badge Bar */}
+                                    <div className="flex justify-between items-center mb-3 flex-wrap gap-1.5">
                                       <span
                                         className={
                                           isOverallSet
-                                            ? "bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 text-xs font-black px-3 py-1 rounded-lg uppercase tracking-wider shadow-sm flex items-center gap-1 border border-amber-300"
-                                            : "bg-orange-100 text-orange-900 text-xs font-black px-3 py-1 rounded-lg uppercase tracking-wider border border-orange-200"
+                                            ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 text-xs font-black px-3 py-1 rounded-xl uppercase tracking-wider shadow-sm flex items-center gap-1 border border-amber-300 animate-pulse"
+                                            : "bg-orange-100 text-orange-950 text-xs font-black px-3 py-1 rounded-xl uppercase tracking-wider border border-orange-200 flex items-center gap-1"
                                         }
                                       >
-                                        {isOverallSet ? `🏆 ${set.level}-OVERALL` : set.level}
+                                        {isOverallSet ? `🏆 ${set.level}-OVERALL GRAND QUIZ` : `🧮 LEVEL ${set.level}`}
                                       </span>
-                                      <span className="flex items-center gap-1 text-xs text-slate-700 font-bold bg-white/80 backdrop-blur-xs px-2.5 py-1 rounded-md border border-slate-200">
+
+                                      <span className="flex items-center gap-1 text-xs text-slate-800 font-extrabold bg-slate-100 px-3 py-1 rounded-xl border border-slate-200 shadow-2xs">
                                         <Clock className="w-3.5 h-3.5 text-vibrant-orange" />
                                         {timerText} ({effectiveQCount} Qs)
                                       </span>
                                     </div>
 
+                                    {/* Topic Title */}
                                     <h3
                                       className={
                                         isOverallSet
-                                          ? "font-black text-slate-950 text-base leading-snug group-hover:text-amber-700 transition-colors mb-2"
-                                          : "font-black text-slate-900 text-base leading-snug group-hover:text-vibrant-orange transition-colors mb-2"
+                                          ? "font-black text-slate-950 text-base sm:text-lg leading-snug group-hover:text-amber-700 transition-colors mb-2 font-display"
+                                          : "font-black text-slate-900 text-base sm:text-lg leading-snug group-hover:text-vibrant-orange transition-colors mb-2 font-display"
                                       }
                                     >
                                       {set.title}
                                     </h3>
-                                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-4">
+
+                                    {/* Topic Description */}
+                                    <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-4 font-medium">
                                       {set.description}
                                     </p>
                                   </div>
 
-                                  <div className="pt-4 border-t border-slate-200/80 flex items-center justify-between gap-2">
-                                    <span className="text-xs font-semibold text-slate-600 truncate">
-                                      Topic: <span className="text-slate-900 font-bold">{set.topic}</span>
+                                  {/* Topic Footer & Action Buttons for Kids */}
+                                  <div className="pt-4 border-t border-slate-200/80 flex items-center justify-between gap-2 flex-wrap">
+                                    <span className="text-xs font-extrabold text-slate-700 truncate max-w-[130px] sm:max-w-[160px]" title={set.topic}>
+                                      📌 <span className="text-slate-950">{set.topic}</span>
                                     </span>
+
                                     <div className="flex items-center gap-2 shrink-0">
+                                      {/* Concept Lesson Button */}
                                       <button
                                         onClick={() => {
                                           if (!canLearn) return;
                                           setLearningModalState({
                                             isOpen: true,
                                             topicTitle: set.title,
-                                            topicId: set.id,
+                                            topicId: set.topic,
                                             setIdToStart: set.id,
-                                            category: set.category,
+                                            category: activeCategory,
                                             level: set.level,
                                           });
                                         }}
                                         disabled={!canLearn}
-                                        className={
+                                        className={`px-3 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer ${
                                           canLearn
-                                            ? "bg-purple-100 hover:bg-purple-200 text-purple-900 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 transition cursor-pointer border border-purple-300 shadow-xs"
-                                            : "bg-slate-100 text-slate-400 text-xs font-bold px-3 py-2 rounded-xl flex items-center gap-1.5 border border-slate-200 cursor-not-allowed opacity-60"
-                                        }
-                                        title={canLearn ? "Learn Concept & Rules" : learnAccess.reason || "Learn mode restricted"}
+                                            ? "bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-300 shadow-xs hover:scale-105 active:scale-95"
+                                            : "bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-50"
+                                        }`}
+                                        title={canLearn ? "View Lesson & Concept Formulas" : "Lesson Locked"}
                                       >
-                                        {canLearn ? <BookOpen className="w-3.5 h-3.5 text-purple-700" /> : <Lock className="w-3.5 h-3.5 text-slate-400" />}
-                                        Learn
+                                        <BookOpen className="w-3.5 h-3.5 text-amber-600" />
+                                        <span>Learn</span>
                                       </button>
+
+                                      {/* Start Quiz Practice Button */}
                                       <button
                                         onClick={() => {
                                           if (!canQuiz) return;
                                           handleStartSet(set.id);
                                         }}
                                         disabled={!canQuiz}
-                                        className={
+                                        className={`px-4 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all cursor-pointer ${
                                           canQuiz
                                             ? isOverallSet
-                                              ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-xs px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer border border-amber-400"
-                                              : "bg-vibrant-teal hover:bg-vibrant-teal/90 text-white text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer"
-                                            : "bg-slate-200 text-slate-400 text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 cursor-not-allowed border border-slate-300 opacity-60"
-                                        }
-                                        title={canQuiz ? "Start Quiz Session" : quizAccess.reason || "Quiz mode restricted"}
+                                              ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 border border-amber-300 shadow-md hover:scale-105 active:scale-95 font-black"
+                                              : "bg-gradient-to-r from-vibrant-orange to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-md hover:scale-105 active:scale-95 font-black"
+                                            : "bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-50"
+                                        }`}
+                                        title={canQuiz ? "Start Practice Quiz" : "Quiz Access Locked"}
                                       >
-                                        {canQuiz ? <ArrowRight className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5 text-slate-400" />}
-                                        {canQuiz ? `Start ${effectiveQCount} Qs` : "Quiz Locked"}
+                                        {canQuiz ? <Rocket className="w-3.5 h-3.5 fill-current" /> : <Lock className="w-3.5 h-3.5" />}
+                                        <span>{canQuiz ? "Start Quiz" : "Locked"}</span>
                                       </button>
                                     </div>
                                   </div>
