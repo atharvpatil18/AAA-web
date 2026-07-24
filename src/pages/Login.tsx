@@ -271,7 +271,7 @@ export default function Login() {
           </p>
         </div>
 
-        {/* Out-of-the-Box Local Pointer Banner (CUT FROM TOP & DISPLAYED HERE POINTING TO FREE GUEST TRIAL) */}
+        {/* Out-of-the-Box Local Pointer Banner (POINTING DIRECTLY TO FREE GUEST PRACTICE TRIAL TOGGLE) */}
         {isLocal && (
           <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 text-slate-950 border-b border-amber-300 relative overflow-hidden group shadow-inner">
             {/* Background glow pointer accent */}
@@ -311,14 +311,25 @@ export default function Login() {
               </button>
             </div>
 
-            <p className="text-[10px] font-extrabold text-slate-900/90 mt-2 pt-2 border-t border-slate-950/10 flex items-center justify-between flex-wrap gap-1 relative z-10">
-              <span>
+            <div className="mt-2 pt-2 border-t border-slate-950/10 flex items-center justify-between flex-wrap gap-1 relative z-10">
+              <p className="text-[10px] font-extrabold text-slate-900/90">
                 🏆 <strong className="font-black">Arnav Abacus Academy (Wakad, Pune, India)</strong> — Best Abacus & Vedic Maths Brain Development
-              </span>
-              <span className="text-[9px] font-black bg-slate-950/10 px-2 py-0.5 rounded text-slate-950">
-                📍 Wakad Center • Instant Rank
-              </span>
-            </p>
+              </p>
+              
+              {/* Dynamic Animated Pointer Label pointing directly down to the Free Guest Practice Trial button */}
+              <button
+                type="button"
+                onClick={() => {
+                  setAuthMode("guest");
+                  setError(null);
+                }}
+                className="bg-slate-950 hover:bg-slate-900 text-amber-300 border-2 border-amber-400 text-[10px] font-black px-3 py-1 rounded-full shadow-xl animate-bounce flex items-center gap-1 cursor-pointer transition-all hover:scale-105"
+              >
+                <Flame className="w-3 h-3 text-orange-400 fill-orange-400 animate-pulse" />
+                <span>👇 CLICK BELOW FOR FREE GUEST DRILL (NO OTP)</span>
+                <ArrowDown className="w-3 h-3 text-amber-300 animate-bounce" />
+              </button>
+            </div>
           </div>
         )}
 
@@ -340,16 +351,8 @@ export default function Login() {
             Student Login (OTP)
           </button>
 
-          {/* Flashing Callout & Arrow Container for Free Guest Practice Trial */}
+          {/* Target Button for Free Guest Practice Trial */}
           <div className="relative flex-1">
-            {authMode === "student" && (
-              <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex items-center gap-1 bg-slate-950 text-amber-300 border-2 border-amber-400 text-[9px] font-black px-2.5 py-0.5 rounded-full shadow-2xl animate-bounce tracking-wider whitespace-nowrap">
-                <Flame className="w-3 h-3 text-orange-400 fill-orange-400 animate-pulse" />
-                <span>CLICK HERE (NO OTP)</span>
-                <ArrowDown className="w-3 h-3 text-amber-300 animate-bounce" />
-              </div>
-            )}
-
             <button
               type="button"
               onClick={() => {
