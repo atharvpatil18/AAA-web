@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { getCustomizedSet } from "../data/practiceData";
 import { UserAnswer, PracticeMode, Question } from "../types";
-import { Flag, ArrowLeft, ArrowRight, Clock, CheckCircle, HelpCircle, LayoutGrid, Sparkles, Trophy, Zap, Flame, Smile, Check, ChevronDown, ChevronUp } from "lucide-react";
+import { Flag, ArrowLeft, ArrowRight, Clock, CheckCircle, HelpCircle, LayoutGrid, Sparkles, Trophy, Zap, Flame, Smile, Check, ChevronDown, ChevronUp, Rocket } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 import SorobanQuizBeadCanvas from "../components/SorobanQuizBeadCanvas";
 import { saveStudentAttempt, saveVisitorFeedback } from "../lib/cloudSync";
