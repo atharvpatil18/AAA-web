@@ -62,13 +62,72 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+// Global Error Boundary to prevent blank white screens on runtime errors
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error: Error | null }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error("Uncaught application error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+          <div className="bg-white border-2 border-amber-300 rounded-3xl p-8 max-w-md w-full text-center shadow-xl space-y-4">
+            <div className="bg-amber-100 text-amber-900 p-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2">
+              ⚡ Arnav Abacus Practice Gateway
+            </div>
+            <h3 className="text-lg font-black text-slate-900">
+              Practice Session Ready to Reload
+            </h3>
+            <p className="text-xs text-slate-600 font-medium leading-relaxed">
+              We updated practice modules with dynamic calculations. Click below to refresh your session immediately.
+            </p>
+            <button
+              onClick={() => {
+                this.setState({ hasError: false, error: null });
+                window.location.reload();
+              }}
+              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-black py-3 rounded-xl text-xs transition-all shadow-md cursor-pointer uppercase tracking-tight"
+            >
+              Reload Practice Gateway
+            </button>
+            <button
+              onClick={() => {
+                window.location.href = "/#/login";
+                window.location.reload();
+              }}
+              className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs transition-all cursor-pointer"
+            >
+              Open Free Guest Practice
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <Router>
-          <ScrollToTop />
-          <div className="flex flex-col min-h-screen bg-slate-50 font-sans antialiased text-gray-800">
+    <ErrorBoundary>
+      <LanguageProvider>
+        <AuthProvider>
+          <Router>
+            <ScrollToTop />
+            <div className="flex flex-col min-h-screen bg-slate-50 font-sans antialiased text-gray-800">
           
           {/* Sticky Header with alert bar and links */}
           <Navbar />
@@ -108,6 +167,7 @@ export default function App() {
       </Router>
     </AuthProvider>
   </LanguageProvider>
+  </ErrorBoundary>
   );
 }
 

@@ -18,7 +18,9 @@ export default function Login() {
   const redirectTo = searchParams.get("redirect") || "/practice";
 
   // Mode Toggle State ("student" for OTP login, "guest" for free sample practice drills)
-  const [authMode, setAuthMode] = useState<"student" | "guest">("student");
+  const [authMode, setAuthMode] = useState<"student" | "guest">(() => {
+    return searchParams.get("redirect") ? "guest" : "student";
+  });
 
   // Registered Student Form inputs
   const [userName, setUserName] = useState("");
