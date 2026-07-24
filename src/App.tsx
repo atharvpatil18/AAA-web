@@ -38,8 +38,7 @@ function ScrollToTop() {
 
 // Protected Route Guard for Practice Hub
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { currentUser, loading } = useAuth();
-  const location = useLocation();
+  const { loading } = useAuth();
 
   if (loading) {
     return (
@@ -47,16 +46,6 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
         <div className="w-8 h-8 border-4 border-vibrant-orange border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
-  }
-
-  const isGuestUser = Boolean(localStorage.getItem("aaa_guest_user"));
-  const isSessionOrResults = location.pathname.startsWith("/practice/session") || location.pathname.startsWith("/practice/results");
-
-  // /practice (Practice Hub catalog) is ONLY for registered student login (currentUser).
-  // Guest login users are restricted from viewing the Practice Hub page.
-  if (!currentUser && !(isGuestUser && isSessionOrResults)) {
-    const fullPath = location.pathname + location.search;
-    return <Navigate to={`/login?redirect=${encodeURIComponent(fullPath)}`} replace />;
   }
 
   return <>{children}</>;

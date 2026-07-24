@@ -244,10 +244,6 @@ const LEVEL_THEMES: Record<string, { gradient: string; badgeColor: string; tagIc
 export default function PracticeHub() {
   const { currentUser } = useAuth();
 
-  if (!currentUser) {
-    return <Navigate to="/login" replace />;
-  }
-
   const [activeCategory, setActiveCategory] = useState<PracticeCategory>("abacus");
   const [selectedMode, setSelectedMode] = useState<PracticeMode>("exam");
   const [selectedCount, setSelectedCount] = useState<QuestionCountChoice>(20);
@@ -260,6 +256,13 @@ export default function PracticeHub() {
   // Guest Gateway states
   const [isGuestGatewayOpen, setIsGuestGatewayOpen] = useState(false);
   const [guestInitialSetId, setGuestInitialSetId] = useState("abacus-sr1-single-direct-5-6row");
+
+  // Auto-open free guest practice gateway for non-logged-in visitors
+  useEffect(() => {
+    if (!currentUser && !localStorage.getItem("aaa_guest_user")) {
+      setIsGuestGatewayOpen(true);
+    }
+  }, [currentUser]);
 
   // Access Control states
   const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
