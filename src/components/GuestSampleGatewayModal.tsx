@@ -116,6 +116,25 @@ export default function GuestSampleGatewayModal({
     }
   };
 
+  const handleShareEmailPdf = async () => {
+    await handleDownloadPdf();
+    const displayName = guestName.trim() || (guestEmail ? guestEmail.split("@")[0] : "Candidate");
+    const subject = encodeURIComponent(`Arnav Abacus Academy Speed Math Practice Worksheet (${selectedQuestionCount} Qs)`);
+    const body = encodeURIComponent(
+      `Hi!\n\nHere is the printable Speed Math Worksheet & Academy Brochure for ${displayName}.\nTopic: ${selectedTopicMode.toUpperCase()} (${selectedQuestionCount} Questions)\n\nAttached is the downloaded PDF file: Arnav_Abacus_Worksheet_${selectedQuestionCount}Qs.pdf.\n\nArnav Abacus Academy • Wakad, Pune\nWhatsApp: +91 90219 24968 | Email: nehaatharv@gmail.com`
+    );
+    window.open(`mailto:${guestEmail || ""}?subject=${subject}&body=${body}`, "_blank");
+  };
+
+  const handleShareWhatsappPdf = async () => {
+    await handleDownloadPdf();
+    const displayName = guestName.trim() || (guestEmail ? guestEmail.split("@")[0] : "Candidate");
+    const text = encodeURIComponent(
+      `📄 *Arnav Abacus Academy - Speed Math Worksheet & Brochure*\n\nCandidate: *${displayName}*\nTopic: *${selectedTopicMode.toUpperCase()} (${selectedQuestionCount} Questions)*\n\nI generated the printable PDF worksheet! Downloaded file: *Arnav_Abacus_Worksheet_${selectedQuestionCount}Qs.pdf*.\n\n📍 Arnav Abacus Academy (Wakad, Pune, India)\nWhatsApp: +91 90219 24968`
+    );
+    window.open(`https://wa.me/?text=${text}`, "_blank");
+  };
+
   const handleFeedbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -423,21 +442,55 @@ export default function GuestSampleGatewayModal({
                 </button>
               )}
 
-              {/* Printable PDF Generator Download Button */}
-              <button
-                type="button"
-                onClick={handleDownloadPdf}
-                disabled={isPdfGenerating}
-                className="w-full py-3.5 px-4 bg-slate-900 hover:bg-slate-800 text-amber-300 font-extrabold text-xs rounded-2xl border border-slate-700 flex items-center justify-center gap-2 transition cursor-pointer shadow-md disabled:opacity-50"
-              >
-                <FileText className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>
-                  {isPdfGenerating
-                    ? "Generating Printable PDF Worksheet..."
-                    : `📄 Download Printable PDF Quiz (${selectedQuestionCount} Qs + Academy Brochure)`}
-                </span>
-                <Download className="w-4 h-4 text-amber-400 shrink-0" />
-              </button>
+              {/* Printable PDF Worksheet Distribution Options */}
+              <div className="p-4 bg-slate-900 text-white rounded-2xl border border-slate-800 space-y-3 shadow-md">
+                <div className="flex items-center justify-between flex-wrap gap-1 border-b border-slate-800 pb-2.5">
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span className="text-xs font-black text-white">
+                      Printable PDF Quiz ({selectedQuestionCount} Qs + Academy Brochure)
+                    </span>
+                  </div>
+                  <span className="bg-amber-500/20 text-amber-300 text-[9px] font-black px-2 py-0.5 rounded-full border border-amber-400/30 uppercase tracking-wider">
+                    PDF HUB
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  {/* 1. Download Option */}
+                  <button
+                    type="button"
+                    onClick={handleDownloadPdf}
+                    disabled={isPdfGenerating}
+                    className="py-3 px-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-black text-xs rounded-xl flex items-center justify-center gap-1.5 shadow transition cursor-pointer disabled:opacity-50"
+                  >
+                    <Download className="w-4 h-4 text-slate-950 shrink-0" />
+                    <span>{isPdfGenerating ? "Generating..." : "Download PDF"}</span>
+                  </button>
+
+                  {/* 2. Share to Email Option */}
+                  <button
+                    type="button"
+                    onClick={handleShareEmailPdf}
+                    disabled={isPdfGenerating}
+                    className="py-3 px-3 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs rounded-xl border border-slate-700 flex items-center justify-center gap-1.5 transition cursor-pointer disabled:opacity-50"
+                  >
+                    <Mail className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>Share Email</span>
+                  </button>
+
+                  {/* 3. Share to WhatsApp Option */}
+                  <button
+                    type="button"
+                    onClick={handleShareWhatsappPdf}
+                    disabled={isPdfGenerating}
+                    className="py-3 px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow flex items-center justify-center gap-1.5 transition cursor-pointer disabled:opacity-50"
+                  >
+                    <MessageSquare className="w-4 h-4 text-white shrink-0" />
+                    <span>Share WhatsApp</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </form>
 
