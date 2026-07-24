@@ -240,6 +240,60 @@ export default function PracticeSession() {
           </div>
         </div>
 
+        {/* Mobile Quick Quiz Navigation Bar (Aligned for Mobile View on Free Guest & All Drills) */}
+        <div className="lg:hidden bg-white border-2 border-slate-200 rounded-2xl p-3 mb-4 shadow-sm space-y-2.5">
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            {/* Timer */}
+            <div className="flex items-center gap-1.5 text-xs font-black text-orange-600 bg-orange-50 px-2.5 py-1 rounded-xl border border-orange-200">
+              <Clock className="w-4 h-4 text-orange-500 shrink-0" />
+              <span>Time Left: {formatTime(timeRemaining)}</span>
+            </div>
+
+            {/* Current Question Progress Badge */}
+            <span className="text-xs font-extrabold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-xl">
+              Q {currentIndex + 1} / {questionSet.questions.length}
+            </span>
+
+            {/* Mobile Submit Button */}
+            <button
+              onClick={() => setShowConfirmModal(true)}
+              className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs px-3 py-1.5 rounded-xl shadow-xs transition active:scale-95 flex items-center gap-1 cursor-pointer"
+            >
+              <span>Submit Attempt</span>
+              <Rocket className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            </button>
+          </div>
+
+          {/* Horizontal Scrollable Question Numbers Bar */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-1 no-scrollbar scroll-smooth">
+            {questionSet.questions.map((q, idx) => {
+              const uAns = userAnswers[q.id];
+              const isCurrent = idx === currentIndex;
+              const isAnswered = uAns?.answer && uAns.answer.trim() !== "";
+              const isFlagged = uAns?.isFlagged;
+
+              return (
+                <button
+                  key={q.id}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`min-w-[38px] h-9 rounded-xl border font-black text-xs transition-all flex items-center justify-center relative cursor-pointer shrink-0 ${
+                    isCurrent
+                      ? "bg-amber-400 border-amber-500 text-slate-950 ring-2 ring-amber-400/50 shadow-sm font-black"
+                      : isAnswered
+                      ? "bg-slate-200 border-slate-300 text-slate-900"
+                      : "bg-white border-slate-300 text-slate-600 hover:bg-slate-100"
+                  }`}
+                >
+                  <span>{idx + 1}</span>
+                  {isFlagged && (
+                    <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-amber-500"></span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Main Quiz View Grid (Mobile Aligned) */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-5 items-start">
           
@@ -439,22 +493,13 @@ export default function PracticeSession() {
 
           </div>
 
-          {/* Right Sidebar: Quiz Navigation Panel (Mobile Responsive & Collapsible for 100/200 Qs) */}
-          <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm flex flex-col justify-between">
+          {/* Right Sidebar: Quiz Navigation Panel (Desktop View) */}
+          <div className="hidden lg:flex bg-white border-2 border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm flex-col justify-between">
             <div>
               <div className="flex items-center justify-between border-b pb-2 mb-3">
                 <h3 className="font-black text-slate-900 text-sm sm:text-base">
                   Quiz navigation
                 </h3>
-
-                {/* Mobile Toggle Button for Grid */}
-                <button
-                  onClick={() => setMobileNavExpanded(!mobileNavExpanded)}
-                  className="lg:hidden text-xs font-bold text-vibrant-orange flex items-center gap-1"
-                >
-                  {mobileNavExpanded ? "Collapse Grid" : "Show All Qs"}
-                  {mobileNavExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                </button>
               </div>
 
               {/* Countdown Timer Bar */}
@@ -475,9 +520,9 @@ export default function PracticeSession() {
                 ></div>
               </div>
 
-              {/* Grid Numbers (Scrollable on mobile/large sets) */}
-              <div className={`max-h-[260px] lg:max-h-[380px] overflow-y-auto pr-1 ${mobileNavExpanded ? "block" : "hidden lg:block"}`}>
-                <div className="grid grid-cols-5 sm:grid-cols-10 lg:grid-cols-5 gap-1.5">
+              {/* Grid Numbers */}
+              <div className="max-h-[380px] overflow-y-auto pr-1">
+                <div className="grid grid-cols-5 gap-1.5">
                   {questionSet.questions.map((q, idx) => {
                     const uAns = userAnswers[q.id];
                     const isCurrent = idx === currentIndex;
