@@ -285,14 +285,14 @@ export default function Login() {
                 <div>
                   <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="bg-slate-950 text-amber-400 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow flex items-center gap-1">
-                      🔥 WAKAD PUNE #1 SPEED MATH TRIAL
+                      🔥 WAKAD PUNE #1 FREE GUEST PRACTICE TRIAL
                     </span>
                     <span className="text-[10px] font-extrabold text-slate-950 bg-white/40 px-2 py-0.5 rounded-md backdrop-blur-xs">
-                      NO OTP REQUIRED
+                      NO OTP REQUIRED • INSTANT FREE GUEST TRIAL
                     </span>
                   </div>
                   <h3 className="text-xs sm:text-sm font-black tracking-tight text-slate-950 mt-0.5">
-                    Test 10X Mental Calculation Speed (100 Qs / 10 Mins)
+                    Test 10X Mental Calculation Speed ({selectedQuestionCount} Qs Speed Drill)
                   </h3>
                 </div>
               </div>
@@ -306,7 +306,7 @@ export default function Login() {
                 className="bg-slate-950 hover:bg-slate-900 text-amber-400 text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-amber-400 shrink-0 group-hover:ring-4 group-hover:ring-amber-400/30"
               >
                 <Zap className="w-3.5 h-3.5 fill-amber-400" />
-                TRY FREE
+                TRY FREE GUEST DRILL
                 <ArrowDown className="w-3.5 h-3.5 animate-bounce text-amber-400" />
               </button>
             </div>
@@ -326,7 +326,7 @@ export default function Login() {
                 className="bg-slate-950 hover:bg-slate-900 text-amber-300 border-2 border-amber-400 text-[10px] font-black px-3 py-1 rounded-full shadow-xl animate-bounce flex items-center gap-1 cursor-pointer transition-all hover:scale-105"
               >
                 <Flame className="w-3 h-3 text-orange-400 fill-orange-400 animate-pulse" />
-                <span>👇 CLICK BELOW FOR FREE GUEST DRILL (NO OTP)</span>
+                <span>👇 CLICK BELOW FOR FREE GUEST PRACTICE TRIAL (NO OTP)</span>
                 <ArrowDown className="w-3 h-3 text-amber-300 animate-bounce" />
               </button>
             </div>
