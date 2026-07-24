@@ -108,7 +108,7 @@ export const generateQuizWorksheetPDF = async (
       doc.setTextColor(124, 58, 237); // Purple accent
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(8.5);
-      doc.text(`🌟 Welcome & Good Luck, ${studentName || "Guest Student"}!`, 13, infoY + 4.2);
+      doc.text(`Welcome & Good Luck, ${studentName || "Guest Student"}!`, 13, infoY + 4.2);
 
       doc.setTextColor(15, 23, 42);
       doc.setFont("Helvetica", "bold");
@@ -136,7 +136,7 @@ export const generateQuizWorksheetPDF = async (
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(255, 255, 255);
-      doc.text("Arnav Abacus Academy • Wakad, Pune, India | Physical & International Online Batches | WhatsApp: +91 90219 24968", 10, 293.5);
+      doc.text("Arnav Abacus Academy - Wakad, Pune, India | Physical & International Online Batches | WhatsApp: +91 90219 24968", 10, 293.5);
     };
 
     // Render Question Cards Grid
@@ -214,7 +214,7 @@ export const generateQuizWorksheetPDF = async (
       doc.setLineWidth(0.3);
       doc.roundedRect(x + 8.5, ansY, colWidth - 11, 4.8, 1, 1, "FD");
 
-      // Evaluation Box (For Correct ✓ or Wrong ✗ Check mark)
+      // Evaluation Box (For Correct or Wrong Check mark)
       const evalY = y + cellHeight - 5;
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(6.5);
@@ -222,13 +222,19 @@ export const generateQuizWorksheetPDF = async (
       doc.text("Eval:", x + 2, evalY + 3);
 
       doc.setDrawColor(203, 213, 225);
-      doc.rect(x + 8.5, evalY, 4, 3.8, "D"); // Checkbox square
-      doc.setFont("Helvetica", "bold");
-      doc.setFontSize(6.5);
-      doc.setTextColor(16, 185, 129); // Green check mark
-      doc.text("✓", x + 14, evalY + 3);
-      doc.setTextColor(239, 68, 68); // Red cross mark
-      doc.text("✗", x + 18, evalY + 3);
+      doc.rect(x + 8.5, evalY, 4, 3.8, "D"); // Checkbox square for teacher score
+
+      // Vector Green Checkmark
+      doc.setDrawColor(16, 185, 129);
+      doc.setLineWidth(0.45);
+      doc.line(x + 14, evalY + 2.2, x + 15.2, evalY + 3.4);
+      doc.line(x + 15.2, evalY + 3.4, x + 17, evalY + 1.2);
+
+      // Vector Red Crossmark
+      doc.setDrawColor(239, 68, 68);
+      doc.setLineWidth(0.45);
+      doc.line(x + 19, evalY + 1.2, x + 21.2, evalY + 3.4);
+      doc.line(x + 19, evalY + 3.4, x + 21.2, evalY + 1.2);
     }
 
     drawFooter();
@@ -288,7 +294,7 @@ export const generateQuizWorksheetPDF = async (
 
     doc.setFont("Helvetica", "oblique");
     doc.setFontSize(8);
-    const welcomeMsg = "\"At AAA, we do not just teach calculations. We inspire deep spatial concentration and visual mastery of numbers to build lifelong academic confidence.\"";
+    const welcomeMsg = '"At AAA, we do not just teach calculations. We inspire deep spatial concentration and visual mastery of numbers to build lifelong academic confidence."';
     doc.text(doc.splitTextToSize(welcomeMsg, 106), 15, hookY + 21.5);
 
     // Founder Info Badge
@@ -462,7 +468,7 @@ export const generateQuizWorksheetPDF = async (
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
-    doc.text("Arnav Abacus Academy • Speed Math Worksheet & Academy Brochure (Ages 4-14)", 12, 294);
+    doc.text("Arnav Abacus Academy - Speed Math Worksheet & Academy Brochure (Ages 4-14)", 12, 294);
 
     doc.save(`Arnav_Abacus_Worksheet_${qCount}Qs.pdf`);
     return true;
