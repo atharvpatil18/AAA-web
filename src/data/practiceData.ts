@@ -5159,6 +5159,27 @@ export function getCustomizedSet(
     }
   }
 
+  if (setId === "abacus-sr-mixed-direct") {
+    for (let i = 0; i < targetCount; i++) {
+      const targetSubSet = i % 2 === 0 ? "abacus-sr1-single-direct-5-6row" : "abacus-sr2-double-direct";
+      const dynamicQ = generateDynamicAbacusQuestion(targetSubSet, i + 1, seed);
+      if (dynamicQ) {
+        expandedQuestions.push({
+          ...dynamicQ,
+          id: i + 1,
+          conceptTag: i % 2 === 0 ? "Single Digit Direct (5-6 Rows)" : "Double Digit Direct (4-5 Rows)",
+        });
+      } else {
+        expandedQuestions.push({
+          id: i + 1,
+          numbers: i % 2 === 0 ? [2, 5, -1, 3] : [24, 15, -12, 30],
+          correctAnswer: i % 2 === 0 ? 9 : 57,
+          conceptTag: i % 2 === 0 ? "Single Digit Direct" : "Double Digit Direct",
+        });
+      }
+    }
+  }
+
   if (expandedQuestions.length === 0) {
     for (let i = 0; i < targetCount; i++) {
       const dynamicQ = generateDynamicAbacusQuestion(setId, i + 1, seed);

@@ -6,9 +6,10 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
-import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield, Zap, Clock, Trophy, MessageSquare, Send, Star, CheckCircle2, Flame, ArrowDown, TrendingUp, Rocket } from "lucide-react";
+import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield, Zap, Clock, Trophy, MessageSquare, Send, Star, CheckCircle2, Flame, ArrowDown, TrendingUp, Rocket, FileText, Download, Lock, AlertTriangle } from "lucide-react";
 import { saveVisitorFeedback } from "../lib/cloudSync";
 import { validateSanitizedEmail, validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
+import { generateQuizWorksheetPDF } from "../lib/quizPdfGenerator";
 
 export default function Login() {
   const { sendEmailOTP, verifyEmailOTP } = useAuth();
@@ -24,13 +25,23 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
 
-  // Guest Mode Form & Drill State
+  // Guest Mode Form, Mode Selectors & Drill State
   const [guestEmail, setGuestEmail] = useState("");
   const [guestName, setGuestName] = useState("");
+  const [selectedQuestionCount, setSelectedQuestionCount] = useState<10 | 20 | 50 | 100 | 200>(10);
+  const [selectedTopicMode, setSelectedTopicMode] = useState<"single" | "double" | "both">("single");
   const [selectedSampleSetId, setSelectedSampleSetId] = useState("abacus-sr1-single-direct-5-6row");
   const [feedbackRating, setFeedbackRating] = useState(5);
   const [feedbackMsg, setFeedbackMsg] = useState("");
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+
+  // Attempt Limit Control (Max 5 attempts allowed)
+  const [attemptCount, setAttemptCount] = useState<number>(() => {
+    const saved = localStorage.getItem("aaa_guest_quiz_attempts");
+    return saved ? parseInt(saved, 10) : 0;
+  });
+
+  const [isPdfGenerating, setIsPdfGenerating] = useState(false);
 
   // UI state
   const [loading, setLoading] = useState(false);
@@ -115,6 +126,12 @@ export default function Login() {
   const handleStartGuestPractice = (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Enforce 5 attempt limit restriction
+    if (attemptCount >= 5) {
+      setError("Maximum free trial attempts reached! You have completed all 5 free guest practice attempts. Please contact Arnav Abacus Academy via WhatsApp (+91 90219 24968) or Email (nehaatharv@gmail.com) for full course enrollment & unlimited access.");
+      return;
+    }
+
     // Security & Anti-Spam / Anti-Vulgarity Validation for Guest Mode
     const emailVal = validateSanitizedEmail(guestEmail);
     if (!emailVal.valid) {
@@ -135,6 +152,11 @@ export default function Login() {
     const cleanEmail = emailVal.sanitized;
     setError(null);
 
+    // Increment attempt count
+    const newAttempts = attemptCount + 1;
+    setAttemptCount(newAttempts);
+    localStorage.setItem("aaa_guest_quiz_attempts", newAttempts.toString());
+
     localStorage.setItem("aaa_guest_user", JSON.stringify({ email: cleanEmail, name: displayName }));
 
     // Automatically record visitor login / inquiry into Admin Feedback Manager
@@ -142,10 +164,39 @@ export default function Login() {
       guestEmail: cleanEmail,
       guestName: displayName,
       rating: 5,
-      message: `⚡ Sample Visitor Practice Access: Started 100 Qs / 10 Mins drill (${selectedSampleSetId}).`,
+      message: `⚡ Sample Visitor Practice Access: Started ${selectedQuestionCount} Qs drill (${selectedSampleSetId}). Attempt ${newAttempts}/5.`,
     });
 
-    navigate(`/practice/session?setId=${selectedSampleSetId}&mode=speed-100-10m&count=100`);
+    navigate(`/practice/session?setId=${selectedSampleSetId}&mode=guest-drill&count=${selectedQuestionCount}`);
+  };
+
+  const handleDownloadPdf = async () => {
+    let displayName = guestEmail ? guestEmail.split("@")[0] : "Guest Student";
+    if (guestName.trim()) {
+      displayName = guestName.trim();
+    }
+
+    const topicTitle =
+      selectedTopicMode === "single"
+        ? "ADD & SUB SINGLE DIGIT DIRECT (4-5-6 ROWS)"
+        : selectedTopicMode === "double"
+        ? "ADD & SUB DOUBLE DIGIT DIRECT (4-5-6 ROWS)"
+        : "ADD & SUB MIXED SINGLE & DOUBLE DIGIT DIRECT (4-5-6 ROWS)";
+
+    setIsPdfGenerating(true);
+    setError(null);
+    try {
+      await generateQuizWorksheetPDF(
+        displayName,
+        selectedSampleSetId,
+        topicTitle,
+        selectedQuestionCount
+      );
+    } catch (err) {
+      setError("Could not generate PDF worksheet. Please try again.");
+    } finally {
+      setIsPdfGenerating(false);
+    }
   };
 
   const handleGuestFeedbackSubmit = async (e: React.FormEvent) => {
@@ -186,6 +237,16 @@ export default function Login() {
     setTimeout(() => setFeedbackSubmitted(false), 5000);
   };
 
+  // Local host environment check to show local practice hooks
+  const isLocal = typeof window !== "undefined" && (
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1" ||
+    window.location.hostname.endsWith(".local") ||
+    window.location.hostname.startsWith("192.168.") ||
+    window.location.hostname.startsWith("10.") ||
+    !!(import.meta as any).env?.DEV
+  );
+
   return (
     <div className="bg-slate-50 min-h-screen py-10 px-4 flex items-center justify-center relative overflow-hidden">
       {/* Decorative Blur Spheres */}
@@ -194,54 +255,8 @@ export default function Login() {
 
       <div className={`w-full ${authMode === "guest" ? "max-w-2xl" : "max-w-md"} bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden relative z-10 transition-all duration-300`}>
         
-        {/* Out-of-the-Box Viral Advertisement & Business SEO Hook Banner */}
-        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 text-slate-950 border-b border-amber-300 relative overflow-hidden">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5">
-              <div className="bg-slate-950 text-amber-400 p-2 rounded-xl shrink-0 shadow-lg animate-pulse">
-                <Flame className="w-5 h-5 fill-amber-400 text-amber-400" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="bg-slate-950 text-amber-400 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow">
-                    🔥 WAKAD PUNE #1 SPEED MATH TRIAL
-                  </span>
-                  <span className="text-[10px] font-extrabold text-slate-950 bg-white/40 px-2 py-0.5 rounded-md backdrop-blur-xs">
-                    NO OTP REQUIRED
-                  </span>
-                </div>
-                <h3 className="text-xs sm:text-sm font-black tracking-tight text-slate-950 mt-0.5">
-                  Test 10X Mental Calculation Speed (100 Qs / 10 Mins)
-                </h3>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                setAuthMode("guest");
-                setError(null);
-              }}
-              className="bg-slate-950 hover:bg-slate-900 text-amber-400 text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-amber-400 shrink-0"
-            >
-              <Zap className="w-3.5 h-3.5 fill-amber-400" />
-              TRY FREE
-              <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
-            </button>
-          </div>
-
-          <p className="text-[10px] font-extrabold text-slate-900/90 mt-2 pt-2 border-t border-slate-950/10 flex items-center justify-between flex-wrap gap-1">
-            <span>
-              🏆 <strong className="font-black">Arnav Abacus Academy (Wakad, Pune, India)</strong> — Best Abacus & Vedic Maths Brain Development
-            </span>
-            <span className="text-[9px] font-black bg-slate-950/10 px-2 py-0.5 rounded text-slate-950">
-              📍 Wakad Center • Instant Rank
-            </span>
-          </p>
-        </div>
-
         {/* Visual Brand Header Banner */}
-        <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white p-6 text-center border-b border-purple-900/40">
+        <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white p-6 text-center border-b border-purple-900/40 relative">
           <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
             {authMode === "student" ? "Academy Student & Parent Portal" : "Free Visitor Sample Practice Gateway"}
@@ -255,6 +270,57 @@ export default function Login() {
               : "Experience 100-question speed drills! Enter email to log in instantly & track live leaderboard rank."}
           </p>
         </div>
+
+        {/* Out-of-the-Box Local Pointer Banner (CUT FROM TOP & DISPLAYED HERE POINTING TO FREE GUEST TRIAL) */}
+        {isLocal && (
+          <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 text-slate-950 border-b border-amber-300 relative overflow-hidden group shadow-inner">
+            {/* Background glow pointer accent */}
+            <div className="absolute -right-10 -top-10 w-32 h-32 bg-yellow-300/30 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform duration-500"></div>
+
+            <div className="flex items-center justify-between gap-3 relative z-10">
+              <div className="flex items-center gap-2.5">
+                <div className="bg-slate-950 text-amber-400 p-2 rounded-xl shrink-0 shadow-lg animate-pulse">
+                  <Flame className="w-5 h-5 fill-amber-400 text-amber-400" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="bg-slate-950 text-amber-400 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow flex items-center gap-1">
+                      🔥 WAKAD PUNE #1 SPEED MATH TRIAL
+                    </span>
+                    <span className="text-[10px] font-extrabold text-slate-950 bg-white/40 px-2 py-0.5 rounded-md backdrop-blur-xs">
+                      NO OTP REQUIRED
+                    </span>
+                  </div>
+                  <h3 className="text-xs sm:text-sm font-black tracking-tight text-slate-950 mt-0.5">
+                    Test 10X Mental Calculation Speed (100 Qs / 10 Mins)
+                  </h3>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setAuthMode("guest");
+                  setError(null);
+                }}
+                className="bg-slate-950 hover:bg-slate-900 text-amber-400 text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-amber-400 shrink-0 group-hover:ring-4 group-hover:ring-amber-400/30"
+              >
+                <Zap className="w-3.5 h-3.5 fill-amber-400" />
+                TRY FREE
+                <ArrowDown className="w-3.5 h-3.5 animate-bounce text-amber-400" />
+              </button>
+            </div>
+
+            <p className="text-[10px] font-extrabold text-slate-900/90 mt-2 pt-2 border-t border-slate-950/10 flex items-center justify-between flex-wrap gap-1 relative z-10">
+              <span>
+                🏆 <strong className="font-black">Arnav Abacus Academy (Wakad, Pune, India)</strong> — Best Abacus & Vedic Maths Brain Development
+              </span>
+              <span className="text-[9px] font-black bg-slate-950/10 px-2 py-0.5 rounded text-slate-950">
+                📍 Wakad Center • Instant Rank
+              </span>
+            </p>
+          </div>
+        )}
 
         {/* Toggle Switch Bar with Dynamic Flashing Callout & Arrow */}
         <div className="p-3 bg-slate-100 border-b border-slate-200 flex gap-2 relative">
@@ -487,104 +553,209 @@ export default function Login() {
                   </div>
                 </div>
 
-                {/* Sample Drills Cards Redesigned for Students (100 Qs / 10 Mins Each Only) */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <label className="block text-xs font-black text-slate-800 uppercase tracking-wider">
-                      Select 100-Question Free Practice Topic <span className="text-amber-600 font-bold">(10 Mins Speed Drill)</span>
-                    </label>
-                    <span className="text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-300">
-                      ⚡ 100 Qs & 10 Mins Only
-                    </span>
+                {/* REDESIGNED MODE 1 & MODE 2 SELECTION ZONE */}
+                <div className="space-y-4 bg-slate-50 border-2 border-slate-200 p-5 rounded-2xl">
+                  
+                  {/* Attempt Limit Counter Bar */}
+                  <div className="flex items-center justify-between bg-amber-500/10 border border-amber-500/30 p-2.5 rounded-xl text-xs flex-wrap gap-2">
+                    <div className="flex items-center gap-2 font-black text-amber-950">
+                      <Flame className="w-4 h-4 text-orange-600 fill-orange-500 animate-pulse" />
+                      <span>FREE GUEST PRACTICE LIMIT</span>
+                    </div>
+                    <div className="flex items-center gap-1.5 font-bold">
+                      <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-black shadow-xs ${
+                        attemptCount >= 5 ? "bg-red-600 text-white animate-bounce" : "bg-slate-900 text-amber-300"
+                      }`}>
+                        {attemptCount} / 5 Attempts Used ({Math.max(0, 5 - attemptCount)} Left)
+                      </span>
+                    </div>
                   </div>
-                  <p className="text-[11px] text-slate-500 font-medium">
-                    🎯 Build high mental math focus, speed & calculation confidence! Your score will rank live on the leaderboard.
-                  </p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
-                    {/* SR-1 Topic 1 Card */}
-                    <div
-                      onClick={() => setSelectedSampleSetId("abacus-sr1-single-direct-5-6row")}
-                      className={`p-4 rounded-2xl border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between relative overflow-hidden group ${
-                        selectedSampleSetId === "abacus-sr1-single-direct-5-6row"
-                          ? "border-amber-500 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-amber-500/15 ring-4 ring-amber-400/25 shadow-lg scale-[1.01]"
-                          : "border-slate-200 bg-white hover:border-amber-400 hover:shadow-md"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="bg-orange-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-lg uppercase tracking-wide flex items-center gap-1 shadow-2xs">
-                          🧮 LEVEL SR-1 • TOPIC 1
-                        </span>
-                        <span className="text-[10px] font-black text-amber-950 bg-amber-100 px-2.5 py-0.5 rounded-lg border border-amber-300 flex items-center gap-1 shadow-2xs">
-                          <Clock className="w-3 h-3 text-orange-600" /> 100 Qs / 10 Mins
-                        </span>
+                  {/* 1st MODE: Number of Questions Selector */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2 flex-wrap gap-1">
+                      <label className="block text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                        <span className="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center font-black text-[10px]">1</span>
+                        Select Question Count (Mode 1):
+                      </label>
+                      <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-md border border-amber-300">
+                        Selected: {selectedQuestionCount} Questions
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-5 gap-2">
+                      {[10, 20, 50, 100, 200].map((count) => (
+                        <button
+                          key={count}
+                          type="button"
+                          onClick={() => setSelectedQuestionCount(count as any)}
+                          className={`py-2.5 px-1.5 rounded-xl text-xs font-black transition-all cursor-pointer border-2 text-center ${
+                            selectedQuestionCount === count
+                              ? "bg-slate-900 text-amber-400 border-slate-900 shadow-md scale-[1.02]"
+                              : "bg-white text-slate-700 border-slate-200 hover:border-amber-400 hover:bg-amber-50/50"
+                          }`}
+                        >
+                          {count} Qs
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 2nd MODE: Topic & Digit Rows Selector */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                        <span className="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center font-black text-[10px]">2</span>
+                        Select Speed Math Topic (Mode 2):
+                      </label>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      {/* Option 1: Single Digit Direct */}
+                      <div
+                        onClick={() => {
+                          setSelectedTopicMode("single");
+                          setSelectedSampleSetId("abacus-sr1-single-direct-5-6row");
+                        }}
+                        className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedTopicMode === "single"
+                            ? "border-amber-500 bg-amber-500/10 ring-2 ring-amber-400/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-amber-300"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-orange-500 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            🧮 SINGLE DIGIT
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-amber-700 transition">
+                            ADD & SUB SINGLE DIGIT DIRECT (4-5-6 ROWS)
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Speed single-digit direct mental calculations.
+                          </p>
+                        </div>
+                        {selectedTopicMode === "single" && (
+                          <span className="mt-2 text-[9px] font-black text-slate-950 bg-amber-400 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
                       </div>
 
-                      <h4 className="font-black text-slate-900 text-sm leading-snug font-display group-hover:text-vibrant-orange transition-colors">
-                        ADD & SUB SINGLE DIGIT DIRECT (5-6 ROWS)
-                      </h4>
+                      {/* Option 2: Double Digit Direct */}
+                      <div
+                        onClick={() => {
+                          setSelectedTopicMode("double");
+                          setSelectedSampleSetId("abacus-sr2-double-direct");
+                        }}
+                        className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedTopicMode === "double"
+                            ? "border-emerald-500 bg-emerald-500/10 ring-2 ring-emerald-400/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-emerald-300"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-emerald-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            🔢 DOUBLE DIGIT
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-emerald-700 transition">
+                            ADD & SUB DOUBLE DIGIT DIRECT (4-5-6 ROWS)
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Master 2-digit direct mental abacus drills.
+                          </p>
+                        </div>
+                        {selectedTopicMode === "double" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-emerald-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
 
-                      <p className="text-[11px] text-slate-600 mt-1 font-medium leading-relaxed">
-                        ⚡ Speed single-digit direct mental abacus calculations across 5 to 6 rows. Build 10X focus & instant bead reflexes!
-                      </p>
-
-                      <div className="mt-3 pt-2 border-t border-slate-200/80 flex items-center justify-between text-[10px] font-extrabold text-amber-800">
-                        <span>🎯 Single Digit Sprint</span>
-                        {selectedSampleSetId === "abacus-sr1-single-direct-5-6row" && (
-                          <span className="bg-amber-500 text-slate-950 px-2 py-0.5 rounded font-black">
+                      {/* Option 3: Both Options (Mixed) */}
+                      <div
+                        onClick={() => {
+                          setSelectedTopicMode("both");
+                          setSelectedSampleSetId("abacus-sr-mixed-direct");
+                        }}
+                        className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedTopicMode === "both"
+                            ? "border-purple-500 bg-purple-500/10 ring-2 ring-purple-400/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-purple-300"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            ⚡ BOTH (MIXED)
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-purple-700 transition">
+                            BOTH SINGLE & DOUBLE DIGIT DIRECT
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Challenge both 1-digit & 2-digit mixed rows.
+                          </p>
+                        </div>
+                        {selectedTopicMode === "both" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-purple-600 px-2 py-0.5 rounded-md self-start shadow-xs">
                             ✓ SELECTED
                           </span>
                         )}
                       </div>
                     </div>
-
-                    {/* SR-2 Topic 1 Card */}
-                    <div
-                      onClick={() => setSelectedSampleSetId("abacus-sr2-double-direct")}
-                      className={`p-4 rounded-2xl border-2 transition-all duration-200 cursor-pointer flex flex-col justify-between relative overflow-hidden group ${
-                        selectedSampleSetId === "abacus-sr2-double-direct"
-                          ? "border-emerald-500 bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-emerald-500/15 ring-4 ring-emerald-400/25 shadow-lg scale-[1.01]"
-                          : "border-slate-200 bg-white hover:border-emerald-400 hover:shadow-md"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="bg-emerald-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-lg uppercase tracking-wide flex items-center gap-1 shadow-2xs">
-                          🔢 LEVEL SR-2 • TOPIC 1
-                        </span>
-                        <span className="text-[10px] font-black text-emerald-950 bg-emerald-100 px-2.5 py-0.5 rounded-lg border border-emerald-300 flex items-center gap-1 shadow-2xs">
-                          <Clock className="w-3 h-3 text-emerald-600" /> 100 Qs / 10 Mins
-                        </span>
-                      </div>
-
-                      <h4 className="font-black text-slate-900 text-sm leading-snug font-display group-hover:text-emerald-700 transition-colors">
-                        ADD & SUB DOUBLE DIGIT DIRECT
-                      </h4>
-
-                      <p className="text-[11px] text-slate-600 mt-1 font-medium leading-relaxed">
-                        🚀 Master 2-digit direct addition & subtraction mental drills. Challenge your brain & reach top leaderboard rank!
-                      </p>
-
-                      <div className="mt-3 pt-2 border-t border-slate-200/80 flex items-center justify-between text-[10px] font-extrabold text-emerald-800">
-                        <span>🚀 Double Digit Challenge</span>
-                        {selectedSampleSetId === "abacus-sr2-double-direct" && (
-                          <span className="bg-emerald-600 text-white px-2 py-0.5 rounded font-black">
-                            ✓ SELECTED
-                          </span>
-                        )}
-                      </div>
-                    </div>
                   </div>
+
                 </div>
 
-                {/* High Energy Student Launch Button */}
-                <button
-                  type="submit"
-                  className="w-full py-4 px-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-sm rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.01] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300"
-                >
-                  <Rocket className="w-5 h-5 fill-slate-950 animate-bounce" />
-                  START FREE SAMPLE PRACTICE (100 QUESTIONS / 10 MINS)
-                  <ArrowRight className="w-5 h-5" />
-                </button>
+                {/* Launch Button with Dynamic Caption & PDF Download Option */}
+                <div className="space-y-3 pt-1">
+                  {attemptCount >= 5 ? (
+                    <div className="bg-red-50 border-2 border-red-300 p-4 rounded-2xl text-center space-y-2.5">
+                      <div className="flex items-center justify-center gap-2 text-red-700 font-black text-sm">
+                        <Lock className="w-5 h-5 text-red-600 shrink-0" />
+                        <span>MAX FREE QUIZ ATTEMPTS REACHED (5/5 COMPLETED)</span>
+                      </div>
+                      <p className="text-xs text-slate-700 font-medium leading-relaxed">
+                        You have used all 5 free guest practice drill attempts! To unlock unlimited practice & full course access across all levels, contact Arnav Abacus Academy below.
+                      </p>
+                      <div className="flex flex-wrap gap-2 justify-center pt-1">
+                        <a
+                          href="https://wa.me/919021924968?text=Hello%20Arnav%20Abacus%20Academy,%20I%20completed%20my%205%20free%20guest%20attempts%20and%20would%20like%20to%20enroll%20for%20full%20course%20access!"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-1.5"
+                        >
+                          <MessageSquare className="w-4 h-4" /> Contact via WhatsApp (90219 24968)
+                        </a>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="w-full py-4 px-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-xs sm:text-sm rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.01] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300 uppercase tracking-tight"
+                    >
+                      <Rocket className="w-5 h-5 fill-slate-950 animate-bounce shrink-0" />
+                      <span>
+                        START FREE SAMPLE PRACTICE ({selectedQuestionCount} QUESTIONS • {selectedTopicMode === "single" ? "SINGLE DIGIT DIRECT" : selectedTopicMode === "double" ? "DOUBLE DIGIT DIRECT" : "BOTH SINGLE & DOUBLE"})
+                      </span>
+                      <ArrowRight className="w-5 h-5 shrink-0" />
+                    </button>
+                  )}
+
+                  {/* Printable PDF Generator Download Button */}
+                  <button
+                    type="button"
+                    onClick={handleDownloadPdf}
+                    disabled={isPdfGenerating}
+                    className="w-full py-3.5 px-4 bg-slate-900 hover:bg-slate-800 text-amber-300 font-extrabold text-xs rounded-2xl border border-slate-700 flex items-center justify-center gap-2 transition cursor-pointer shadow-md disabled:opacity-50"
+                  >
+                    <FileText className="w-4 h-4 text-amber-400 shrink-0" />
+                    <span>
+                      {isPdfGenerating
+                        ? "Generating Printable PDF Worksheet..."
+                        : `📄 Download Printable PDF Quiz (${selectedQuestionCount} Qs + Academy Brochure)`}
+                    </span>
+                    <Download className="w-4 h-4 text-amber-400 shrink-0" />
+                  </button>
+                </div>
               </form>
 
               {/* Request Course Access Banner */}

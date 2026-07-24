@@ -6,14 +6,21 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PracticeAttemptResult } from "../types";
-import { Trophy, Clock, CheckCircle2, XCircle, HelpCircle, ArrowLeft, RefreshCw, Star, Sparkles, BookOpen, Flame, Award as Medal, TrendingUp, User, ListOrdered, ShieldCheck, Check, Rocket } from "lucide-react";
-import { syncStudentAttempts, AttemptRecord } from "../lib/cloudSync";
+import { Trophy, Clock, CheckCircle2, XCircle, HelpCircle, ArrowLeft, RefreshCw, Star, Sparkles, BookOpen, Flame, Award as Medal, TrendingUp, User, ListOrdered, ShieldCheck, Check, Rocket, Send, MessageSquare, X } from "lucide-react";
+import { syncStudentAttempts, saveVisitorFeedback, AttemptRecord } from "../lib/cloudSync";
 
 export default function PracticeResult() {
   const [result, setResult] = useState<PracticeAttemptResult | null>(null);
   const [allAttempts, setAllAttempts] = useState<AttemptRecord[]>([]);
   const [loadingSync, setLoadingSync] = useState(true);
   const navigate = useNavigate();
+
+  // Feedback Modal State
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [feedbackRating, setFeedbackRating] = useState(5);
+  const [feedbackMsg, setFeedbackMsg] = useState("");
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
 
   // Guest User credentials
   const guestUserRaw = localStorage.getItem("aaa_guest_user");
@@ -81,6 +88,29 @@ export default function PracticeResult() {
     return "🎯 Good Attempt! Practice Makes Perfect — Retake to Excel!";
   };
 
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFeedbackSubmitting(true);
+    try {
+      await saveVisitorFeedback({
+        guestEmail: guestEmail || "sample_visitor@gmail.com",
+        guestName: guestName || "Guest Participant",
+        rating: feedbackRating,
+        message: `⭐ Practice Result Feedback (${result?.setTitle}): ${feedbackMsg || "Great practice session drill!"}`,
+      });
+      setFeedbackSubmitted(true);
+      setFeedbackMsg("");
+      setTimeout(() => {
+        setFeedbackSubmitted(false);
+        setShowFeedbackModal(false);
+      }, 2500);
+    } catch (err) {
+      console.error("Feedback submit error", err);
+    } finally {
+      setFeedbackSubmitting(false);
+    }
+  };
+
   return (
     <div className="bg-slate-50 min-h-screen py-10 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
@@ -144,14 +174,83 @@ export default function PracticeResult() {
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="mt-6 flex flex-wrap gap-3 justify-center md:justify-end">
-            <button
-              onClick={() => navigate("/practice")}
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Practice Hub
-            </button>
+          {/* DYNAMIC HIGHLIGHTED NEXT ACTION ZONE WITH VISIBLE ANIMATED POINTER */}
+          <div className="mt-8 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-0.5 rounded-3xl shadow-xl relative overflow-hidden group">
+            <div className="bg-slate-950 p-6 rounded-[22px] text-white relative z-10">
+              {/* Animated Floating Pointer Callout Badge */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-5 mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="bg-amber-500 text-slate-950 p-2.5 rounded-2xl shrink-0 animate-bounce shadow-lg">
+                    <Flame className="w-6 h-6 fill-slate-950" />
+                  </div>
+                  <div>
+                    <div className="inline-flex items-center gap-1 bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider mb-1">
+                      👈 NEXT STEP ACTION CENTER
+                    </div>
+                    <h3 className="text-lg font-black text-white tracking-tight flex items-center gap-2">
+                      What Would You Like To Do Next?
+                    </h3>
+                    <p className="text-xs text-slate-300">
+                      Select an action below: Start your next attempt drill or share feedback with master trainers!
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => navigate("/practice")}
+                  className="text-xs font-black text-amber-400 hover:text-white flex items-center gap-1.5 transition cursor-pointer shrink-0 bg-slate-900 hover:bg-slate-800 px-4 py-2.5 rounded-xl border border-amber-500/40 shadow-sm"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Back to Practice Hub
+                </button>
+              </div>
+
+              {/* DUAL OPTIONS GRID */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* OPTION 1: START NEXT ATTEMPT */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate(`/practice/session?setId=${result.setId}&mode=${result.mode}&count=${result.totalQuestions}&seed=attempt_${Date.now()}`);
+                  }}
+                  className="group/opt1 p-5 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-left shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-98 transition-all cursor-pointer border-2 border-amber-300 relative overflow-hidden"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="bg-slate-950 text-amber-400 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow flex items-center gap-1">
+                      <Rocket className="w-3.5 h-3.5 fill-amber-400" /> OPTION 1
+                    </span>
+                    <RefreshCw className="w-5 h-5 text-slate-950 group-hover/opt1:rotate-180 transition-transform duration-500" />
+                  </div>
+                  <h4 className="text-base font-black tracking-tight text-slate-950">
+                    🚀 START NEXT ATTEMPT (RETAKE DRILL)
+                  </h4>
+                  <p className="text-xs font-extrabold text-slate-900/90 mt-1">
+                    Challenge your score with brand-new randomized speed math questions!
+                  </p>
+                </button>
+
+                {/* OPTION 2: PROVIDE FEEDBACK */}
+                <button
+                  type="button"
+                  onClick={() => setShowFeedbackModal(true)}
+                  className="group/opt2 p-5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-black text-left shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-98 transition-all cursor-pointer border-2 border-amber-500/50 hover:border-amber-400 relative overflow-hidden"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="bg-amber-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow flex items-center gap-1">
+                      <Star className="w-3.5 h-3.5 fill-slate-950 text-slate-950" /> OPTION 2
+                    </span>
+                    <Star className="w-5 h-5 text-amber-400 fill-amber-400 group-hover/opt2:scale-125 transition-transform" />
+                  </div>
+                  <h4 className="text-base font-black tracking-tight text-amber-300">
+                    ⭐ PROVIDE FEEDBACK / RATE DRILL
+                  </h4>
+                  <p className="text-xs font-medium text-slate-300 mt-1">
+                    Share your experience, ratings, or questions directly with our master trainers!
+                  </p>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -509,6 +608,104 @@ export default function PracticeResult() {
             </div>
           );
         })()}
+
+        {/* OPTION 2: FEEDBACK SUBMISSION MODAL */}
+        {showFeedbackModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden relative">
+              
+              {/* Modal Header */}
+              <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-5 text-slate-950 flex items-center justify-between relative">
+                <div>
+                  <span className="bg-slate-950 text-amber-400 font-extrabold text-[10px] px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow">
+                    ⭐ STUDENT & PARENT FEEDBACK
+                  </span>
+                  <h3 className="text-xl font-black tracking-tight text-slate-950 mt-1">
+                    Rate Your Practice Drill Experience
+                  </h3>
+                </div>
+                <button
+                  onClick={() => setShowFeedbackModal(false)}
+                  className="p-1.5 text-slate-950/70 hover:text-slate-950 hover:bg-black/10 rounded-full transition cursor-pointer"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6 space-y-4">
+                {feedbackSubmitted ? (
+                  <div className="p-4 bg-emerald-100 border-2 border-emerald-300 rounded-2xl text-emerald-900 text-sm font-extrabold flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                    <span>Thank you! Your feedback has been submitted successfully to the Academy Master Trainer.</span>
+                  </div>
+                ) : (
+                  <form onSubmit={handleFeedbackSubmit} className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                        Select Rating (1 to 5 Stars):
+                      </label>
+                      <div className="flex items-center gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setFeedbackRating(star)}
+                            className="p-1 cursor-pointer transition hover:scale-125"
+                          >
+                            <Star
+                              className={`w-7 h-7 ${
+                                star <= feedbackRating
+                                  ? "text-amber-500 fill-amber-500"
+                                  : "text-slate-300"
+                              }`}
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1">
+                        Your Feedback / Comments / Questions:
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={feedbackMsg}
+                        onChange={(e) => setFeedbackMsg(e.target.value)}
+                        placeholder="Tell us what you liked about this drill, calculation speed, or any questions for Neha Patil ma'am..."
+                        className="w-full p-3.5 bg-slate-50 border-2 border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition"
+                        required
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between gap-3 pt-2">
+                      <a
+                        href={`https://wa.me/919021924968?text=${encodeURIComponent(
+                          `Visitor Feedback (${result?.setTitle}): ${feedbackMsg || "Great drill!"}`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1.5"
+                      >
+                        <MessageSquare className="w-4 h-4 text-emerald-600" /> Send via WhatsApp
+                      </a>
+
+                      <button
+                        type="submit"
+                        disabled={feedbackSubmitting}
+                        className="bg-slate-950 hover:bg-slate-900 text-amber-400 font-black text-xs px-5 py-2.5 rounded-xl shadow-lg flex items-center gap-2 transition cursor-pointer disabled:opacity-50"
+                      >
+                        <Send className="w-4 h-4 text-amber-400" />
+                        Submit Feedback
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>
