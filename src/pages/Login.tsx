@@ -271,67 +271,65 @@ export default function Login() {
           </p>
         </div>
 
-        {/* Out-of-the-Box Local Pointer Banner (POINTING DIRECTLY TO FREE GUEST PRACTICE TRIAL TOGGLE) */}
-        {isLocal && (
-          <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 text-slate-950 border-b border-amber-300 relative overflow-hidden group shadow-inner">
-            {/* Background glow pointer accent */}
-            <div className="absolute -right-10 -top-10 w-32 h-32 bg-yellow-300/30 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform duration-500"></div>
+        {/* Out-of-the-Box Speed Math Pointer Banner (POINTING DIRECTLY TO FREE GUEST PRACTICE TRIAL TOGGLE) */}
+        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 text-slate-950 border-b border-amber-300 relative overflow-hidden group shadow-inner">
+          {/* Background glow pointer accent */}
+          <div className="absolute -right-10 -top-10 w-32 h-32 bg-yellow-300/30 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform duration-500"></div>
 
-            <div className="flex items-center justify-between gap-3 relative z-10">
-              <div className="flex items-center gap-2.5">
-                <div className="bg-slate-950 text-amber-400 p-2 rounded-xl shrink-0 shadow-lg animate-pulse">
-                  <Flame className="w-5 h-5 fill-amber-400 text-amber-400" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="bg-slate-950 text-amber-400 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow flex items-center gap-1">
-                      🔥 WAKAD PUNE #1 FREE GUEST PRACTICE TRIAL
-                    </span>
-                    <span className="text-[10px] font-extrabold text-slate-950 bg-white/40 px-2 py-0.5 rounded-md backdrop-blur-xs">
-                      NO OTP REQUIRED • INSTANT FREE GUEST TRIAL
-                    </span>
-                  </div>
-                  <h3 className="text-xs sm:text-sm font-black tracking-tight text-slate-950 mt-0.5">
-                    Test 10X Mental Calculation Speed ({selectedQuestionCount} Qs Speed Drill)
-                  </h3>
-                </div>
+          <div className="flex items-center justify-between gap-3 relative z-10">
+            <div className="flex items-center gap-2.5">
+              <div className="bg-slate-950 text-amber-400 p-2 rounded-xl shrink-0 shadow-lg animate-pulse">
+                <Flame className="w-5 h-5 fill-amber-400 text-amber-400" />
               </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setAuthMode("guest");
-                  setError(null);
-                }}
-                className="bg-slate-950 hover:bg-slate-900 text-amber-400 text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-amber-400 shrink-0 group-hover:ring-4 group-hover:ring-amber-400/30"
-              >
-                <Zap className="w-3.5 h-3.5 fill-amber-400" />
-                TRY FREE GUEST DRILL
-                <ArrowDown className="w-3.5 h-3.5 animate-bounce text-amber-400" />
-              </button>
+              <div>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="bg-slate-950 text-amber-400 text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow flex items-center gap-1">
+                    🔥 WAKAD PUNE #1 FREE GUEST PRACTICE TRIAL
+                  </span>
+                  <span className="text-[10px] font-extrabold text-slate-950 bg-white/40 px-2 py-0.5 rounded-md backdrop-blur-xs">
+                    NO OTP REQUIRED • INSTANT FREE GUEST TRIAL
+                  </span>
+                </div>
+                <h3 className="text-xs sm:text-sm font-black tracking-tight text-slate-950 mt-0.5">
+                  Test 10X Mental Calculation Speed ({selectedQuestionCount} Qs Speed Drill)
+                </h3>
+              </div>
             </div>
 
-            <div className="mt-2 pt-2 border-t border-slate-950/10 flex items-center justify-between flex-wrap gap-1 relative z-10">
-              <p className="text-[10px] font-extrabold text-slate-900/90">
-                🏆 <strong className="font-black">Arnav Abacus Academy (Wakad, Pune, India)</strong> — Best Abacus & Vedic Maths Brain Development
-              </p>
-              
-              {/* Dynamic Animated Pointer Label pointing directly down to the Free Guest Practice Trial button */}
-              <button
-                type="button"
-                onClick={() => {
-                  setAuthMode("guest");
-                  setError(null);
-                }}
-                className="bg-slate-950 hover:bg-slate-900 text-amber-300 border-2 border-amber-400 text-[10px] font-black px-3 py-1 rounded-full shadow-xl animate-bounce flex items-center gap-1 cursor-pointer transition-all hover:scale-105"
-              >
-                <Flame className="w-3 h-3 text-orange-400 fill-orange-400 animate-pulse" />
-                <span>👇 CLICK BELOW FOR FREE GUEST PRACTICE TRIAL (NO OTP)</span>
-                <ArrowDown className="w-3 h-3 text-amber-300 animate-bounce" />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode("guest");
+                setError(null);
+              }}
+              className="bg-slate-950 hover:bg-slate-900 text-amber-400 text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-amber-400 shrink-0 group-hover:ring-4 group-hover:ring-amber-400/30"
+            >
+              <Zap className="w-3.5 h-3.5 fill-amber-400" />
+              TRY FREE GUEST DRILL
+              <ArrowDown className="w-3.5 h-3.5 animate-bounce text-amber-400" />
+            </button>
           </div>
-        )}
+
+          <div className="mt-2 pt-2 border-t border-slate-950/10 flex items-center justify-between flex-wrap gap-1 relative z-10">
+            <p className="text-[10px] font-extrabold text-slate-900/90">
+              🏆 <strong className="font-black">Arnav Abacus Academy (Wakad, Pune, India)</strong> — Best Abacus & Vedic Maths Brain Development
+            </p>
+            
+            {/* Dynamic Animated Pointer Label pointing directly down to the Free Guest Practice Trial button */}
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode("guest");
+                setError(null);
+              }}
+              className="bg-slate-950 hover:bg-slate-900 text-amber-300 border-2 border-amber-400 text-[10px] font-black px-3 py-1 rounded-full shadow-xl animate-bounce flex items-center gap-1 cursor-pointer transition-all hover:scale-105"
+            >
+              <Flame className="w-3 h-3 text-orange-400 fill-orange-400 animate-pulse" />
+              <span>👇 CLICK BELOW FOR FREE GUEST PRACTICE TRIAL (NO OTP)</span>
+              <ArrowDown className="w-3 h-3 text-amber-300 animate-bounce" />
+            </button>
+          </div>
+        </div>
 
         {/* Toggle Switch Bar with Dynamic Flashing Callout & Arrow */}
         <div className="p-3 bg-slate-100 border-b border-slate-200 flex gap-2 relative">
