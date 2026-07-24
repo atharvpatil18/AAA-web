@@ -26,6 +26,13 @@ export default function PracticeSession() {
   const attemptSeedRef = useRef<string>(searchParams.get("seed") || `attempt_${Date.now()}`);
   const [questionSet] = useState(() => getCustomizedSet(setId, mode, qCount, attemptSeedRef.current));
 
+  // Ensure guest user credential exists in localStorage for uninterrupted guest practice session
+  useEffect(() => {
+    if (!currentUser && !localStorage.getItem("aaa_guest_user")) {
+      localStorage.setItem("aaa_guest_user", JSON.stringify({ email: "guest_visitor@arnavabacus.com", name: "Guest Student" }));
+    }
+  }, [currentUser]);
+
   // Access Guard
   useEffect(() => {
     if (currentUser?.email && questionSet) {
@@ -40,7 +47,7 @@ export default function PracticeSession() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, UserAnswer>>({});
   const [currentInput, setCurrentInput] = useState("");
-  const [timeRemaining, setTimeRemaining] = useState<number>(questionSet.timeLimitSeconds);
+  const [timeRemaining, setTimeRemaining] = useState<number>(questionSet?.timeLimitSeconds || 240);
   const [isFinished, setIsFinished] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [instantFeedback, setInstantFeedback] = useState<{ isCorrect: boolean; message: string; cheer: string } | null>(null);
@@ -48,7 +55,7 @@ export default function PracticeSession() {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const currentQuestion: Question = questionSet.questions[currentIndex];
+  const currentQuestion: Question | undefined = questionSet?.questions?.[currentIndex];
 
   const cheerMessagesCorrect = [
     "🌟 Super Fast Calculation!",
@@ -78,15 +85,17 @@ export default function PracticeSession() {
 
   // Sync input when question index changes
   useEffect(() => {
+    if (!currentQuestion) return;
     const existing = userAnswers[currentQuestion.id];
     setCurrentInput(existing?.answer || "");
     setInstantFeedback(null);
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [currentIndex, currentQuestion.id]);
+  }, [currentIndex, currentQuestion?.id]);
 
   const handleInputChange = (val: string) => {
+    if (!currentQuestion) return;
     setCurrentInput(val);
     setUserAnswers((prev) => ({
       ...prev,
@@ -100,6 +109,7 @@ export default function PracticeSession() {
   };
 
   const toggleFlag = () => {
+    if (!currentQuestion) return;
     setUserAnswers((prev) => ({
       ...prev,
       [currentQuestion.id]: {
@@ -111,7 +121,7 @@ export default function PracticeSession() {
   };
 
   const handleCheckAnswer = () => {
-    if (!currentInput) return;
+    if (!currentInput || !currentQuestion) return;
     const num = Number(currentInput);
     const correct = num === currentQuestion.correctAnswer;
     const randomCheer = cheerMessagesCorrect[Math.floor(Math.random() * cheerMessagesCorrect.length)];
@@ -197,6 +207,34 @@ export default function PracticeSession() {
   };
 
   const answeredCount = (Object.values(userAnswers) as UserAnswer[]).filter(a => a.answer !== "").length;
+
+  if (!questionSet || !questionSet.questions || questionSet.questions.length === 0 || !currentQuestion) {
+    return (
+      <div className="bg-slate-50 min-h-screen py-12 px-4 flex items-center justify-center">
+        <div className="bg-white border-2 border-slate-200 rounded-3xl p-8 max-w-md w-full text-center shadow-xl space-y-4">
+          <div className="bg-amber-100 text-amber-900 p-4 rounded-2xl font-black text-base flex items-center justify-center gap-2">
+            <Zap className="w-5 h-5 text-amber-600 animate-bounce" />
+            Loading Speed Practice Quiz...
+          </div>
+          <p className="text-xs text-slate-600 font-medium leading-relaxed">
+            Preparing your dynamic calculations drill. If the drill doesn't open automatically, click reload below.
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-3 rounded-xl text-xs transition-all shadow-md cursor-pointer"
+          >
+            Reload Quiz Session
+          </button>
+          <button
+            onClick={() => navigate("/practice")}
+            className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs transition-all cursor-pointer"
+          >
+            Back to Practice Hub
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-slate-50 min-h-screen py-6 px-3 sm:px-6 md:px-8">

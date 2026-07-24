@@ -48,11 +48,6 @@ export default function GuestSampleGatewayModal({
   const handleStart = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (attemptCount >= 5) {
-      setErrorMsg("Maximum free trial attempts reached! You have completed all 5 free guest practice attempts. Please contact Arnav Abacus Academy via WhatsApp (+91 90219 24968) or Email (nehaatharv@gmail.com) for full course enrollment & unlimited access.");
-      return;
-    }
-
     const emailVal = validateSanitizedEmail(guestEmail);
     if (!emailVal.valid) {
       setErrorMsg(emailVal.error || "Please enter a valid email address.");
@@ -81,7 +76,7 @@ export default function GuestSampleGatewayModal({
       guestEmail: cleanEmail,
       guestName: displayName,
       rating: 5,
-      message: `⚡ Sample Visitor Practice Access: Started ${selectedQuestionCount} Qs drill (${selectedSetId}). Attempt ${newAttempts}/5.`,
+      message: `⚡ Sample Visitor Practice Access: Started ${selectedQuestionCount} Qs drill (${selectedSetId}). Session #${newAttempts} (Unlimited Access).`,
     });
 
     onStartSamplePractice(cleanEmail, displayName, selectedSetId, selectedQuestionCount);
@@ -258,17 +253,15 @@ export default function GuestSampleGatewayModal({
             {/* REDESIGNED MODE 1 & MODE 2 SELECTION ZONE */}
             <div className="space-y-4 bg-slate-50 border-2 border-slate-200 p-5 rounded-2xl">
               
-              {/* Attempt Limit Counter Bar */}
+              {/* Unlimited Guest Practice Access Bar */}
               <div className="flex items-center justify-between bg-amber-500/10 border border-amber-500/30 p-2.5 rounded-xl text-xs flex-wrap gap-2">
                 <div className="flex items-center gap-2 font-black text-amber-950">
                   <Flame className="w-4 h-4 text-orange-600 fill-orange-500 animate-pulse" />
-                  <span>FREE GUEST PRACTICE LIMIT</span>
+                  <span>UNLIMITED FREE GUEST PRACTICE DRILLS</span>
                 </div>
                 <div className="flex items-center gap-1.5 font-bold">
-                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-black shadow-xs ${
-                    attemptCount >= 5 ? "bg-red-600 text-white animate-bounce" : "bg-slate-900 text-amber-300"
-                  }`}>
-                    {attemptCount} / 5 Attempts Used ({Math.max(0, 5 - attemptCount)} Left)
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black shadow-xs bg-emerald-600 text-white">
+                    ✓ Unlimited Free Access
                   </span>
                 </div>
               </div>
@@ -409,38 +402,16 @@ export default function GuestSampleGatewayModal({
 
             {/* Launch Button with Dynamic Caption & PDF Download Option */}
             <div className="space-y-3 pt-1">
-              {attemptCount >= 5 ? (
-                <div className="bg-red-50 border-2 border-red-300 p-4 rounded-2xl text-center space-y-2.5">
-                  <div className="flex items-center justify-center gap-2 text-red-700 font-black text-sm">
-                    <Lock className="w-5 h-5 text-red-600 shrink-0" />
-                    <span>MAX FREE QUIZ ATTEMPTS REACHED (5/5 COMPLETED)</span>
-                  </div>
-                  <p className="text-xs text-slate-700 font-medium leading-relaxed">
-                    You have used all 5 free guest practice drill attempts! To unlock unlimited practice & full course access across all levels, contact Arnav Abacus Academy below.
-                  </p>
-                  <div className="flex flex-wrap gap-2 justify-center pt-1">
-                    <a
-                      href="https://wa.me/919021924968?text=Hello%20Arnav%20Abacus%20Academy,%20I%20completed%20my%205%20free%20guest%20attempts%20and%20would%20like%20to%20enroll%20for%20full%20course%20access!"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-1.5"
-                    >
-                      <MessageSquare className="w-4 h-4" /> Contact via WhatsApp (90219 24968)
-                    </a>
-                  </div>
-                </div>
-              ) : (
-                <button
-                  type="submit"
-                  className="w-full py-4 px-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-xs sm:text-sm rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.01] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300 uppercase tracking-tight"
-                >
-                  <Rocket className="w-5 h-5 fill-slate-950 animate-bounce shrink-0" />
-                  <span>
-                    START FREE SAMPLE PRACTICE ({selectedQuestionCount} QUESTIONS • {selectedTopicMode === "single" ? "SINGLE DIGIT DIRECT" : selectedTopicMode === "double" ? "DOUBLE DIGIT DIRECT" : "BOTH SINGLE & DOUBLE"})
-                  </span>
-                  <ArrowRight className="w-5 h-5 shrink-0" />
-                </button>
-              )}
+              <button
+                type="submit"
+                className="w-full py-4 px-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-xs sm:text-sm rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.01] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300 uppercase tracking-tight"
+              >
+                <Rocket className="w-5 h-5 fill-slate-950 animate-bounce shrink-0" />
+                <span>
+                  START FREE SAMPLE PRACTICE ({selectedQuestionCount} QUESTIONS • {selectedTopicMode === "single" ? "SINGLE DIGIT DIRECT" : selectedTopicMode === "double" ? "DOUBLE DIGIT DIRECT" : "BOTH SINGLE & DOUBLE"})
+                </span>
+                <ArrowRight className="w-5 h-5 shrink-0" />
+              </button>
 
               {/* Printable PDF Worksheet Distribution Options */}
               <div className="p-4 bg-slate-900 text-white rounded-2xl border border-slate-800 space-y-3 shadow-md">

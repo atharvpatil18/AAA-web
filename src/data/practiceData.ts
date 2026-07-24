@@ -5186,10 +5186,22 @@ export function getCustomizedSet(
       if (dynamicQ) {
         expandedQuestions.push(dynamicQ);
       } else {
-        const baseQ = base.questions[i % base.questions.length];
+        const hasBaseQuestions = Array.isArray(base?.questions) && base.questions.length > 0;
+        const baseQ = hasBaseQuestions
+          ? base.questions[i % base.questions.length]
+          : { id: i + 1, numbers: [2, 5, -1], correctAnswer: 6, conceptTag: "Speed Practice Drill" };
+
+        const fallbackNumbers = baseQ.numbers || (baseQ.expression ? undefined : [2, 5, -1]);
+        const fallbackExpression = baseQ.expression || (!baseQ.numbers ? "5 + 3" : undefined);
+        const fallbackAns = typeof baseQ.correctAnswer === "number" ? baseQ.correctAnswer : (fallbackNumbers ? fallbackNumbers.reduce((a, b) => a + b, 0) : 8);
+
         expandedQuestions.push({
           ...baseQ,
           id: i + 1,
+          numbers: fallbackNumbers,
+          expression: fallbackExpression,
+          correctAnswer: fallbackAns,
+          conceptTag: baseQ.conceptTag || "Practice Question",
         });
       }
     }
