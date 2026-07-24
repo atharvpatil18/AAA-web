@@ -341,6 +341,20 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
 
   // SR-1 Curriculum Sets
   {
+    id: "abacus-sr-mixed-direct",
+    title: "BOTH SINGLE & DOUBLE DIGIT DIRECT (4-5-6 ROWS)",
+    category: "abacus",
+    level: "SR-1",
+    topic: "Mixed Single & Double Digit Direct",
+    description: "Speed practice combining single digit and double digit direct addition and subtraction.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [2, 5, -1, 3], correctAnswer: 9, conceptTag: "Single Digit Direct" },
+      { id: 2, numbers: [24, 15, -12, 30], correctAnswer: 57, conceptTag: "Double Digit Direct" },
+    ]
+  },
+  {
     id: "abacus-sr1-single-direct-5-6row",
     title: "ADD & SUB SINGLE DIGIT DIRECT (5- 6 ROWS )",
     category: "abacus",
@@ -5149,10 +5163,22 @@ export function getCustomizedSet(
             conceptTag: `${base.level} Overall [${sibling.title}]`,
           });
         } else {
-          const baseQ = base.questions[i % base.questions.length];
+          const hasBaseQuestions = Array.isArray(base?.questions) && base.questions.length > 0;
+          const baseQ = hasBaseQuestions
+            ? base.questions[i % base.questions.length]
+            : { id: i + 1, numbers: [2, 5, -1], correctAnswer: 6, conceptTag: `${base.level} Overall` };
+
+          const fallbackNumbers = baseQ.numbers || (baseQ.expression ? undefined : [2, 5, -1]);
+          const fallbackExpression = baseQ.expression || (!baseQ.numbers ? "5 + 3" : undefined);
+          const fallbackAns = typeof baseQ.correctAnswer === "number" ? baseQ.correctAnswer : (fallbackNumbers ? fallbackNumbers.reduce((a, b) => a + b, 0) : 8);
+
           expandedQuestions.push({
             ...baseQ,
             id: i + 1,
+            numbers: fallbackNumbers,
+            expression: fallbackExpression,
+            correctAnswer: fallbackAns,
+            conceptTag: baseQ.conceptTag || `${base.level} Overall`,
           });
         }
       }
