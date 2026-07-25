@@ -36,6 +36,7 @@ export default function Login() {
   const [guestName, setGuestName] = useState("");
   const [selectedQuestionCount, setSelectedQuestionCount] = useState<10 | 20 | 50 | 100 | 200>(10);
   const [selectedTopicMode, setSelectedTopicMode] = useState<"single" | "double" | "both">("single");
+  const [selectedTimeMinutes, setSelectedTimeMinutes] = useState<2 | 4 | 5 | 10 | 20>(2);
   const [selectedSampleSetId, setSelectedSampleSetId] = useState("abacus-sr1-single-direct-5-6row");
   const [feedbackRating, setFeedbackRating] = useState(5);
   const [feedbackMsg, setFeedbackMsg] = useState("");
@@ -164,10 +165,10 @@ export default function Login() {
       guestEmail: cleanEmail,
       guestName: displayName,
       rating: 5,
-      message: `⚡ Sample Visitor Practice Access: Started ${selectedQuestionCount} Qs drill (${selectedSampleSetId}). Session #${newAttempts} (Unlimited Access).`,
+      message: `⚡ Sample Visitor Practice Access: Started ${selectedQuestionCount} Qs drill (${selectedTimeMinutes} Min) (${selectedSampleSetId}). Session #${newAttempts} (Unlimited Access).`,
     });
 
-    navigate(`/practice/session?setId=${selectedSampleSetId}&mode=guest-drill&count=${selectedQuestionCount}`);
+    navigate(`/practice/session?setId=${selectedSampleSetId}&mode=guest-drill&count=${selectedQuestionCount}&time=${selectedTimeMinutes * 60}`);
   };
 
   const handleDownloadPdf = async () => {
@@ -721,6 +722,36 @@ export default function Login() {
                     </div>
                   </div>
 
+                  {/* 3rd MODE: Time Selector */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2 flex-wrap gap-1">
+                      <label className="block text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                        <span className="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center font-black text-[10px]">3</span>
+                        Select Time (Mode 3):
+                      </label>
+                      <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-md border border-amber-300">
+                        Selected: {selectedTimeMinutes} Min{selectedTimeMinutes > 1 ? "s" : ""}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-5 gap-2">
+                      {[2, 4, 5, 10, 20].map((mins) => (
+                        <button
+                          key={mins}
+                          type="button"
+                          onClick={() => setSelectedTimeMinutes(mins as any)}
+                          className={`py-2.5 px-1.5 rounded-xl text-xs font-black transition-all cursor-pointer border-2 text-center flex flex-col items-center justify-center ${
+                            selectedTimeMinutes === mins
+                              ? "bg-slate-900 text-amber-400 border-slate-900 shadow-md scale-[1.02]"
+                              : "bg-white text-slate-700 border-slate-200 hover:border-amber-400 hover:bg-amber-50/50"
+                          }`}
+                        >
+                          {mins} Min
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                 </div>
 
                 {/* Launch Button with Dynamic Caption & PDF Download Option */}
@@ -731,7 +762,7 @@ export default function Login() {
                   >
                     <Rocket className="w-5 h-5 fill-slate-950 animate-bounce shrink-0" />
                     <span>
-                      START FREE SAMPLE PRACTICE ({selectedQuestionCount} QUESTIONS • {selectedTopicMode === "single" ? "SINGLE DIGIT DIRECT" : selectedTopicMode === "double" ? "DOUBLE DIGIT DIRECT" : "BOTH SINGLE & DOUBLE"})
+                      START FREE SAMPLE PRACTICE ({selectedQuestionCount} Qs • {selectedTimeMinutes} MINS • {selectedTopicMode === "single" ? "SINGLE DIGIT DIRECT" : selectedTopicMode === "double" ? "DOUBLE DIGIT DIRECT" : "BOTH SINGLE & DOUBLE"})
                     </span>
                     <ArrowRight className="w-5 h-5 shrink-0" />
                   </button>

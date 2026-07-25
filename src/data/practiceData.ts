@@ -5108,31 +5108,34 @@ export function getCustomizedSet(
   setId: string,
   mode: PracticeMode,
   qCountChoice: number = 20,
-  seed: string = "attempt_default"
+  seed: string = "attempt_default",
+  customTimeSeconds?: number
 ): QuestionSet {
   const base = getQuestionSetById(setId) || ABACUS_QUESTION_SETS[0];
 
   let targetCount = qCountChoice;
-  let timeLimitSeconds = 240; // 4 mins default for 20 Qs
+  let timeLimitSeconds = customTimeSeconds || 240; // 4 mins default for 20 Qs
 
-  if (qCountChoice === 10) {
-    timeLimitSeconds = 120;
-  } else if (qCountChoice === 20) {
-    timeLimitSeconds = 240;
-  } else if (qCountChoice === 50) {
-    timeLimitSeconds = 480;
+  if (!customTimeSeconds) {
+    if (qCountChoice === 10) {
+      timeLimitSeconds = 120;
+    } else if (qCountChoice === 20) {
+      timeLimitSeconds = 240;
+    } else if (qCountChoice === 50) {
+      timeLimitSeconds = 480;
+    }
   }
 
   // Handle explicit speed sprint modes
   if (mode === "speed-100-5m") {
     targetCount = 100;
-    timeLimitSeconds = 300;
+    timeLimitSeconds = customTimeSeconds || 300;
   } else if (mode === "speed-100-10m") {
     targetCount = 100;
-    timeLimitSeconds = 600;
+    timeLimitSeconds = customTimeSeconds || 600;
   } else if (mode === "speed-200-20m") {
     targetCount = 200;
-    timeLimitSeconds = 1200;
+    timeLimitSeconds = customTimeSeconds || 1200;
   }
 
   // Synthesize questions deterministically for the given attempt seed

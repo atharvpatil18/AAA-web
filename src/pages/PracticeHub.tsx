@@ -386,11 +386,13 @@ export default function PracticeHub() {
     navigate(`/practice/session?setId=${setId}&mode=${selectedMode}&count=${selectedCount}`);
   };
 
-  const handleStartGuestSamplePractice = (guestEmail: string, guestName: string, setId: string) => {
+  const handleStartGuestSamplePractice = (guestEmail: string, guestName: string, setId: string, qCount?: number, timeSeconds?: number) => {
     const guestObj = { email: guestEmail, name: guestName };
     localStorage.setItem("aaa_guest_user", JSON.stringify(guestObj));
     setIsGuestGatewayOpen(false);
-    navigate(`/practice/session?setId=${setId}&mode=speed-100-10m&count=100`);
+    const count = qCount || 10;
+    const time = timeSeconds || 120;
+    navigate(`/practice/session?setId=${setId}&mode=guest-drill&count=${count}&time=${time}`);
   };
 
   const modeOptions: { mode: PracticeMode; label: string; timeText: string; icon: React.ReactNode; color: string; badge: string }[] = [

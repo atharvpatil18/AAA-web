@@ -21,10 +21,12 @@ export default function PracticeSession() {
   const setId = searchParams.get("setId") || "abacus-jr2-direct-4row";
   const mode = (searchParams.get("mode") as PracticeMode) || "exam";
   const qCount = Number(searchParams.get("count")) || 20;
+  const timeParam = searchParams.get("time");
+  const customTimeSeconds = timeParam ? parseInt(timeParam, 10) : undefined;
 
   // Stable question set per attempt (questions are fixed during attempt, but different on next attempt)
   const attemptSeedRef = useRef<string>(searchParams.get("seed") || `attempt_${Date.now()}`);
-  const [questionSet] = useState(() => getCustomizedSet(setId, mode, qCount, attemptSeedRef.current));
+  const [questionSet] = useState(() => getCustomizedSet(setId, mode, qCount, attemptSeedRef.current, customTimeSeconds));
 
   // Ensure guest user credential exists in localStorage for uninterrupted guest practice session
   useEffect(() => {
@@ -47,7 +49,7 @@ export default function PracticeSession() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, UserAnswer>>({});
   const [currentInput, setCurrentInput] = useState("");
-  const [timeRemaining, setTimeRemaining] = useState<number>(questionSet?.timeLimitSeconds || 240);
+  const [timeRemaining, setTimeRemaining] = useState<number>(customTimeSeconds || questionSet?.timeLimitSeconds || 240);
   const [isFinished, setIsFinished] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [instantFeedback, setInstantFeedback] = useState<{ isCorrect: boolean; message: string; cheer: string } | null>(null);
