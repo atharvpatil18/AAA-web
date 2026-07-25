@@ -17,9 +17,10 @@ import InteractiveAbacus from "../components/InteractiveAbacus";
 import VedicMathDemo from "../components/VedicMathDemo";
 import MathComparisonDemo from "../components/MathComparisonDemo";
 import { useLanguage } from "../lib/LanguageContext";
+import { generateBrochurePDF } from "../lib/brochure";
 import MathConcernVideoBooth from "../components/MathConcernVideoBooth";
 import { PROGRAMS } from "../data";
-import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
+import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2, ChevronDown, ChevronUp, BookOpen, Download } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
 
 export default function Home() {
@@ -831,6 +832,40 @@ export default function Home() {
         </div>
       </section>
       )}
+
+      {/* 7.5. Brochure & Speed Math SOP User Manual Highlight Banner */}
+      <section className="py-14 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-t-4 border-vibrant-dark text-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-2 max-w-2xl text-center md:text-left">
+            <span className="text-[10px] font-black text-amber-400 bg-amber-400/10 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block border border-amber-400/20">
+              📖 Official Resource & User Manual
+            </span>
+            <h2 className="font-display font-black text-2xl md:text-3xl text-white tracking-tight">
+              Academy Brochure & Speed Math SOP User Manual
+            </h2>
+            <p className="text-xs md:text-sm text-slate-300 font-semibold leading-relaxed">
+              Download our complete 2-Page A4 PDF Guide covering our NEP 2020 cognitive math framework, student achievements, and the 3-Mode Speed Math Practice SOP for parents & educators.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full sm:w-auto">
+            <Link
+              to="/brochure"
+              className="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-white font-black px-6 py-3.5 rounded-2xl border border-slate-700 transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-md"
+            >
+              <BookOpen className="w-4 h-4 text-amber-400" />
+              View Online Manual
+            </Link>
+            <button
+              onClick={() => generateBrochurePDF(language)}
+              className="w-full sm:w-auto bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-black px-6 py-3.5 rounded-2xl shadow-lg transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300"
+            >
+              <Download className="w-4 h-4 animate-bounce" />
+              Download 2-Page PDF
+            </button>
+          </div>
+        </div>
+      </section>
 
       {/* 8. Call to Action Lead Form Section */}
       <section className="py-20 md:py-28 bg-[#FF6321] text-white border-t-4 border-vibrant-dark relative">

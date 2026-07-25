@@ -31,6 +31,7 @@ export default function Navbar() {
     { name: t("navHome"), path: "/" },
     { name: t("navPrograms"), path: "/programs" },
     { name: t("navPractice"), path: "/practice" },
+    { name: t("navBrochure"), path: "/brochure" },
     { name: t("navSuccess"), path: "/showcase" },
     { name: t("navNews"), path: "/news" },
     { name: t("navMentor"), path: "/mentor" },

@@ -385,14 +385,168 @@ export const generateBrochurePDF = async (language: string) => {
     doc.setTextColor(242, 100, 25);
     doc.text("WhatsApp/Call: +91 90219 24968  |  Email: nehaatharv@gmail.com", 18, ctaY + 21.5);
 
-    // Microfooter
+    // Microfooter Page 1
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
-    doc.text("Arnav Abacus Academy | 1-Page Summary Brochure (Ages 4-14)", 12, 294);
+    doc.text("Arnav Abacus Academy | Page 1: Academy Summary Brochure (Ages 4-14)", 12, 294);
+
+    // ======================================================================
+    // PAGE 2: SPEED MATH PRACTICE SOP & USER MANUAL (GOOGLE SEO ENHANCED)
+    // ======================================================================
+    doc.addPage();
+
+    // Background
+    doc.setFillColor(250, 248, 245);
+    doc.rect(0, 0, 210, 297, "F");
+
+    // Header Navy Bar
+    doc.setFillColor(26, 46, 53);
+    doc.rect(0, 0, 210, 31, "F");
+
+    if (logoBase64) {
+      doc.addImage(logoBase64, "PNG", 12, 7.5, 16, 16);
+    }
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("ARNAV ABACUS ACADEMY", 32, 13.5);
+
+    doc.setFontSize(9);
+    doc.setTextColor(242, 100, 25);
+    doc.text("SPEED MATH PRACTICE SOP & USER MANUAL (NEP 2020 ALIGNED)", 32, 18.5);
+
+    doc.setFont("Helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(210, 215, 220);
+    doc.text("Google SEO Practice Framework • Wakad, Pune • Physical & Global Online Micro-batches", 32, 23.5);
+
+    // Section 1: Executive Overview & SEO Perspective
+    doc.setFillColor(255, 255, 255);
+    doc.setDrawColor(220, 215, 205);
+    doc.roundedRect(12, 36, 186, 38, 2, 2, "FD");
+
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(26, 46, 53);
+    doc.text("1. EXECUTIVE OVERVIEW & GOOGLE SEO SPEED MATH METHODOLOGY", 16, 43);
+
+    doc.setFont("Helvetica", "normal");
+    doc.setFontSize(8.5);
+    doc.setTextColor(60, 60, 60);
+    doc.text(
+      doc.splitTextToSize(
+        "Arnav Abacus Academy (Wakad, Pune) offers a whole-brain speed math simulator aligning with NEP 2020 cognitive guidelines. By integrating physical soroban abacus bead visualization with ancient Vedic math shortcuts, students achieve 10X faster mental calculation speeds while eliminating finger-counting anxiety.",
+        178
+      ),
+      16,
+      49
+    );
+
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(8.5);
+    doc.setTextColor(242, 100, 25);
+    doc.text("• Primary SEO Focus & Course Tracks:", 16, 62);
+    doc.setFont("Helvetica", "normal");
+    doc.setTextColor(60, 60, 60);
+    doc.text("Abacus Classes in Wakad Pune | Speed Math Simulator | Vedic Math Shortcuts | Cambridge & IB Math Synergy", 72, 62);
+
+    // Section 2: User Manual Guide (Modes 1, 2, 3)
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(12, 79, 186, 92, 2, 2, "FD");
+
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(26, 46, 53);
+    doc.text("2. SPEED MATH SIMULATOR USER MANUAL (3-MODE DRILL CONFIGURATION)", 16, 86);
+
+    const modesData = [
+      {
+        title: "MODE 1: Select Question Count (Volume Control)",
+        desc: "Choose between 10 Qs, 20 Qs, 50 Qs, 100 Qs, or 200 Qs depending on student stamina. 10 Qs for quick daily practice, 100-200 Qs for Olympiad endurance training.",
+        color: [234, 88, 12]
+      },
+      {
+        title: "MODE 2: Select Speed Math Topic (Complexity Control)",
+        desc: "• Single Digit Direct (4-5-6 Rows): Speed single-digit mental calculations.\n• Double Digit Direct (4-5-6 Rows): Master 2-digit direct abacus movement.\n• Both (Mixed): Mixed 1-digit and 2-digit rows challenge.",
+        color: [16, 185, 129]
+      },
+      {
+        title: "MODE 3: Select Practice Time Limit (Speed Control)",
+        desc: "Select Time as either 2 Min, 4 Min, 5 Min, 10 Min, or 20 Min. Live countdown timer builds rapid decision-making under exam pressure.",
+        color: [147, 51, 234]
+      }
+    ];
+
+    let mY = 93;
+    modesData.forEach((m) => {
+      doc.setFillColor(m.color[0], m.color[1], m.color[2]);
+      doc.rect(16, mY, 3, 22, "F");
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.setTextColor(26, 46, 53);
+      doc.text(m.title, 22, mY + 4.5);
+
+      doc.setFont("Helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(70, 70, 70);
+      doc.text(doc.splitTextToSize(m.desc, 168), 22, mY + 9);
+
+      mY += 28;
+    });
+
+    // Section 3: Printable PDF Worksheet & Evaluation Workflow
+    doc.setFillColor(255, 255, 255);
+    doc.roundedRect(12, 176, 186, 45, 2, 2, "FD");
+
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(11);
+    doc.setTextColor(26, 46, 53);
+    doc.text("3. PRINTABLE PDF WORKSHEETS & PARENT EVALUATION WORKFLOW", 16, 183);
+
+    doc.setFont("Helvetica", "normal");
+    doc.setFontSize(8.5);
+    doc.setTextColor(60, 60, 60);
+    doc.text(
+      doc.splitTextToSize(
+        "• 1-Click PDF Generation: Generate high-contrast, print-ready PDF worksheets with centralized question stacks for offline home drills.\n• Attached Academy Brochure: Each downloaded PDF automatically attaches the 1-Page Academy Brochure with contact info for easy reference.\n• Teacher & Parent Evaluation Box: Each card includes dedicated Ans: entry boxes and Eval: check/crossmark boxes to track score accuracy.",
+        178
+      ),
+      16,
+      189
+    );
+
+    // Section 4: Admissions & Diagnostic Call CTA
+    const ctaY2 = 227;
+    doc.setFillColor(26, 46, 53);
+    doc.roundedRect(12, ctaY2, 186, 30, 2, 2, "F");
+
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(11);
+    doc.text("BOOK A FREE 1-ON-1 MATH SPEED & FOCUS DIAGNOSTIC SESSION", 18, ctaY2 + 6);
+
+    doc.setFont("Helvetica", "normal");
+    doc.setFontSize(8.5);
+    doc.setTextColor(210, 210, 210);
+    doc.text("Physical Hub: Adv. Balaji Sagar Bungalow, Opposite Creative Cameo, Wakad, Pune, MH, India.", 18, ctaY2 + 12);
+    doc.text("International Online Batches: US, UK, Gulf, Singapore (1:4 Small Micro-batches).", 18, ctaY2 + 16.5);
+
+    doc.setFont("Helvetica", "bold");
+    doc.setFontSize(10);
+    doc.setTextColor(242, 100, 25);
+    doc.text("WhatsApp/Call: +91 90219 24968   |   Email: nehaatharv@gmail.com   |   Web: arnavabacus.com", 18, ctaY2 + 23.5);
+
+    // Microfooter Page 2
+    doc.setFont("Helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(150, 150, 150);
+    doc.text("Arnav Abacus Academy | Page 2: Speed Math SOP User Manual & SEO Guide (Ages 4-14)", 12, 294);
 
     const timeStamp = new Date().toISOString().replace(/[-:T.]/g, "").slice(0, 14);
-    doc.save(`arnav_abacus_academy_brochure_${timeStamp}.pdf`);
+    doc.save(`arnav_abacus_academy_brochure_and_manual_${timeStamp}.pdf`);
 
   } catch (err) {
     console.error("Brochure compilation failed", err);
