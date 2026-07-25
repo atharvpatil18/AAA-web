@@ -346,65 +346,63 @@ export default function Login() {
           </p>
         </div>
 
-        {/* Out-of-the-Box Speed Math Pointer Banner (POINTING DIRECTLY TO FREE GUEST PRACTICE DRILL TOGGLE) */}
-        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 sm:p-5 text-slate-950 border-b border-amber-300 relative overflow-hidden group shadow-inner space-y-3.5">
-          {/* Background glow pointer accent */}
-          <div className="absolute -right-10 -top-10 w-40 h-40 bg-yellow-300/30 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform duration-500"></div>
+        {/* ONE RIBBON FOR ONE TEXT MESSAGE ARCHITECTURE */}
+        
+        {/* RIBBON 1: ACADEMY RECOGNITION RIBBON */}
+        <div className="bg-slate-950 text-amber-400 border-b border-amber-500/40 px-4 py-2.5 flex items-center justify-between gap-2 shadow-sm relative z-10">
+          <div className="flex items-center gap-2 font-black text-[11px] uppercase tracking-wider">
+            <Flame className="w-4 h-4 fill-amber-400 text-amber-400 animate-pulse shrink-0" />
+            <span>🔥 WAKAD PUNE #1 ABACUS & VEDIC MATHS ACADEMY</span>
+          </div>
+          <span className="bg-amber-400/20 text-amber-300 text-[9px] font-extrabold px-2 py-0.5 rounded-full border border-amber-400/30 uppercase tracking-wider shrink-0 hidden sm:inline-block">
+            NO OTP REQUIRED
+          </span>
+        </div>
 
-          {/* 1. Badges Line */}
-          <div className="flex items-center gap-2 flex-wrap relative z-10">
-            <span className="bg-slate-950 text-amber-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm inline-flex items-center gap-1.5 shrink-0">
-              <Flame className="w-3.5 h-3.5 fill-amber-400 text-amber-400 animate-pulse" />
-              WAKAD PUNE #1 FREE GUEST PRACTICE DRILL
-            </span>
-            <span className="text-[10px] font-extrabold text-slate-950 bg-white/60 px-2.5 py-1 rounded-md backdrop-blur-xs shadow-xs inline-flex items-center">
-              NO OTP REQUIRED • INSTANT FREE GUEST DRILL
-            </span>
+        {/* RIBBON 2: MAIN SPEED MATH CHALLENGE RIBBON */}
+        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 sm:p-5 text-slate-950 border-b border-amber-300 relative overflow-hidden group shadow-inner space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="bg-slate-950 text-amber-400 p-2 rounded-xl shrink-0 shadow-md">
+              <Zap className="w-5 h-5 fill-amber-400 text-amber-400" />
+            </div>
+            <div>
+              <span className="bg-slate-950/20 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider inline-block">
+                INSTANT FREE DRILL
+              </span>
+              <h3 className="text-sm sm:text-base font-black tracking-tight text-slate-950 leading-snug">
+                Test 10X Mental Calculation Speed ({selectedQuestionCount} Qs Speed Drill)
+              </h3>
+            </div>
           </div>
 
-          {/* 2. Main Title Line */}
-          <div className="relative z-10">
-            <h3 className="text-sm sm:text-base font-black tracking-tight text-slate-950 leading-snug">
-              Test 10X Mental Calculation Speed ({selectedQuestionCount} Qs Speed Drill)
-            </h3>
-          </div>
+          <button
+            type="button"
+            onClick={() => {
+              setAuthMode("guest");
+              setError(null);
+            }}
+            className="w-full bg-slate-950 hover:bg-slate-900 text-amber-400 hover:text-amber-300 text-xs sm:text-sm font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-98 transition-all cursor-pointer border border-amber-400/80 group-hover:ring-4 group-hover:ring-amber-400/30 uppercase tracking-wide"
+          >
+            <Zap className="w-4 h-4 fill-amber-400 text-amber-400 shrink-0" />
+            <span>START FREE GUEST PRACTICE DRILL</span>
+            <ArrowDown className="w-4 h-4 animate-bounce text-amber-400 shrink-0" />
+          </button>
+        </div>
 
-          {/* 3. Primary Full-Width Action Button */}
-          <div className="relative z-10">
-            <button
-              type="button"
-              onClick={() => {
-                setAuthMode("guest");
-                setError(null);
-              }}
-              className="w-full bg-slate-950 hover:bg-slate-900 text-amber-400 hover:text-amber-300 text-xs sm:text-sm font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-98 transition-all cursor-pointer border border-amber-400/80 group-hover:ring-4 group-hover:ring-amber-400/30 uppercase tracking-wide"
-            >
-              <Zap className="w-4 h-4 fill-amber-400 text-amber-400 shrink-0" />
-              <span>START FREE GUEST PRACTICE DRILL</span>
-              <ArrowDown className="w-4 h-4 animate-bounce text-amber-400 shrink-0" />
-            </button>
-          </div>
-
-          {/* 4. Bottom Information & Pointer Footer */}
-          <div className="pt-3 border-t border-slate-950/15 space-y-2 relative z-10">
-            <p className="text-[11px] font-extrabold text-slate-900/90 leading-tight">
-              🏆 <strong className="font-black">Arnav Abacus Academy (Wakad, Pune, India)</strong> — Best Abacus & Vedic Maths Brain Development
-            </p>
-            
-            {/* Dynamic Animated Pointer Label pointing directly down to the Free Guest Practice Drill button */}
-            <button
-              type="button"
-              onClick={() => {
-                setAuthMode("guest");
-                setError(null);
-              }}
-              className="w-full bg-slate-950 hover:bg-slate-900 text-amber-300 border-2 border-amber-400 text-[10px] sm:text-xs font-black py-2 px-3 rounded-full shadow-md animate-bounce flex items-center justify-center gap-1.5 cursor-pointer transition-all hover:scale-[1.01]"
-            >
-              <Flame className="w-3.5 h-3.5 text-orange-400 fill-orange-400 animate-pulse shrink-0" />
-              <span>👇 CLICK BELOW FOR FREE GUEST PRACTICE DRILL (NO OTP)</span>
-              <ArrowDown className="w-3.5 h-3.5 text-amber-300 animate-bounce shrink-0" />
-            </button>
-          </div>
+        {/* RIBBON 3: DIRECT POINTER ACTION RIBBON */}
+        <div className="bg-slate-900 text-amber-300 border-b border-slate-800 px-4 py-2.5 relative z-10">
+          <button
+            type="button"
+            onClick={() => {
+              setAuthMode("guest");
+              setError(null);
+            }}
+            className="w-full text-[10px] sm:text-xs font-black text-amber-300 flex items-center justify-center gap-1.5 animate-bounce cursor-pointer hover:text-white transition"
+          >
+            <Flame className="w-3.5 h-3.5 text-orange-400 fill-orange-400 animate-pulse shrink-0" />
+            <span>👇 CLICK BELOW TO LAUNCH FREE GUEST PRACTICE DRILL (NO OTP)</span>
+            <ArrowDown className="w-3.5 h-3.5 text-amber-300 shrink-0" />
+          </button>
         </div>
 
         {/* Toggle Switch Bar with Dynamic Flashing Callout & Arrow */}
