@@ -4,14 +4,20 @@
  */
 
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { MessageSquare, X, PhoneCall } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function FloatingCTA() {
   const { t } = useLanguage();
+  const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+
+  if (location.pathname === "/practice/session") {
+    return null;
+  }
 
   useEffect(() => {
     // Show button after 3 seconds scroll position or time delays

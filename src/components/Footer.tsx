@@ -4,14 +4,19 @@
  */
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, ShieldCheck, Heart } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function Footer() {
   const { language, t } = useLanguage();
+  const location = useLocation();
   const [logoFailed, setLogoFailed] = React.useState(false);
   const currentYear = new Date().getFullYear();
+
+  if (location.pathname === "/practice/session") {
+    return null;
+  }
 
   return (
     <footer id="main-footer" className="bg-slate-950 text-slate-400 pt-16 pb-8 border-t border-slate-900">

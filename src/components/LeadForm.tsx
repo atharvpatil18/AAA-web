@@ -484,7 +484,8 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       doc.text("Page 3 of 3 • Arnav Abacus Academy", 15, 285);
       doc.text("Contact: +91 90219 24968", 165, 285);
 
-      doc.save("arnav_abacus_diagnostic_worksheet.pdf");
+      const timeStamp = new Date().toISOString().replace(/[-:T.]/g, "").slice(0, 14);
+      doc.save(`arnav_abacus_diagnostic_worksheet_${timeStamp}.pdf`);
     } catch (err) {
       console.error("PDF generation error", err);
     }

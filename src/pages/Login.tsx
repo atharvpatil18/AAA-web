@@ -204,7 +204,7 @@ export default function Login() {
     const displayName = guestName.trim() || (guestEmail ? guestEmail.split("@")[0] : "Candidate");
     const subject = encodeURIComponent(`Arnav Abacus Academy Speed Math Practice Worksheet (${selectedQuestionCount} Qs)`);
     const body = encodeURIComponent(
-      `Hi!\n\nHere is the printable Speed Math Worksheet & Academy Brochure for ${displayName}.\nTopic: ${selectedTopicMode.toUpperCase()} (${selectedQuestionCount} Questions)\n\nAttached is the downloaded PDF file: Arnav_Abacus_Worksheet_${selectedQuestionCount}Qs.pdf.\n\nArnav Abacus Academy • Wakad, Pune\nWhatsApp: +91 90219 24968 | Email: nehaatharv@gmail.com`
+      `Hi!\n\nHere is the printable Speed Math Worksheet & Academy Brochure for ${displayName}.\nTopic: ${selectedTopicMode.toUpperCase()} (${selectedQuestionCount} Questions)\n\nAttached is your downloaded Speed Math Practice Worksheet PDF.\n\nArnav Abacus Academy • Wakad, Pune\nWhatsApp: +91 90219 24968 | Email: nehaatharv@gmail.com`
     );
     window.open(`mailto:${guestEmail || ""}?subject=${subject}&body=${body}`, "_blank");
   };
@@ -213,7 +213,7 @@ export default function Login() {
     await handleDownloadPdf();
     const displayName = guestName.trim() || (guestEmail ? guestEmail.split("@")[0] : "Candidate");
     const text = encodeURIComponent(
-      `📄 *Arnav Abacus Academy - Speed Math Worksheet & Brochure*\n\nCandidate: *${displayName}*\nTopic: *${selectedTopicMode.toUpperCase()} (${selectedQuestionCount} Questions)*\n\nI generated the printable PDF worksheet! Downloaded file: *Arnav_Abacus_Worksheet_${selectedQuestionCount}Qs.pdf*.\n\n📍 Arnav Abacus Academy (Wakad, Pune, India)\nWhatsApp: +91 90219 24968`
+      `📄 *Arnav Abacus Academy - Speed Math Worksheet & Brochure*\n\nCandidate: *${displayName}*\nTopic: *${selectedTopicMode.toUpperCase()} (${selectedQuestionCount} Questions)*\n\nI generated the printable PDF worksheet!\n\n📍 Arnav Abacus Academy (Wakad, Pune, India)\nWhatsApp: +91 90219 24968`
     );
     window.open(`https://wa.me/?text=${text}`, "_blank");
   };

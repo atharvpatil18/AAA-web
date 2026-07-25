@@ -391,7 +391,8 @@ export const generateBrochurePDF = async (language: string) => {
     doc.setTextColor(150, 150, 150);
     doc.text("Arnav Abacus Academy | 1-Page Summary Brochure (Ages 4-14)", 12, 294);
 
-    doc.save("arnav_abacus_academy_brochure.pdf");
+    const timeStamp = new Date().toISOString().replace(/[-:T.]/g, "").slice(0, 14);
+    doc.save(`arnav_abacus_academy_brochure_${timeStamp}.pdf`);
 
   } catch (err) {
     console.error("Brochure compilation failed", err);

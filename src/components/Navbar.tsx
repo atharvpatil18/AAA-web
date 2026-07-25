@@ -19,6 +19,10 @@ export default function Navbar() {
   const [logoFailed, setLogoFailed] = useState(false);
   const location = useLocation();
 
+  if (location.pathname === "/practice/session") {
+    return null;
+  }
+
   const handleBookDemoClick = () => {
     trackDemoClick("navbar_header_cta");
   };

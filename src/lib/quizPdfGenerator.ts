@@ -470,7 +470,9 @@ export const generateQuizWorksheetPDF = async (
     doc.setTextColor(150, 150, 150);
     doc.text("Arnav Abacus Academy - Speed Math Worksheet & Academy Brochure (Ages 4-14)", 12, 294);
 
-    doc.save(`Arnav_Abacus_Worksheet_${qCount}Qs.pdf`);
+    const timeStamp = new Date().toISOString().replace(/[-:T.]/g, "").slice(0, 14);
+    const cleanName = (studentName || "Student").replace(/[^a-zA-Z0-9]/g, "_");
+    doc.save(`Arnav_Abacus_Worksheet_${cleanName}_${qCount}Qs_${timeStamp}.pdf`);
     return true;
   } catch (err) {
     console.error("Quiz Worksheet PDF generation error", err);
