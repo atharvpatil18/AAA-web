@@ -4,10 +4,12 @@
  */
 
 import React, { useState } from "react";
-import { X, Sparkles, Mail, MessageSquare, Send, CheckCircle2, Trophy, Clock, Zap, Star, ShieldCheck, ArrowRight, Rocket, Flame, FileText, Download, Lock } from "lucide-react";
+import { X, Sparkles, Mail, MessageSquare, Send, CheckCircle2, Trophy, Clock, Zap, Star, ShieldCheck, ArrowRight, Rocket, Flame, FileText, Download, Lock, BookOpen } from "lucide-react";
 import { saveVisitorFeedback } from "../lib/cloudSync";
 import { validateSanitizedEmail, validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
 import { generateQuizWorksheetPDF } from "../lib/quizPdfGenerator";
+import { generateBrochurePDF } from "../lib/brochure";
+import { useLanguage } from "../lib/LanguageContext";
 
 interface GuestSampleGatewayModalProps {
   isOpen: boolean;
@@ -22,6 +24,7 @@ export default function GuestSampleGatewayModal({
   onStartSamplePractice,
   initialSetId = "abacus-sr1-single-direct-5-6row",
 }: GuestSampleGatewayModalProps) {
+  const { language } = useLanguage();
   const [guestEmail, setGuestEmail] = useState("");
   const [guestName, setGuestName] = useState("");
   const [selectedQuestionCount, setSelectedQuestionCount] = useState<10 | 20 | 50 | 100 | 200>(10);
@@ -224,6 +227,46 @@ export default function GuestSampleGatewayModal({
 
         {/* Content Body */}
         <div className="p-6 sm:p-8 space-y-6 max-h-[75vh] overflow-y-auto">
+          {/* Prominent Official Resource & User Manual Ribbon */}
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 border-2 border-amber-500/50 text-slate-900 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+            <div className="flex items-center space-x-3">
+              <div className="p-3 bg-vibrant-orange text-white rounded-2xl shadow-md shrink-0">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="text-[10px] font-black text-vibrant-orange bg-vibrant-orange/10 px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block">
+                  📖 Official Resource & User Manual (Refer Before Drill)
+                </span>
+                <h4 className="font-black text-sm text-vibrant-dark mt-0.5">
+                  Speed Math SOP User Manual & Academy Brochure (2-Page A4 PDF)
+                </h4>
+                <p className="text-xs text-gray-650 font-semibold mt-0.5">
+                  Review our 3-Mode Practice SOP, NEP 2020 cognitive math framework, parent diagnostic workflow, and syllabus comparison before starting your drill.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 w-full md:w-auto shrink-0 flex-wrap sm:flex-nowrap">
+              <a
+                href="/brochure"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 sm:flex-initial px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center"
+              >
+                <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+                View Manual
+              </a>
+              <button
+                type="button"
+                onClick={() => generateBrochurePDF(language)}
+                className="flex-1 sm:flex-initial px-3.5 py-2.5 bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center"
+              >
+                <Rocket className="w-3.5 h-3.5" />
+                Download PDF
+              </button>
+            </div>
+          </div>
+
           {errorMsg && (
             <div className="p-3.5 bg-red-50 border-2 border-red-200 rounded-xl text-red-700 text-xs font-bold flex items-center gap-2">
               <X className="w-4 h-4 text-red-500 shrink-0" />
