@@ -309,7 +309,7 @@ export default function PracticeSession() {
             className="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 font-bold px-3 py-1.5 rounded-xl text-xs transition cursor-pointer flex items-center gap-1"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span className="hidden xs:inline">{currentUser ? "Exit Drill" : "Free Guest Trial"}</span>
+            <span className="hidden xs:inline">{currentUser ? "Exit Drill" : "Free Guest Practice Drill"}</span>
           </button>
         </div>
       </header>

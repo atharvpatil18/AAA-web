@@ -215,11 +215,11 @@ export default function GuestSampleGatewayModal({
           </button>
           <div className="flex items-center gap-2 mb-2">
             <span className="bg-slate-950 text-amber-400 font-extrabold text-xs px-3 py-1 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" /> Guest Trial Portal
+              <Sparkles className="w-3.5 h-3.5" /> Guest Practice Portal
             </span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
-            Free Sample Practice Drills (100 Qs / 10 Mins)
+            Free Guest Practice Drills (100 Qs / 10 Mins)
           </h2>
           <p className="text-xs sm:text-sm font-semibold text-slate-900/90 mt-1">
             Experience 100-question speed drills! Enter your Email to log in instantly & track your live rank on the leaderboard.
@@ -496,7 +496,7 @@ export default function GuestSampleGatewayModal({
               >
                 <Rocket className="w-5 h-5 fill-slate-950 animate-bounce shrink-0" />
                 <span>
-                  START FREE SAMPLE PRACTICE ({selectedQuestionCount} Qs • {selectedTimeMinutes} MINS • {selectedTopicMode === "single" ? "SINGLE DIGIT DIRECT" : selectedTopicMode === "double" ? "DOUBLE DIGIT DIRECT" : "BOTH SINGLE & DOUBLE"})
+                  START FREE GUEST PRACTICE DRILL ({selectedQuestionCount} Qs • {selectedTimeMinutes} MINS • {selectedTopicMode === "single" ? "SINGLE DIGIT DIRECT" : selectedTopicMode === "double" ? "DOUBLE DIGIT DIRECT" : "BOTH SINGLE & DOUBLE"})
                 </span>
                 <ArrowRight className="w-5 h-5 shrink-0" />
               </button>
