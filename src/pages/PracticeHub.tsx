@@ -15,6 +15,7 @@ import { generateBrochurePDF } from "../lib/brochure";
 import VedicLearningModal from "../components/VedicLearningModal";
 import AdminEmailAccessModal from "../components/AdminEmailAccessModal";
 import GuestSampleGatewayModal from "../components/GuestSampleGatewayModal";
+import AdminSuccessStoryManager from "../components/AdminSuccessStoryManager";
 import { checkUserAccess, isUserAdmin, getApprovedRecord, syncApprovedRecordsFromCloud, ACCESS_UPDATED_EVENT } from "../lib/accessControl";
 
 const ABACUS_LEVEL_INFO: Record<string, { primaryFocus: string; uniqueTopics: string }> = {
@@ -1342,17 +1343,21 @@ export default function PracticeHub() {
 
           {/* TAB 4: ADMIN PORTAL */}
           {hubTab === "admin" && currentUser && (currentUser.email === "admin@arnavabacus.com" || currentUser.email === "nitinkpatil@gmail.com") && (
-            <div className="space-y-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-4 mb-4 gap-4">
-                <div>
-                  <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-vibrant-teal" />
-                    Student Access & Verification Control
-                  </h3>
-                  <p className="text-xs text-slate-500">
-                    Add or remove student email addresses approved to request OTP and log in.
-                  </p>
-                </div>
+            <div className="space-y-8">
+              {/* Admin Success Story & Photo Publisher */}
+              <AdminSuccessStoryManager />
+
+              <div className="pt-6 border-t border-slate-200">
+                <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-4 mb-4 gap-4">
+                  <div>
+                    <h3 className="text-lg font-black text-slate-900 flex items-center gap-2">
+                      <ShieldCheck className="w-5 h-5 text-vibrant-teal" />
+                      Student Access & Verification Control
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      Add or remove student email addresses approved to request OTP and log in.
+                    </p>
+                  </div>
 
                 <div className="flex items-center gap-3">
                   <div className="relative">
@@ -1490,6 +1495,7 @@ export default function PracticeHub() {
                 </table>
               </div>
             </div>
+          </div>
           )}
         </div>
       </div>

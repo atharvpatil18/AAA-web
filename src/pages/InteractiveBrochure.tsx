@@ -8,13 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { generateBrochurePDF } from "../lib/brochure";
 import { useLanguage } from "../lib/LanguageContext";
 import { RotateCw, Download, Sparkles, HelpCircle, Phone, Award, Zap, BookOpen, CheckCircle2, Sliders, Layers, Clock, FileText, FileCheck, Target, Lightbulb } from "lucide-react";
-import GuestSampleGatewayModal from "../components/GuestSampleGatewayModal";
+import PublicSuccessWall from "../components/PublicSuccessWall";
 
 export default function InteractiveBrochure() {
   const navigate = useNavigate();
   const { language, t } = useLanguage();
   const [isFlipped, setIsFlipped] = useState(false);
-  const [activeDocTab, setActiveDocTab] = useState<"brochure" | "manual">("brochure");
+  const [activeDocTab, setActiveDocTab] = useState<"brochure" | "manual" | "success">("brochure");
   const [isGuestGatewayOpen, setIsGuestGatewayOpen] = useState(false);
 
   const handleDownload = () => {
@@ -59,10 +59,10 @@ export default function InteractiveBrochure() {
           </button>
 
           {/* Tab Switcher */}
-          <div className="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200 w-full sm:w-auto md:w-72 justify-between">
+          <div className="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200 w-full sm:w-auto md:w-96 justify-between gap-1">
             <button
               onClick={() => setActiveDocTab("brochure")}
-              className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeDocTab === "brochure"
                   ? "bg-slate-900 text-white shadow-md"
                   : "text-slate-600 hover:text-slate-900"
@@ -73,7 +73,7 @@ export default function InteractiveBrochure() {
             </button>
             <button
               onClick={() => setActiveDocTab("manual")}
-              className={`flex-1 py-2 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeDocTab === "manual"
                   ? "bg-slate-900 text-white shadow-md"
                   : "text-slate-600 hover:text-slate-900"
@@ -82,12 +82,27 @@ export default function InteractiveBrochure() {
               <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
               <span>SOP Manual</span>
             </button>
+            <button
+              onClick={() => setActiveDocTab("success")}
+              className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                activeDocTab === "success"
+                  ? "bg-purple-900 text-white shadow-md"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Award className="w-3.5 h-3.5 text-purple-400" />
+              <span>Our Success</span>
+            </button>
           </div>
         </div>
       </div>
 
       {/* 2. Document View Content */}
-      {activeDocTab === "manual" ? (
+      {activeDocTab === "success" ? (
+        <div className="bg-white rounded-3xl border border-slate-200 p-6 md:p-8 shadow-xl animate-in fade-in duration-300">
+          <PublicSuccessWall />
+        </div>
+      ) : activeDocTab === "manual" ? (
         <div className="space-y-8 animate-in fade-in duration-300">
           {/* Header Banner for SOP Manual */}
           <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-teal-500 text-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-amber-300 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">

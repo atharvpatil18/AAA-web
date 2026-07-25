@@ -48,6 +48,7 @@ import {
   syncStudentAttempts,
 } from "../lib/cloudSync";
 import { validateSanitizedEmail, validateSanitizedName } from "../lib/securitySanitizer";
+import AdminSuccessStoryManager from "./AdminSuccessStoryManager";
 
 interface AdminEmailAccessModalProps {
   isOpen: boolean;
@@ -58,7 +59,7 @@ const ABACUS_LEVELS = ["JR-0", "JR-1", "JR-2", "JR-3", "SR-1", "SR-2", "SR-3", "
 const VEDIC_LEVELS = ["JVM-1", "SVM-0", "SVM-1", "SVM-2", "SVM-3", "SVM-4", "SVM-5", "SVM-6"];
 
 export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAccessModalProps) {
-  const [activeTab, setActiveTab] = useState<"access" | "feedback">("access");
+  const [activeTab, setActiveTab] = useState<"access" | "feedback" | "stories">("access");
   const [records, setRecords] = useState<ApprovedEmailRecord[]>([]);
   const [feedbacks, setFeedbacks] = useState<VisitorFeedback[]>([]);
   const [allAttempts, setAllAttempts] = useState<AttemptRecord[]>([]);
@@ -291,7 +292,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
         </div>
 
         {/* Tab Switcher Header */}
-        <div className="flex items-center bg-slate-950/80 px-4 py-2 border-b border-slate-800 gap-2 shrink-0">
+        <div className="flex items-center bg-slate-950/80 px-4 py-2 border-b border-slate-800 gap-2 shrink-0 flex-wrap sm:flex-nowrap">
           <button
             onClick={() => setActiveTab("access")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
@@ -314,10 +315,25 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
             <MessageSquare className="w-4 h-4 text-amber-400" />
             Visitor Feedback Manager ({feedbacks.length})
           </button>
+          <button
+            onClick={() => setActiveTab("stories")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
+              activeTab === "stories"
+                ? "bg-purple-600 text-white shadow-md font-extrabold"
+                : "text-slate-400 hover:text-white hover:bg-slate-800"
+            }`}
+          >
+            <Sparkles className="w-4 h-4 text-purple-400" />
+            Our Success Manager
+          </button>
         </div>
 
         {/* Content Body */}
-        {activeTab === "feedback" ? (
+        {activeTab === "stories" ? (
+          <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-slate-900/80">
+            <AdminSuccessStoryManager />
+          </div>
+        ) : activeTab === "feedback" ? (
           <div className="p-4 sm:p-6 space-y-4 overflow-y-auto flex-1 bg-slate-900/80">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
               <div>
