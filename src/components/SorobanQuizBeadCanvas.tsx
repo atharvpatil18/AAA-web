@@ -14,14 +14,15 @@ interface RodState {
 }
 
 export default function SorobanQuizBeadCanvas({
-  value,
+  value = 0,
   digitsCount = 2,
   interactive = false,
   showDigitsFooter = false,
   onChange,
 }: SorobanQuizBeadCanvasProps) {
-  // Determine how many rods to show based on digitsCount or value size
-  const numRods = digitsCount || (value >= 100 ? 3 : value >= 10 ? 2 : 1);
+  const safeVal = Number.isFinite(value) ? Math.max(0, Math.min(999, Math.floor(value))) : 0;
+  const numRods = digitsCount || (safeVal >= 100 ? 3 : safeVal >= 10 ? 2 : 1);
+  const safeNumRods = Number.isFinite(numRods) && numRods > 0 ? numRods : 2;
 
   // Convert value into rod states from Hundreds (left) to Units (right)
   const getRodsFromValue = (val: number, numR: number): RodState[] => {
@@ -45,13 +46,15 @@ export default function SorobanQuizBeadCanvas({
   };
 
   const [rods, setRods] = useState<RodState[]>(() =>
-    getRodsFromValue(value, numRods)
+    getRodsFromValue(safeVal, safeNumRods)
   );
 
   // Keep rods state synchronized with external value in non-interactive / reset state
   useEffect(() => {
-    setRods(getRodsFromValue(value, numRods));
-  }, [value, numRods]);
+    setRods(getRodsFromValue(safeVal, safeNumRods));
+  }, [safeVal, safeNumRods]);
+
+  const safeRods = Array.isArray(rods) && rods.length === safeNumRods ? rods : getRodsFromValue(safeVal, safeNumRods);
 
   // Calculate current total value from internal rod states
   const calculateTotal = (currRods: RodState[]): number => {
@@ -119,13 +122,13 @@ export default function SorobanQuizBeadCanvas({
         <div className="relative bg-amber-50 rounded-lg border-2 border-amber-900/80 overflow-hidden shadow-inner flex flex-col items-stretch">
           {/* UPPER DECK AREA (Height ~54px) */}
           <div className="relative h-[54px] w-full bg-amber-100/50">
-            {rods.map((rod, rodIdx) => (
+            {safeRods.map((rod, rodIdx) => (
               <div
                 key={rodIdx}
                 className="absolute top-0 bottom-0 flex justify-center items-center select-none"
                 style={{
-                  left: `${(rodIdx / numRods) * 100}%`,
-                  width: `${(1 / numRods) * 100}%`,
+                  left: `${(rodIdx / safeNumRods) * 100}%`,
+                  width: `${(1 / safeNumRods) * 100}%`,
                 }}
               >
                 {/* Vertical Metallic Rod Line */}
@@ -155,13 +158,13 @@ export default function SorobanQuizBeadCanvas({
 
           {/* MIDDLE RECKONING BEAM (Divider Bar) */}
           <div className="relative h-4 bg-amber-950 border-y-2 border-amber-800 z-30 flex items-center shadow-md">
-            {rods.map((_, rodIdx) => (
+            {safeRods.map((_, rodIdx) => (
               <div
                 key={rodIdx}
                 className="absolute flex justify-center items-center"
                 style={{
-                  left: `${(rodIdx / numRods) * 100}%`,
-                  width: `${(1 / numRods) * 100}%`,
+                  left: `${(rodIdx / safeNumRods) * 100}%`,
+                  width: `${(1 / safeNumRods) * 100}%`,
                 }}
               >
                 {/* Unit Alignment Dot on Beam */}
@@ -172,15 +175,15 @@ export default function SorobanQuizBeadCanvas({
 
           {/* LOWER DECK AREA (Height ~116px) */}
           <div className="relative h-[116px] w-full bg-amber-100/50">
-            {rods.map((rod, rodIdx) => {
+            {safeRods.map((rod, rodIdx) => {
               const activeCount = rod.lowerCount; // 0 to 4 active beads at top (beam)
               return (
                 <div
                   key={rodIdx}
                   className="absolute top-0 bottom-0 flex justify-center items-center select-none"
                   style={{
-                    left: `${(rodIdx / numRods) * 100}%`,
-                    width: `${(1 / numRods) * 100}%`,
+                    left: `${(rodIdx / safeNumRods) * 100}%`,
+                    width: `${(1 / safeNumRods) * 100}%`,
                   }}
                 >
                   {/* Vertical Metallic Rod Line */}
