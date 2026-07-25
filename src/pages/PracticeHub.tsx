@@ -707,28 +707,7 @@ export default function PracticeHub() {
                 </div>
               </div>
 
-              {/* Free Visitor Sample Practice Banner */}
-              <div className="mb-8 p-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 rounded-3xl shadow-xl border-2 border-amber-300 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div className="absolute -right-8 -bottom-8 w-40 h-40 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
 
-                <div className="space-y-1 z-10">
-                  <h3 className="text-xl sm:text-2xl font-black tracking-tight">
-                    Try Sample Practice Drills (100 Questions / 10 Mins)
-                  </h3>
-                  <p className="text-xs sm:text-sm font-semibold text-slate-900/90 max-w-xl">
-                    Experience speed math drills from Level SR-1 & SR-2 with email login. Record your score on the live leaderboard and request course access!
-                  </p>
-                </div>
-
-                <button
-                  onClick={() => setIsGuestGatewayOpen(true)}
-                  className="z-10 bg-slate-950 hover:bg-slate-900 text-amber-400 text-xs sm:text-sm font-black px-5 py-3 rounded-2xl flex items-center gap-2 shadow-2xl hover:shadow-amber-500/20 active:scale-95 transition-all cursor-pointer border border-amber-400/40 shrink-0"
-                >
-                  <Zap className="w-4 h-4 fill-amber-400" />
-                  START FREE SAMPLE PRACTICE
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
 
               {/* Question Sets Grouped by Level with Age Group Filters (Ages 4-8 & Ages 9-14) */}
               <div>
