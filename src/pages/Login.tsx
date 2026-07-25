@@ -6,13 +6,16 @@
 import React, { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
-import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield, Zap, Clock, Trophy, MessageSquare, Send, Star, CheckCircle2, Flame, ArrowDown, TrendingUp, Rocket, FileText, Download, Lock, AlertTriangle } from "lucide-react";
+import { Mail, Sparkles, Key, CheckCircle, AlertCircle, ArrowRight, ShieldCheck, User, Shield, Zap, Clock, Trophy, MessageSquare, Send, Star, CheckCircle2, Flame, ArrowDown, TrendingUp, Rocket, FileText, Download, Lock, AlertTriangle, BookOpen } from "lucide-react";
 import { saveVisitorFeedback } from "../lib/cloudSync";
 import { validateSanitizedEmail, validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
 import { generateQuizWorksheetPDF } from "../lib/quizPdfGenerator";
+import { generateBrochurePDF } from "../lib/brochure";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function Login() {
   const { sendEmailOTP, verifyEmailOTP } = useAuth();
+  const { language } = useLanguage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/practice";
@@ -282,7 +285,7 @@ export default function Login() {
   );
 
   return (
-    <div className="bg-slate-50 min-h-screen py-10 px-4 flex items-center justify-center relative overflow-hidden">
+    <div className="bg-slate-50 min-h-screen py-10 px-4 flex flex-col items-center justify-center relative overflow-hidden">
       {/* Decorative Blur Spheres */}
       <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-vibrant-orange/10 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-vibrant-teal/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -941,6 +944,43 @@ export default function Login() {
             </div>
           )}
 
+        </div>
+      </div>
+
+      {/* Speed Math SOP User Manual & Academy Brochure Access Banner */}
+      <div className="w-full max-w-2xl mt-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-2 border-amber-400/40 text-slate-900 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm relative z-10">
+        <div className="flex items-center space-x-3">
+          <div className="p-3 bg-vibrant-orange text-white rounded-2xl shadow-md shrink-0">
+            <BookOpen className="w-6 h-6" />
+          </div>
+          <div>
+            <span className="text-[10px] font-black text-vibrant-orange bg-vibrant-orange/10 px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block">
+              Official Resource & User Manual
+            </span>
+            <h4 className="font-black text-sm text-vibrant-dark mt-0.5">
+              Speed Math SOP User Manual & Academy Brochure (2-Page A4 PDF)
+            </h4>
+            <p className="text-xs text-gray-650 font-semibold mt-0.5">
+              Explore our 3-Mode Practice SOP, NEP 2020 cognitive math framework, parent diagnostic workflow, and syllabus comparison.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2.5 w-full md:w-auto shrink-0 flex-wrap sm:flex-nowrap">
+          <button
+            onClick={() => navigate("/brochure")}
+            className="flex-1 sm:flex-initial px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+            View Online Viewer
+          </button>
+          <button
+            onClick={() => generateBrochurePDF(language)}
+            className="flex-1 sm:flex-initial px-4 py-2.5 bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <Rocket className="w-3.5 h-3.5" />
+            Download PDF
+          </button>
         </div>
       </div>
     </div>
