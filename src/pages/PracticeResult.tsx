@@ -67,10 +67,10 @@ export default function PracticeResult() {
           <h2 className="text-xl font-bold text-slate-800">No Attempt Found</h2>
           <p className="text-xs text-slate-500 my-3">Please start a practice session from the hub first.</p>
           <button
-            onClick={() => navigate("/practice")}
+            onClick={() => navigate(currentUser ? "/practice" : "/login?mode=guest")}
             className="bg-vibrant-orange text-white text-xs font-bold px-4 py-2 rounded-lg cursor-pointer"
           >
-            Go to Practice Hub
+            {currentUser ? "Go to Practice Hub" : "Free Guest Practice Trial"}
           </button>
         </div>
       </div>
@@ -210,11 +210,11 @@ export default function PracticeResult() {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate("/login?mode=guest")}
                     className="text-xs font-black text-amber-400 hover:text-white flex items-center gap-1.5 transition cursor-pointer shrink-0 bg-slate-900 hover:bg-slate-800 px-4 py-2.5 rounded-xl border border-amber-500/40 shadow-sm"
                   >
                     <ArrowLeft className="w-4 h-4" />
-                    Return to Home
+                    Free Guest Practice Trial
                   </button>
                 )}
               </div>

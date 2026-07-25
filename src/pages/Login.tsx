@@ -21,7 +21,7 @@ export default function Login() {
   const [authMode, setAuthMode] = useState<"student" | "guest">("student");
 
   React.useEffect(() => {
-    if (searchParams.get("redirect")) {
+    if (searchParams.get("redirect") || searchParams.get("mode") === "guest" || searchParams.get("guest") === "true") {
       setAuthMode("guest");
     }
   }, [searchParams]);
