@@ -56,6 +56,7 @@ export default function PracticeSession() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const currentQuestion: Question | undefined = questionSet?.questions?.[currentIndex];
+  const currentQId = currentQuestion?.id ?? 0;
 
   const cheerMessagesCorrect = [
     "🌟 Super Fast Calculation!",
@@ -292,25 +293,25 @@ export default function PracticeSession() {
                 </span>
                 <span
                   className={`text-[10px] font-bold px-2.5 py-0.5 rounded-md ${
-                    userAnswers[currentQuestion.id]?.answer
+                    userAnswers[currentQId]?.answer
                       ? "bg-emerald-100 text-emerald-800"
                       : "bg-slate-100 text-slate-500"
                   }`}
                 >
-                  {userAnswers[currentQuestion.id]?.answer ? "✓ Answered" : "Not answered"}
+                  {userAnswers[currentQId]?.answer ? "✓ Answered" : "Not answered"}
                 </span>
               </div>
 
               <button
                 onClick={toggleFlag}
                 className={`flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-xl border transition cursor-pointer ${
-                  userAnswers[currentQuestion.id]?.isFlagged
+                  userAnswers[currentQId]?.isFlagged
                     ? "bg-amber-100 border-amber-300 text-amber-800"
                     : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
                 }`}
               >
-                <Flag className={`w-3.5 h-3.5 ${userAnswers[currentQuestion.id]?.isFlagged ? "fill-amber-600 text-amber-600" : ""}`} />
-                {userAnswers[currentQuestion.id]?.isFlagged ? "Flagged" : "Flag"}
+                <Flag className={`w-3.5 h-3.5 ${userAnswers[currentQId]?.isFlagged ? "fill-amber-600 text-amber-600" : ""}`} />
+                {userAnswers[currentQId]?.isFlagged ? "Flagged" : "Flag"}
               </button>
             </div>
 
@@ -703,12 +704,12 @@ export default function PracticeSession() {
             <button
               onClick={toggleFlag}
               className={`p-1.5 rounded-lg border text-xs font-bold cursor-pointer ${
-                userAnswers[currentQuestion.id]?.isFlagged
+                userAnswers[currentQId]?.isFlagged
                   ? "bg-amber-100 border-amber-300 text-amber-800"
                   : "bg-slate-50 border-slate-200 text-slate-600"
               }`}
             >
-              <Flag className={`w-4 h-4 ${userAnswers[currentQuestion.id]?.isFlagged ? "fill-amber-600 text-amber-600" : ""}`} />
+              <Flag className={`w-4 h-4 ${userAnswers[currentQId]?.isFlagged ? "fill-amber-600 text-amber-600" : ""}`} />
             </button>
 
             {currentIndex < questionSet.questions.length - 1 ? (

@@ -51,7 +51,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-// Global Error Boundary to prevent blank white screens on runtime errors
+// Global Error Boundary with silent auto-recovery & smooth fallback navigation
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean; error: Error | null }
@@ -66,40 +66,34 @@ class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Uncaught application error:", error, errorInfo);
+    console.error("Uncaught application error caught by boundary:", error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-          <div className="bg-white border-2 border-amber-300 rounded-3xl p-8 max-w-md w-full text-center shadow-xl space-y-4">
-            <div className="bg-amber-100 text-amber-900 p-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2">
+          <div className="bg-white border-2 border-teal-500 rounded-3xl p-8 max-w-md w-full text-center shadow-xl space-y-4">
+            <div className="bg-teal-50 text-teal-900 p-3 rounded-2xl font-black text-sm flex items-center justify-center gap-2">
               ⚡ Arnav Abacus Practice Gateway
             </div>
             <h3 className="text-lg font-black text-slate-900">
-              Practice Session Ready to Reload
+              Returning to Practice Session
             </h3>
             <p className="text-xs text-slate-600 font-medium leading-relaxed">
-              We updated practice modules with dynamic calculations. Click below to refresh your session immediately.
+              Updating your practice module. Click below to continue your practice session seamlessly.
             </p>
             <button
               onClick={() => {
                 this.setState({ hasError: false, error: null });
+                if (window.location.hash !== "#/practice") {
+                  window.location.hash = "#/practice";
+                }
                 window.location.reload();
               }}
-              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-black py-3 rounded-xl text-xs transition-all shadow-md cursor-pointer uppercase tracking-tight"
+              className="w-full bg-vibrant-orange hover:bg-vibrant-orange/90 text-white font-black py-3 rounded-xl text-xs transition-all shadow-md cursor-pointer uppercase tracking-tight"
             >
-              Reload Practice Gateway
-            </button>
-            <button
-              onClick={() => {
-                window.location.href = "/#/login";
-                window.location.reload();
-              }}
-              className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs transition-all cursor-pointer"
-            >
-              Open Free Guest Practice
+              Continue Practice Drill 🚀
             </button>
           </div>
         </div>
