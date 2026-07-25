@@ -707,9 +707,6 @@ export default function PracticeHub() {
                 <div className="absolute -right-8 -bottom-8 w-40 h-40 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
 
                 <div className="space-y-1 z-10">
-                  <div className="inline-flex items-center gap-1.5 bg-slate-950 text-amber-400 text-[10px] font-black px-3 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
-                    <Sparkles className="w-3.5 h-3.5" /> FREE GUEST TRIAL
-                  </div>
                   <h3 className="text-xl sm:text-2xl font-black tracking-tight">
                     Try Sample Practice Drills (100 Questions / 10 Mins)
                   </h3>
