@@ -75,98 +75,207 @@ export default function InteractiveBrochure() {
 
       {/* 2. Document View Content */}
       {activeDocTab === "manual" ? (
-        <div className="space-y-6 animate-in fade-in duration-200">
-          <div className="bg-slate-900 border-2 border-slate-800 p-6 md:p-8 rounded-3xl text-white space-y-6 shadow-xl">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4 flex-wrap gap-2">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-amber-500/20 text-amber-400 rounded-2xl border border-amber-500/30 shrink-0">
-                  <BookOpen className="w-6 h-6" />
-                </div>
-                <div>
-                  <h2 className="text-lg md:text-xl font-black text-white">
-                    Speed Math Simulator SOP & User Manual
-                  </h2>
-                  <p className="text-xs text-slate-400">
-                    Interactive Speed Math Practice Standard Operating Procedure & Parent Evaluation Guide
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={handleDownload}
-                className="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-xs rounded-xl hover:shadow-lg transition cursor-pointer flex items-center gap-2"
-              >
-                <Download className="w-4 h-4" /> Download Manual PDF
-              </button>
-            </div>
-
-            {/* Section 1: Executive Overview & Methodology */}
-            <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
-              <h3 className="text-sm font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
-                <Target className="w-4 h-4 text-amber-400" />
-                1. Executive Overview & Speed Math Methodology
-              </h3>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                Arnav Abacus Academy (Wakad, Pune) provides a whole-brain speed math simulator aligning with NEP 2020 cognitive guidelines. By integrating physical soroban abacus bead visualization with ancient Vedic math shortcuts, students achieve 10X faster mental calculation speeds while eliminating finger-counting anxiety.
+        <div className="space-y-8 animate-in fade-in duration-300">
+          {/* Header Banner for SOP Manual */}
+          <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-teal-500 text-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-amber-300 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="space-y-2 z-10 max-w-2xl">
+              <span className="bg-slate-950/40 text-amber-200 border border-amber-300/40 px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider inline-flex items-center gap-1.5 shadow-sm">
+                <Sparkles className="w-4 h-4 text-amber-300 animate-spin" />
+                BECOME A SPEED MATH WIZARD • NEP 2020 BRAIN DRILLS 🚀
+              </span>
+              <h2 className="text-2xl md:text-4xl font-black font-display text-white tracking-tight leading-tight">
+                Speed Math Simulator SOP & Kids Practice Guide 🧮
+              </h2>
+              <p className="text-xs md:text-sm font-semibold text-slate-100/90 leading-relaxed">
+                Master 10X mental calculation speeds! Learn how to use Soroban Abacus bead visualization and ancient Vedic Math shortcuts to eliminate finger-counting and math fear.
               </p>
-              <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-200">
-                <strong>Core Course Focus & Syllabus Synergy:</strong> Abacus Classes in Wakad Pune • Speed Math Simulator • Vedic Math Shortcuts • Cambridge & IB Math Synergy
+            </div>
+
+            <button
+              onClick={handleDownload}
+              className="z-10 bg-slate-950 hover:bg-slate-900 text-amber-300 hover:text-white px-6 py-4 rounded-2xl font-black text-xs md:text-sm shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2.5 cursor-pointer border-2 border-amber-400 shrink-0 uppercase tracking-wide"
+            >
+              <Download className="w-5 h-5 text-amber-400 animate-bounce" />
+              <span>Download 2-Page Color PDF Manual</span>
+            </button>
+          </div>
+
+          {/* Section 1: Whole-Brain Calculation Magic */}
+          <div className="bg-white border-2 border-amber-200 rounded-3xl p-6 md:p-8 shadow-md space-y-4 hover:border-amber-400 transition-colors">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-vibrant-orange text-white rounded-2xl shadow-md shrink-0">
+                <Target className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="text-[10px] font-black text-vibrant-orange bg-vibrant-orange/10 px-3 py-1 rounded-full uppercase tracking-wider">
+                  🌟 STEP 1: UNDERSTAND THE MATH MAGIC
+                </span>
+                <h3 className="text-lg md:text-xl font-black text-vibrant-dark mt-1">
+                  1. Whole-Brain Calculation Methodology & Brain Agility
+                </h3>
               </div>
             </div>
 
-            {/* Section 2: 3-Mode Configuration Manual */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
-                <Sliders className="w-4 h-4 text-amber-400" />
-                2. Speed Math Practice Drill User Manual (3-Mode Configuration)
-              </h3>
+            <p className="text-xs md:text-sm text-slate-700 font-semibold leading-relaxed">
+              Arnav Abacus Academy (Wakad, Pune) provides a whole-brain speed math simulator aligning with NEP 2020 cognitive guidelines. By integrating physical soroban abacus bead visualization with ancient Vedic math shortcuts, students achieve 10X faster mental calculation speeds while building photographic focus.
+            </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Mode 1 */}
-                <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
-                  <span className="text-[10px] font-black bg-orange-500 text-white px-2.5 py-0.5 rounded-full uppercase">
-                    MODE 1: Question Count
-                  </span>
-                  <h4 className="font-black text-sm text-slate-100">Volume & Stamina Control</h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Select 10 Qs, 20 Qs, 50 Qs, 100 Qs, or 200 Qs depending on student age and practice level. 10 Qs for daily warm-ups; 100-200 Qs for Olympiad competition endurance.
-                  </p>
-                </div>
+            <div className="p-4 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-teal-500/10 border-2 border-dashed border-amber-300 rounded-2xl text-xs md:text-sm text-slate-800 font-bold flex flex-wrap items-center gap-2">
+              <span className="text-vibrant-orange font-black">Core Course Focus & Syllabus Synergy:</span>
+              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Abacus Classes in Wakad Pune</span>
+              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Speed Math Simulator</span>
+              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Vedic Math Shortcuts</span>
+              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Cambridge & IB Synergy</span>
+            </div>
+          </div>
 
-                {/* Mode 2 */}
-                <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
-                  <span className="text-[10px] font-black bg-emerald-500 text-white px-2.5 py-0.5 rounded-full uppercase">
-                    MODE 2: Speed Math Topic
-                  </span>
-                  <h4 className="font-black text-sm text-slate-100">Complexity & Digit Rows</h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Choose Single Digit Direct (4-5-6 Rows), Double Digit Direct (4-5-6 Rows), or Both (Mixed) to train spatial bead movement and memory recall.
-                  </p>
-                </div>
-
-                {/* Mode 3 */}
-                <div className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-2">
-                  <span className="text-[10px] font-black bg-purple-500 text-white px-2.5 py-0.5 rounded-full uppercase">
-                    MODE 3: Practice Time Limit
-                  </span>
-                  <h4 className="font-black text-sm text-slate-100">Speed & Timer Challenge</h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Select Time as 2 Min, 4 Min, 5 Min, 10 Min, or 20 Min. Interactive countdown timer enforces rapid decision-making under exam pressure.
-                  </p>
-                </div>
+          {/* Section 2: 3-Mode Interactive Game Configuration */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-vibrant-teal text-white rounded-2xl shadow-md shrink-0">
+                <Sliders className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="text-[10px] font-black text-vibrant-teal bg-vibrant-teal/10 px-3 py-1 rounded-full uppercase tracking-wider">
+                  🎮 STEP 2: CONFIGURE YOUR GAME DRILL
+                </span>
+                <h3 className="text-lg md:text-xl font-black text-vibrant-dark mt-1">
+                  2. Speed Math Simulator User Manual (3-Mode Game Challenge)
+                </h3>
               </div>
             </div>
 
-            {/* Section 3: Printable PDF & Evaluation Workflow */}
-            <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
-              <h3 className="text-sm font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
-                <FileCheck className="w-4 h-4 text-amber-400" />
-                3. Printable PDF Worksheets & Parent Evaluation Workflow
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Mode 1 Card */}
+              <div className="bg-gradient-to-b from-orange-500/10 to-amber-500/5 border-2 border-orange-300 rounded-3xl p-6 space-y-3 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-black bg-vibrant-orange text-white px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
+                      MODE 1
+                    </span>
+                    <span className="text-xl">🎯</span>
+                  </div>
+                  <h4 className="font-black text-base md:text-lg text-slate-900">Select Question Volume</h4>
+                  <p className="text-xs md:text-sm text-slate-600 font-semibold leading-relaxed">
+                    Choose between <strong>10 Qs, 20 Qs, 50 Qs, 100 Qs, or 200 Qs</strong>! 10 questions for daily speed warm-ups; 100-200 questions for Olympiad competition stamina.
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-orange-200/60 text-[11px] font-bold text-vibrant-orange flex items-center gap-1">
+                  <CheckCircle2 className="w-4 h-4 text-vibrant-orange shrink-0" />
+                  <span>Builds Calculation Stamina</span>
+                </div>
+              </div>
+
+              {/* Mode 2 Card */}
+              <div className="bg-gradient-to-b from-teal-500/10 to-emerald-500/5 border-2 border-teal-300 rounded-3xl p-6 space-y-3 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-black bg-vibrant-teal text-white px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
+                      MODE 2
+                    </span>
+                    <span className="text-xl">⚡</span>
+                  </div>
+                  <h4 className="font-black text-base md:text-lg text-slate-900">Select Speed Math Topic</h4>
+                  <p className="text-xs md:text-sm text-slate-600 font-semibold leading-relaxed">
+                    Choose <strong>Single Digit Direct (4-5-6 Rows)</strong>, <strong>Double Digit Direct (4-5-6 Rows)</strong>, or <strong>Both (Mixed Rows)</strong> to move soroban beads mentally!
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-teal-200/60 text-[11px] font-bold text-vibrant-teal flex items-center gap-1">
+                  <CheckCircle2 className="w-4 h-4 text-vibrant-teal shrink-0" />
+                  <span>Trains Spatial Bead Memory</span>
+                </div>
+              </div>
+
+              {/* Mode 3 Card */}
+              <div className="bg-gradient-to-b from-purple-500/10 to-indigo-500/5 border-2 border-purple-300 rounded-3xl p-6 space-y-3 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-black bg-purple-600 text-white px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
+                      MODE 3
+                    </span>
+                    <span className="text-xl">⏱️</span>
+                  </div>
+                  <h4 className="font-black text-base md:text-lg text-slate-900">Set Your Race Clock!</h4>
+                  <p className="text-xs md:text-sm text-slate-600 font-semibold leading-relaxed">
+                    Select Time as <strong>2 Min, 4 Min, 5 Min, 10 Min, or 20 Min</strong>! Race against the countdown timer to build instant accuracy under exam pressure!
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-purple-200/60 text-[11px] font-bold text-purple-700 flex items-center gap-1">
+                  <CheckCircle2 className="w-4 h-4 text-purple-700 shrink-0" />
+                  <span>Enforces Rapid Exam Speed</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Printable PDF & Evaluation Workflow */}
+          <div className="bg-white border-2 border-blue-200 rounded-3xl p-6 md:p-8 shadow-md space-y-4 hover:border-blue-400 transition-colors">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-blue-600 text-white rounded-2xl shadow-md shrink-0">
+                <FileCheck className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider">
+                  📄 STEP 3: OFFLINE HOME PRACTICE
+                </span>
+                <h3 className="text-lg md:text-xl font-black text-vibrant-dark mt-1">
+                  3. Printable PDF Worksheets & Parent Evaluation Workflow
+                </h3>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-2xl space-y-1">
+                <h4 className="font-black text-xs md:text-sm text-slate-900 flex items-center gap-1.5">
+                  <span>📄</span> 1-Click PDF Generation
+                </h4>
+                <p className="text-xs text-slate-600 font-semibold leading-relaxed">
+                  Generate print-ready A4 worksheets with centered calculation columns for offline home drills.
+                </p>
+              </div>
+
+              <div className="p-4 bg-amber-50/50 border border-amber-100 rounded-2xl space-y-1">
+                <h4 className="font-black text-xs md:text-sm text-slate-900 flex items-center gap-1.5">
+                  <span>📑</span> Attached Academy Brochure
+                </h4>
+                <p className="text-xs text-slate-600 font-semibold leading-relaxed">
+                  Every downloaded PDF worksheet automatically includes the Academy Brochure & contact info for reference.
+                </p>
+              </div>
+
+              <div className="p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl space-y-1">
+                <h4 className="font-black text-xs md:text-sm text-slate-900 flex items-center gap-1.5">
+                  <span>✍️</span> Parent Evaluation Boxes
+                </h4>
+                <p className="text-xs text-slate-600 font-semibold leading-relaxed">
+                  Each question card includes dedicated Ans: entry boxes and Eval: check/crossmark boxes to track score accuracy.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Enthusiastic Call to Action Bar */}
+          <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-amber-400 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div className="space-y-2">
+              <span className="text-[10px] font-black text-amber-400 bg-amber-400/10 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block border border-amber-400/20">
+                🏆 READY TO TEST YOUR MATH AGILITY?
+              </span>
+              <h3 className="text-xl md:text-2xl font-black text-white tracking-tight">
+                Try the 10 Questions in 2 Minutes Speed Sprint Right Now!
               </h3>
-              <ul className="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
-                <li><strong>1-Click PDF Generation:</strong> Create print-ready A4 worksheets with centered question stacks for offline home practice.</li>
-                <li><strong>Attached Academy Brochure:</strong> Every generated PDF worksheet automatically includes the Academy Brochure & contact details for parent reference.</li>
-                <li><strong>Parent & Teacher Evaluation Boxes:</strong> Each question box includes dedicated Ans: entry boxes and Eval: check/crossmark boxes to calculate accuracy scores.</li>
-              </ul>
+              <p className="text-xs md:text-sm text-slate-300 font-semibold">
+                No passwords required. Experience live timer drills and record your score on the leaderboard!
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full sm:w-auto">
+              <a
+                href="/login?mode=guest"
+                className="w-full sm:w-auto bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-950 font-black px-6 py-4 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300"
+              >
+                <Zap className="w-4 h-4 fill-slate-950" />
+                <span>START FREE GUEST SPRINT DRILL</span>
+              </a>
             </div>
           </div>
         </div>
