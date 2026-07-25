@@ -9,6 +9,7 @@ import { PracticeAttemptResult } from "../types";
 import { Trophy, Clock, CheckCircle2, XCircle, HelpCircle, ArrowLeft, RefreshCw, Star, Sparkles, BookOpen, Flame, Award as Medal, TrendingUp, User, ListOrdered, ShieldCheck, Check, Rocket, Send, MessageSquare, X } from "lucide-react";
 import { syncStudentAttempts, saveVisitorFeedback, AttemptRecord } from "../lib/cloudSync";
 import { useAuth } from "../lib/AuthContext";
+import { generateAchievementCertificatePDF } from "../lib/certificateGenerator";
 
 export default function PracticeResult() {
   const { currentUser } = useAuth();
@@ -219,8 +220,8 @@ export default function PracticeResult() {
                 )}
               </div>
 
-              {/* DUAL OPTIONS GRID */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* TRIPLE OPTIONS GRID */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* OPTION 1: START NEXT ATTEMPT */}
                 <button
                   type="button"
@@ -235,15 +236,48 @@ export default function PracticeResult() {
                     </span>
                     <RefreshCw className="w-5 h-5 text-slate-950 group-hover/opt1:rotate-180 transition-transform duration-500" />
                   </div>
-                  <h4 className="text-base font-black tracking-tight text-slate-950">
-                    🚀 START NEXT ATTEMPT (RETAKE DRILL)
+                  <h4 className="text-sm md:text-base font-black tracking-tight text-slate-950">
+                    🚀 RETAKE DRILL
                   </h4>
                   <p className="text-xs font-extrabold text-slate-900/90 mt-1">
-                    Challenge your score with brand-new randomized speed math questions!
+                    Challenge score with new randomized questions!
                   </p>
                 </button>
 
-                {/* OPTION 2: PROVIDE FEEDBACK */}
+                {/* OPTION 2: DOWNLOAD CERTIFICATE */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    generateAchievementCertificatePDF({
+                      studentName: currentUser?.displayName || guestName,
+                      studentEmail: currentUser?.email || guestEmail,
+                      setTitle: result.setTitle,
+                      category: result.category,
+                      level: result.level,
+                      scorePercentage: result.scorePercentage,
+                      correctCount: result.correctCount,
+                      totalQuestions: result.totalQuestions,
+                      timeTakenSeconds: result.timeTakenSeconds,
+                      completedAt: result.completedAt,
+                    });
+                  }}
+                  className="group/opt3 p-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black text-left shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-98 transition-all cursor-pointer border-2 border-emerald-300 relative overflow-hidden"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="bg-slate-950 text-emerald-400 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow flex items-center gap-1">
+                      <Trophy className="w-3.5 h-3.5 text-emerald-400" /> OPTION 2
+                    </span>
+                    <Medal className="w-5 h-5 text-amber-300 group-hover/opt3:scale-125 transition-transform" />
+                  </div>
+                  <h4 className="text-sm md:text-base font-black tracking-tight text-white">
+                    🏆 OFFICIAL CERTIFICATE
+                  </h4>
+                  <p className="text-xs font-semibold text-emerald-100 mt-1">
+                    Download printable A4 Achievement Certificate PDF!
+                  </p>
+                </button>
+
+                {/* OPTION 3: PROVIDE FEEDBACK */}
                 <button
                   type="button"
                   onClick={() => setShowFeedbackModal(true)}
@@ -251,15 +285,15 @@ export default function PracticeResult() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="bg-amber-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow flex items-center gap-1">
-                      <Star className="w-3.5 h-3.5 fill-slate-950 text-slate-950" /> OPTION 2
+                      <Star className="w-3.5 h-3.5 fill-slate-950 text-slate-950" /> OPTION 3
                     </span>
                     <Star className="w-5 h-5 text-amber-400 fill-amber-400 group-hover/opt2:scale-125 transition-transform" />
                   </div>
-                  <h4 className="text-base font-black tracking-tight text-amber-300">
-                    ⭐ PROVIDE FEEDBACK / RATE DRILL
+                  <h4 className="text-sm md:text-base font-black tracking-tight text-amber-300">
+                    ⭐ RATE THIS DRILL
                   </h4>
                   <p className="text-xs font-medium text-slate-300 mt-1">
-                    Share your experience, ratings, or questions directly with our master trainers!
+                    Share feedback or questions with master trainers!
                   </p>
                 </button>
               </div>

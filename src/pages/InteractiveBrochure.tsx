@@ -84,7 +84,7 @@ export default function InteractiveBrochure() {
                 BECOME A SPEED MATH WIZARD • NEP 2020 BRAIN DRILLS 🚀
               </span>
               <h2 className="text-2xl md:text-4xl font-black font-display text-white tracking-tight leading-tight">
-                Speed Math Simulator SOP & Kids Practice Guide 🧮
+                Speed Math Simulator SOP & Student Practice Guide 🧮
               </h2>
               <p className="text-xs md:text-sm font-semibold text-slate-100/90 leading-relaxed">
                 Master 10X mental calculation speeds! Learn how to use Soroban Abacus bead visualization and ancient Vedic Math shortcuts to eliminate finger-counting and math fear.

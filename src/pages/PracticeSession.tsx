@@ -7,11 +7,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { getCustomizedSet } from "../data/practiceData";
 import { UserAnswer, PracticeMode, Question } from "../types";
-import { Flag, ArrowLeft, ArrowRight, Clock, CheckCircle, HelpCircle, LayoutGrid, Sparkles, Trophy, Zap, Flame, Smile, Check, ChevronDown, ChevronUp, Rocket } from "lucide-react";
+import { Flag, ArrowLeft, ArrowRight, Clock, CheckCircle, HelpCircle, LayoutGrid, Sparkles, Trophy, Zap, Flame, Smile, Check, ChevronDown, ChevronUp, Rocket, Volume2, VolumeX } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
 import SorobanQuizBeadCanvas from "../components/SorobanQuizBeadCanvas";
 import { saveStudentAttempt, saveVisitorFeedback } from "../lib/cloudSync";
 import { checkUserAccess } from "../lib/accessControl";
+import { playCorrectSound, playIncorrectSound, playTimerBeep, playFanfareSound } from "../lib/soundEffects";
 
 export default function PracticeSession() {
   const { currentUser } = useAuth();
@@ -46,6 +47,7 @@ export default function PracticeSession() {
     }
   }, [currentUser?.email, questionSet, navigate]);
 
+  const [soundEnabled, setSoundEnabled] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, UserAnswer>>({});
   const [currentInput, setCurrentInput] = useState("");
@@ -74,6 +76,9 @@ export default function PracticeSession() {
 
     const timer = setInterval(() => {
       setTimeRemaining((prev) => {
+        if (prev <= 10 && prev > 1 && soundEnabled) {
+          playTimerBeep();
+        }
         if (prev <= 1) {
           clearInterval(timer);
           handleFinishAttempt();
@@ -84,7 +89,7 @@ export default function PracticeSession() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isFinished]);
+  }, [isFinished, soundEnabled]);
 
   // Sync input when question index changes
   useEffect(() => {
@@ -129,6 +134,14 @@ export default function PracticeSession() {
     const correct = num === currentQuestion.correctAnswer;
     const randomCheer = cheerMessagesCorrect[Math.floor(Math.random() * cheerMessagesCorrect.length)];
     
+    if (soundEnabled) {
+      if (correct) {
+        playCorrectSound();
+      } else {
+        playIncorrectSound();
+      }
+    }
+
     setInstantFeedback({
       isCorrect: correct,
       message: correct
@@ -139,6 +152,9 @@ export default function PracticeSession() {
   };
 
   const handleFinishAttempt = () => {
+    if (soundEnabled) {
+      playFanfareSound();
+    }
     const timeTaken = questionSet.timeLimitSeconds - timeRemaining;
     
     let correctCount = 0;
@@ -269,6 +285,20 @@ export default function PracticeSession() {
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
+          <button
+            type="button"
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            title={soundEnabled ? "Mute Sound Effects" : "Enable Sound Effects"}
+            className={`p-1.5 rounded-xl border text-xs font-bold transition flex items-center gap-1 cursor-pointer ${
+              soundEnabled
+                ? "bg-amber-500/20 text-amber-300 border-amber-500/40 hover:bg-amber-500/30"
+                : "bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700"
+            }`}
+          >
+            {soundEnabled ? <Volume2 className="w-4 h-4 text-amber-400" /> : <VolumeX className="w-4 h-4 text-slate-400" />}
+            <span className="hidden sm:inline text-[10px]">{soundEnabled ? "Sound ON" : "Muted"}</span>
+          </button>
+
           <div className="hidden sm:flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-amber-300 px-3 py-1 rounded-xl text-xs font-bold">
             <Sparkles className="w-3.5 h-3.5 text-yellow-400 animate-spin" />
             <span>{answeredCount} / {questionSet.questions.length} Solved</span>
