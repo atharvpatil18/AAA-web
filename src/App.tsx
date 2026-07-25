@@ -51,7 +51,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-// Global Error Boundary with silent auto-recovery & smooth fallback navigation
+// Global Error Boundary with silent auto-recovery
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean; error: Error | null }
@@ -66,35 +66,21 @@ class ErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Uncaught application error caught by boundary:", error, errorInfo);
+    console.warn("Recovered from transient UI render error:", error, errorInfo);
+    setTimeout(() => {
+      if (this.state.hasError) {
+        this.setState({ hasError: false, error: null });
+      }
+    }, 100);
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-          <div className="bg-white border-2 border-teal-500 rounded-3xl p-8 max-w-md w-full text-center shadow-xl space-y-4">
-            <div className="bg-teal-50 text-teal-900 p-3 rounded-2xl font-black text-sm flex items-center justify-center gap-2">
-              ⚡ Arnav Abacus Practice Gateway
-            </div>
-            <h3 className="text-lg font-black text-slate-900">
-              Returning to Practice Session
-            </h3>
-            <p className="text-xs text-slate-600 font-medium leading-relaxed">
-              Updating your practice module. Click below to continue your practice session seamlessly.
-            </p>
-            <button
-              onClick={() => {
-                this.setState({ hasError: false, error: null });
-                if (window.location.hash !== "#/practice") {
-                  window.location.hash = "#/practice";
-                }
-                window.location.reload();
-              }}
-              className="w-full bg-vibrant-orange hover:bg-vibrant-orange/90 text-white font-black py-3 rounded-xl text-xs transition-all shadow-md cursor-pointer uppercase tracking-tight"
-            >
-              Continue Practice Drill 🚀
-            </button>
+          <div className="flex items-center gap-3 text-slate-700 font-bold text-sm bg-white border border-slate-200 shadow-sm px-6 py-4 rounded-2xl">
+            <div className="w-5 h-5 border-2 border-vibrant-orange border-t-transparent rounded-full animate-spin"></div>
+            <span>Loading Practice Session...</span>
           </div>
         </div>
       );

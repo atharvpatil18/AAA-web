@@ -174,7 +174,14 @@ export default function PracticeSession() {
     };
 
     // Store in global attempts DB and sync across mobile/desktop via student email or guest email
-    const guestObj = JSON.parse(localStorage.getItem("aaa_guest_user") || "{}");
+    let guestObj: any = {};
+    try {
+      const raw = localStorage.getItem("aaa_guest_user");
+      if (raw) guestObj = JSON.parse(raw);
+    } catch (e) {
+      guestObj = {};
+    }
+
     const activeEmail = (currentUser?.email || guestObj.email || "guest_visitor@arnavabacus.com").toLowerCase().trim();
     const activeName = currentUser?.name || guestObj.name || (activeEmail.includes("@") ? activeEmail.split("@")[0] : "Guest Candidate");
 
