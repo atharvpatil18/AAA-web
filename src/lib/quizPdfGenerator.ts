@@ -182,26 +182,32 @@ export const generateQuizWorksheetPDF = async (
       doc.setTextColor(15, 23, 42);
       doc.text(`Q${i + 1}`, x + 2, y + 3.8);
 
-      // Numbers stack (Center/Right aligned, crisp font)
+      // Numbers stack (Centrally aligned in question space, crisp font)
       doc.setFont("Courier", "bold");
       doc.setFontSize(8.5);
       doc.setTextColor(15, 23, 42);
 
-      let numY = y + 8.5;
       const lineStep = 3.6;
 
       if (q.numbers && q.numbers.length > 0) {
+        const stackHeight = q.numbers.length * lineStep;
+        let numY = y + 6 + (24.5 - stackHeight) / 2;
+
         q.numbers.forEach((n) => {
           const numStr = n >= 0 ? ` ${n}` : `${n}`;
-          doc.text(numStr, x + colWidth - 3, numY, { align: "right" });
+          doc.text(numStr, x + colWidth / 2 + 4.5, numY, { align: "right" });
           numY += lineStep;
         });
-      }
 
-      // Horizontal Sum Line
-      doc.setDrawColor(71, 85, 105);
-      doc.setLineWidth(0.4);
-      doc.line(x + 3, numY - 0.5, x + colWidth - 3, numY - 0.5);
+        // Horizontal Sum Line (Centered under question stack)
+        doc.setDrawColor(71, 85, 105);
+        doc.setLineWidth(0.4);
+        doc.line(x + colWidth / 2 - 8, numY - 0.5, x + colWidth / 2 + 6, numY - 0.5);
+      } else if (q.expression) {
+        doc.setFont("Helvetica", "bold");
+        doc.setFontSize(9);
+        doc.text(q.expression, x + colWidth / 2, y + 16, { align: "center" });
+      }
 
       // Answer Box (For Student Handwritten Answer)
       const ansY = y + cellHeight - 11;
