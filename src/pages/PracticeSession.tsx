@@ -234,10 +234,10 @@ export default function PracticeSession() {
             Reload Quiz Session
           </button>
           <button
-            onClick={() => navigate("/practice")}
+            onClick={() => navigate(currentUser ? "/practice" : "/")}
             className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs transition-all cursor-pointer"
           >
-            Back to Practice Hub
+            {currentUser ? "Back to Practice Hub" : "Return to Home"}
           </button>
         </div>
       </div>
@@ -273,11 +273,11 @@ export default function PracticeSession() {
           </div>
 
           <button
-            onClick={() => navigate("/practice")}
+            onClick={() => navigate(currentUser ? "/practice" : "/")}
             className="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 font-bold px-3 py-1.5 rounded-xl text-xs transition cursor-pointer flex items-center gap-1"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span className="hidden xs:inline">Exit Drill</span>
+            <span className="hidden xs:inline">{currentUser ? "Exit Drill" : "Exit Trial"}</span>
           </button>
         </div>
       </header>

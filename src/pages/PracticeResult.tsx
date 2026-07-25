@@ -8,8 +8,10 @@ import { useNavigate } from "react-router-dom";
 import { PracticeAttemptResult } from "../types";
 import { Trophy, Clock, CheckCircle2, XCircle, HelpCircle, ArrowLeft, RefreshCw, Star, Sparkles, BookOpen, Flame, Award as Medal, TrendingUp, User, ListOrdered, ShieldCheck, Check, Rocket, Send, MessageSquare, X } from "lucide-react";
 import { syncStudentAttempts, saveVisitorFeedback, AttemptRecord } from "../lib/cloudSync";
+import { useAuth } from "../lib/AuthContext";
 
 export default function PracticeResult() {
+  const { currentUser } = useAuth();
   const [result, setResult] = useState<PracticeAttemptResult | null>(null);
   const [allAttempts, setAllAttempts] = useState<AttemptRecord[]>([]);
   const [loadingSync, setLoadingSync] = useState(true);
@@ -196,14 +198,25 @@ export default function PracticeResult() {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => navigate("/practice")}
-                  className="text-xs font-black text-amber-400 hover:text-white flex items-center gap-1.5 transition cursor-pointer shrink-0 bg-slate-900 hover:bg-slate-800 px-4 py-2.5 rounded-xl border border-amber-500/40 shadow-sm"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Back to Practice Hub
-                </button>
+                {currentUser ? (
+                  <button
+                    type="button"
+                    onClick={() => navigate("/practice")}
+                    className="text-xs font-black text-amber-400 hover:text-white flex items-center gap-1.5 transition cursor-pointer shrink-0 bg-slate-900 hover:bg-slate-800 px-4 py-2.5 rounded-xl border border-amber-500/40 shadow-sm"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Back to Practice Hub
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => navigate("/")}
+                    className="text-xs font-black text-amber-400 hover:text-white flex items-center gap-1.5 transition cursor-pointer shrink-0 bg-slate-900 hover:bg-slate-800 px-4 py-2.5 rounded-xl border border-amber-500/40 shadow-sm"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Return to Home
+                  </button>
+                )}
               </div>
 
               {/* DUAL OPTIONS GRID */}
