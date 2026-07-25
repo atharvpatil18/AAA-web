@@ -4,7 +4,33 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { X, ShieldCheck, UserPlus, Trash2, Edit3, Plus, Check, Search, BookOpen, HelpCircle, Key, AlertCircle, MessageSquare, Star, Sparkles } from "lucide-react";
+import {
+  X,
+  ShieldCheck,
+  UserPlus,
+  Trash2,
+  Edit3,
+  Plus,
+  Check,
+  Search,
+  BookOpen,
+  HelpCircle,
+  Key,
+  AlertCircle,
+  MessageSquare,
+  Star,
+  Sparkles,
+  RefreshCw,
+  Cloud,
+  FileText,
+  ChevronDown,
+  ChevronUp,
+  Award,
+  Zap,
+  Flame,
+  FileCheck,
+  CheckCircle2,
+} from "lucide-react";
 import { ApprovedEmailRecord, LevelPermission, AccessFeatureMode, CourseType } from "../types";
 import {
   getAllApprovedRecords,
@@ -15,9 +41,11 @@ import {
 } from "../lib/accessControl";
 import {
   VisitorFeedback,
+  AttemptRecord,
   getAllVisitorFeedbacks,
   deleteVisitorFeedback,
   syncVisitorFeedbacksFromCloud,
+  syncStudentAttempts,
 } from "../lib/cloudSync";
 import { validateSanitizedEmail, validateSanitizedName } from "../lib/securitySanitizer";
 
@@ -33,6 +61,8 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
   const [activeTab, setActiveTab] = useState<"access" | "feedback">("access");
   const [records, setRecords] = useState<ApprovedEmailRecord[]>([]);
   const [feedbacks, setFeedbacks] = useState<VisitorFeedback[]>([]);
+  const [allAttempts, setAllAttempts] = useState<AttemptRecord[]>([]);
+  const [expandedGuestEmail, setExpandedGuestEmail] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [editingEmail, setEditingEmail] = useState<string | null>(null);
 
@@ -46,17 +76,24 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
 
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  const loadData = () => {
+  const loadData = async () => {
     setRecords(getAllApprovedRecords());
     setFeedbacks(getAllVisitorFeedbacks());
+    try {
+      const atts = await syncStudentAttempts();
+      setAllAttempts(atts);
+    } catch (e) {
+      console.warn("Attempts load error", e);
+    }
   };
 
   useEffect(() => {
     if (isOpen) {
       loadData();
       resetForm();
-      syncVisitorFeedbacksFromCloud().then((list) => setFeedbacks(list));
+      handleManualSync();
     }
   }, [isOpen]);
 
@@ -65,6 +102,27 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
     window.addEventListener(ACCESS_UPDATED_EVENT, handleUpdate);
     return () => window.removeEventListener(ACCESS_UPDATED_EVENT, handleUpdate);
   }, []);
+
+  const handleManualSync = async () => {
+    setIsSyncing(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const [syncedRecords, fbList, attsList] = await Promise.all([
+        syncApprovedRecordsFromCloud(),
+        syncVisitorFeedbacksFromCloud(),
+        syncStudentAttempts(),
+      ]);
+      setRecords(syncedRecords);
+      setFeedbacks(fbList);
+      setAllAttempts(attsList);
+      setSuccess("✓ Cloud Sync Complete! Merged student access permissions, visitor feedbacks, & guest drill attempts.");
+    } catch (e) {
+      setError("Cloud sync warning: Using cached database.");
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   const handleDeleteFeedback = async (id: string) => {
     const updated = await deleteVisitorFeedback(id);
@@ -149,57 +207,33 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
 
     const emailVal = validateSanitizedEmail(email);
     if (!emailVal.valid) {
-      setError(emailVal.error || "Please enter a valid student email address.");
+      setError(emailVal.error || "Please enter a valid email address.");
       return;
     }
 
-    let cleanStudentName = "Student User";
+    let cleanName = "";
     if (studentName.trim()) {
       const nameVal = validateSanitizedName(studentName);
       if (!nameVal.valid) {
         setError(nameVal.error || "Please enter a valid student name.");
         return;
       }
-      cleanStudentName = nameVal.sanitized;
+      cleanName = nameVal.sanitized;
     }
 
     const cleanEmail = emailVal.sanitized;
-
-    if (!isAdmin && permissions.length === 0) {
-      setError("Please add at least one course & level access rule.");
-      return;
-    }
-
     const recordToSave: ApprovedEmailRecord = {
       email: cleanEmail,
-      studentName: cleanStudentName,
+      studentName: cleanName,
       isAdmin,
-      permissions: isAdmin ? [{ course: "abacus", levels: ["ALL"], accessMode: "both" }, { course: "vedic", levels: ["ALL"], accessMode: "both" }] : permissions,
+      permissions: isAdmin ? [] : permissions,
+      createdAt: new Date().toISOString(),
     };
 
     saveApprovedRecord(recordToSave);
     setSuccess(`Successfully saved access permissions for ${cleanEmail}!`);
     loadData();
     resetForm();
-  };
-
-  const [isSyncing, setIsSyncing] = useState(false);
-
-  const handleManualSync = async () => {
-    setIsSyncing(true);
-    setError(null);
-    setSuccess(null);
-    try {
-      await syncApprovedRecordsFromCloud();
-      const fbList = await syncVisitorFeedbacksFromCloud();
-      setRecords(getAllApprovedRecords());
-      setFeedbacks(fbList);
-      setSuccess("Successfully synced access permissions & visitor feedbacks with cloud server!");
-    } catch (e) {
-      setError("Cloud sync encountered a network issue.");
-    } finally {
-      setIsSyncing(false);
-    }
   };
 
   if (!isOpen) return null;
@@ -214,7 +248,8 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
     (f) =>
       f.guestEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (f.guestName && f.guestName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      f.message.toLowerCase().includes(searchTerm.toLowerCase())
+      f.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (f.downloadedPdfTopic && f.downloadedPdfTopic.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -228,10 +263,10 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
             </div>
             <div>
               <h2 className="text-lg sm:text-xl font-bold text-white tracking-wide">
-                Admin Control & Feedback Manager
+                Admin Control & Visitor Feedback Manager
               </h2>
               <p className="text-[11px] sm:text-xs text-slate-400 leading-tight">
-                Manage student access permissions, view visitor feedbacks, and review guest practice requests.
+                Manage student access permissions, review guest practice attempts, levels completed & PDF downloads.
               </p>
             </div>
           </div>
@@ -240,15 +275,15 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
             <button
               onClick={handleManualSync}
               disabled={isSyncing}
-              className="px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all disabled:opacity-50"
+              className="px-3.5 py-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 hover:from-amber-500/30 hover:to-orange-500/30 text-amber-300 border border-amber-500/40 text-xs font-black rounded-xl flex items-center gap-2 transition-all cursor-pointer shadow-md disabled:opacity-50"
               title="Sync with cloud database across mobile & desktop"
             >
-              <Key className={`w-3.5 h-3.5 ${isSyncing ? "animate-spin" : ""}`} />
-              <span>{isSyncing ? "Syncing..." : "Sync Cloud Now"}</span>
+              <RefreshCw className={`w-4 h-4 text-amber-400 ${isSyncing ? "animate-spin" : ""}`} />
+              <span>{isSyncing ? "Syncing Cloud..." : "Sync Cloud Data"}</span>
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 sm:p-2 text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+              className="p-1.5 sm:p-2 text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -259,7 +294,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
         <div className="flex items-center bg-slate-950/80 px-4 py-2 border-b border-slate-800 gap-2 shrink-0">
           <button
             onClick={() => setActiveTab("access")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               activeTab === "access"
                 ? "bg-amber-500 text-slate-950 shadow-md font-extrabold"
                 : "text-slate-400 hover:text-white hover:bg-slate-800"
@@ -270,7 +305,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
           </button>
           <button
             onClick={() => setActiveTab("feedback")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
               activeTab === "feedback"
                 ? "bg-amber-500 text-slate-950 shadow-md font-extrabold"
                 : "text-slate-400 hover:text-white hover:bg-slate-800"
@@ -283,14 +318,14 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
 
         {/* Content Body */}
         {activeTab === "feedback" ? (
-          <div className="p-6 space-y-4 overflow-y-auto flex-1 bg-slate-900/80">
+          <div className="p-4 sm:p-6 space-y-4 overflow-y-auto flex-1 bg-slate-900/80">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-800/80 p-4 rounded-xl border border-slate-700/60">
               <div>
                 <h3 className="text-base font-bold text-amber-300 flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5 text-amber-400" /> Recorded Visitor Feedbacks & Access Inquiries
+                  <MessageSquare className="w-5 h-5 text-amber-400" /> Free Guest Activity, Drills, Levels & PDF Downloads
                 </h3>
                 <p className="text-xs text-slate-400">
-                  Website feedback submissions and sample practice inquiries from guests and visitors.
+                  Track guest practice sessions, completed level scores, shared feedback, and generated PDF quiz worksheets.
                 </p>
               </div>
 
@@ -300,7 +335,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search feedback..."
+                  placeholder="Search visitor or guest email..."
                   className="pl-9 pr-3 py-1.5 bg-slate-950 border border-slate-700 rounded-lg text-xs text-white focus:outline-none focus:border-amber-500 w-full sm:w-64"
                 />
               </div>
@@ -312,51 +347,196 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {filteredFeedbacks.map((fb) => (
-                  <div
-                    key={fb.id}
-                    className="p-4 bg-slate-950 border border-slate-800 rounded-2xl space-y-3 relative group hover:border-slate-700 transition"
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <span className="font-bold text-amber-300 text-sm block">{fb.guestName || "Guest Visitor"}</span>
-                        <span className="text-xs font-mono text-slate-400 block">{fb.guestEmail}</span>
-                      </div>
-                      <button
-                        onClick={() => handleDeleteFeedback(fb.id)}
-                        className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
-                        title="Delete Feedback"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
+                {filteredFeedbacks.map((fb) => {
+                  const guestAttempts = allAttempts.filter(
+                    (a) =>
+                      (a.userEmail || a.userId)?.toLowerCase().trim() === fb.guestEmail.toLowerCase().trim()
+                  );
 
-                    <div className="flex items-center gap-2 text-xs text-slate-400">
-                      <div className="flex text-amber-400 gap-0.5">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <Star
-                            key={star}
-                            className={`w-3.5 h-3.5 ${
-                              star <= fb.rating ? "fill-amber-400" : "text-slate-700 fill-slate-800"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span>•</span>
-                      <span className="text-[11px] font-semibold">{fb.submittedAt}</span>
-                    </div>
+                  // Group attempts by level/title for level completion status
+                  const levelsMap = new Map<string, { title: string; bestScore: number; total: number; level: string }>();
+                  guestAttempts.forEach((a) => {
+                    const key = a.setTitle || a.level || a.setId;
+                    const existing = levelsMap.get(key);
+                    if (!existing || a.scorePercentage > existing.bestScore) {
+                      levelsMap.set(key, {
+                        title: a.setTitle || a.setId,
+                        bestScore: a.scorePercentage,
+                        total: (existing?.total || 0) + 1,
+                        level: a.level || "Practice",
+                      });
+                    } else {
+                      existing.total += 1;
+                    }
+                  });
+                  const completedLevels = Array.from(levelsMap.values());
+                  const isExpanded = expandedGuestEmail === fb.guestEmail;
 
-                    <div className="p-3 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 leading-relaxed font-sans">
-                      "{fb.message}"
-                    </div>
+                  return (
+                    <div
+                      key={fb.id}
+                      className="p-5 bg-slate-950 border-2 border-slate-800/90 rounded-2xl space-y-3.5 relative group hover:border-slate-700 transition shadow-lg flex flex-col justify-between"
+                    >
+                      <div className="space-y-3">
+                        {/* Guest Header Info */}
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-black text-amber-300 text-sm block">{fb.guestName || "Guest Visitor"}</span>
+                              <span className="text-[10px] font-extrabold bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-500/30">
+                                GUEST VISITOR
+                              </span>
+                            </div>
+                            <span className="text-xs font-mono text-slate-400 block mt-0.5">{fb.guestEmail}</span>
+                          </div>
 
-                    {fb.sampleScore && (
-                      <div className="text-[10px] text-amber-400 font-bold bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-md inline-block">
-                        Sample Quiz Score: {fb.sampleScore}
+                          <button
+                            onClick={() => handleDeleteFeedback(fb.id)}
+                            className="p-1.5 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                            title="Delete Feedback Record"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+
+                        {/* Status Badges Row: Rating, PDF Downloaded & Practice Attempts */}
+                        <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-800/80">
+                          {/* Star Rating */}
+                          <div className="flex text-amber-400 gap-0.5">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                className={`w-3.5 h-3.5 ${
+                                  star <= fb.rating ? "fill-amber-400" : "text-slate-700 fill-slate-800"
+                                }`}
+                              />
+                            ))}
+                          </div>
+
+                          <span>•</span>
+
+                          {/* PDF Download Badge */}
+                          {fb.hasDownloadedPdf || fb.message.includes("Downloaded") || fb.downloadedPdfTopic ? (
+                            <div className="flex items-center gap-1.5 bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-lg text-[11px] font-black shadow-xs">
+                              <FileCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                              <span>📄 PDF Quiz Downloaded</span>
+                              {fb.downloadedPdfCount && <span className="opacity-80">({fb.downloadedPdfCount} Qs)</span>}
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-1.5 bg-slate-900 text-slate-400 border border-slate-800 px-2.5 py-1 rounded-lg text-[11px] font-bold">
+                              <FileText className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                              <span>No PDF Downloaded</span>
+                            </div>
+                          )}
+
+                          {/* Practice Attempts Badge */}
+                          <div className="flex items-center gap-1.5 bg-amber-950/80 text-amber-300 border border-amber-500/40 px-2.5 py-1 rounded-lg text-[11px] font-black shadow-xs">
+                            <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
+                            <span>{guestAttempts.length} Attempt{guestAttempts.length === 1 ? "" : "s"}</span>
+                          </div>
+                        </div>
+
+                        {/* Downloaded PDF Details Tooltip if present */}
+                        {(fb.hasDownloadedPdf || fb.downloadedPdfTopic) && (
+                          <div className="p-2.5 bg-emerald-950/40 border border-emerald-800/60 rounded-xl text-xs text-emerald-200 flex items-center justify-between gap-2 flex-wrap">
+                            <span className="font-semibold">
+                              Downloaded Worksheet: <span className="font-bold text-white">{fb.downloadedPdfTopic || "Speed Math Practice Quiz"}</span>
+                            </span>
+                            {fb.downloadedPdfAt && (
+                              <span className="text-[10px] font-mono text-emerald-400/80 shrink-0">{fb.downloadedPdfAt}</span>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Feedback / Shared Message */}
+                        <div className="p-3 bg-slate-900/90 border border-slate-800 rounded-xl text-xs text-slate-200 leading-relaxed font-sans">
+                          "{fb.message}"
+                        </div>
+
+                        {/* Levels Completed Breakdown */}
+                        {completedLevels.length > 0 ? (
+                          <div className="space-y-1.5 pt-1">
+                            <span className="text-[11px] font-black text-amber-400 uppercase tracking-wider block flex items-center gap-1">
+                              <Award className="w-3.5 h-3.5 text-amber-400" />
+                              Levels Completed & Best Scores:
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {completedLevels.map((lvl, idx) => (
+                                <span
+                                  key={idx}
+                                  className={`text-[10px] font-extrabold px-2.5 py-1 rounded-md border flex items-center gap-1 ${
+                                    lvl.bestScore >= 75
+                                      ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                                      : lvl.bestScore >= 50
+                                      ? "bg-amber-500/20 text-amber-300 border-amber-500/40"
+                                      : "bg-red-500/20 text-red-300 border-red-500/40"
+                                  }`}
+                                >
+                                  <span>{lvl.title}</span>
+                                  <span>•</span>
+                                  <span className="font-mono">{lvl.bestScore}%</span>
+                                  {lvl.bestScore >= 75 && <span>(Passed)</span>}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-[11px] text-slate-500 italic pt-1">
+                            No practice level attempts completed yet by this guest.
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                ))}
+
+                      {/* Expandable Attempt History Table Accordion */}
+                      {guestAttempts.length > 0 && (
+                        <div className="pt-3 border-t border-slate-800/80">
+                          <button
+                            type="button"
+                            onClick={() => setExpandedGuestEmail(isExpanded ? null : fb.guestEmail)}
+                            className="w-full py-2 px-3 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 text-xs font-bold rounded-xl flex items-center justify-between transition cursor-pointer"
+                          >
+                            <span className="flex items-center gap-1.5">
+                              <Zap className="w-3.5 h-3.5 text-amber-400" />
+                              <span>{isExpanded ? "Hide Detailed Attempts Log" : `View ${guestAttempts.length} Practice Attempt Details`}</span>
+                            </span>
+                            {isExpanded ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+                          </button>
+
+                          {isExpanded && (
+                            <div className="mt-2 space-y-2 max-h-52 overflow-y-auto p-2.5 bg-slate-950 rounded-xl border border-slate-800">
+                              <div className="divide-y divide-slate-800/80">
+                                {guestAttempts.map((att, aIdx) => (
+                                  <div key={aIdx} className="py-2 flex items-center justify-between text-xs gap-2">
+                                    <div>
+                                      <span className="font-bold text-slate-200 block text-xs">{att.setTitle || att.setId}</span>
+                                      <span className="text-[10px] text-slate-400 font-mono">
+                                        {att.totalQuestions} Qs • Mode: {att.mode} • Time: {Math.floor(att.timeTakenSeconds / 60)}m {att.timeTakenSeconds % 60}s
+                                      </span>
+                                    </div>
+                                    <div className="text-right shrink-0">
+                                      <span className={`text-xs font-black font-mono px-2 py-0.5 rounded-md inline-block ${
+                                        att.scorePercentage >= 75
+                                          ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                                          : att.scorePercentage >= 50
+                                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                                          : "bg-red-500/20 text-red-300 border-red-500/40"
+                                      }`}>
+                                        {att.scorePercentage}% ({att.correctCount}/{att.totalQuestions})
+                                      </span>
+                                      <span className="text-[9px] text-slate-400 block font-mono mt-0.5">
+                                        {new Date(att.completedAt).toLocaleString("en-IN", { dateStyle: "short", timeStyle: "short" })}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -449,12 +629,15 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
                         onClick={handleAddPermission}
                         className="text-xs text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 cursor-pointer"
                       >
-                        <Plus className="w-3.5 h-3.5" /> Add Rule
+                        <Plus className="w-3.5 h-3.5" /> Add Course Rule
                       </button>
                     </div>
 
                     {permissions.map((perm, pIndex) => (
-                      <div key={pIndex} className="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-3">
+                      <div
+                        key={pIndex}
+                        className="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-3 relative group"
+                      >
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2">
                             <select

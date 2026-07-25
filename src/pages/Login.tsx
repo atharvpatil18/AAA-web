@@ -193,6 +193,20 @@ export default function Login() {
         topicTitle,
         selectedQuestionCount
       );
+
+      // Record PDF download in visitor feedback DB
+      if (guestEmail && guestEmail.includes("@")) {
+        saveVisitorFeedback({
+          guestEmail: guestEmail.trim().toLowerCase(),
+          guestName: displayName,
+          rating: 5,
+          message: `📄 Downloaded Speed Math Printable PDF Worksheet: ${selectedQuestionCount} Qs (${topicTitle})`,
+          hasDownloadedPdf: true,
+          downloadedPdfTopic: topicTitle,
+          downloadedPdfCount: selectedQuestionCount,
+          downloadedPdfAt: new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
+        });
+      }
     } catch (err) {
       setError("Could not generate PDF worksheet. Please try again.");
     } finally {

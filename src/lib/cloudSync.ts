@@ -140,6 +140,10 @@ export interface VisitorFeedback {
   rating: number; // 1 to 5
   message: string;
   sampleScore?: string;
+  hasDownloadedPdf?: boolean;
+  downloadedPdfTopic?: string;
+  downloadedPdfCount?: number;
+  downloadedPdfAt?: string;
   submittedAt: string;
   timestamp?: number;
 }
@@ -161,18 +165,29 @@ export async function saveVisitorFeedback(
 ): Promise<VisitorFeedback> {
   const now = new Date();
   const ts = feedback.timestamp || now.getTime();
+  const cleanEmail = feedback.guestEmail.trim().toLowerCase();
+  const current = getAllVisitorFeedbacks();
+  const existingForEmail = current.find((f) => f.guestEmail === cleanEmail);
+
+  const hasDownloadedPdf = feedback.hasDownloadedPdf ?? (existingForEmail?.hasDownloadedPdf || false);
+  const downloadedPdfTopic = feedback.downloadedPdfTopic || existingForEmail?.downloadedPdfTopic;
+  const downloadedPdfCount = feedback.downloadedPdfCount || existingForEmail?.downloadedPdfCount;
+  const downloadedPdfAt = feedback.downloadedPdfAt || existingForEmail?.downloadedPdfAt;
+
   const fullFeedback: VisitorFeedback = {
     id: feedback.id || `fb_${ts}_${Math.random().toString(36).substr(2, 5)}`,
-    guestEmail: feedback.guestEmail.trim().toLowerCase(),
+    guestEmail: cleanEmail,
     guestName: feedback.guestName?.trim() || feedback.guestEmail.split("@")[0],
     rating: feedback.rating || 5,
     message: feedback.message.trim(),
-    sampleScore: feedback.sampleScore,
+    sampleScore: feedback.sampleScore || existingForEmail?.sampleScore,
+    hasDownloadedPdf,
+    downloadedPdfTopic,
+    downloadedPdfCount,
+    downloadedPdfAt,
     submittedAt: feedback.submittedAt || now.toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }),
     timestamp: ts,
   };
-
-  const current = getAllVisitorFeedbacks();
   
   // Check duplicate by ID or same email+message within 5s
   const existsIndex = current.findIndex(
