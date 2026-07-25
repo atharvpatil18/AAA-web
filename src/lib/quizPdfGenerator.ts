@@ -10,7 +10,8 @@ export const generateQuizWorksheetPDF = async (
   studentName: string = "Guest Student",
   selectedSetId: string = "abacus-sr1-single-direct-5-6row",
   selectedTopicTitle: string = "ADD & SUB SINGLE DIGIT DIRECT (4-5-6 ROWS)",
-  qCount: number = 20
+  qCount: number = 20,
+  action: "preview" | "download" = "preview"
 ) => {
   try {
     const doc = new jsPDF({
@@ -470,9 +471,24 @@ export const generateQuizWorksheetPDF = async (
     doc.setTextColor(150, 150, 150);
     doc.text("Arnav Abacus Academy - Speed Math Worksheet & Academy Brochure (Ages 4-14)", 12, 294);
 
-    const timeStamp = new Date().toISOString().replace(/[-:T.]/g, "").slice(0, 14);
+    const timeStamp = `${new Date().toISOString().replace(/[-:T.]/g, "").slice(0, 14)}_${Math.random().toString(36).substring(2, 7)}`;
     const cleanName = (studentName || "Student").replace(/[^a-zA-Z0-9]/g, "_");
-    doc.save(`Arnav_Abacus_Worksheet_${cleanName}_${qCount}Qs_${timeStamp}.pdf`);
+    const fileName = `Arnav_Abacus_Worksheet_${cleanName}_${qCount}Qs_${timeStamp}.pdf`;
+
+    if (action === "preview") {
+      try {
+        const blob = doc.output("blob");
+        const blobUrl = URL.createObjectURL(blob);
+        const win = window.open(blobUrl, "_blank");
+        if (!win) {
+          doc.save(fileName);
+        }
+      } catch (e) {
+        doc.save(fileName);
+      }
+    } else {
+      doc.save(fileName);
+    }
     return true;
   } catch (err) {
     console.error("Quiz Worksheet PDF generation error", err);
