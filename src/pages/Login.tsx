@@ -347,46 +347,47 @@ export default function Login() {
         </div>
 
         {/* Out-of-the-Box Speed Math Pointer Banner (POINTING DIRECTLY TO FREE GUEST PRACTICE DRILL TOGGLE) */}
-        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 text-slate-950 border-b border-amber-300 relative overflow-hidden group shadow-inner">
+        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 sm:p-5 text-slate-950 border-b border-amber-300 relative overflow-hidden group shadow-inner space-y-3.5">
           {/* Background glow pointer accent */}
-          <div className="absolute -right-10 -top-10 w-32 h-32 bg-yellow-300/30 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform duration-500"></div>
+          <div className="absolute -right-10 -top-10 w-40 h-40 bg-yellow-300/30 rounded-full blur-2xl pointer-events-none group-hover:scale-150 transition-transform duration-500"></div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5 relative z-10">
-            <div className="flex items-start sm:items-center gap-3">
-              <div className="bg-slate-950 text-amber-400 p-2.5 rounded-xl shrink-0 shadow-lg animate-pulse mt-0.5 sm:mt-0">
-                <Flame className="w-5 h-5 fill-amber-400 text-amber-400" />
-              </div>
-              <div className="space-y-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="bg-slate-950 text-amber-400 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow whitespace-nowrap inline-flex items-center gap-1">
-                    🔥 WAKAD PUNE #1 FREE GUEST PRACTICE DRILL
-                  </span>
-                  <span className="text-[10px] font-extrabold text-slate-950 bg-white/50 px-2 py-0.5 rounded-md backdrop-blur-xs whitespace-nowrap inline-flex items-center">
-                    NO OTP REQUIRED • INSTANT FREE GUEST DRILL
-                  </span>
-                </div>
-                <h3 className="text-xs sm:text-sm font-black tracking-tight text-slate-950 leading-snug">
-                  Test 10X Mental Calculation Speed ({selectedQuestionCount} Qs Speed Drill)
-                </h3>
-              </div>
-            </div>
+          {/* 1. Badges Line */}
+          <div className="flex items-center gap-2 flex-wrap relative z-10">
+            <span className="bg-slate-950 text-amber-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm inline-flex items-center gap-1.5 shrink-0">
+              <Flame className="w-3.5 h-3.5 fill-amber-400 text-amber-400 animate-pulse" />
+              WAKAD PUNE #1 FREE GUEST PRACTICE DRILL
+            </span>
+            <span className="text-[10px] font-extrabold text-slate-950 bg-white/60 px-2.5 py-1 rounded-md backdrop-blur-xs shadow-xs inline-flex items-center">
+              NO OTP REQUIRED • INSTANT FREE GUEST DRILL
+            </span>
+          </div>
 
+          {/* 2. Main Title Line */}
+          <div className="relative z-10">
+            <h3 className="text-sm sm:text-base font-black tracking-tight text-slate-950 leading-snug">
+              Test 10X Mental Calculation Speed ({selectedQuestionCount} Qs Speed Drill)
+            </h3>
+          </div>
+
+          {/* 3. Primary Full-Width Action Button */}
+          <div className="relative z-10">
             <button
               type="button"
               onClick={() => {
                 setAuthMode("guest");
                 setError(null);
               }}
-              className="w-full sm:w-auto bg-slate-950 hover:bg-slate-900 text-amber-400 text-xs font-black px-4 py-2.5 rounded-xl flex items-center justify-center gap-1.5 shadow-xl hover:scale-105 active:scale-95 transition-all cursor-pointer border border-amber-400 shrink-0 whitespace-nowrap group-hover:ring-4 group-hover:ring-amber-400/30"
+              className="w-full bg-slate-950 hover:bg-slate-900 text-amber-400 hover:text-amber-300 text-xs sm:text-sm font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-98 transition-all cursor-pointer border border-amber-400/80 group-hover:ring-4 group-hover:ring-amber-400/30 uppercase tracking-wide"
             >
-              <Zap className="w-3.5 h-3.5 fill-amber-400" />
-              START FREE GUEST PRACTICE DRILL
-              <ArrowDown className="w-3.5 h-3.5 animate-bounce text-amber-400" />
+              <Zap className="w-4 h-4 fill-amber-400 text-amber-400 shrink-0" />
+              <span>START FREE GUEST PRACTICE DRILL</span>
+              <ArrowDown className="w-4 h-4 animate-bounce text-amber-400 shrink-0" />
             </button>
           </div>
 
-          <div className="mt-3 pt-2.5 border-t border-slate-950/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 relative z-10">
-            <p className="text-[10px] font-extrabold text-slate-900/90 leading-tight">
+          {/* 4. Bottom Information & Pointer Footer */}
+          <div className="pt-3 border-t border-slate-950/15 space-y-2 relative z-10">
+            <p className="text-[11px] font-extrabold text-slate-900/90 leading-tight">
               🏆 <strong className="font-black">Arnav Abacus Academy (Wakad, Pune, India)</strong> — Best Abacus & Vedic Maths Brain Development
             </p>
             
@@ -397,11 +398,11 @@ export default function Login() {
                 setAuthMode("guest");
                 setError(null);
               }}
-              className="w-full sm:w-auto bg-slate-950 hover:bg-slate-900 text-amber-300 border-2 border-amber-400 text-[10px] font-black px-3 py-1 rounded-full shadow-xl animate-bounce flex items-center justify-center gap-1 cursor-pointer transition-all hover:scale-105 shrink-0 whitespace-nowrap"
+              className="w-full bg-slate-950 hover:bg-slate-900 text-amber-300 border-2 border-amber-400 text-[10px] sm:text-xs font-black py-2 px-3 rounded-full shadow-md animate-bounce flex items-center justify-center gap-1.5 cursor-pointer transition-all hover:scale-[1.01]"
             >
-              <Flame className="w-3 h-3 text-orange-400 fill-orange-400 animate-pulse" />
+              <Flame className="w-3.5 h-3.5 text-orange-400 fill-orange-400 animate-pulse shrink-0" />
               <span>👇 CLICK BELOW FOR FREE GUEST PRACTICE DRILL (NO OTP)</span>
-              <ArrowDown className="w-3 h-3 text-amber-300 animate-bounce" />
+              <ArrowDown className="w-3.5 h-3.5 text-amber-300 animate-bounce shrink-0" />
             </button>
           </div>
         </div>
