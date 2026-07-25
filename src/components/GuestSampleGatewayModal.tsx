@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { X, Sparkles, Mail, MessageSquare, Send, CheckCircle2, Trophy, Clock, Zap, Star, ShieldCheck, ArrowRight, Rocket, Flame, FileText, Download, Lock, BookOpen } from "lucide-react";
 import { saveVisitorFeedback } from "../lib/cloudSync";
 import { validateSanitizedEmail, validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
@@ -247,15 +248,14 @@ export default function GuestSampleGatewayModal({
             </div>
 
             <div className="flex items-center gap-2.5 w-full md:w-auto shrink-0 flex-wrap sm:flex-nowrap">
-              <a
-                href="/brochure"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/brochure"
+                onClick={onClose}
                 className="flex-1 sm:flex-initial px-3.5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center"
               >
                 <BookOpen className="w-3.5 h-3.5 text-amber-400" />
                 View Manual
-              </a>
+              </Link>
               <button
                 type="button"
                 onClick={() => generateBrochurePDF(language)}
