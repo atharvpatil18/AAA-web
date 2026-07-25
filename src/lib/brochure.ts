@@ -420,9 +420,9 @@ export const generateBrochurePDF = async (language: string) => {
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(8);
     doc.setTextColor(210, 215, 220);
-    doc.text("Google SEO Practice Framework • Wakad, Pune • Physical & Global Online Micro-batches", 32, 23.5);
+    doc.text("Speed Math Practice Framework • Wakad, Pune • Physical & Global Online Micro-batches", 32, 23.5);
 
-    // Section 1: Executive Overview & SEO Perspective
+    // Section 1: Executive Overview & Methodology
     doc.setFillColor(255, 255, 255);
     doc.setDrawColor(220, 215, 205);
     doc.roundedRect(12, 36, 186, 38, 2, 2, "FD");
@@ -430,7 +430,7 @@ export const generateBrochurePDF = async (language: string) => {
     doc.setFont("Helvetica", "bold");
     doc.setFontSize(11);
     doc.setTextColor(26, 46, 53);
-    doc.text("1. EXECUTIVE OVERVIEW & GOOGLE SEO SPEED MATH METHODOLOGY", 16, 43);
+    doc.text("1. EXECUTIVE OVERVIEW & SPEED MATH METHODOLOGY", 16, 43);
 
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(8.5);
@@ -447,7 +447,7 @@ export const generateBrochurePDF = async (language: string) => {
     doc.setFont("Helvetica", "bold");
     doc.setFontSize(8.5);
     doc.setTextColor(242, 100, 25);
-    doc.text("• Primary SEO Focus & Course Tracks:", 16, 62);
+    doc.text("• Core Course Focus & Syllabus Synergy:", 16, 62);
     doc.setFont("Helvetica", "normal");
     doc.setTextColor(60, 60, 60);
     doc.text("Abacus Classes in Wakad Pune | Speed Math Simulator | Vedic Math Shortcuts | Cambridge & IB Math Synergy", 72, 62);

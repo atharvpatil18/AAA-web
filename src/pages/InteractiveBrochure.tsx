@@ -87,7 +87,7 @@ export default function InteractiveBrochure() {
                     Speed Math Simulator SOP & User Manual
                   </h2>
                   <p className="text-xs text-slate-400">
-                    Google SEO Optimized Practice Standard Operating Procedure & Parent Evaluation Guide
+                    Interactive Speed Math Practice Standard Operating Procedure & Parent Evaluation Guide
                   </p>
                 </div>
               </div>
@@ -99,17 +99,17 @@ export default function InteractiveBrochure() {
               </button>
             </div>
 
-            {/* Section 1: Google SEO Methodology */}
+            {/* Section 1: Executive Overview & Methodology */}
             <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
               <h3 className="text-sm font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
                 <Target className="w-4 h-4 text-amber-400" />
-                1. Executive Overview & Google SEO Speed Math Methodology
+                1. Executive Overview & Speed Math Methodology
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed font-sans">
                 Arnav Abacus Academy (Wakad, Pune) provides a whole-brain speed math simulator aligning with NEP 2020 cognitive guidelines. By integrating physical soroban abacus bead visualization with ancient Vedic math shortcuts, students achieve 10X faster mental calculation speeds while eliminating finger-counting anxiety.
               </p>
               <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-200">
-                <strong>Primary Course Search Focus & Syllabus Synergy:</strong> Abacus Classes in Wakad Pune • Speed Math Simulator • Vedic Math Shortcuts • Cambridge & IB Math Synergy
+                <strong>Core Course Focus & Syllabus Synergy:</strong> Abacus Classes in Wakad Pune • Speed Math Simulator • Vedic Math Shortcuts • Cambridge & IB Math Synergy
               </div>
             </div>
 
