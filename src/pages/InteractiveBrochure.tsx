@@ -4,17 +4,30 @@
  */
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { generateBrochurePDF } from "../lib/brochure";
 import { useLanguage } from "../lib/LanguageContext";
 import { RotateCw, Download, Sparkles, HelpCircle, Phone, Award, Zap, BookOpen, CheckCircle2, Sliders, Layers, Clock, FileText, FileCheck, Target, Lightbulb } from "lucide-react";
+import GuestSampleGatewayModal from "../components/GuestSampleGatewayModal";
 
 export default function InteractiveBrochure() {
+  const navigate = useNavigate();
   const { language, t } = useLanguage();
   const [isFlipped, setIsFlipped] = useState(false);
   const [activeDocTab, setActiveDocTab] = useState<"brochure" | "manual">("brochure");
+  const [isGuestGatewayOpen, setIsGuestGatewayOpen] = useState(false);
 
   const handleDownload = () => {
     generateBrochurePDF(language);
+  };
+
+  const handleStartGuestSamplePractice = (guestEmail: string, guestName: string, setId: string, qCount?: number, timeSeconds?: number) => {
+    const guestObj = { email: guestEmail, name: guestName };
+    localStorage.setItem("aaa_guest_user", JSON.stringify(guestObj));
+    setIsGuestGatewayOpen(false);
+    const count = qCount || 10;
+    const time = timeSeconds || 120;
+    navigate(`/practice/session?setId=${setId}&mode=guest-drill&count=${count}&time=${time}`);
   };
 
   return (
@@ -269,13 +282,14 @@ export default function InteractiveBrochure() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full sm:w-auto">
-              <a
-                href="/login?mode=guest"
+              <button
+                type="button"
+                onClick={() => setIsGuestGatewayOpen(true)}
                 className="w-full sm:w-auto bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-950 font-black px-6 py-4 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300"
               >
                 <Zap className="w-4 h-4 fill-slate-950" />
                 <span>START FREE GUEST SPRINT DRILL</span>
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -506,6 +520,14 @@ export default function InteractiveBrochure() {
           </div>
         </div>
       )}
+
+      {/* Guest Sample Practice Gateway Modal */}
+      <GuestSampleGatewayModal
+        isOpen={isGuestGatewayOpen}
+        onClose={() => setIsGuestGatewayOpen(false)}
+        initialSetId="abacus-sr1-single-direct-5-6row"
+        onStartSamplePractice={handleStartGuestSamplePractice}
+      />
     </div>
   );
 }
