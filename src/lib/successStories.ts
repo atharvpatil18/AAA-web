@@ -24,7 +24,7 @@ export interface SuccessStory {
   featured?: boolean;
 }
 
-const STORAGE_KEY = "aaa_published_success_stories";
+const STORAGE_KEY = "aaa_published_success_stories_v2";
 
 /**
  * Format JS Date or YYYY-MM-DD string into dd-mmm-yy (e.g. 15-Mar-25)
