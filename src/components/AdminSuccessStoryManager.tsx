@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { SuccessStory, getSuccessStories, saveSuccessStory, deleteSuccessStory, formatDateToDdMmmYy } from "../lib/successStories";
 import { generateAISuccessStory } from "../lib/aiStoryGenerator";
-import { Sparkles, Plus, Trash2, Edit3, CheckCircle2, Trophy, Image, Calendar, MapPin, School, GraduationCap, RefreshCw, X } from "lucide-react";
+import { Sparkles, Plus, Trash2, Edit3, Trophy, Calendar, MapPin, School, X } from "lucide-react";
 
 export default function AdminSuccessStoryManager() {
   const [stories, setStories] = useState<SuccessStory[]>([]);
@@ -25,11 +25,13 @@ export default function AdminSuccessStoryManager() {
   const [storyType, setStoryType] = useState<"competition" | "transformation" | "gallery">("competition");
   
   const [aiStory, setAiStory] = useState("");
+  const [customPrompt, setCustomPrompt] = useState("");
   const [beforeText, setBeforeText] = useState("");
   const [afterText, setAfterText] = useState("");
   
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const formRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     loadStories();
@@ -53,6 +55,7 @@ export default function AdminSuccessStoryManager() {
     setRawDate(new Date().toISOString().split("T")[0]);
     setStoryType("competition");
     setAiStory("");
+    setCustomPrompt("");
     setBeforeText("");
     setAfterText("");
     setNotice(null);
@@ -72,9 +75,12 @@ export default function AdminSuccessStoryManager() {
     setHighlight(story.highlight);
     setStoryType(story.storyType || "competition");
     setAiStory(story.aiGeneratedStory);
+    setCustomPrompt(story.promptUsed || "");
     setBeforeText(story.beforeText || "");
     setAfterText(story.afterText || "");
     setIsFormOpen(true);
+    // Scroll form into view after a tick
+    setTimeout(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +105,8 @@ export default function AdminSuccessStoryManager() {
         studentName,
         achievementTitle: highlight,
         ageOrGrade: `${ageYears} Years • ${schoolName || "Wakad Pune"}`,
-        customPrompt: `Achieved ${highlight} in ${courseLevel} (${course.toUpperCase()}) on ${formatDateToDdMmmYy(rawDate)}.`,
+        customPrompt: customPrompt.trim() ||
+          `Achieved ${highlight} in ${courseLevel} (${course.toUpperCase()}) on ${formatDateToDdMmmYy(rawDate)}.`,
       });
       setAiStory(generated);
       setNotice("✨ AI Draft story generated successfully!");
@@ -143,6 +150,7 @@ export default function AdminSuccessStoryManager() {
       eventDateFormatted: formattedDate,
       storyType,
       aiGeneratedStory: finalStory,
+      promptUsed: customPrompt.trim() || undefined,
       beforeText,
       afterText,
     });
@@ -189,7 +197,7 @@ export default function AdminSuccessStoryManager() {
 
       {/* Editor Modal / Form Container */}
       {isFormOpen && (
-        <div className="bg-slate-950/80 border border-slate-800 p-6 md:p-8 rounded-2xl space-y-6 animate-in fade-in duration-200">
+        <div ref={formRef} className="bg-slate-950/80 border border-slate-800 p-6 md:p-8 rounded-2xl space-y-6 animate-in fade-in duration-200">
           <div className="flex justify-between items-center pb-4 border-b border-slate-800">
             <h3 className="text-lg font-bold text-amber-400">
               {editingId ? "✏️ Edit Student Achievement Story" : "➕ Create New Student Achievement Story"}
@@ -416,11 +424,24 @@ export default function AdminSuccessStoryManager() {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">Detailed Story Narrative *</label>
+              <label className="block text-xs font-bold text-purple-300 mb-1">
+                Custom AI Command / Prompt <span className="text-slate-500 font-normal">(Optional — guides the AI draft)</span>
+              </label>
               <textarea
-                required
+                rows={2}
+                placeholder="e.g. Achieved 100 Qs in 2 minutes with 100% accuracy. First place at state competition. Very disciplined student."
+                value={customPrompt}
+                onChange={(e) => setCustomPrompt(e.target.value)}
+                className="w-full bg-slate-900 border border-purple-500/30 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-purple-400 outline-none placeholder:text-slate-600"
+              />
+              <p className="text-[10px] text-slate-500 mt-1">Type key highlights here, then click <span className="text-purple-400 font-bold">Auto-Draft Narrative with AI ↑</span> to generate a story from your notes.</p>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-300 mb-1">Detailed Story Narrative <span className="text-slate-500 font-normal">(Auto-filled if left blank)</span></label>
+              <textarea
                 rows={3}
-                placeholder="Write student's achievement narrative..."
+                placeholder="Story auto-generates from your AI command above, or type it manually here..."
                 value={aiStory}
                 onChange={(e) => setAiStory(e.target.value)}
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"

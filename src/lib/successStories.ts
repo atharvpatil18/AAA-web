@@ -16,6 +16,7 @@ export interface SuccessStory {
   highlight: string;             // e.g. "Grand Master Speed Champion • 100 Qs in 120s"
   eventDateFormatted?: string;   // e.g. "15-Mar-25"
   storyType: "competition" | "transformation" | "gallery";
+  promptUsed?: string;           // Admin custom AI command / prompt
   aiGeneratedStory: string;      // Main detailed narrative
   beforeText?: string;           // Optional for transformation
   afterText?: string;            // Optional for transformation
