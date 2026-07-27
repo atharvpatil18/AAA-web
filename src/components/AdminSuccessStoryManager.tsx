@@ -110,8 +110,8 @@ export default function AdminSuccessStoryManager() {
     }
   };
 
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSave = (e?: React.MouseEvent | React.FormEvent) => {
+    if (e) e.preventDefault();
     setFormError(null);
 
     if (!studentName.trim()) {
@@ -189,7 +189,7 @@ export default function AdminSuccessStoryManager() {
 
       {/* Editor Modal / Form Container */}
       {isFormOpen && (
-        <form onSubmit={handleSave} className="bg-slate-950/80 border border-slate-800 p-6 md:p-8 rounded-2xl space-y-6 animate-in fade-in duration-200">
+        <div className="bg-slate-950/80 border border-slate-800 p-6 md:p-8 rounded-2xl space-y-6 animate-in fade-in duration-200">
           <div className="flex justify-between items-center pb-4 border-b border-slate-800">
             <h3 className="text-lg font-bold text-amber-400">
               {editingId ? "✏️ Edit Student Achievement Story" : "➕ Create New Student Achievement Story"}
@@ -441,13 +441,14 @@ export default function AdminSuccessStoryManager() {
               Cancel
             </button>
             <button
-              type="submit"
+              type="button"
+              onClick={handleSave}
               className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black rounded-xl text-xs shadow-lg transition cursor-pointer"
             >
               {editingId ? "Save Changes" : "Publish Achievement Story"}
             </button>
           </div>
-        </form>
+        </div>
       )}
 
       {/* Published Stories List */}
