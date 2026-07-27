@@ -75,11 +75,8 @@ export default function PublicSuccessWall() {
                 </div>
               </div>
 
-              {/* AI Generated Success Story Narrative */}
+              {/* Success Story Narrative */}
               <div className="p-4 bg-gradient-to-r from-amber-50/60 to-orange-50/60 rounded-2xl border border-amber-200/80 relative">
-                <div className="flex items-center gap-1 text-[10px] font-black text-purple-700 mb-1 uppercase tracking-wider">
-                  <Sparkles className="w-3 h-3 text-purple-600" /> AI Verified Success Story
-                </div>
                 <p className="text-xs text-slate-800 leading-relaxed font-medium">
                   {story.aiGeneratedStory}
                 </p>
