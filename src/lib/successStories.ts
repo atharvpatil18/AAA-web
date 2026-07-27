@@ -42,61 +42,17 @@ export function formatDateToDdMmmYy(dateInput?: string | Date): string {
   return `${day}-${month}-${year}`;
 }
 
-const INITIAL_SUCCESS_STORIES: SuccessStory[] = [
-  {
-    id: "story-1",
-    studentName: "Arnav Patil",
-    studentPhotoUrl: "/logo.png",
-    ageYears: 9,
-    schoolName: "Vibgyor High School",
-    location: "Wakad, Pune",
-    course: "abacus",
-    courseLevel: "Level 4 Abacus",
-    eventLevel: "international",
-    highlight: "Grand Master Abacus Speed Champion • 100 Qs in 120s",
-    eventDateFormatted: "15-Mar-25",
-    storyType: "competition",
-    aiGeneratedStory: "Arnav demonstrated phenomenal mental agility by calculating 100 complex single and double-digit addition/subtraction problems in under 2 minutes with 100% precision. His dedication to Soroban bead visualization has significantly boosted his cognitive focus, memory recall, and photographic math confidence!",
-    beforeText: "Struggled with homework concentration & exam speed anxiety.",
-    afterText: "Calculates 100 sums in under 2 minutes with 100% accuracy!",
-    publishedAt: new Date(Date.now() - 86400000 * 5).toISOString(),
-    likesCount: 42,
-    featured: true,
-  },
-  {
-    id: "story-2",
-    studentName: "Ananya Sharma",
-    studentPhotoUrl: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=400&q=80",
-    ageYears: 11,
-    schoolName: "EuroSchool Wakad",
-    location: "Wakad, Pune",
-    course: "vedic_math",
-    courseLevel: "SVM-1 Senior Vedic",
-    eventLevel: "national_state",
-    highlight: "Vedic Math Speed Specialist • 98% Accuracy Diploma",
-    eventDateFormatted: "10-Feb-25",
-    storyType: "transformation",
-    aiGeneratedStory: "Through systematic practice at Arnav Abacus Academy, Ananya mastered high-speed Vedic mental multiplication strategies. She went from basic calculations to computing 3-digit cross-multiplications mentally in under 5 seconds, earning high honors from the Academic Board!",
-    beforeText: "Relied on long written steps for multiplication & division.",
-    afterText: "Computes 3-digit cross multiplications mentally in under 5s!",
-    publishedAt: new Date(Date.now() - 86400000 * 12).toISOString(),
-    likesCount: 38,
-    featured: true,
-  },
-];
+
 
 export function getSuccessStories(): SuccessStory[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_SUCCESS_STORIES));
-      return INITIAL_SUCCESS_STORIES;
-    }
+    if (!raw) return [];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : INITIAL_SUCCESS_STORIES;
+    return Array.isArray(parsed) ? parsed : [];
   } catch (e) {
     console.error("Error reading success stories:", e);
-    return INITIAL_SUCCESS_STORIES;
+    return [];
   }
 }
 
