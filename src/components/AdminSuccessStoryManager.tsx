@@ -7,6 +7,7 @@ export default function AdminSuccessStoryManager() {
   const [stories, setStories] = useState<SuccessStory[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   // Form Field States
   const [studentName, setStudentName] = useState("");
@@ -55,6 +56,7 @@ export default function AdminSuccessStoryManager() {
     setBeforeText("");
     setAfterText("");
     setNotice(null);
+    setFormError(null);
   };
 
   const handleEditClick = (story: SuccessStory) => {
@@ -110,10 +112,20 @@ export default function AdminSuccessStoryManager() {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!studentName.trim() || !highlight.trim() || !aiStory.trim()) {
-      alert("Please fill in Student Name, Highlight Title, and Detailed Story Narrative!");
+    setFormError(null);
+
+    if (!studentName.trim()) {
+      setFormError("⚠️ Student Name is required.");
       return;
     }
+    if (!highlight.trim()) {
+      setFormError("⚠️ Highlight Title is required.");
+      return;
+    }
+
+    // Auto-fill narrative if admin left it blank
+    const finalStory = aiStory.trim() ||
+      `${studentName.trim()} achieved "${highlight.trim()}" — a remarkable milestone at Arnav Abacus Academy, ${location || "Wakad, Pune"}. This achievement reflects consistent dedication and focused practice in ${courseLevel || course}.`;
 
     const formattedDate = formatDateToDdMmmYy(rawDate);
 
@@ -130,7 +142,7 @@ export default function AdminSuccessStoryManager() {
       highlight,
       eventDateFormatted: formattedDate,
       storyType,
-      aiGeneratedStory: aiStory,
+      aiGeneratedStory: finalStory,
       beforeText,
       afterText,
     });
@@ -417,6 +429,7 @@ export default function AdminSuccessStoryManager() {
           </div>
 
           {notice && <p className="text-xs font-semibold text-emerald-400">{notice}</p>}
+          {formError && <p className="text-xs font-black text-rose-400 bg-rose-950/40 border border-rose-500/30 px-3 py-2 rounded-lg">{formError}</p>}
 
           {/* Form Action Buttons */}
           <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
