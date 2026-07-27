@@ -850,7 +850,7 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full sm:w-auto">
             <Link
-              to="/brochure"
+              to="/brochure?tab=manual"
               className="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-white font-black px-6 py-3.5 rounded-2xl border border-slate-700 transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
               <BookOpen className="w-4 h-4 text-amber-400" />

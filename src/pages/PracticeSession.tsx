@@ -13,6 +13,7 @@ import SorobanQuizBeadCanvas from "../components/SorobanQuizBeadCanvas";
 import { saveStudentAttempt, saveVisitorFeedback } from "../lib/cloudSync";
 import { checkUserAccess } from "../lib/accessControl";
 import { playCorrectSound, playIncorrectSound, playTimerBeep, playFanfareSound } from "../lib/soundEffects";
+import SpeedQuizForm from "../components/SpeedQuizForm";
 
 export default function PracticeSession() {
   const { currentUser } = useAuth();
@@ -24,6 +25,7 @@ export default function PracticeSession() {
   const qCount = Number(searchParams.get("count")) || 20;
   const timeParam = searchParams.get("time");
   const customTimeSeconds = timeParam ? parseInt(timeParam, 10) : undefined;
+  const isSpeedFormRequested = searchParams.get("speedForm") === "true" || searchParams.get("speedForm") === "1" || mode.startsWith("speed-");
 
   // Stable question set per attempt (questions are fixed during attempt, but different on next attempt)
   const attemptSeedRef = useRef<string>(searchParams.get("seed") || `attempt_${Date.now()}`);
@@ -72,7 +74,7 @@ export default function PracticeSession() {
 
   // Timer Countdown Effect
   useEffect(() => {
-    if (isFinished) return;
+    if (isFinished || isSpeedFormRequested) return;
 
     const timer = setInterval(() => {
       setTimeRemaining((prev) => {
@@ -233,6 +235,38 @@ export default function PracticeSession() {
   };
 
   const answeredCount = (Object.values(userAnswers) as UserAnswer[]).filter(a => a.answer !== "").length;
+
+  if (isSpeedFormRequested && questionSet) {
+    return (
+      <div className="min-h-screen bg-slate-950 p-4 md:p-8 flex items-center justify-center">
+        <SpeedQuizForm
+          questionSet={questionSet}
+          timeLimitSeconds={customTimeSeconds || questionSet.timeLimitSeconds || 300}
+          onCancel={() => navigate("/practice")}
+          onComplete={(results) => {
+            const resultPayload = {
+              setId: questionSet.id,
+              setTitle: questionSet.title,
+              category: questionSet.category,
+              level: questionSet.level,
+              mode,
+              totalQuestions: questionSet.questions.length,
+              correctCount: results.correctCount,
+              wrongCount: results.wrongCount,
+              unansweredCount: results.unansweredCount,
+              scorePercentage: results.scorePercentage,
+              timeTakenSeconds: results.timeTakenSeconds,
+              completedAt: new Date().toISOString(),
+              userAnswers: results.userAnswers,
+              questions: questionSet.questions,
+            };
+            sessionStorage.setItem("last_practice_result", JSON.stringify(resultPayload));
+            navigate("/practice/results");
+          }}
+        />
+      </div>
+    );
+  }
 
   if (!questionSet || !questionSet.questions || questionSet.questions.length === 0 || !currentQuestion) {
     return (

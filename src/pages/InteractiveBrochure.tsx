@@ -3,19 +3,35 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { generateBrochurePDF } from "../lib/brochure";
 import { useLanguage } from "../lib/LanguageContext";
 import { RotateCw, Download, Sparkles, HelpCircle, Phone, Award, Zap, BookOpen, CheckCircle2, Sliders, Layers, Clock, FileText, FileCheck, Target, Lightbulb } from "lucide-react";
 import PublicSuccessWall from "../components/PublicSuccessWall";
+import GuestSampleGatewayModal from "../components/GuestSampleGatewayModal";
 
 export default function InteractiveBrochure() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get("tab");
   const { language, t } = useLanguage();
   const [isFlipped, setIsFlipped] = useState(false);
-  const [activeDocTab, setActiveDocTab] = useState<"brochure" | "manual" | "success">("brochure");
+  const [activeDocTab, setActiveDocTab] = useState<"brochure" | "manual" | "success">(
+    tabParam === "manual" ? "manual" : tabParam === "success" ? "success" : "brochure"
+  );
   const [isGuestGatewayOpen, setIsGuestGatewayOpen] = useState(false);
+
+  useEffect(() => {
+    if (tabParam === "manual" || tabParam === "success" || tabParam === "brochure") {
+      setActiveDocTab(tabParam);
+    }
+  }, [tabParam]);
+
+  const handleTabChange = (tab: "brochure" | "manual" | "success") => {
+    setActiveDocTab(tab);
+    setSearchParams({ tab });
+  };
 
   const handleDownload = () => {
     generateBrochurePDF(language);
@@ -61,7 +77,7 @@ export default function InteractiveBrochure() {
           {/* Tab Switcher */}
           <div className="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200 w-full sm:w-auto md:w-96 justify-between gap-1">
             <button
-              onClick={() => setActiveDocTab("brochure")}
+              onClick={() => handleTabChange("brochure")}
               className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeDocTab === "brochure"
                   ? "bg-slate-900 text-white shadow-md"
@@ -72,7 +88,7 @@ export default function InteractiveBrochure() {
               <span>Brochure</span>
             </button>
             <button
-              onClick={() => setActiveDocTab("manual")}
+              onClick={() => handleTabChange("manual")}
               className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeDocTab === "manual"
                   ? "bg-slate-900 text-white shadow-md"
@@ -83,7 +99,7 @@ export default function InteractiveBrochure() {
               <span>SOP Manual</span>
             </button>
             <button
-              onClick={() => setActiveDocTab("success")}
+              onClick={() => handleTabChange("success")}
               className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeDocTab === "success"
                   ? "bg-purple-900 text-white shadow-md"

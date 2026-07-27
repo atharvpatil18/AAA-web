@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect } from "react";
+import React, { Component, useEffect } from "react";
 import { HashRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -38,14 +38,20 @@ function ScrollToTop() {
 
 // Protected Route Guard for Practice Hub
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { loading } = useAuth();
-
+  const { currentUser, loading } = useAuth();
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-vibrant-orange border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
+  }
+
+  const hasGuestAccess = !!localStorage.getItem("aaa_guest_user");
+
+  if (!currentUser && !hasGuestAccess) {
+    localStorage.setItem("aaa_guest_user", JSON.stringify({ email: "guest_visitor@arnavabacus.com", name: "Guest Student" }));
   }
 
   return <>{children}</>;
@@ -56,9 +62,15 @@ class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean; error: Error | null; retryCount: number }
 > {
+  declare props: { children: React.ReactNode };
+  state = {
+    hasError: false,
+    error: null as Error | null,
+    retryCount: 0,
+  };
+
   constructor(props: { children: React.ReactNode }) {
     super(props);
-    this.state = { hasError: false, error: null, retryCount: 0 };
   }
 
   static getDerivedStateFromError(error: Error) {
@@ -67,10 +79,9 @@ class ErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error("UI Render Error Boundary caught:", error, errorInfo);
-    // Allow max 1 silent retry for transient initial load errors
     if (this.state.retryCount < 1) {
       setTimeout(() => {
-        this.setState((prev) => ({ hasError: false, error: null, retryCount: prev.retryCount + 1 }));
+        (this as unknown as { setState: Function }).setState((prev: { retryCount: number }) => ({ hasError: false, error: null, retryCount: prev.retryCount + 1 }));
       }, 150);
     }
   }
@@ -87,10 +98,15 @@ class ErrorBoundary extends React.Component<
             <p className="text-xs text-slate-600 font-medium leading-relaxed">
               We encountered a temporary render sync issue upon refresh. Click below to reload your speed math session smoothly.
             </p>
+            {this.state.error && (
+              <div className="bg-slate-100 text-left p-3 rounded-xl border border-slate-300 font-mono text-[11px] text-rose-600 overflow-x-auto max-h-32">
+                {this.state.error.message || String(this.state.error)}
+              </div>
+            )}
             <div className="pt-2 space-y-2">
               <button
                 onClick={() => {
-                  this.setState({ hasError: false, error: null, retryCount: 0 });
+                  (this as unknown as { setState: Function }).setState({ hasError: false, error: null, retryCount: 0 });
                   window.location.reload();
                 }}
                 className="w-full bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-black py-3 rounded-xl text-xs transition-all shadow-md cursor-pointer uppercase tracking-wider"
@@ -110,7 +126,7 @@ class ErrorBoundary extends React.Component<
         </div>
       );
     }
-    return this.props.children;
+    return (this.props as { children: React.ReactNode }).children;
   }
 }
 
