@@ -9,6 +9,7 @@ import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X } from "lucide-react
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
+import PublicSuccessWall from "../components/PublicSuccessWall";
 
 interface SuccessItem {
   id: string;
@@ -334,7 +335,14 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
         </div>
       </section>
 
-      {/* 2. Filter Navigation Tab Bar */}
+      {/* 2. Live Student Success Wall */}
+      <section className="pt-10 max-w-7xl mx-auto px-4 md:px-8">
+        <div className="bg-white rounded-3xl border-2 border-slate-200 p-6 md:p-8 shadow-lg">
+          <PublicSuccessWall />
+        </div>
+      </section>
+
+      {/* 3. Filter Navigation Tab Bar */}
       <section className="pt-12 pb-6 max-w-7xl mx-auto px-4 md:px-8 space-y-6">
         <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
           {[
