@@ -1,10 +1,5 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from "react";
-import { Trophy, Heart, Sparkles, Star, Award, CheckCircle2 } from "lucide-react";
+import { Trophy, Heart, Star, Award, CheckCircle2, Calendar, MapPin, School, GraduationCap } from "lucide-react";
 import { SuccessStory, getSuccessStories, incrementStoryLikes } from "../lib/successStories";
 
 export default function PublicSuccessWall() {
@@ -48,7 +43,7 @@ export default function PublicSuccessWall() {
           >
             {/* Top Accent Gold Ribbon */}
             <div className="absolute top-0 right-0 bg-gradient-to-l from-amber-500 to-orange-500 text-slate-950 font-black text-[10px] uppercase px-4 py-1 rounded-bl-2xl shadow-sm tracking-wider flex items-center gap-1">
-              <Star className="w-3 h-3 fill-slate-950" /> Featured Champion
+              <Star className="w-3 h-3 fill-slate-950" /> {story.eventLevel === "international" ? "Global Champion" : story.eventLevel === "national_state" ? "National Ranker" : "Academy Star"}
             </div>
 
             <div className="space-y-4">
@@ -64,19 +59,53 @@ export default function PublicSuccessWall() {
                   </div>
                 </div>
 
-                <div>
+                <div className="space-y-1">
                   <h3 className="text-lg font-black text-slate-900 tracking-tight">{story.studentName}</h3>
-                  <p className="text-xs font-extrabold text-amber-600 mt-0.5">{story.achievementTitle}</p>
-                  {story.ageOrGrade && (
-                    <span className="inline-block mt-1 text-[10px] font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full">
-                      {story.ageOrGrade}
-                    </span>
-                  )}
+                  <p className="text-xs font-extrabold text-amber-600 leading-snug">{story.highlight}</p>
+                  
+                  {/* Structured Badges */}
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {story.ageYears && (
+                      <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+                        {story.ageYears} Years
+                      </span>
+                    )}
+                    {story.schoolName && (
+                      <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1">
+                        <School className="w-3 h-3 text-slate-500" />
+                        {story.schoolName}
+                      </span>
+                    )}
+                    {story.location && (
+                      <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200 flex items-center gap-1">
+                        <MapPin className="w-3 h-3 text-slate-500" />
+                        {story.location}
+                      </span>
+                    )}
+                    {story.eventDateFormatted && (
+                      <span className="text-[10px] font-mono font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/80 flex items-center gap-1">
+                        <Calendar className="w-3 h-3 text-amber-600" />
+                        {story.eventDateFormatted}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              {/* Success Story Narrative */}
-              <div className="p-4 bg-gradient-to-r from-amber-50/60 to-orange-50/60 rounded-2xl border border-amber-200/80 relative">
+              {/* Story Narrative Box */}
+              <div className="p-4 bg-gradient-to-r from-amber-50/60 to-orange-50/60 rounded-2xl border border-amber-200/80 relative space-y-2">
+                {story.beforeText && story.afterText && (
+                  <div className="grid grid-cols-2 gap-2 text-[11px] font-bold pb-2 border-b border-amber-200/60">
+                    <div className="text-rose-700 bg-rose-50 p-2 rounded-xl border border-rose-200">
+                      <span className="block text-[9px] uppercase font-black text-rose-500">Before</span>
+                      {story.beforeText}
+                    </div>
+                    <div className="text-emerald-700 bg-emerald-50 p-2 rounded-xl border border-emerald-200">
+                      <span className="block text-[9px] uppercase font-black text-emerald-500">After</span>
+                      {story.afterText}
+                    </div>
+                  </div>
+                )}
                 <p className="text-xs text-slate-800 leading-relaxed font-medium">
                   {story.aiGeneratedStory}
                 </p>
@@ -90,6 +119,7 @@ export default function PublicSuccessWall() {
               </span>
 
               <button
+                type="button"
                 onClick={() => handleLike(story.id)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition cursor-pointer shadow-xs ${
                   likedStories[story.id]

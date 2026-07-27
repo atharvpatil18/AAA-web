@@ -1,332 +1,488 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from "react";
-import { Sparkles, Upload, Trash2, Heart, Trophy, CheckCircle2, RefreshCw, Wand2, Image as ImageIcon, Plus } from "lucide-react";
-import { SuccessStory, getSuccessStories, saveSuccessStory, deleteSuccessStory } from "../lib/successStories";
+import { SuccessStory, getSuccessStories, saveSuccessStory, deleteSuccessStory, formatDateToDdMmmYy } from "../lib/successStories";
 import { generateAISuccessStory } from "../lib/aiStoryGenerator";
+import { Sparkles, Plus, Trash2, Edit3, CheckCircle2, Trophy, Image, Calendar, MapPin, School, GraduationCap, RefreshCw, X } from "lucide-react";
 
 export default function AdminSuccessStoryManager() {
   const [stories, setStories] = useState<SuccessStory[]>([]);
-  const [studentName, setStudentName] = useState("");
-  const [achievementTitle, setAchievementTitle] = useState("");
-  const [ageOrGrade, setAgeOrGrade] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
-  const [promptText, setPromptText] = useState("");
-  const [generatedStory, setGeneratedStory] = useState("");
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [successMsg, setSuccessMsg] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  // Form Field States
+  const [studentName, setStudentName] = useState("");
+  const [ageYears, setAgeYears] = useState<number>(9);
+  const [schoolName, setSchoolName] = useState("");
+  const [location, setLocation] = useState("Wakad, Pune");
+  const [studentPhotoUrl, setStudentPhotoUrl] = useState("");
+  
+  const [eventLevel, setEventLevel] = useState<"international" | "national_state" | "academy_level">("academy_level");
+  const [course, setCourse] = useState<"abacus" | "vedic_math" | "mental_math" | "school_math" | "competitive_math">("abacus");
+  const [courseLevel, setCourseLevel] = useState("Level 1");
+  
+  const [highlight, setHighlight] = useState("");
+  const [rawDate, setRawDate] = useState(new Date().toISOString().split("T")[0]);
+  const [storyType, setStoryType] = useState<"competition" | "transformation" | "gallery">("competition");
+  
+  const [aiStory, setAiStory] = useState("");
+  const [beforeText, setBeforeText] = useState("");
+  const [afterText, setAfterText] = useState("");
+  
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
-    setStories(getSuccessStories());
+    loadStories();
   }, []);
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const loadStories = () => {
+    setStories(getSuccessStories());
+  };
+
+  const resetForm = () => {
+    setEditingId(null);
+    setStudentName("");
+    setAgeYears(9);
+    setSchoolName("");
+    setLocation("Wakad, Pune");
+    setStudentPhotoUrl("");
+    setEventLevel("academy_level");
+    setCourse("abacus");
+    setCourseLevel("Level 1");
+    setHighlight("");
+    setRawDate(new Date().toISOString().split("T")[0]);
+    setStoryType("competition");
+    setAiStory("");
+    setBeforeText("");
+    setAfterText("");
+    setNotice(null);
+  };
+
+  const handleEditClick = (story: SuccessStory) => {
+    setEditingId(story.id);
+    setStudentName(story.studentName);
+    setAgeYears(story.ageYears || 9);
+    setSchoolName(story.schoolName || "");
+    setLocation(story.location || "Wakad, Pune");
+    setStudentPhotoUrl(story.studentPhotoUrl || "");
+    setEventLevel(story.eventLevel || "academy_level");
+    setCourse(story.course || "abacus");
+    setCourseLevel(story.courseLevel || "Level 1");
+    setHighlight(story.highlight);
+    setStoryType(story.storyType || "competition");
+    setAiStory(story.aiGeneratedStory);
+    setBeforeText(story.beforeText || "");
+    setAfterText(story.afterText || "");
+    setIsFormOpen(true);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size > 3 * 1024 * 1024) {
-        alert("Image size exceeds 3MB. Please select a smaller photo.");
-        return;
-      }
       const reader = new FileReader();
-      reader.onload = () => {
-        setPhotoUrl(reader.result as string);
+      reader.onloadend = () => {
+        setStudentPhotoUrl(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleGenerateAI = () => {
-    if (!studentName.trim()) {
-      alert("Please enter the student's name first.");
+  const handleGenerateAI = async () => {
+    if (!studentName || !highlight) {
+      alert("Please enter Student Name and Highlight Title first!");
       return;
     }
-    setIsGenerating(true);
-    setTimeout(() => {
-      const story = generateAISuccessStory({
+    setIsAiLoading(true);
+    try {
+      const generated = generateAISuccessStory({
         studentName,
-        achievementTitle,
-        ageOrGrade,
-        customPrompt: promptText,
+        achievementTitle: highlight,
+        ageOrGrade: `${ageYears} Years • ${schoolName || "Wakad Pune"}`,
+        customPrompt: `Achieved ${highlight} in ${courseLevel} (${course.toUpperCase()}) on ${formatDateToDdMmmYy(rawDate)}.`,
       });
-      setGeneratedStory(story);
-      setIsGenerating(false);
-    }, 600);
+      setAiStory(generated);
+      setNotice("✨ AI Draft story generated successfully!");
+    } catch (err) {
+      setNotice("Failed to auto-generate draft. You can type the narrative directly.");
+    } finally {
+      setIsAiLoading(false);
+    }
   };
 
-  const handlePublish = (e: React.FormEvent) => {
+  const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!studentName.trim() || !achievementTitle.trim() || !generatedStory.trim()) {
-      alert("Please complete Student Name, Achievement Title, and AI Generated Story.");
+    if (!studentName.trim() || !highlight.trim() || !aiStory.trim()) {
+      alert("Please fill in Student Name, Highlight Title, and Detailed Story Narrative!");
       return;
     }
+
+    const formattedDate = formatDateToDdMmmYy(rawDate);
 
     saveSuccessStory({
       id: editingId || undefined,
       studentName,
-      studentPhotoUrl: photoUrl || "/logo.png",
-      achievementTitle,
-      ageOrGrade,
-      promptUsed: promptText,
-      aiGeneratedStory: generatedStory,
+      studentPhotoUrl: studentPhotoUrl || "/logo.png",
+      ageYears: Number(ageYears) || 9,
+      schoolName,
+      location,
+      course,
+      courseLevel,
+      eventLevel,
+      highlight,
+      eventDateFormatted: formattedDate,
+      storyType,
+      aiGeneratedStory: aiStory,
+      beforeText,
+      afterText,
     });
 
-    setStories(getSuccessStories());
-    setSuccessMsg(editingId ? "✨ Success story updated!" : "🚀 Success story published to Our Success Wall!");
-    setTimeout(() => setSuccessMsg(""), 4000);
-
-    // Reset Form
-    setEditingId(null);
-    setStudentName("");
-    setAchievementTitle("");
-    setAgeOrGrade("");
-    setPhotoUrl("");
-    setPromptText("");
-    setGeneratedStory("");
-  };
-
-  const handleEdit = (s: SuccessStory) => {
-    setEditingId(s.id);
-    setStudentName(s.studentName);
-    setAchievementTitle(s.achievementTitle);
-    setAgeOrGrade(s.ageOrGrade || "");
-    setPhotoUrl(s.studentPhotoUrl);
-    setPromptText(s.promptUsed || "");
-    setGeneratedStory(s.aiGeneratedStory);
+    loadStories();
+    setIsFormOpen(false);
+    resetForm();
+    alert(`Success story published successfully under ${eventLevel.toUpperCase()} category!`);
   };
 
   const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to remove this success story from the public showcase?")) {
+    if (window.confirm("Are you sure you want to delete this published success story?")) {
       deleteSuccessStory(id);
-      setStories(getSuccessStories());
+      loadStories();
     }
   };
 
   return (
-    <div className="space-y-6">
-      {/* Top Banner Header */}
-      <div className="p-5 bg-gradient-to-r from-purple-950 via-slate-900 to-purple-950 text-white rounded-3xl border border-purple-800/40 shadow-xl flex items-center justify-between flex-wrap gap-3">
+    <div className="bg-slate-900 border border-slate-800 text-slate-100 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
+      {/* Admin Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-800">
         <div>
-          <div className="inline-flex items-center gap-1.5 bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider mb-1">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Admin Feature • Nitin Patil Access
+          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/30">
+            <Trophy className="w-3.5 h-3.5" /> Root Admin Portal
           </div>
-          <h3 className="text-xl font-black font-display text-white">
-            Our Success Stories & AI Publishing Manager
-          </h3>
-          <p className="text-xs text-purple-200 mt-0.5">
-            Upload student photos, enter AI prompts to generate inspiring stories, and publish directly to Our Success Wall.
+          <h2 className="text-2xl font-black text-white mt-1">Manage Published Success Stories</h2>
+          <p className="text-xs text-slate-400">
+            Publish student achievements to specific categories (International, National/State, School & Academy).
           </p>
         </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            resetForm();
+            setIsFormOpen(!isFormOpen);
+          }}
+          className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black rounded-xl text-xs transition shadow-lg flex items-center gap-2 cursor-pointer shrink-0"
+        >
+          {isFormOpen ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+          <span>{isFormOpen ? "Close Editor" : "Create New Story"}</span>
+        </button>
       </div>
 
-      {successMsg && (
-        <div className="p-4 bg-emerald-500/10 border-2 border-emerald-500/40 text-emerald-900 rounded-2xl flex items-center gap-2 font-bold text-xs shadow-md">
-          <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-          <span>{successMsg}</span>
-        </div>
-      )}
-
-      {/* Editor Form Card */}
-      <form onSubmit={handlePublish} className="bg-white rounded-3xl border-2 border-purple-100 p-6 shadow-xl space-y-5">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-          <h4 className="font-black text-sm text-slate-900 flex items-center gap-2">
-            <Wand2 className="w-4 h-4 text-purple-600" />
-            {editingId ? "Edit Student Success Story" : "Publish New Student Success Story"}
-          </h4>
-          {editingId && (
-            <button
-              type="button"
-              onClick={() => {
-                setEditingId(null);
-                setStudentName("");
-                setAchievementTitle("");
-                setAgeOrGrade("");
-                setPhotoUrl("");
-                setPromptText("");
-                setGeneratedStory("");
-              }}
-              className="text-xs font-bold text-slate-500 hover:text-slate-800 cursor-pointer"
-            >
-              Cancel Edit
+      {/* Editor Modal / Form Container */}
+      {isFormOpen && (
+        <form onSubmit={handleSave} className="bg-slate-950/80 border border-slate-800 p-6 md:p-8 rounded-2xl space-y-6 animate-in fade-in duration-200">
+          <div className="flex justify-between items-center pb-4 border-b border-slate-800">
+            <h3 className="text-lg font-bold text-amber-400">
+              {editingId ? "✏️ Edit Student Achievement Story" : "➕ Create New Student Achievement Story"}
+            </h3>
+            <button type="button" onClick={() => setIsFormOpen(false)} className="text-slate-400 hover:text-white">
+              <X className="w-5 h-5" />
             </button>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {/* Photo Uploader Box */}
-          <div className="space-y-2 md:col-span-1">
-            <label className="text-xs font-black text-slate-800 uppercase tracking-wider block">
-              Student Photo
-            </label>
-            <div className="border-2 border-dashed border-purple-200 hover:border-purple-400 rounded-2xl p-4 text-center bg-purple-50/30 transition flex flex-col items-center justify-center min-h-[160px] relative">
-              {photoUrl ? (
-                <div className="relative group w-28 h-28 rounded-2xl overflow-hidden shadow-md border-2 border-purple-300">
-                  <img src={photoUrl} alt="Student Preview" className="w-full h-full object-cover" />
-                  <button
-                    type="button"
-                    onClick={() => setPhotoUrl("")}
-                    className="absolute inset-0 bg-slate-950/60 text-white font-bold text-xs opacity-0 group-hover:opacity-100 transition flex items-center justify-center cursor-pointer"
-                  >
-                    Change Photo
-                  </button>
-                </div>
-              ) : (
-                <label className="cursor-pointer flex flex-col items-center justify-center space-y-2 w-full h-full">
-                  <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center shadow-xs">
-                    <Upload className="w-5 h-5" />
-                  </div>
-                  <span className="text-xs font-bold text-purple-900">Click to Upload Student Photo</span>
-                  <span className="text-[10px] text-slate-500">PNG, JPG up to 3MB</span>
-                  <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
-                </label>
-              )}
-            </div>
           </div>
 
-          {/* Form Fields */}
-          <div className="space-y-4 md:col-span-2">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* Section 1: Student Identity */}
+          <div className="space-y-4">
+            <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 border-b border-slate-800 pb-1">
+              1. Student Identity & Location
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               <div>
-                <label className="text-xs font-black text-slate-800 uppercase tracking-wider block mb-1">
-                  Student Name *
-                </label>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Student Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Arnav Patil"
                   value={studentName}
                   onChange={(e) => setStudentName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-purple-500 focus:outline-none"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-black text-slate-800 uppercase tracking-wider block mb-1">
-                  Branch / Age / Level
-                </label>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Age in Years *</label>
+                <input
+                  type="number"
+                  required
+                  min="4"
+                  max="18"
+                  value={ageYears}
+                  onChange={(e) => setAgeYears(Number(e.target.value))}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">School Name *</label>
                 <input
                   type="text"
-                  placeholder="e.g. Age 8 • Level 3 Abacus • Wakad"
-                  value={ageOrGrade}
-                  onChange={(e) => setAgeOrGrade(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-purple-500 focus:outline-none"
+                  required
+                  placeholder="e.g. Vibgyor High School"
+                  value={schoolName}
+                  onChange={(e) => setSchoolName(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Location *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Wakad, Pune"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
+                />
+              </div>
+
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-bold text-slate-300 mb-1">Student Photo (Upload or URL)</label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    placeholder="Paste image URL or choose file..."
+                    value={studentPhotoUrl}
+                    onChange={(e) => setStudentPhotoUrl(e.target.value)}
+                    className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
+                  />
+                  <label className="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold cursor-pointer transition border border-slate-700 shrink-0">
+                    <span>Upload Photo</span>
+                    <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Course & Competition Categorization */}
+          <div className="space-y-4 pt-2">
+            <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 border-b border-slate-800 pb-1">
+              2. Competition Tier & Course Program Categorization
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-amber-400 mb-1">Level of Event / Competition *</label>
+                <select
+                  value={eventLevel}
+                  onChange={(e) => setEventLevel(e.target.value as any)}
+                  className="w-full bg-slate-900 border border-amber-500/40 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none font-bold"
+                >
+                  <option value="international">🌐 International Level</option>
+                  <option value="national_state">🇮🇳 National & State Level</option>
+                  <option value="academy_level">🏫 School & Academy Level</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-emerald-400 mb-1">Course Program *</label>
+                <select
+                  value={course}
+                  onChange={(e) => setCourse(e.target.value as any)}
+                  className="w-full bg-slate-900 border border-emerald-500/40 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-400 outline-none font-bold"
+                >
+                  <option value="abacus">🧮 Abacus Math</option>
+                  <option value="vedic_math">⚡ Vedic Math</option>
+                  <option value="mental_math">🧠 Mental Math</option>
+                  <option value="school_math">📐 School Math</option>
+                  <option value="competitive_math">🏆 Olympiad & Competitive Prep</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Level of Course *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Level 4 Abacus, SVM-1"
+                  value={courseLevel}
+                  onChange={(e) => setCourseLevel(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
                 />
               </div>
             </div>
+          </div>
+
+          {/* Section 3: Highlight & Date */}
+          <div className="space-y-4 pt-2">
+            <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 border-b border-slate-800 pb-1">
+              3. Achievement Highlight & Date (dd-mmm-yy)
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-bold text-slate-300 mb-1">Highlight Title *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Grand Master Abacus Speed Champion • 100 Qs in 120s"
+                  value={highlight}
+                  onChange={(e) => setHighlight(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Date of Achievement *</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="date"
+                    required
+                    value={rawDate}
+                    onChange={(e) => setRawDate(e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
+                  />
+                  <span className="text-xs font-mono font-bold text-amber-300 shrink-0 bg-slate-900 px-2 py-2 rounded-lg border border-slate-800">
+                    {formatDateToDdMmmYy(rawDate)}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 4: Narrative & Layout */}
+          <div className="space-y-4 pt-2">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-1">
+              <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">
+                4. Story Type & Detailed Narrative
+              </h4>
+              <button
+                type="button"
+                onClick={handleGenerateAI}
+                disabled={isAiLoading}
+                className="px-3 py-1 bg-purple-900/60 hover:bg-purple-800 text-purple-200 border border-purple-500/40 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                <span>{isAiLoading ? "Generating..." : "Auto-Draft Narrative with AI"}</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Story Layout Type</label>
+                <select
+                  value={storyType}
+                  onChange={(e) => setStoryType(e.target.value as any)}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
+                >
+                  <option value="competition">🥇 Competition Medal / Trophy Win</option>
+                  <option value="transformation">📈 Before & After Transformation</option>
+                  <option value="gallery">📸 Academy Event & Workshop Gallery</option>
+                </select>
+              </div>
+
+              {storyType === "transformation" && (
+                <>
+                  <div>
+                    <label className="block text-xs font-bold text-rose-400 mb-1">Before Practice (Challenges)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Struggled with silly addition mistakes & exam anxiety"
+                      value={beforeText}
+                      onChange={(e) => setBeforeText(e.target.value)}
+                      className="w-full bg-slate-900 border border-rose-500/30 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-rose-400 outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-emerald-400 mb-1">After Practice (Results)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Computes 100 sums in 2 mins with 100% accuracy!"
+                      value={afterText}
+                      onChange={(e) => setAfterText(e.target.value)}
+                      className="w-full bg-slate-900 border border-emerald-500/30 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-400 outline-none"
+                    />
+                  </div>
+                </>
+              )}
+            </div>
 
             <div>
-              <label className="text-xs font-black text-slate-800 uppercase tracking-wider block mb-1">
-                Achievement Title / Honor Badge *
-              </label>
-              <input
-                type="text"
+              <label className="block text-xs font-bold text-slate-300 mb-1">Detailed Story Narrative *</label>
+              <textarea
                 required
-                placeholder="e.g. Grand Master Abacus Speed Champion • 100 Qs in 120s"
-                value={achievementTitle}
-                onChange={(e) => setAchievementTitle(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-purple-500 focus:outline-none"
+                rows={3}
+                placeholder="Write student's achievement narrative..."
+                value={aiStory}
+                onChange={(e) => setAiStory(e.target.value)}
+                className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
               />
             </div>
           </div>
-        </div>
 
-        {/* AI Prompt Input & Generator */}
-        <div className="p-4 bg-purple-50/60 rounded-2xl border border-purple-200 space-y-3">
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <label className="text-xs font-black text-purple-950 uppercase tracking-wider flex items-center gap-1.5">
-              <Wand2 className="w-4 h-4 text-purple-600" />
-              AI Story Generator Prompt
-            </label>
+          {notice && <p className="text-xs font-semibold text-emerald-400">{notice}</p>}
+
+          {/* Form Action Buttons */}
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
             <button
               type="button"
-              onClick={handleGenerateAI}
-              disabled={isGenerating}
-              className="bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 hover:from-purple-700 hover:to-indigo-800 text-white font-black text-xs px-4 py-2 rounded-xl shadow-md transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              onClick={() => setIsFormOpen(false)}
+              className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition cursor-pointer"
             >
-              <Sparkles className={`w-3.5 h-3.5 ${isGenerating ? "animate-spin" : ""}`} />
-              {isGenerating ? "Synthesizing AI Story..." : "✨ Generate AI Success Story"}
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black rounded-xl text-xs shadow-lg transition cursor-pointer"
+            >
+              {editingId ? "Save Changes" : "Publish Achievement Story"}
             </button>
           </div>
+        </form>
+      )}
 
-          <textarea
-            rows={2}
-            placeholder="Enter custom prompt details or milestones (e.g. 'Solved 100 questions in 2 minutes with 100% accuracy after 3 months of practice at Wakad branch')"
-            value={promptText}
-            onChange={(e) => setPromptText(e.target.value)}
-            className="w-full p-3 bg-white border border-purple-200 rounded-xl text-xs font-medium text-slate-800 focus:border-purple-500 focus:outline-none"
-          />
-
-          <div>
-            <label className="text-[11px] font-black text-slate-700 uppercase tracking-wider block mb-1">
-              AI Generated Story Preview (Editable) *
-            </label>
-            <textarea
-              rows={3}
-              required
-              placeholder="Click 'Generate AI Success Story' or write story narrative directly..."
-              value={generatedStory}
-              onChange={(e) => setGeneratedStory(e.target.value)}
-              className="w-full p-3 bg-white border border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:border-purple-500 focus:outline-none"
-            />
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          className="w-full py-3.5 px-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-sm rounded-2xl shadow-lg hover:shadow-xl transition flex items-center justify-center gap-2 cursor-pointer uppercase tracking-wider"
-        >
-          <Trophy className="w-5 h-5 fill-slate-950" />
-          <span>{editingId ? "Update Published Story" : "🚀 Publish to Our Success Wall"}</span>
-        </button>
-      </form>
-
-      {/* Published Stories Showcase Manager */}
+      {/* Published Stories List */}
       <div className="space-y-4">
-        <h4 className="font-black text-sm text-slate-900 uppercase tracking-wider flex items-center gap-2">
-          <Trophy className="w-4 h-4 text-amber-500" />
-          Published Success Stories ({stories.length})
-        </h4>
+        <h3 className="text-sm font-black uppercase text-slate-400 tracking-wider">
+          Currently Published Stories ({stories.length})
+        </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {stories.map((story) => (
-            <div key={story.id} className="bg-white rounded-2xl border border-slate-200 p-4 shadow-md flex items-start gap-3 relative group">
-              <img
-                src={story.studentPhotoUrl || "/logo.png"}
-                alt={story.studentName}
-                className="w-16 h-16 rounded-xl object-cover border-2 border-amber-400 shrink-0"
-              />
-              <div className="space-y-1 flex-1 min-w-0">
-                <div className="flex items-center justify-between flex-wrap gap-1">
-                  <h5 className="font-black text-sm text-slate-900 truncate">{story.studentName}</h5>
-                  <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
-                    {story.ageOrGrade}
-                  </span>
-                </div>
-                <p className="text-xs font-bold text-amber-600 line-clamp-1">{story.achievementTitle}</p>
-                <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed">{story.aiGeneratedStory}</p>
-                
-                <div className="flex items-center justify-between pt-2 text-[10px] text-slate-500 border-t border-slate-100">
-                  <span className="flex items-center gap-1 text-rose-600 font-bold">
-                    <Heart className="w-3 h-3 fill-rose-500" /> {story.likesCount || 0} Applauds
-                  </span>
+            <div key={story.id} className="bg-slate-950 border border-slate-800 rounded-2xl p-4 flex items-start gap-4 justify-between">
+              <div className="flex items-start gap-3 overflow-hidden">
+                <img
+                  src={story.studentPhotoUrl || "/logo.png"}
+                  alt={story.studentName}
+                  className="w-14 h-14 rounded-xl object-cover border-2 border-amber-400 shrink-0"
+                />
+                <div className="space-y-1 truncate">
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => handleEdit(story)}
-                      className="font-bold text-purple-600 hover:underline cursor-pointer"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(story.id)}
-                      className="font-bold text-rose-600 hover:underline cursor-pointer"
-                    >
-                      Remove
-                    </button>
+                    <h4 className="font-bold text-sm text-white truncate">{story.studentName}</h4>
+                    <span className="text-[10px] bg-slate-800 text-amber-400 px-2 py-0.5 rounded font-mono font-bold uppercase">
+                      {story.eventLevel}
+                    </span>
+                  </div>
+                  <p className="text-xs font-semibold text-amber-500 truncate">{story.highlight}</p>
+                  <div className="text-[11px] text-slate-400 truncate flex items-center gap-2">
+                    <span>{story.schoolName || "Wakad Pune"}</span> • <span>{story.eventDateFormatted}</span>
                   </div>
                 </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => handleEditClick(story)}
+                  className="p-2 bg-slate-800 hover:bg-slate-700 text-amber-400 rounded-xl transition"
+                  title="Edit Story"
+                >
+                  <Edit3 className="w-4 h-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(story.id)}
+                  className="p-2 bg-slate-800 hover:bg-rose-900/60 text-rose-400 rounded-xl transition"
+                  title="Delete Story"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
           ))}

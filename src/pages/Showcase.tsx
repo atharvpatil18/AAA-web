@@ -3,13 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import PublicSuccessWall from "../components/PublicSuccessWall";
+import { getSuccessStories } from "../lib/successStories";
 
 interface SuccessItem {
   id: string;
@@ -298,8 +299,32 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     }
   ];
 
-  // Only show items that have a photo. Remove the cards without images or having only icon as image.
-  const visibleItems = showcaseData.filter(item => !!item.imageUrl);
+  const [adminStories, setAdminStories] = useState<SuccessItem[]>([]);
+
+  useEffect(() => {
+    const rawAdminStories = getSuccessStories();
+    const mapped: SuccessItem[] = rawAdminStories.map((s) => ({
+      id: s.id,
+      type: s.storyType,
+      title: s.highlight,
+      studentName: s.studentName,
+      age: s.ageYears ? `${s.ageYears} Years` : undefined,
+      grade: s.courseLevel,
+      achievementText: s.aiGeneratedStory,
+      beforeText: s.beforeText,
+      afterText: s.afterText,
+      imageUrl: s.studentPhotoUrl || "/logo.png",
+      imageAlt: s.studentName,
+      tag: `${s.eventLevel === "international" ? "International Level" : s.eventLevel === "national_state" ? "National/State Level" : "School & Academy Level"} • ${s.eventDateFormatted || ""}`,
+      colorTheme: s.eventLevel === "international" ? "gold" : s.eventLevel === "national_state" ? "orange" : "teal",
+      mainCategory: s.eventLevel,
+      academySubCategory: s.course,
+    }));
+    setAdminStories(mapped);
+  }, []);
+
+  const allCombinedItems = [...adminStories, ...showcaseData];
+  const visibleItems = allCombinedItems.filter(item => !!item.imageUrl);
 
   const filteredItems = visibleItems.filter(item => {
     if (activeCategory !== "all" && item.mainCategory !== activeCategory) {
