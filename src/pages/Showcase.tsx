@@ -3,14 +3,40 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X } from "lucide-react";
+import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import PublicSuccessWall from "../components/PublicSuccessWall";
 import { getSuccessStories } from "../lib/successStories";
+
+/* ── Confetti helper (reused from PublicSuccessWall) ── */
+interface ConfettiParticle { id: number; x: number; y: number; color: string; angle: number; speed: number; size: number; opacity: number; }
+const CONFETTI_COLORS = ["#f59e0b","#ef4444","#10b981","#6366f1","#f97316","#ec4899"];
+function useShowcaseConfetti() {
+  const [particles, setParticles] = useState<ConfettiParticle[]>([]);
+  const frameRef = useRef<number | null>(null);
+  const burst = useCallback((ox: number, oy: number) => {
+    const ps: ConfettiParticle[] = Array.from({ length: 22 }, (_, i) => ({
+      id: Date.now() + i, x: ox, y: oy,
+      color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+      angle: (i / 22) * 360, speed: 2 + Math.random() * 4,
+      size: 5 + Math.random() * 5, opacity: 1,
+    }));
+    setParticles(ps);
+    let tick = 0;
+    const animate = () => {
+      tick++;
+      setParticles(prev => prev.map(p => ({ ...p, x: p.x + Math.cos((p.angle * Math.PI) / 180) * p.speed, y: p.y + Math.sin((p.angle * Math.PI) / 180) * p.speed + tick * 0.15, opacity: Math.max(0, p.opacity - 0.025) })).filter(p => p.opacity > 0));
+      if (tick < 60) frameRef.current = requestAnimationFrame(animate);
+    };
+    frameRef.current = requestAnimationFrame(animate);
+  }, []);
+  useEffect(() => () => { if (frameRef.current) cancelAnimationFrame(frameRef.current); }, []);
+  return { particles, burst };
+}
 
 interface SuccessItem {
   id: string;
@@ -30,12 +56,44 @@ interface SuccessItem {
   academySubCategory?: "abacus" | "vedic_math" | "mental_math" | "school_math" | "competitive_math";
 }
 
+const SHOWCASE_APPLAUDS_KEY = "aaa_showcase_applauds_v1";
+
 export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
   const { language, t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [academySubFilter, setAcademySubFilter] = useState<string>("all");
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
   const [selectedItem, setSelectedItem] = useState<SuccessItem | null>(null);
+
+  // Applaud state
+  const [applaudCounts, setApplaudCounts] = useState<Record<string, number>>({});
+  const [applaudedItems, setApplaudedItems] = useState<Record<string, boolean>>({});
+  const [popItem, setPopItem] = useState<string | null>(null);
+  const { particles, burst } = useShowcaseConfetti();
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(SHOWCASE_APPLAUDS_KEY);
+      if (saved) {
+        const { counts, liked } = JSON.parse(saved);
+        setApplaudCounts(counts || {});
+        setApplaudedItems(liked || {});
+      }
+    } catch {}
+  }, []);
+
+  const handleApplaud = (id: string, e: React.MouseEvent<HTMLButtonElement>) => {
+    if (applaudedItems[id]) return;
+    const rect = (e.currentTarget as HTMLButtonElement).getBoundingClientRect();
+    burst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    setPopItem(id);
+    setTimeout(() => setPopItem(null), 400);
+    const newCounts = { ...applaudCounts, [id]: (applaudCounts[id] || 0) + 1 };
+    const newLiked = { ...applaudedItems, [id]: true };
+    setApplaudCounts(newCounts);
+    setApplaudedItems(newLiked);
+    try { localStorage.setItem(SHOWCASE_APPLAUDS_KEY, JSON.stringify({ counts: newCounts, liked: newLiked })); } catch {}
+  };
 
   const toggleExpand = (id: string) => {
     setExpandedCards(prev => ({
@@ -343,7 +401,15 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
 
   return (
     <div id="showcase-page-container" className="bg-[#FFFDF9] min-h-screen">
-      
+      {/* Confetti Canvas Layer */}
+      {particles.length > 0 && (
+        <div className="fixed inset-0 pointer-events-none z-[9999]" aria-hidden="true">
+          {particles.map((p) => (
+            <div key={p.id} style={{ position: "fixed", left: p.x, top: p.y, width: p.size, height: p.size, backgroundColor: p.color, opacity: p.opacity, borderRadius: Math.random() > 0.5 ? "50%" : "2px", transform: `rotate(${p.angle}deg)`, pointerEvents: "none" }} />
+          ))}
+        </div>
+      )}
+
       {/* 1. Page Header */}
       <section className="bg-vibrant-dark text-white py-16 md:py-24 border-b-4 border-vibrant-dark relative overflow-hidden">
         <div className="absolute inset-0 bg-radial from-vibrant-teal/10 to-transparent pointer-events-none" />
@@ -556,11 +622,25 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                       )}
                     </button>
 
-                    <div className="pt-4 border-t border-gray-100 flex justify-between items-center text-[10px] font-bold text-gray-400">
-                      <span className="flex items-center gap-1">
+                    <div className="pt-4 border-t border-gray-100 flex justify-between items-center">
+                      <span className="flex items-center gap-1 text-[10px] font-bold text-gray-400">
                         <ShieldCheck className="w-3.5 h-3.5 text-vibrant-teal" /> {t("showcaseVerified")}
                       </span>
-                      <span>Arnav Abacus Academy</span>
+                      <button
+                        type="button"
+                        onClick={(e) => handleApplaud(item.id, e)}
+                        disabled={!!applaudedItems[item.id]}
+                        title={applaudedItems[item.id] ? "You've already applauded!" : "Applaud this achievement!"}
+                        style={{ transform: popItem === item.id ? "scale(1.35)" : "scale(1)", transition: "transform 0.15s cubic-bezier(0.34,1.56,0.64,1), background 0.2s" }}
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 select-none ${
+                          applaudedItems[item.id]
+                            ? "bg-rose-500 text-white shadow-md shadow-rose-200 cursor-default"
+                            : "bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 hover:shadow-md hover:shadow-rose-100 cursor-pointer"
+                        }`}
+                      >
+                        <Heart className={`w-3.5 h-3.5 transition-all duration-200 ${ popItem === item.id ? "scale-150" : "scale-100" } ${ applaudedItems[item.id] ? "fill-white text-white" : "fill-rose-400 text-rose-400" }`} />
+                        <span className="tabular-nums">{applaudCounts[item.id] || 0} Applauds</span>
+                      </button>
                     </div>
                   </div>
                 </div>
