@@ -38,13 +38,13 @@ export interface LeadSubmission {
   program: string;
 }
 
-export type PracticeCategory = "abacus" | "vedic";
+export type PracticeCategory = "abacus" | "vedic" | "mental";
 
 export type AccessFeatureMode = "quiz" | "learn" | "both";
-export type CourseType = "abacus" | "vedic" | "both";
+export type CourseType = "abacus" | "vedic" | "mental" | "both" | "all";
 
 export interface LevelPermission {
-  course: "abacus" | "vedic";
+  course: "abacus" | "vedic" | "mental" | "both" | "all";
   levels: string[]; // e.g. ["JR-1", "JR-2"] or ["ALL"]
   accessMode: AccessFeatureMode; // "quiz" | "learn" | "both"
 }

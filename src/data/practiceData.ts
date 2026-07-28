@@ -4496,12 +4496,14 @@ export const VEDIC_QUESTION_SETS: QuestionSet[] = [
   }
 ];
 
+import { MENTAL_QUESTION_SETS, getMentalQuestionSetById } from "./mentalMathData";
+
 export function getAllQuestionSets(): QuestionSet[] {
-  return [...ABACUS_QUESTION_SETS, ...VEDIC_QUESTION_SETS];
+  return [...ABACUS_QUESTION_SETS, ...VEDIC_QUESTION_SETS, ...MENTAL_QUESTION_SETS];
 }
 
 export function getQuestionSetById(id: string): QuestionSet | undefined {
-  return getAllQuestionSets().find(set => set.id === id);
+  return getAllQuestionSets().find(set => set.id === id) || getMentalQuestionSetById(id);
 }
 
 /**

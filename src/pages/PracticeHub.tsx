@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { ABACUS_QUESTION_SETS, VEDIC_QUESTION_SETS } from "../data/practiceData";
+import { MENTAL_QUESTION_SETS } from "../data/mentalMathData";
 import { PracticeCategory, PracticeMode, QuestionCountChoice } from "../types";
 import { Calculator, Zap, Clock, CheckCircle2, ArrowRight, BookOpen, Sparkles, Flame, Rocket, Trophy, Award as Medal, Star, Sliders, Layers, User, Users, Calendar, ShieldCheck, ListOrdered, AlertCircle, ChevronDown, ChevronUp, Lock, Shield, Key } from "lucide-react";
 import { useAuth } from "../lib/AuthContext";
@@ -379,7 +380,11 @@ export default function PracticeHub() {
     loadAndSyncAttempts();
   }, [hubTab, currentUser?.email]);
 
-  const currentSets = activeCategory === "abacus" ? ABACUS_QUESTION_SETS : VEDIC_QUESTION_SETS;
+  const currentSets = activeCategory === "abacus"
+    ? ABACUS_QUESTION_SETS
+    : activeCategory === "vedic"
+    ? VEDIC_QUESTION_SETS
+    : MENTAL_QUESTION_SETS;
 
   const handleStartSet = (setId: string) => {
     if (!currentUser) {
@@ -597,8 +602,8 @@ export default function PracticeHub() {
                 </div>
               )}
 
-              {/* Category Tabs: Abacus vs Vedic Math with Custom Visual Cards & Subtext */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mb-8">
+              {/* Category Tabs: Abacus vs Vedic Math vs Mental Math */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
                 {/* Abacus Practice Card */}
                 <div
                   onClick={() => handleCategoryClick("abacus")}
@@ -612,7 +617,7 @@ export default function PracticeHub() {
                     <span className={`text-base md:text-lg font-black mb-2.5 ${activeCategory === "abacus" ? "text-vibrant-orange" : "text-slate-800"}`}>
                       Abacus Practice
                     </span>
-                    <div className="w-full h-36 sm:h-40 rounded-xl overflow-hidden border border-slate-200 shadow-xs relative bg-slate-50 flex items-center justify-center">
+                    <div className="w-full h-32 rounded-xl overflow-hidden border border-slate-200 shadow-xs relative bg-slate-50 flex items-center justify-center">
                       <img
                         src="/images/abacus_practice_tab.jpg"
                         alt="Abacus Practice"
@@ -621,7 +626,7 @@ export default function PracticeHub() {
                     </div>
                   </div>
                   <p className="text-[11px] font-bold text-slate-600 text-center mt-2.5 leading-tight">
-                    Arnav Abacus Academy, Wakad Pune, India
+                    Arnav Abacus Academy, Wakad Pune
                   </p>
                 </div>
 
@@ -647,7 +652,31 @@ export default function PracticeHub() {
                     </div>
                   </div>
                   <p className="text-[11px] font-bold text-slate-600 text-center mt-2.5 leading-tight">
-                    IIVA Authorised Vedic Math Center - Atharv Vedic Math, Wakad Pune, India
+                    IIVA Authorised Vedic Math Center
+                  </p>
+                </div>
+
+                {/* Mental Math Olympiad Card */}
+                <div
+                  onClick={() => handleCategoryClick("mental")}
+                  className={`bg-white rounded-2xl border-2 p-4 flex flex-col items-center justify-between cursor-pointer transition-all duration-200 shadow-sm ${
+                    activeCategory === "mental"
+                      ? "border-indigo-600 ring-4 ring-indigo-100 shadow-md scale-102"
+                      : "border-slate-200 hover:border-slate-300 opacity-80 hover:opacity-100"
+                  }`}
+                >
+                  <div className="w-full flex flex-col items-center">
+                    <span className={`text-base md:text-lg font-black mb-2.5 ${activeCategory === "mental" ? "text-indigo-600" : "text-slate-800"}`}>
+                      Mental Math (Olympiad)
+                    </span>
+                    <div className="w-full h-32 rounded-xl overflow-hidden border border-indigo-100 shadow-xs relative bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-3 text-center text-white">
+                      <Zap className="w-8 h-8 text-amber-400 mb-1 animate-pulse" />
+                      <span className="text-xs font-black tracking-wide text-amber-300">OLYMPIAD DRILLS</span>
+                      <span className="text-[10px] text-indigo-200">Grades 1 to 9 (Olympiad Aligned)</span>
+                    </div>
+                  </div>
+                  <p className="text-[11px] font-bold text-slate-600 text-center mt-2.5 leading-tight">
+                    Mental Maths Olympiad Syllabus
                   </p>
                 </div>
               </div>

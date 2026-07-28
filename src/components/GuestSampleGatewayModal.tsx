@@ -363,14 +363,14 @@ export default function GuestSampleGatewayModal({
                   </label>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                   {/* Option 1: Single Digit Direct */}
                   <div
                     onClick={() => {
                       setSelectedTopicMode("single");
                       setSelectedSetId("abacus-sr1-single-direct-5-6row");
                     }}
-                    className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
                       selectedTopicMode === "single"
                         ? "border-amber-500 bg-amber-500/10 ring-2 ring-amber-400/40 shadow-md scale-[1.01]"
                         : "border-slate-200 bg-white hover:border-amber-300"
@@ -381,7 +381,7 @@ export default function GuestSampleGatewayModal({
                         🧮 SINGLE DIGIT
                       </span>
                       <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-amber-700 transition">
-                        ADD & SUB SINGLE DIGIT DIRECT (4-5-6 ROWS)
+                        ADD & SUB SINGLE DIGIT DIRECT
                       </h4>
                       <p className="text-[10px] text-slate-500 font-semibold mt-1">
                         Speed single-digit direct mental calculations.
@@ -400,7 +400,7 @@ export default function GuestSampleGatewayModal({
                       setSelectedTopicMode("double");
                       setSelectedSetId("abacus-sr2-double-direct");
                     }}
-                    className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
                       selectedTopicMode === "double"
                         ? "border-emerald-500 bg-emerald-500/10 ring-2 ring-emerald-400/40 shadow-md scale-[1.01]"
                         : "border-slate-200 bg-white hover:border-emerald-300"
@@ -411,7 +411,7 @@ export default function GuestSampleGatewayModal({
                         🔢 DOUBLE DIGIT
                       </span>
                       <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-emerald-700 transition">
-                        ADD & SUB DOUBLE DIGIT DIRECT (4-5-6 ROWS)
+                        ADD & SUB DOUBLE DIGIT DIRECT
                       </h4>
                       <p className="text-[10px] text-slate-500 font-semibold mt-1">
                         Master 2-digit direct mental abacus drills.
@@ -430,7 +430,7 @@ export default function GuestSampleGatewayModal({
                       setSelectedTopicMode("both");
                       setSelectedSetId("abacus-sr-mixed-direct");
                     }}
-                    className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
                       selectedTopicMode === "both"
                         ? "border-purple-500 bg-purple-500/10 ring-2 ring-purple-400/40 shadow-md scale-[1.01]"
                         : "border-slate-200 bg-white hover:border-purple-300"
@@ -438,10 +438,10 @@ export default function GuestSampleGatewayModal({
                   >
                     <div>
                       <span className="bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
-                        ⚡ BOTH (MIXED)
+                        ⚡ BOTH MIXED
                       </span>
                       <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-purple-700 transition">
-                        BOTH SINGLE & DOUBLE DIGIT DIRECT
+                        BOTH SINGLE & DOUBLE DIGIT
                       </h4>
                       <p className="text-[10px] text-slate-500 font-semibold mt-1">
                         Challenge both 1-digit & 2-digit mixed rows.
@@ -449,6 +449,36 @@ export default function GuestSampleGatewayModal({
                     </div>
                     {selectedTopicMode === "both" && (
                       <span className="mt-2 text-[9px] font-black text-white bg-purple-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                        ✓ SELECTED
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Option 4: Mental Math (Grade 4 Olympiad) */}
+                  <div
+                    onClick={() => {
+                      setSelectedTopicMode("both");
+                      setSelectedSetId("mental-olympiad-g4");
+                    }}
+                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                      selectedSetId === "mental-olympiad-g4"
+                        ? "border-indigo-600 bg-indigo-600/10 ring-2 ring-indigo-500/40 shadow-md scale-[1.01]"
+                        : "border-slate-200 bg-white hover:border-indigo-400"
+                    }`}
+                  >
+                    <div>
+                      <span className="bg-indigo-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                        💡 OLYMPIAD MATH
+                      </span>
+                      <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-indigo-700 transition">
+                        MENTAL MATH GRADE 4 (OLYMPIAD)
+                      </h4>
+                      <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                        Mental Maths Olympiad syllabus drill.
+                      </p>
+                    </div>
+                    {selectedSetId === "mental-olympiad-g4" && (
+                      <span className="mt-2 text-[9px] font-black text-white bg-indigo-600 px-2 py-0.5 rounded-md self-start shadow-xs">
                         ✓ SELECTED
                       </span>
                     )}

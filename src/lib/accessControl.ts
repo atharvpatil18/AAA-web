@@ -118,7 +118,7 @@ export interface AccessCheckResult {
  */
 export function checkUserAccess(
   email: string | undefined,
-  course: "abacus" | "vedic",
+  course: "abacus" | "vedic" | "mental",
   levelId: string,
   feature: "quiz" | "learn"
 ): AccessCheckResult {
@@ -157,11 +157,12 @@ export function checkUserAccess(
   }
 
   // Check course permission
-  const coursePermissions = record.permissions.filter((p) => p.course === course);
+  const coursePermissions = record.permissions.filter((p) => p.course === course || (p.course as string) === "all");
   if (coursePermissions.length === 0) {
+    const courseTitle = course === "abacus" ? "Abacus" : course === "vedic" ? "Vedic Math" : "Mental Math";
     return {
       allowed: false,
-      reason: `Access to ${course === "abacus" ? "Abacus" : "Vedic Math"} course is not enabled for your account.`,
+      reason: `Access to ${courseTitle} course is not enabled for your account.`,
       isCourseAllowed: false,
       isLevelAllowed: false,
       isFeatureAllowed: false,
