@@ -53,7 +53,8 @@ export function getSuccessStories(): SuccessStory[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter((s) => s && s.id && !s.id.startsWith("test_"));
   } catch (e) {
     console.error("Error reading success stories:", e);
     return [];

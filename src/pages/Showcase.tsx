@@ -650,10 +650,18 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                     {item.studentName && (
                       <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-gray-550 bg-[#F8F9FA] border border-gray-200 px-4 py-2 rounded-full w-fit">
                         <span>Student: {item.studentName}</span>
-                        <span className="text-gray-300">•</span>
-                        <span>Age: {item.age}</span>
-                        <span className="text-gray-300">•</span>
-                        <span>Class: {item.grade}</span>
+                        {item.age && (
+                          <>
+                            <span className="text-gray-300">•</span>
+                            <span>Age: {item.age}</span>
+                          </>
+                        )}
+                        {item.grade && (
+                          <>
+                            <span className="text-gray-300">•</span>
+                            <span>Level/Class: {item.grade}</span>
+                          </>
+                        )}
                       </div>
                     )}
 
