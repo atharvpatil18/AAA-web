@@ -92,12 +92,16 @@ export function saveSuccessStory(story: Omit<SuccessStory, "id" | "publishedAt" 
   }
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(stories));
+  // Auto sync to cloud asynchronously
+  syncSuccessStoriesToCloud().catch(() => {});
   return updatedStory;
 }
 
 export function deleteSuccessStory(id: string): void {
   const stories = getSuccessStories().filter((s) => s.id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(stories));
+  // Auto sync to cloud asynchronously
+  syncSuccessStoriesToCloud().catch(() => {});
 }
 
 /**
@@ -125,24 +129,36 @@ export async function fetchSuccessStoriesFromCloud(): Promise<SuccessStory[]> {
   const local = getSuccessStories();
   try {
     const res = await fetch(STORIES_CLOUD_URL, { headers: { Accept: "application/json" } });
-    if (!res.ok) return local;
-    const payload = await res.json();
-    const cloud: SuccessStory[] = Array.isArray(payload)
-      ? payload
-      : Array.isArray(payload?.stories)
-      ? payload.stories
-      : [];
-    if (cloud.length === 0) return local;
+    let cloud: SuccessStory[] = [];
+    if (res.ok) {
+      const payload = await res.json();
+      cloud = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload?.stories)
+        ? payload.stories
+        : [];
+    }
 
-    // Merge: cloud wins for same id (admin edits on another device)
+    // Merge: cloud wins for same id, but keep any local stories missing from cloud
     const map = new Map<string, SuccessStory>();
     local.forEach((s) => map.set(s.id, s));
     cloud.forEach((s) => map.set(s.id, s));
     const merged = Array.from(map.values()).sort(
       (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
     );
-    // Persist merged list locally so next load is instant
+
+    // Persist merged list locally
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(merged)); } catch {}
+
+    // If local had stories missing in cloud, sync merged back to cloud!
+    if (merged.length > cloud.length) {
+      fetch(STORIES_CLOUD_URL, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ stories: merged }),
+      }).catch(() => {});
+    }
+
     return merged;
   } catch (e) {
     console.warn("Success stories cloud fetch warning:", e);
