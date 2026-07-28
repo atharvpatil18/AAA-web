@@ -28,7 +28,7 @@ export interface SuccessStory {
 const STORAGE_KEY = "aaa_published_success_stories_v2";
 
 // Cloud endpoint — same free jsonblob pattern used for leaderboard & feedback
-const STORIES_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa7d9-af53-70d6-806d-a7d5d36a675d";
+const STORIES_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa7e4-e52b-75be-894c-cbacdf5dc7f4";
 
 /**
  * Format JS Date or YYYY-MM-DD string into dd-mmm-yy (e.g. 15-Mar-25)

@@ -57,7 +57,7 @@ interface SuccessItem {
 }
 
 const SHOWCASE_APPLAUDS_KEY = "aaa_showcase_applauds_v1";
-const APPLAUDS_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa7aa-6f3f-7f69-9299-d427ee3d67d1";
+const APPLAUDS_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa7e5-1981-7a92-9f98-870ed087ff58";
 
 export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
   const { language, t } = useLanguage();
@@ -127,9 +127,12 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
 
     const fetchLatestApplauds = () => {
       fetch(APPLAUDS_CLOUD_URL, { headers: { Accept: "application/json" } })
-        .then((r) => r.json())
+        .then((r) => {
+          if (!r.ok) throw new Error("Rate limit or server error");
+          return r.json();
+        })
         .then((payload) => {
-          const cloudCounts: Record<string, number> = payload?.applauds || (typeof payload === "object" && !Array.isArray(payload) ? payload : {});
+          const cloudCounts: Record<string, number> = payload?.applauds || (typeof payload === "object" && !Array.isArray(payload) && !payload.error ? payload : {});
           setApplaudCounts((prev) => {
             const merged: Record<string, number> = { ...prev, ...cloudCounts };
             Object.keys(cloudCounts).forEach((k) => {
@@ -146,11 +149,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     };
 
     fetchLatestApplauds();
-    const interval = setInterval(fetchLatestApplauds, 8000);
     window.addEventListener("focus", fetchLatestApplauds);
 
     return () => {
-      clearInterval(interval);
       window.removeEventListener("focus", fetchLatestApplauds);
     };
   }, []);
@@ -181,9 +182,12 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
 
     // Immediate Cloud PUT
     fetch(APPLAUDS_CLOUD_URL, { headers: { Accept: "application/json" } })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("Rate limit");
+        return r.json();
+      })
       .then((payload) => {
-        const cloudCounts: Record<string, number> = payload?.applauds || (typeof payload === "object" && !Array.isArray(payload) ? payload : {});
+        const cloudCounts: Record<string, number> = payload?.applauds || (typeof payload === "object" && !Array.isArray(payload) && !payload.error ? payload : {});
         cloudCounts[id] = Math.max((cloudCounts[id] || 0) + 1, targetCount);
         return fetch(APPLAUDS_CLOUD_URL, {
           method: "PUT",
