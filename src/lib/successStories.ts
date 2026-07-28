@@ -114,17 +114,31 @@ export function deleteSuccessStory(id: string): void {
 /**
  * Push the full local story list to the cloud so any device can read them.
  * Called after every save or delete by the admin.
+ * IMPORTANT: Base64 photos are stripped before upload — they are too large (>1MB).
+ * Other devices will display /logo.png as the photo until a real URL is provided.
  */
 export async function syncSuccessStoriesToCloud(): Promise<void> {
   const stories = getSuccessStories();
+  // Strip base64 images — they bloat the payload to several MB and cause silent failures.
+  // Replace with a safe fallback. Story text, name, highlights all still sync correctly.
+  const storiesForCloud = stories.map((s) => ({
+    ...s,
+    studentPhotoUrl: s.studentPhotoUrl?.startsWith("data:") ? "/logo.png" : (s.studentPhotoUrl || "/logo.png"),
+  }));
+  const body = JSON.stringify({ name: "aaa_success_stories", data: { stories: storiesForCloud } });
+  const sizeKB = Math.round(new Blob([body]).size / 1024);
+  console.log(`[Stories Sync] Pushing ${stories.length} stories (${sizeKB} KB) to cloud...`);
   try {
     const res = await fetch(STORIES_CLOUD_URL, {
       method: "PUT",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ name: "aaa_success_stories", data: { stories } }),
+      body,
     });
     if (!res.ok) {
-      console.warn("Cloud sync HTTP status error:", res.status, res.statusText);
+      const errText = await res.text().catch(() => "");
+      console.warn("Cloud sync HTTP status error:", res.status, res.statusText, errText);
+    } else {
+      console.log(`[Stories Sync] ✅ Successfully synced ${stories.length} stories.`);
     }
   } catch (e) {
     console.warn("Success stories cloud sync warning:", e);
