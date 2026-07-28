@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SuccessStory, getSuccessStories, saveSuccessStory, deleteSuccessStory, formatDateToDdMmmYy, syncSuccessStoriesToCloud } from "../lib/successStories";
 import { generateAISuccessStory } from "../lib/aiStoryGenerator";
-import { Sparkles, Plus, Trash2, Edit3, Trophy, Calendar, MapPin, School, X } from "lucide-react";
+import { Sparkles, Plus, Trash2, Edit3, Trophy, Calendar, MapPin, School, X, RefreshCw } from "lucide-react";
 
 export default function AdminSuccessStoryManager() {
   const [stories, setStories] = useState<SuccessStory[]>([]);
@@ -30,6 +30,7 @@ export default function AdminSuccessStoryManager() {
   const [afterText, setAfterText] = useState("");
   
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
 
@@ -42,6 +43,19 @@ export default function AdminSuccessStoryManager() {
 
   const loadStories = () => {
     setStories(getSuccessStories());
+  };
+
+  const handleManualSync = async () => {
+    setIsSyncing(true);
+    try {
+      await syncSuccessStoriesToCloud();
+      const current = getSuccessStories();
+      alert(`✅ Successfully synced ${current.length} stories to cloud! Parents can now view them on any device.`);
+    } catch (e) {
+      alert("⚠️ Cloud sync error. Please check your network connection.");
+    } finally {
+      setIsSyncing(false);
+    }
   };
 
   const resetForm = () => {
@@ -232,17 +246,30 @@ export default function AdminSuccessStoryManager() {
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => {
-            resetForm();
-            setIsFormOpen(!isFormOpen);
-          }}
-          className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black rounded-xl text-xs transition shadow-lg flex items-center gap-2 cursor-pointer shrink-0"
-        >
-          {isFormOpen ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-          <span>{isFormOpen ? "Close Editor" : "Create New Story"}</span>
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            onClick={handleManualSync}
+            disabled={isSyncing}
+            className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold rounded-xl text-xs transition border border-amber-500/30 flex items-center gap-2 cursor-pointer disabled:opacity-50"
+            title="Force push published stories to cloud"
+          >
+            <RefreshCw className={`w-4 h-4 text-amber-400 ${isSyncing ? "animate-spin" : ""}`} />
+            <span>{isSyncing ? "Syncing..." : "Sync Stories to Cloud"}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              resetForm();
+              setIsFormOpen(!isFormOpen);
+            }}
+            className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black rounded-xl text-xs transition shadow-lg flex items-center gap-2 cursor-pointer shrink-0"
+          >
+            {isFormOpen ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+            <span>{isFormOpen ? "Close Editor" : "Create New Story"}</span>
+          </button>
+        </div>
       </div>
 
       {/* Editor Modal / Form Container */}

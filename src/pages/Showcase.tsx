@@ -163,7 +163,17 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     if (!storyId) return;
     const allItems = [...adminStories, ...showcaseData];
     const match = allItems.find(i => i.id === storyId);
-    if (match) setSelectedItem(match);
+    if (match) {
+      setSelectedItem(match);
+    } else {
+      // Force instant cloud fetch for deep-linked story
+      fetchSuccessStoriesFromCloud().then((raw) => {
+        const mapped = mapRawStories(raw);
+        setAdminStories(mapped);
+        const found = [...mapped, ...showcaseData].find((i) => i.id === storyId);
+        if (found) setSelectedItem(found);
+      }).catch(() => {});
+    }
   }, [searchParams, adminStories]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleApplaud = (id: string, e: React.MouseEvent<HTMLButtonElement>) => {

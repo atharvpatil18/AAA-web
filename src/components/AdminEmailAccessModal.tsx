@@ -49,6 +49,7 @@ import {
 } from "../lib/cloudSync";
 import { validateSanitizedEmail, validateSanitizedName } from "../lib/securitySanitizer";
 import AdminSuccessStoryManager from "./AdminSuccessStoryManager";
+import { syncSuccessStoriesToCloud } from "../lib/successStories";
 
 interface AdminEmailAccessModalProps {
   isOpen: boolean;
@@ -113,11 +114,12 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
         syncApprovedRecordsFromCloud(),
         syncVisitorFeedbacksFromCloud(),
         syncStudentAttempts(),
+        syncSuccessStoriesToCloud(),
       ]);
       setRecords(syncedRecords);
       setFeedbacks(fbList);
       setAllAttempts(attsList);
-      setSuccess("✓ Cloud Sync Complete! Merged student access permissions, visitor feedbacks, & guest drill attempts.");
+      setSuccess("✓ Cloud Sync Complete! Merged student access permissions, visitor feedbacks, guest drill attempts, & success stories.");
     } catch (e) {
       setError("Cloud sync warning: Using cached database.");
     } finally {
