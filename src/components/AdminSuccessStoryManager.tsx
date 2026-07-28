@@ -35,6 +35,9 @@ export default function AdminSuccessStoryManager() {
 
   useEffect(() => {
     loadStories();
+    // Push any locally-stored stories to cloud on admin panel open.
+    // This ensures stories created before cloud sync was added are visible to parents.
+    syncSuccessStoriesToCloud().catch(() => {});
   }, []);
 
   const loadStories = () => {

@@ -57,6 +57,7 @@ interface SuccessItem {
 }
 
 const SHOWCASE_APPLAUDS_KEY = "aaa_showcase_applauds_v1";
+const APPLAUDS_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa73c-0952-720b-b4ec-f8738f8e8362";
 
 export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
   const { language, t } = useLanguage();
@@ -109,14 +110,37 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
   }, []);
 
   useEffect(() => {
+    // 1. Load local applauds instantly
+    let localCounts: Record<string, number> = {};
     try {
       const saved = localStorage.getItem(SHOWCASE_APPLAUDS_KEY);
       if (saved) {
         const { counts, liked } = JSON.parse(saved);
-        setApplaudCounts(counts || {});
+        localCounts = counts || {};
         setApplaudedItems(liked || {});
       }
     } catch {}
+    setApplaudCounts(localCounts);
+
+    // 2. Fetch cloud counts and merge (take max so count only goes up)
+    fetch(APPLAUDS_CLOUD_URL, { headers: { Accept: "application/json" } })
+      .then((r) => r.json())
+      .then((payload) => {
+        const cloudCounts: Record<string, number> = payload?.applauds || {};
+        setApplaudCounts((prev) => {
+          const merged: Record<string, number> = { ...cloudCounts };
+          Object.keys(prev).forEach((k) => {
+            merged[k] = Math.max(merged[k] || 0, prev[k] || 0);
+          });
+          // Persist merged locally
+          try {
+            const liked = JSON.parse(localStorage.getItem(SHOWCASE_APPLAUDS_KEY) || "{}")?.liked || {};
+            localStorage.setItem(SHOWCASE_APPLAUDS_KEY, JSON.stringify({ counts: merged, liked }));
+          } catch {}
+          return merged;
+        });
+      })
+      .catch(() => { /* cloud unavailable — local counts shown */ });
   }, []);
 
   // Auto-open story from ?story= URL param.
@@ -140,6 +164,20 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     setApplaudCounts(newCounts);
     setApplaudedItems(newLiked);
     try { localStorage.setItem(SHOWCASE_APPLAUDS_KEY, JSON.stringify({ counts: newCounts, liked: newLiked })); } catch {}
+
+    // Push updated count to cloud so all visitors see the same total
+    fetch(APPLAUDS_CLOUD_URL, { headers: { Accept: "application/json" } })
+      .then((r) => r.json())
+      .then((payload) => {
+        const cloudCounts: Record<string, number> = payload?.applauds || {};
+        cloudCounts[id] = Math.max((cloudCounts[id] || 0) + 1, newCounts[id]);
+        return fetch(APPLAUDS_CLOUD_URL, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ applauds: cloudCounts }),
+        });
+      })
+      .catch(() => { /* cloud sync failed — local count saved */ });
   };
 
   const toggleExpand = (id: string) => {
