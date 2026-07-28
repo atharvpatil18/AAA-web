@@ -128,9 +128,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       .then((payload) => {
         const cloudCounts: Record<string, number> = payload?.applauds || {};
         setApplaudCounts((prev) => {
-          const merged: Record<string, number> = { ...cloudCounts };
+          const merged: Record<string, number> = { ...prev, ...cloudCounts };
           Object.keys(prev).forEach((k) => {
-            merged[k] = Math.max(merged[k] || 0, prev[k] || 0);
+            merged[k] = Math.max(cloudCounts[k] || 0, prev[k] || 0);
           });
           // Persist merged locally
           try {
