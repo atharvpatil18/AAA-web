@@ -72,8 +72,41 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
   const [popItem, setPopItem] = useState<string | null>(null);
   const { particles, burst } = useShowcaseConfetti();
 
-  // Share state
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Map raw SuccessStory → SuccessItem (helper used for localStorage init and cloud refresh)
+  const mapRawStories = (raw: SuccessStory[]): SuccessItem[] =>
+    raw.map((s) => ({
+      id: s.id,
+      type: s.storyType,
+      title: s.highlight,
+      studentName: s.studentName,
+      age: s.ageYears ? `${s.ageYears} Years` : undefined,
+      grade: s.courseLevel,
+      achievementText: s.aiGeneratedStory,
+      beforeText: s.beforeText,
+      afterText: s.afterText,
+      imageUrl: s.studentPhotoUrl || "/logo.png",
+      imageAlt: s.studentName,
+      tag: `${s.eventLevel === "international" ? "International Level" : s.eventLevel === "national_state" ? "National/State Level" : "School & Academy Level"} • ${s.eventDateFormatted || ""}`,
+      colorTheme: (s.eventLevel === "international" ? "gold" : s.eventLevel === "national_state" ? "orange" : "teal") as "gold" | "orange" | "teal",
+      mainCategory: s.eventLevel,
+      academySubCategory: s.course,
+    }));
+
+  // Initialise from localStorage immediately (zero delay — no blank screen)
+  // then refresh from cloud in background via useEffect below
+  const [adminStories, setAdminStories] = useState<SuccessItem[]>(() => {
+    try { return mapRawStories(getSuccessStories()); } catch { return []; }
+  });
+
+  useEffect(() => {
+    // Background cloud refresh — updates stories for parents on any device
+    fetchSuccessStoriesFromCloud()
+      .then((raw) => setAdminStories(mapRawStories(raw)))
+      .catch(() => { /* cloud unavailable — localStorage data already shown */ });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     try {
@@ -404,38 +437,6 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     }
   ];
 
-  // Map raw SuccessStory → SuccessItem (used for both local and cloud data)
-  const mapRawStories = (raw: SuccessStory[]): SuccessItem[] =>
-    raw.map((s) => ({
-      id: s.id,
-      type: s.storyType,
-      title: s.highlight,
-      studentName: s.studentName,
-      age: s.ageYears ? `${s.ageYears} Years` : undefined,
-      grade: s.courseLevel,
-      achievementText: s.aiGeneratedStory,
-      beforeText: s.beforeText,
-      afterText: s.afterText,
-      imageUrl: s.studentPhotoUrl || "/logo.png",
-      imageAlt: s.studentName,
-      tag: `${s.eventLevel === "international" ? "International Level" : s.eventLevel === "national_state" ? "National/State Level" : "School & Academy Level"} • ${s.eventDateFormatted || ""}`,
-      colorTheme: (s.eventLevel === "international" ? "gold" : s.eventLevel === "national_state" ? "orange" : "teal") as "gold" | "orange" | "teal",
-      mainCategory: s.eventLevel,
-      academySubCategory: s.course,
-    }));
-
-  // ── Initialise immediately from localStorage so page never appears blank ──
-  const [adminStories, setAdminStories] = useState<SuccessItem[]>(() => {
-    try { return mapRawStories(getSuccessStories()); } catch { return []; }
-  });
-
-  useEffect(() => {
-    // Background cloud refresh — updates stories for parents on any device
-    fetchSuccessStoriesFromCloud()
-      .then((raw) => setAdminStories(mapRawStories(raw)))
-      .catch(() => { /* cloud unavailable — localStorage already shown */ });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const allCombinedItems = [...adminStories, ...showcaseData];
   const visibleItems = allCombinedItems.filter(item => !!item.imageUrl);
