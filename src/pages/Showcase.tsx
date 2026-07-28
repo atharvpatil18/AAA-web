@@ -9,7 +9,8 @@ import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X, Heart, Share2, Chec
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
-import { getSuccessStories, fetchSuccessStoriesFromCloud, SuccessStory } from "../lib/successStories";
+import { getSuccessStories, fetchSuccessStoriesFromCloud } from "../lib/successStories";
+import type { SuccessStory } from "../lib/successStories";
 
 /* ── Confetti helper (reused from PublicSuccessWall) ── */
 interface ConfettiParticle { id: number; x: number; y: number; color: string; angle: number; speed: number; size: number; opacity: number; }
