@@ -86,12 +86,51 @@ export default function AdminSuccessStoryManager() {
     setTimeout(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
   };
 
+  // Helper to downscale base64 images so payload easily fits in JsonBlob cloud store (< 100KB)
+  const compressImageBase64 = (dataUrl: string, maxDim = 500, quality = 0.75): Promise<string> => {
+    return new Promise((resolve) => {
+      if (!dataUrl || !dataUrl.startsWith("data:image")) {
+        resolve(dataUrl);
+        return;
+      }
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width;
+        let h = img.height;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, w, h);
+          resolve(canvas.toDataURL("image/jpeg", quality));
+        } else {
+          resolve(dataUrl);
+        }
+      };
+      img.onerror = () => resolve(dataUrl);
+      img.src = dataUrl;
+    });
+  };
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setStudentPhotoUrl(reader.result as string);
+        const raw = reader.result as string;
+        compressImageBase64(raw).then((compressed) => {
+          setStudentPhotoUrl(compressed);
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -120,7 +159,7 @@ export default function AdminSuccessStoryManager() {
     }
   };
 
-  const handleSave = (e?: React.MouseEvent | React.FormEvent) => {
+  const handleSave = async (e?: React.MouseEvent | React.FormEvent) => {
     if (e) e.preventDefault();
     setFormError(null);
 
@@ -139,10 +178,13 @@ export default function AdminSuccessStoryManager() {
 
     const formattedDate = formatDateToDdMmmYy(rawDate);
 
+    // Ensure photo URL is downscaled/compressed so cloud upload never exceeds size limits
+    const photoUrlToSave = await compressImageBase64(studentPhotoUrl || "/logo.png");
+
     saveSuccessStory({
       id: editingId || undefined,
       studentName,
-      studentPhotoUrl: studentPhotoUrl || "/logo.png",
+      studentPhotoUrl: photoUrlToSave,
       ageYears: Number(ageYears) || 9,
       schoolName,
       location,
@@ -159,7 +201,7 @@ export default function AdminSuccessStoryManager() {
     });
 
     // Push to cloud so parents can access via shared links on any device
-    syncSuccessStoriesToCloud().catch(() => {});
+    await syncSuccessStoriesToCloud().catch(() => {});
 
     loadStories();
     setIsFormOpen(false);

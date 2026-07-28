@@ -111,11 +111,14 @@ export function deleteSuccessStory(id: string): void {
 export async function syncSuccessStoriesToCloud(): Promise<void> {
   const stories = getSuccessStories();
   try {
-    await fetch(STORIES_CLOUD_URL, {
+    const res = await fetch(STORIES_CLOUD_URL, {
       method: "PUT",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({ stories }),
     });
+    if (!res.ok) {
+      console.warn("Cloud sync HTTP status error:", res.status, res.statusText);
+    }
   } catch (e) {
     console.warn("Success stories cloud sync warning:", e);
   }
