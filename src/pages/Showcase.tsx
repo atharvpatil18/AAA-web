@@ -4,8 +4,8 @@
  */
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X, Heart } from "lucide-react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X, Heart, Share2, Check } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
@@ -63,12 +63,16 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
   const [academySubFilter, setAcademySubFilter] = useState<string>("all");
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
   const [selectedItem, setSelectedItem] = useState<SuccessItem | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Applaud state
   const [applaudCounts, setApplaudCounts] = useState<Record<string, number>>({});
   const [applaudedItems, setApplaudedItems] = useState<Record<string, boolean>>({});
   const [popItem, setPopItem] = useState<string | null>(null);
   const { particles, burst } = useShowcaseConfetti();
+
+  // Share state
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -80,6 +84,16 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       }
     } catch {}
   }, []);
+
+  // Auto-open story from ?story= URL param
+  useEffect(() => {
+    const storyId = searchParams.get("story");
+    if (storyId && allCombinedItems.length > 0) {
+      const match = allCombinedItems.find(i => i.id === storyId);
+      if (match) setSelectedItem(match);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleApplaud = (id: string, e: React.MouseEvent<HTMLButtonElement>) => {
     if (applaudedItems[id]) return;
@@ -103,6 +117,39 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
 
   const handleCtaClick = () => {
     trackDemoClick("showcase_page_bottom_cta");
+  };
+
+  // Build shareable URL for a story item
+  const getShareUrl = (item: SuccessItem): string => {
+    const base = window.location.href.split("#")[0];
+    return `${base}#/showcase?story=${encodeURIComponent(item.id)}`;
+  };
+
+  const handleShare = (item: SuccessItem, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = getShareUrl(item);
+    try {
+      navigator.clipboard.writeText(url);
+    } catch {
+      // Fallback for older browsers
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    setCopiedId(item.id);
+    setTimeout(() => setCopiedId(null), 2500);
+  };
+
+  const handleWhatsAppShare = (item: SuccessItem, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = getShareUrl(item);
+    const text = encodeURIComponent(
+      `🏆 Check out this success story from Arnav Abacus Academy!\n\n"${item.title}"${item.studentName ? ` — ${item.studentName}` : ""}\n\n${url}`
+    );
+    window.open(`https://wa.me/?text=${text}`, "_blank");
   };
 
   const showcaseData: SuccessItem[] = [
@@ -615,25 +662,46 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                       )}
                     </button>
 
-                    <div className="pt-4 border-t border-gray-100 flex justify-between items-center">
+                    <div className="pt-4 border-t border-gray-100 flex flex-wrap justify-between items-center gap-2">
                       <span className="flex items-center gap-1 text-[10px] font-bold text-gray-400">
                         <ShieldCheck className="w-3.5 h-3.5 text-vibrant-teal" /> {t("showcaseVerified")}
                       </span>
-                      <button
-                        type="button"
-                        onClick={(e) => handleApplaud(item.id, e)}
-                        disabled={!!applaudedItems[item.id]}
-                        title={applaudedItems[item.id] ? "You've already applauded!" : "Applaud this achievement!"}
-                        style={{ transform: popItem === item.id ? "scale(1.35)" : "scale(1)", transition: "transform 0.15s cubic-bezier(0.34,1.56,0.64,1), background 0.2s" }}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 select-none ${
-                          applaudedItems[item.id]
-                            ? "bg-rose-500 text-white shadow-md shadow-rose-200 cursor-default"
-                            : "bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 hover:shadow-md hover:shadow-rose-100 cursor-pointer"
-                        }`}
-                      >
-                        <Heart className={`w-3.5 h-3.5 transition-all duration-200 ${ popItem === item.id ? "scale-150" : "scale-100" } ${ applaudedItems[item.id] ? "fill-white text-white" : "fill-rose-400 text-rose-400" }`} />
-                        <span className="tabular-nums">{applaudCounts[item.id] || 0} Applauds</span>
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {/* Share button */}
+                        <button
+                          type="button"
+                          onClick={(e) => handleShare(item, e)}
+                          title="Copy shareable link"
+                          className={`px-3 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 select-none transition-all duration-200 ${
+                            copiedId === item.id
+                              ? "bg-emerald-500 text-white border border-emerald-600 shadow-md cursor-default"
+                              : "bg-sky-50 hover:bg-sky-100 text-sky-600 border border-sky-200 hover:shadow-md cursor-pointer"
+                          }`}
+                        >
+                          {copiedId === item.id ? (
+                            <><Check className="w-3.5 h-3.5" /><span>Copied!</span></>
+                          ) : (
+                            <><Share2 className="w-3.5 h-3.5" /><span>Share</span></>
+                          )}
+                        </button>
+
+                        {/* Applaud button */}
+                        <button
+                          type="button"
+                          onClick={(e) => handleApplaud(item.id, e)}
+                          disabled={!!applaudedItems[item.id]}
+                          title={applaudedItems[item.id] ? "You've already applauded!" : "Applaud this achievement!"}
+                          style={{ transform: popItem === item.id ? "scale(1.35)" : "scale(1)", transition: "transform 0.15s cubic-bezier(0.34,1.56,0.64,1), background 0.2s" }}
+                          className={`px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 select-none ${
+                            applaudedItems[item.id]
+                              ? "bg-rose-500 text-white shadow-md shadow-rose-200 cursor-default"
+                              : "bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 hover:shadow-md hover:shadow-rose-100 cursor-pointer"
+                          }`}
+                        >
+                          <Heart className={`w-3.5 h-3.5 transition-all duration-200 ${ popItem === item.id ? "scale-150" : "scale-100" } ${ applaudedItems[item.id] ? "fill-white text-white" : "fill-rose-400 text-rose-400" }`} />
+                          <span className="tabular-nums">{applaudCounts[item.id] || 0} Applauds</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -769,16 +837,43 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
               </div>
 
               {/* Modal Action/Footer */}
-              <div className="p-4 bg-vibrant-cream border-t-2 border-vibrant-dark flex justify-between items-center text-xs font-bold text-gray-500">
+              <div className="p-4 bg-vibrant-cream border-t-2 border-vibrant-dark flex flex-wrap justify-between items-center gap-3 text-xs font-bold text-gray-500">
                 <span className="flex items-center gap-1">
                   <ShieldCheck className="w-4 h-4 text-vibrant-teal" /> {t("showcaseVerified")}
                 </span>
-                <button
-                  onClick={() => setSelectedItem(null)}
-                  className="bg-vibrant-dark text-white px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-vibrant-dark/95 transition-all cursor-pointer"
-                >
-                  Close
-                </button>
+                <div className="flex items-center gap-2">
+                  {/* WhatsApp Share */}
+                  <button
+                    onClick={(e) => handleWhatsAppShare(selectedItem!, e)}
+                    className="flex items-center gap-1.5 bg-[#25D366] hover:bg-[#1ebe5a] text-white px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer shadow-sm"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    WhatsApp
+                  </button>
+
+                  {/* Copy Link */}
+                  <button
+                    onClick={(e) => handleShare(selectedItem!, e)}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                      copiedId === selectedItem?.id
+                        ? "bg-emerald-500 text-white shadow-sm"
+                        : "bg-sky-100 hover:bg-sky-200 text-sky-700 border border-sky-300"
+                    }`}
+                  >
+                    {copiedId === selectedItem?.id ? (
+                      <><Check className="w-3.5 h-3.5" /> Copied!</>
+                    ) : (
+                      <><Share2 className="w-3.5 h-3.5" /> Copy Link</>
+                    )}
+                  </button>
+
+                  <button
+                    onClick={() => setSelectedItem(null)}
+                    className="bg-vibrant-dark text-white px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-vibrant-dark/95 transition-all cursor-pointer"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
