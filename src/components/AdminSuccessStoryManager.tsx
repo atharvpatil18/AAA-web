@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { SuccessStory, getSuccessStories, saveSuccessStory, deleteSuccessStory, formatDateToDdMmmYy } from "../lib/successStories";
+import { SuccessStory, getSuccessStories, saveSuccessStory, deleteSuccessStory, formatDateToDdMmmYy, syncSuccessStoriesToCloud } from "../lib/successStories";
 import { generateAISuccessStory } from "../lib/aiStoryGenerator";
 import { Sparkles, Plus, Trash2, Edit3, Trophy, Calendar, MapPin, School, X } from "lucide-react";
 
@@ -155,6 +155,9 @@ export default function AdminSuccessStoryManager() {
       afterText,
     });
 
+    // Push to cloud so parents can access via shared links on any device
+    syncSuccessStoriesToCloud().catch(() => {});
+
     loadStories();
     setIsFormOpen(false);
     resetForm();
@@ -164,6 +167,8 @@ export default function AdminSuccessStoryManager() {
   const handleDelete = (id: string) => {
     if (window.confirm("Are you sure you want to delete this published success story?")) {
       deleteSuccessStory(id);
+      // Sync deletion to cloud
+      syncSuccessStoriesToCloud().catch(() => {});
       loadStories();
     }
   };

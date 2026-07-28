@@ -27,6 +27,9 @@ export interface SuccessStory {
 
 const STORAGE_KEY = "aaa_published_success_stories_v2";
 
+// Cloud endpoint — same free jsonblob pattern used for leaderboard & feedback
+const STORIES_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa696-2ce1-75a2-9f3e-719b9b2ab735";
+
 /**
  * Format JS Date or YYYY-MM-DD string into dd-mmm-yy (e.g. 15-Mar-25)
  */
@@ -95,6 +98,56 @@ export function saveSuccessStory(story: Omit<SuccessStory, "id" | "publishedAt" 
 export function deleteSuccessStory(id: string): void {
   const stories = getSuccessStories().filter((s) => s.id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(stories));
+}
+
+/**
+ * Push the full local story list to the cloud so any device can read them.
+ * Called after every save or delete by the admin.
+ */
+export async function syncSuccessStoriesToCloud(): Promise<void> {
+  const stories = getSuccessStories();
+  try {
+    await fetch(STORIES_CLOUD_URL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ stories }),
+    });
+  } catch (e) {
+    console.warn("Success stories cloud sync warning:", e);
+  }
+}
+
+/**
+ * Fetch stories from cloud, merge with localStorage, return merged list.
+ * Called on Showcase page mount so parents see all stories on any device.
+ */
+export async function fetchSuccessStoriesFromCloud(): Promise<SuccessStory[]> {
+  const local = getSuccessStories();
+  try {
+    const res = await fetch(STORIES_CLOUD_URL, { headers: { Accept: "application/json" } });
+    if (!res.ok) return local;
+    const payload = await res.json();
+    const cloud: SuccessStory[] = Array.isArray(payload)
+      ? payload
+      : Array.isArray(payload?.stories)
+      ? payload.stories
+      : [];
+    if (cloud.length === 0) return local;
+
+    // Merge: cloud wins for same id (admin edits on another device)
+    const map = new Map<string, SuccessStory>();
+    local.forEach((s) => map.set(s.id, s));
+    cloud.forEach((s) => map.set(s.id, s));
+    const merged = Array.from(map.values()).sort(
+      (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    );
+    // Persist merged list locally so next load is instant
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(merged)); } catch {}
+    return merged;
+  } catch (e) {
+    console.warn("Success stories cloud fetch warning:", e);
+    return local;
+  }
 }
 
 export function incrementStoryLikes(id: string): number {
