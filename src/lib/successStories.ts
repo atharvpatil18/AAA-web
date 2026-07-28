@@ -28,7 +28,7 @@ export interface SuccessStory {
 const STORAGE_KEY = "aaa_published_success_stories_v2";
 
 // Cloud endpoint — same free jsonblob pattern used for leaderboard & feedback
-const STORIES_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa696-2ce1-75a2-9f3e-719b9b2ab735";
+const STORIES_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa7d9-af53-70d6-806d-a7d5d36a675d";
 
 /**
  * Format JS Date or YYYY-MM-DD string into dd-mmm-yy (e.g. 15-Mar-25)
@@ -50,11 +50,17 @@ export function formatDateToDdMmmYy(dateInput?: string | Date): string {
 
 export function getSuccessStories(): SuccessStory[] {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    let raw = localStorage.getItem(STORAGE_KEY);
+    // Legacy key fallbacks in case story was saved under v1 or unversioned key
+    if (!raw) raw = localStorage.getItem("aaa_published_success_stories_v1");
+    if (!raw) raw = localStorage.getItem("aaa_published_success_stories");
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    return parsed.filter((s) => s && s.id && !s.id.startsWith("test_"));
+    const cleaned = parsed.filter((s) => s && s.id && !s.id.startsWith("test_"));
+    // Migrate to v2 key
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned)); } catch {}
+    return cleaned;
   } catch (e) {
     console.error("Error reading success stories:", e);
     return [];

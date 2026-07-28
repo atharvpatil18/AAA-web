@@ -103,9 +103,14 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
 
   useEffect(() => {
     // Background cloud refresh — updates stories for parents on any device
-    fetchSuccessStoriesFromCloud()
-      .then((raw) => setAdminStories(mapRawStories(raw)))
-      .catch(() => { /* cloud unavailable — localStorage data already shown */ });
+    const refreshStories = () => {
+      fetchSuccessStoriesFromCloud()
+        .then((raw) => setAdminStories(mapRawStories(raw)))
+        .catch(() => { /* cloud unavailable — localStorage data already shown */ });
+    };
+    refreshStories();
+    window.addEventListener("focus", refreshStories);
+    return () => window.removeEventListener("focus", refreshStories);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
