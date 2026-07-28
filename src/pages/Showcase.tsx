@@ -63,7 +63,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
   const [academySubFilter, setAcademySubFilter] = useState<string>("all");
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
   const [selectedItem, setSelectedItem] = useState<SuccessItem | null>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   // Applaud state
   const [applaudCounts, setApplaudCounts] = useState<Record<string, number>>({});
@@ -85,15 +85,15 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     } catch {}
   }, []);
 
-  // Auto-open story from ?story= URL param
+  // Auto-open story from ?story= URL param.
+  // Depends on adminStories so it re-fires once async stories have loaded.
   useEffect(() => {
     const storyId = searchParams.get("story");
-    if (storyId && allCombinedItems.length > 0) {
-      const match = allCombinedItems.find(i => i.id === storyId);
-      if (match) setSelectedItem(match);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+    if (!storyId) return;
+    const allItems = [...adminStories, ...showcaseData];
+    const match = allItems.find(i => i.id === storyId);
+    if (match) setSelectedItem(match);
+  }, [searchParams, adminStories]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleApplaud = (id: string, e: React.MouseEvent<HTMLButtonElement>) => {
     if (applaudedItems[id]) return;
