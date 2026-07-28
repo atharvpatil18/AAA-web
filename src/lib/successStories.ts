@@ -27,8 +27,8 @@ export interface SuccessStory {
 
 const STORAGE_KEY = "aaa_published_success_stories_v2";
 
-// Cloud endpoint — same free jsonblob pattern used for leaderboard & feedback
-const STORIES_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa7e4-e52b-75be-894c-cbacdf5dc7f4";
+// Cloud endpoint — reliable restful-api.dev object store (no rate limit bans)
+const STORIES_CLOUD_URL = "https://api.restful-api.dev/objects/ff8081819f7e10ae019fa7f5b72e38f1";
 
 /**
  * Format JS Date or YYYY-MM-DD string into dd-mmm-yy (e.g. 15-Mar-25)
@@ -121,7 +121,7 @@ export async function syncSuccessStoriesToCloud(): Promise<void> {
     const res = await fetch(STORIES_CLOUD_URL, {
       method: "PUT",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ stories }),
+      body: JSON.stringify({ name: "aaa_success_stories", data: { stories } }),
     });
     if (!res.ok) {
       console.warn("Cloud sync HTTP status error:", res.status, res.statusText);
@@ -142,11 +142,8 @@ export async function fetchSuccessStoriesFromCloud(): Promise<SuccessStory[]> {
     let cloud: SuccessStory[] = [];
     if (res.ok) {
       const payload = await res.json();
-      cloud = Array.isArray(payload)
-        ? payload
-        : Array.isArray(payload?.stories)
-        ? payload.stories
-        : [];
+      const rawStories = payload?.data?.stories || payload?.stories || (Array.isArray(payload) ? payload : []);
+      cloud = Array.isArray(rawStories) ? rawStories : [];
     }
 
     // Merge: cloud wins for same id, but keep any local stories missing from cloud
@@ -165,7 +162,7 @@ export async function fetchSuccessStoriesFromCloud(): Promise<SuccessStory[]> {
       fetch(STORIES_CLOUD_URL, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ stories: merged }),
+        body: JSON.stringify({ name: "aaa_success_stories", data: { stories: merged } }),
       }).catch(() => {});
     }
 

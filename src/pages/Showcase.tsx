@@ -57,7 +57,7 @@ interface SuccessItem {
 }
 
 const SHOWCASE_APPLAUDS_KEY = "aaa_showcase_applauds_v1";
-const APPLAUDS_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa7e5-1981-7a92-9f98-870ed087ff58";
+const APPLAUDS_CLOUD_URL = "https://api.restful-api.dev/objects/ff8081819f7e10ae019fa7f5e8e838f2";
 
 export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
   const { language, t } = useLanguage();
@@ -128,11 +128,11 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     const fetchLatestApplauds = () => {
       fetch(APPLAUDS_CLOUD_URL, { headers: { Accept: "application/json" } })
         .then((r) => {
-          if (!r.ok) throw new Error("Rate limit or server error");
+          if (!r.ok) throw new Error("Server error");
           return r.json();
         })
         .then((payload) => {
-          const cloudCounts: Record<string, number> = payload?.applauds || (typeof payload === "object" && !Array.isArray(payload) && !payload.error ? payload : {});
+          const cloudCounts: Record<string, number> = payload?.data?.applauds || payload?.applauds || {};
           setApplaudCounts((prev) => {
             const merged: Record<string, number> = { ...prev, ...cloudCounts };
             Object.keys(cloudCounts).forEach((k) => {
@@ -193,16 +193,16 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     // Immediate Cloud PUT
     fetch(APPLAUDS_CLOUD_URL, { headers: { Accept: "application/json" } })
       .then((r) => {
-        if (!r.ok) throw new Error("Rate limit");
+        if (!r.ok) throw new Error("Cloud error");
         return r.json();
       })
       .then((payload) => {
-        const cloudCounts: Record<string, number> = payload?.applauds || (typeof payload === "object" && !Array.isArray(payload) && !payload.error ? payload : {});
+        const cloudCounts: Record<string, number> = payload?.data?.applauds || payload?.applauds || {};
         cloudCounts[id] = Math.max((cloudCounts[id] || 0) + 1, targetCount);
         return fetch(APPLAUDS_CLOUD_URL, {
           method: "PUT",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ applauds: cloudCounts }),
+          body: JSON.stringify({ name: "aaa_showcase_applauds", data: { applauds: cloudCounts } }),
         });
       })
       .catch(() => {});
