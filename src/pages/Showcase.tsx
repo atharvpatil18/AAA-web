@@ -9,7 +9,7 @@ import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X, Heart, Share2, Chec
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
-import { fetchSuccessStoriesFromCloud } from "../lib/successStories";
+import { getSuccessStories, fetchSuccessStoriesFromCloud, SuccessStory } from "../lib/successStories";
 
 /* ── Confetti helper (reused from PublicSuccessWall) ── */
 interface ConfettiParticle { id: number; x: number; y: number; color: string; angle: number; speed: number; size: number; opacity: number; }
@@ -403,30 +403,37 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     }
   ];
 
-  const [adminStories, setAdminStories] = useState<SuccessItem[]>([]);
+  // Map raw SuccessStory → SuccessItem (used for both local and cloud data)
+  const mapRawStories = (raw: SuccessStory[]): SuccessItem[] =>
+    raw.map((s) => ({
+      id: s.id,
+      type: s.storyType,
+      title: s.highlight,
+      studentName: s.studentName,
+      age: s.ageYears ? `${s.ageYears} Years` : undefined,
+      grade: s.courseLevel,
+      achievementText: s.aiGeneratedStory,
+      beforeText: s.beforeText,
+      afterText: s.afterText,
+      imageUrl: s.studentPhotoUrl || "/logo.png",
+      imageAlt: s.studentName,
+      tag: `${s.eventLevel === "international" ? "International Level" : s.eventLevel === "national_state" ? "National/State Level" : "School & Academy Level"} • ${s.eventDateFormatted || ""}`,
+      colorTheme: (s.eventLevel === "international" ? "gold" : s.eventLevel === "national_state" ? "orange" : "teal") as "gold" | "orange" | "teal",
+      mainCategory: s.eventLevel,
+      academySubCategory: s.course,
+    }));
+
+  // ── Initialise immediately from localStorage so page never appears blank ──
+  const [adminStories, setAdminStories] = useState<SuccessItem[]>(() => {
+    try { return mapRawStories(getSuccessStories()); } catch { return []; }
+  });
 
   useEffect(() => {
-    // Fetch from cloud (merges with localStorage), so parents see stories on any device
-    fetchSuccessStoriesFromCloud().then((rawAdminStories) => {
-      const mapped: SuccessItem[] = rawAdminStories.map((s) => ({
-        id: s.id,
-        type: s.storyType,
-        title: s.highlight,
-        studentName: s.studentName,
-        age: s.ageYears ? `${s.ageYears} Years` : undefined,
-        grade: s.courseLevel,
-        achievementText: s.aiGeneratedStory,
-        beforeText: s.beforeText,
-        afterText: s.afterText,
-        imageUrl: s.studentPhotoUrl || "/logo.png",
-        imageAlt: s.studentName,
-        tag: `${s.eventLevel === "international" ? "International Level" : s.eventLevel === "national_state" ? "National/State Level" : "School & Academy Level"} • ${s.eventDateFormatted || ""}`,
-        colorTheme: s.eventLevel === "international" ? "gold" : s.eventLevel === "national_state" ? "orange" : "teal",
-        mainCategory: s.eventLevel,
-        academySubCategory: s.course,
-      }));
-      setAdminStories(mapped);
-    });
+    // Background cloud refresh — updates stories for parents on any device
+    fetchSuccessStoriesFromCloud()
+      .then((raw) => setAdminStories(mapRawStories(raw)))
+      .catch(() => { /* cloud unavailable — localStorage already shown */ });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const allCombinedItems = [...adminStories, ...showcaseData];
