@@ -362,9 +362,22 @@ export default function AdminSuccessStoryManager() {
                 <div className="flex items-center gap-3">
                   <input
                     type="text"
-                    placeholder="Paste image URL or choose file..."
+                    placeholder="Paste Google Drive link or any image URL..."
                     value={studentPhotoUrl}
-                    onChange={(e) => setStudentPhotoUrl(e.target.value)}
+                    onChange={(e) => {
+                      let url = e.target.value.trim();
+                      // Auto-convert Google Drive sharing links to direct image URLs
+                      const driveMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+                      if (driveMatch) {
+                        url = `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+                      }
+                      // Also handle drive.google.com/open?id=FILE_ID
+                      const driveOpenMatch = url.match(/drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/);
+                      if (driveOpenMatch) {
+                        url = `https://lh3.googleusercontent.com/d/${driveOpenMatch[1]}`;
+                      }
+                      setStudentPhotoUrl(url);
+                    }}
                     className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-amber-400 outline-none"
                   />
                   <label className="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold cursor-pointer transition border border-slate-700 shrink-0">
@@ -372,6 +385,15 @@ export default function AdminSuccessStoryManager() {
                     <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
                   </label>
                 </div>
+                <p className="text-[10px] text-slate-500 mt-1">
+                  💡 <strong>Tip:</strong> For cross-device visibility, paste a Google Drive link (make sure sharing is set to "Anyone with the link"). Uploaded photos only show on this device.
+                </p>
+                {studentPhotoUrl && !studentPhotoUrl.startsWith("data:") && studentPhotoUrl !== "/logo.png" && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <img src={studentPhotoUrl} alt="Preview" className="w-12 h-12 rounded-lg object-cover border border-slate-700" onError={(e) => { (e.target as HTMLImageElement).src = "/logo.png"; }} />
+                    <span className="text-[10px] text-green-400 font-bold">✅ URL photo will sync to all devices</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
