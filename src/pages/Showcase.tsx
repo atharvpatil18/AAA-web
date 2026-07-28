@@ -9,7 +9,7 @@ import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X, Heart, Share2, Chec
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
-import { getSuccessStories, fetchSuccessStoriesFromCloud } from "../lib/successStories";
+import { getSuccessStories, fetchSuccessStoriesFromCloud, getCloudUrl } from "../lib/successStories";
 import type { SuccessStory } from "../lib/successStories";
 
 /* ── Confetti helper (reused from PublicSuccessWall) ── */
@@ -57,7 +57,6 @@ interface SuccessItem {
 }
 
 const SHOWCASE_APPLAUDS_KEY = "aaa_showcase_applauds_v1";
-const APPLAUDS_CLOUD_URL = "https://api.restful-api.dev/objects/ff8081819f7e10ae019fa7f5e8e838f2";
 
 export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
   const { language, t } = useLanguage();
@@ -141,13 +140,15 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     } catch {}
 
     const fetchLatestApplauds = () => {
-      fetch(APPLAUDS_CLOUD_URL, { headers: { Accept: "application/json" } })
+      const cloudUrl = getCloudUrl();
+      fetch(cloudUrl, { headers: { Accept: "application/json" } })
         .then((r) => {
           if (!r.ok) throw new Error("Server error");
           return r.json();
         })
         .then((payload) => {
-          const cloudCounts: Record<string, number> = payload?.data?.applauds || payload?.applauds || {};
+          const cloudCounts: Record<string, number> = payload?.applauds || {};
+          if (Object.keys(cloudCounts).length === 0) return; // nothing to merge
           setApplaudCounts((prev) => {
             const merged: Record<string, number> = { ...prev, ...cloudCounts };
             Object.keys(cloudCounts).forEach((k) => {
@@ -205,19 +206,21 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
     setApplaudedItems(newLiked);
     try { localStorage.setItem(SHOWCASE_APPLAUDS_KEY, JSON.stringify({ counts: newCounts, liked: newLiked })); } catch {}
 
-    // Immediate Cloud PUT
-    fetch(APPLAUDS_CLOUD_URL, { headers: { Accept: "application/json" } })
+    // Read-modify-write: read combined blob, update applauds, write back
+    const cloudUrl = getCloudUrl();
+    fetch(cloudUrl, { headers: { Accept: "application/json" } })
       .then((r) => {
         if (!r.ok) throw new Error("Cloud error");
         return r.json();
       })
       .then((payload) => {
-        const cloudCounts: Record<string, number> = payload?.data?.applauds || payload?.applauds || {};
+        const existingStories = payload?.stories || [];
+        const cloudCounts: Record<string, number> = payload?.applauds || {};
         cloudCounts[id] = Math.max((cloudCounts[id] || 0) + 1, targetCount);
-        return fetch(APPLAUDS_CLOUD_URL, {
+        return fetch(cloudUrl, {
           method: "PUT",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({ name: "aaa_showcase_applauds", data: { applauds: cloudCounts } }),
+          body: JSON.stringify({ stories: existingStories, applauds: cloudCounts }),
         });
       })
       .catch(() => {});

@@ -27,8 +27,11 @@ export interface SuccessStory {
 
 const STORAGE_KEY = "aaa_published_success_stories_v2";
 
-// Cloud endpoint — reliable restful-api.dev object store (no rate limit bans)
-const STORIES_CLOUD_URL = "https://api.restful-api.dev/objects/ff8081819f7e10ae019fa7f5b72e38f1";
+/**
+ * SINGLE combined cloud endpoint for stories + applauds.
+ * Using one blob = fewer API calls = no rate limits.
+ */
+const CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa81d-0104-7348-beae-a82900883473";
 
 /**
  * Format JS Date or YYYY-MM-DD string into dd-mmm-yy (e.g. 15-Mar-25)
@@ -46,7 +49,10 @@ export function formatDateToDdMmmYy(dateInput?: string | Date): string {
   return `${day}-${month}-${year}`;
 }
 
-
+/** Get the cloud URL — exported so Showcase can use the same endpoint for applauds */
+export function getCloudUrl(): string {
+  return CLOUD_URL;
+}
 
 export function getSuccessStories(): SuccessStory[] {
   try {
@@ -112,36 +118,57 @@ export function deleteSuccessStory(id: string): void {
 }
 
 /**
+ * Strip base64 photos from stories before cloud upload.
+ * Base64 images are several MB — they silently fail on cloud PUT.
+ */
+function stripBase64(stories: SuccessStory[]): SuccessStory[] {
+  return stories.map((s) => ({
+    ...s,
+    studentPhotoUrl: s.studentPhotoUrl?.startsWith("data:") ? "/logo.png" : (s.studentPhotoUrl || "/logo.png"),
+    // Also strip promptUsed to save space
+    promptUsed: undefined,
+  }));
+}
+
+/**
  * Push the full local story list to the cloud so any device can read them.
- * Called after every save or delete by the admin.
- * IMPORTANT: Base64 photos are stripped before upload — they are too large (>1MB).
- * Other devices will display /logo.png as the photo until a real URL is provided.
+ * Uses READ-MODIFY-WRITE to preserve applaud counts stored in the same blob.
  */
 export async function syncSuccessStoriesToCloud(): Promise<void> {
   const stories = getSuccessStories();
-  // Strip base64 images — they bloat the payload to several MB and cause silent failures.
-  // Replace with a safe fallback. Story text, name, highlights all still sync correctly.
-  const storiesForCloud = stories.map((s) => ({
-    ...s,
-    studentPhotoUrl: s.studentPhotoUrl?.startsWith("data:") ? "/logo.png" : (s.studentPhotoUrl || "/logo.png"),
-  }));
-  const body = JSON.stringify({ name: "aaa_success_stories", data: { stories: storiesForCloud } });
-  const sizeKB = Math.round(new Blob([body]).size / 1024);
-  console.log(`[Stories Sync] Pushing ${stories.length} stories (${sizeKB} KB) to cloud...`);
+  const storiesForCloud = stripBase64(stories);
+
   try {
-    const res = await fetch(STORIES_CLOUD_URL, {
+    // First read current cloud data to preserve applauds
+    let existingApplauds: Record<string, number> = {};
+    try {
+      const getRes = await fetch(CLOUD_URL, { headers: { Accept: "application/json" } });
+      if (getRes.ok) {
+        const current = await getRes.json();
+        existingApplauds = current?.applauds || {};
+      }
+    } catch { /* ignore read failure — just overwrite */ }
+
+    const body = JSON.stringify({ stories: storiesForCloud, applauds: existingApplauds });
+    const sizeKB = Math.round(new Blob([body]).size / 1024);
+    console.log(`[Cloud Sync] PUT ${stories.length} stories (${sizeKB} KB)...`);
+
+    const res = await fetch(CLOUD_URL, {
       method: "PUT",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body,
     });
+
     if (!res.ok) {
       const errText = await res.text().catch(() => "");
-      console.warn("Cloud sync HTTP status error:", res.status, res.statusText, errText);
-    } else {
-      console.log(`[Stories Sync] ✅ Successfully synced ${stories.length} stories.`);
+      console.error(`[Cloud Sync] FAILED: HTTP ${res.status} ${res.statusText}`, errText);
+      throw new Error(`HTTP ${res.status}`);
     }
+
+    console.log(`[Cloud Sync] ✅ ${stories.length} stories synced successfully.`);
   } catch (e) {
-    console.warn("Success stories cloud sync warning:", e);
+    console.warn("[Cloud Sync] Error:", e);
+    throw e; // Re-throw so caller knows it failed
   }
 }
 
@@ -152,11 +179,11 @@ export async function syncSuccessStoriesToCloud(): Promise<void> {
 export async function fetchSuccessStoriesFromCloud(): Promise<SuccessStory[]> {
   const local = getSuccessStories();
   try {
-    const res = await fetch(STORIES_CLOUD_URL, { headers: { Accept: "application/json" } });
+    const res = await fetch(CLOUD_URL, { headers: { Accept: "application/json" } });
     let cloud: SuccessStory[] = [];
     if (res.ok) {
       const payload = await res.json();
-      const rawStories = payload?.data?.stories || payload?.stories || (Array.isArray(payload) ? payload : []);
+      const rawStories = payload?.stories || [];
       cloud = (Array.isArray(rawStories) ? rawStories : []).filter(
         (s) => s && s.id && !s.id.startsWith("test_") && s.studentName && s.highlight
       );
@@ -173,18 +200,9 @@ export async function fetchSuccessStoriesFromCloud(): Promise<SuccessStory[]> {
     // Persist merged list locally
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(merged)); } catch {}
 
-    // If local had new valid stories not in cloud, sync merged back to cloud!
-    if (merged.length !== cloud.length || (local.length > 0 && cloud.length === 0)) {
-      fetch(STORIES_CLOUD_URL, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ name: "aaa_success_stories", data: { stories: merged } }),
-      }).catch(() => {});
-    }
-
     return merged;
   } catch (e) {
-    console.warn("Success stories cloud fetch warning:", e);
+    console.warn("[Cloud Fetch] Error:", e);
     return local;
   }
 }

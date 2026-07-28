@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { SuccessStory, getSuccessStories, saveSuccessStory, deleteSuccessStory, formatDateToDdMmmYy, syncSuccessStoriesToCloud } from "../lib/successStories";
+import { SuccessStory, getSuccessStories, saveSuccessStory, deleteSuccessStory, formatDateToDdMmmYy, syncSuccessStoriesToCloud, getCloudUrl } from "../lib/successStories";
 import { generateAISuccessStory } from "../lib/aiStoryGenerator";
 import { Sparkles, Plus, Trash2, Edit3, Trophy, Calendar, MapPin, School, X, RefreshCw } from "lucide-react";
 
@@ -55,20 +55,22 @@ export default function AdminSuccessStoryManager() {
       }
       await syncSuccessStoriesToCloud();
       // Verify cloud received our data
-      const res = await fetch("https://api.restful-api.dev/objects/ff8081819f7e10ae019fa7f5b72e38f1", { headers: { Accept: "application/json" } });
+      const cloudUrl = getCloudUrl();
+      const res = await fetch(cloudUrl, { headers: { Accept: "application/json" } });
       if (res.ok) {
         const payload = await res.json();
-        const cloudCount = payload?.data?.stories?.filter((s: {id?: string; studentName?: string}) => s?.id && !s.id.startsWith("test_") && s.studentName)?.length || 0;
+        const cloudStories = payload?.stories || [];
+        const cloudCount = cloudStories.filter((s: {id?: string; studentName?: string}) => s?.id && !s.id.startsWith("test_") && s.studentName)?.length || 0;
         if (cloudCount > 0) {
           alert(`✅ Cloud sync verified! ${cloudCount} story/stories are now live on all devices.`);
         } else {
-          alert(`⚠️ Sync completed but cloud appears empty. The story photo may be too large. Try using a URL instead of uploading a file photo.`);
+          alert(`⚠️ Sync completed but cloud appears empty. Please try again or check browser console for errors.`);
         }
       } else {
         alert(`⚠️ Sync sent but could not verify. HTTP ${res.status}. Please try again.`);
       }
     } catch (e) {
-      alert("⚠️ Cloud sync error. Please check your network connection.");
+      alert("⚠️ Cloud sync error. Please check your network connection and try again.");
     } finally {
       setIsSyncing(false);
     }
