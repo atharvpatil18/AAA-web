@@ -57,7 +57,7 @@ interface SuccessItem {
 }
 
 const SHOWCASE_APPLAUDS_KEY = "aaa_showcase_applauds_v1";
-const APPLAUDS_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa73c-0952-720b-b4ec-f8738f8e8362";
+const APPLAUDS_CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa7aa-6f3f-7f69-9299-d427ee3d67d1";
 
 export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | "stories" | "gallery" }) {
   const { language, t } = useLanguage();
