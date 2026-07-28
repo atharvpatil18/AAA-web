@@ -28,6 +28,7 @@ export default function GuestSampleGatewayModal({
   const { language } = useLanguage();
   const [guestEmail, setGuestEmail] = useState("");
   const [guestName, setGuestName] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState<"abacus" | "mental" | "vedic">("abacus");
   const [selectedQuestionCount, setSelectedQuestionCount] = useState<10 | 20 | 50 | 100 | 200>(10);
   const [selectedTopicMode, setSelectedTopicMode] = useState<"single" | "double" | "both">("single");
   const [selectedTimeMinutes, setSelectedTimeMinutes] = useState<2 | 4 | 5 | 10 | 20>(2);
@@ -324,12 +325,387 @@ export default function GuestSampleGatewayModal({
                 </div>
               </div>
 
-              {/* 1st MODE: Number of Questions Selector */}
+              {/* 1st MODE: Course Selector (Abacus Math, Mental Math, Vedic Math) */}
               <div>
                 <div className="flex items-center justify-between mb-2 flex-wrap gap-1">
                   <label className="block text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                     <span className="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center font-black text-[10px]">1</span>
-                    Select Question Count (Mode 1):
+                    Select Course (Mode 1):
+                  </label>
+                  <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-md border border-amber-300">
+                    Selected: {selectedCourse === "abacus" ? "Abacus Math" : selectedCourse === "mental" ? "Mental Math" : "Vedic Math"}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {/* Course 1: Abacus Math */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedCourse("abacus");
+                      setSelectedSetId("abacus-sr1-single-direct-5-6row");
+                    }}
+                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer text-left flex flex-col justify-between ${
+                      selectedCourse === "abacus"
+                        ? "border-amber-500 bg-amber-500/10 ring-2 ring-amber-400/40 shadow-md scale-[1.01]"
+                        : "border-slate-200 bg-white hover:border-amber-300"
+                    }`}
+                  >
+                    <div>
+                      <span className="bg-orange-500 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                        🧮 ABACUS MATH
+                      </span>
+                      <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                        Abacus Math Practice
+                      </h4>
+                      <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                        Bead-visualization speed arithmetic & mental abacus drills.
+                      </p>
+                    </div>
+                    {selectedCourse === "abacus" && (
+                      <span className="mt-2 text-[9px] font-black text-slate-950 bg-amber-400 px-2 py-0.5 rounded-md self-start shadow-xs">
+                        ✓ SELECTED
+                      </span>
+                    )}
+                  </button>
+
+                  {/* Course 2: Mental Math */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedCourse("mental");
+                      setSelectedSetId("mental-olympiad-g4");
+                    }}
+                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer text-left flex flex-col justify-between ${
+                      selectedCourse === "mental"
+                        ? "border-indigo-600 bg-indigo-600/10 ring-2 ring-indigo-500/40 shadow-md scale-[1.01]"
+                        : "border-slate-200 bg-white hover:border-indigo-300"
+                    }`}
+                  >
+                    <div>
+                      <span className="bg-indigo-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                        💡 MENTAL MATH
+                      </span>
+                      <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                        Mental Math Practice
+                      </h4>
+                      <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                        Speed mental agility & Olympiad curriculum drills.
+                      </p>
+                    </div>
+                    {selectedCourse === "mental" && (
+                      <span className="mt-2 text-[9px] font-black text-white bg-indigo-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                        ✓ SELECTED
+                      </span>
+                    )}
+                  </button>
+
+                  {/* Course 3: Vedic Math */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedCourse("vedic");
+                      setSelectedSetId("vedic-jvm1-overall");
+                    }}
+                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer text-left flex flex-col justify-between ${
+                      selectedCourse === "vedic"
+                        ? "border-teal-600 bg-teal-600/10 ring-2 ring-teal-500/40 shadow-md scale-[1.01]"
+                        : "border-slate-200 bg-white hover:border-teal-300"
+                    }`}
+                  >
+                    <div>
+                      <span className="bg-teal-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                        ✨ VEDIC MATH
+                      </span>
+                      <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                        Vedic Math Practice
+                      </h4>
+                      <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                        Ancient Indian speed math sutras & cross-multiplication shortcuts.
+                      </p>
+                    </div>
+                    {selectedCourse === "vedic" && (
+                      <span className="mt-2 text-[9px] font-black text-white bg-teal-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                        ✓ SELECTED
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* 2nd MODE: Topic & Quiz Selector (Aligned with Selected Course) */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center font-black text-[10px]">2</span>
+                    Select {selectedCourse === "abacus" ? "Abacus" : selectedCourse === "mental" ? "Mental Math" : "Vedic Math"} Topic (Mode 2):
+                  </label>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {selectedCourse === "abacus" && (
+                    <>
+                      {/* Abacus Topic 1 */}
+                      <div
+                        onClick={() => setSelectedSetId("abacus-sr1-single-direct-5-6row")}
+                        className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedSetId === "abacus-sr1-single-direct-5-6row"
+                            ? "border-amber-500 bg-amber-500/10 ring-2 ring-amber-400/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-amber-300"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-orange-500 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            🧮 SINGLE DIGIT
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                            ADD & SUB SINGLE DIGIT DIRECT
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Speed single-digit direct mental calculations.
+                          </p>
+                        </div>
+                        {selectedSetId === "abacus-sr1-single-direct-5-6row" && (
+                          <span className="mt-2 text-[9px] font-black text-slate-950 bg-amber-400 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Abacus Topic 2 */}
+                      <div
+                        onClick={() => setSelectedSetId("abacus-sr2-double-direct")}
+                        className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedSetId === "abacus-sr2-double-direct"
+                            ? "border-emerald-500 bg-emerald-500/10 ring-2 ring-emerald-400/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-emerald-300"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-emerald-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            🔢 DOUBLE DIGIT
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                            ADD & SUB DOUBLE DIGIT DIRECT
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Master 2-digit direct mental abacus drills.
+                          </p>
+                        </div>
+                        {selectedSetId === "abacus-sr2-double-direct" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-emerald-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Abacus Topic 3 */}
+                      <div
+                        onClick={() => setSelectedSetId("abacus-sr-mixed-direct")}
+                        className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedSetId === "abacus-sr-mixed-direct"
+                            ? "border-purple-500 bg-purple-500/10 ring-2 ring-purple-400/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-purple-300"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            ⚡ BOTH MIXED
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                            BOTH SINGLE & DOUBLE DIGIT
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Challenge both 1-digit & 2-digit mixed rows.
+                          </p>
+                        </div>
+                        {selectedSetId === "abacus-sr-mixed-direct" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-purple-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
+                    </>
+                  )}
+
+                  {selectedCourse === "mental" && (
+                    <>
+                      {/* Mental Topic 1 */}
+                      <div
+                        onClick={() => setSelectedSetId("mental-olympiad-g4")}
+                        className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedSetId === "mental-olympiad-g4"
+                            ? "border-indigo-600 bg-indigo-600/10 ring-2 ring-indigo-500/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-indigo-400"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-indigo-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            🏆 GRADE 4 OLYMPIAD
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                            GRADE 4 COMPREHENSIVE DRILL
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Numbers, HTO, 3-digit ops, fractions & geometry.
+                          </p>
+                        </div>
+                        {selectedSetId === "mental-olympiad-g4" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-indigo-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Mental Topic 2 */}
+                      <div
+                        onClick={() => setSelectedSetId("mental-olympiad-g2")}
+                        className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedSetId === "mental-olympiad-g2"
+                            ? "border-blue-600 bg-blue-600/10 ring-2 ring-blue-500/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-blue-400"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-blue-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            ⚡ GRADE 1-3 SPEED
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                            FOUNDATIONAL SPEED & PLACE VALUE
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Addition, place value, skip counting & tables.
+                          </p>
+                        </div>
+                        {selectedSetId === "mental-olympiad-g2" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-blue-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Mental Topic 3 */}
+                      <div
+                        onClick={() => setSelectedSetId("mental-olympiad-g6")}
+                        className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedSetId === "mental-olympiad-g6"
+                            ? "border-purple-600 bg-purple-600/10 ring-2 ring-purple-500/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-purple-400"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            🚀 GRADE 5-9 ADVANCED
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                            ADVANCED OLYMPIAD BENCHMARK
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Integers, ratios, decimals, BODMAS & algebra.
+                          </p>
+                        </div>
+                        {selectedSetId === "mental-olympiad-g6" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-purple-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
+                    </>
+                  )}
+
+                  {selectedCourse === "vedic" && (
+                    <>
+                      {/* Vedic Topic 1 */}
+                      <div
+                        onClick={() => setSelectedSetId("vedic-jvm1-overall")}
+                        className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedSetId === "vedic-jvm1-overall"
+                            ? "border-teal-600 bg-teal-600/10 ring-2 ring-teal-500/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-teal-400"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-teal-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            ✨ JUNIOR VEDIC
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                            JUNIOR VEDIC MATH OVERALL DRILL
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Speed sutras, conversions & foundational methods.
+                          </p>
+                        </div>
+                        {selectedSetId === "vedic-jvm1-overall" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-teal-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Vedic Topic 2 */}
+                      <div
+                        onClick={() => setSelectedSetId("vedic-level1-nikhilam")}
+                        className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedSetId === "vedic-level1-nikhilam"
+                            ? "border-amber-600 bg-amber-600/10 ring-2 ring-amber-500/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-amber-400"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-amber-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            ⚡ NIKHILAM SUTRA
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                            NIKHILAM BASE SHORTCUTS
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            Base subtraction & fast base multiplication.
+                          </p>
+                        </div>
+                        {selectedSetId === "vedic-level1-nikhilam" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-amber-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Vedic Topic 3 */}
+                      <div
+                        onClick={() => setSelectedSetId("vedic-level2-urdhva")}
+                        className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedSetId === "vedic-level2-urdhva"
+                            ? "border-rose-600 bg-rose-600/10 ring-2 ring-rose-500/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-rose-400"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-rose-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            🌟 URDHVA TIRYAG
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                            CROSS MULTIPLICATION SUITE
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            High-speed 2D x 2D vertical & crosswise math.
+                          </p>
+                        </div>
+                        {selectedSetId === "vedic-level2-urdhva" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-rose-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* 3rd MODE: Number of Questions Selector */}
+              <div>
+                <div className="flex items-center justify-between mb-2 flex-wrap gap-1">
+                  <label className="block text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center font-black text-[10px]">3</span>
+                    Select Question Count (Mode 3):
                   </label>
                   <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-md border border-amber-300">
                     Selected: {selectedQuestionCount} Questions
@@ -354,144 +730,12 @@ export default function GuestSampleGatewayModal({
                 </div>
               </div>
 
-              {/* 2nd MODE: Topic & Digit Rows Selector */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <span className="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center font-black text-[10px]">2</span>
-                    Select Speed Math Topic (Mode 2):
-                  </label>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                  {/* Option 1: Single Digit Direct */}
-                  <div
-                    onClick={() => {
-                      setSelectedTopicMode("single");
-                      setSelectedSetId("abacus-sr1-single-direct-5-6row");
-                    }}
-                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
-                      selectedTopicMode === "single"
-                        ? "border-amber-500 bg-amber-500/10 ring-2 ring-amber-400/40 shadow-md scale-[1.01]"
-                        : "border-slate-200 bg-white hover:border-amber-300"
-                    }`}
-                  >
-                    <div>
-                      <span className="bg-orange-500 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
-                        🧮 SINGLE DIGIT
-                      </span>
-                      <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-amber-700 transition">
-                        ADD & SUB SINGLE DIGIT DIRECT
-                      </h4>
-                      <p className="text-[10px] text-slate-500 font-semibold mt-1">
-                        Speed single-digit direct mental calculations.
-                      </p>
-                    </div>
-                    {selectedTopicMode === "single" && (
-                      <span className="mt-2 text-[9px] font-black text-slate-950 bg-amber-400 px-2 py-0.5 rounded-md self-start shadow-xs">
-                        ✓ SELECTED
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Option 2: Double Digit Direct */}
-                  <div
-                    onClick={() => {
-                      setSelectedTopicMode("double");
-                      setSelectedSetId("abacus-sr2-double-direct");
-                    }}
-                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
-                      selectedTopicMode === "double"
-                        ? "border-emerald-500 bg-emerald-500/10 ring-2 ring-emerald-400/40 shadow-md scale-[1.01]"
-                        : "border-slate-200 bg-white hover:border-emerald-300"
-                    }`}
-                  >
-                    <div>
-                      <span className="bg-emerald-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
-                        🔢 DOUBLE DIGIT
-                      </span>
-                      <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-emerald-700 transition">
-                        ADD & SUB DOUBLE DIGIT DIRECT
-                      </h4>
-                      <p className="text-[10px] text-slate-500 font-semibold mt-1">
-                        Master 2-digit direct mental abacus drills.
-                      </p>
-                    </div>
-                    {selectedTopicMode === "double" && (
-                      <span className="mt-2 text-[9px] font-black text-white bg-emerald-600 px-2 py-0.5 rounded-md self-start shadow-xs">
-                        ✓ SELECTED
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Option 3: Both Options (Mixed) */}
-                  <div
-                    onClick={() => {
-                      setSelectedTopicMode("both");
-                      setSelectedSetId("abacus-sr-mixed-direct");
-                    }}
-                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
-                      selectedTopicMode === "both"
-                        ? "border-purple-500 bg-purple-500/10 ring-2 ring-purple-400/40 shadow-md scale-[1.01]"
-                        : "border-slate-200 bg-white hover:border-purple-300"
-                    }`}
-                  >
-                    <div>
-                      <span className="bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
-                        ⚡ BOTH MIXED
-                      </span>
-                      <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-purple-700 transition">
-                        BOTH SINGLE & DOUBLE DIGIT
-                      </h4>
-                      <p className="text-[10px] text-slate-500 font-semibold mt-1">
-                        Challenge both 1-digit & 2-digit mixed rows.
-                      </p>
-                    </div>
-                    {selectedTopicMode === "both" && (
-                      <span className="mt-2 text-[9px] font-black text-white bg-purple-600 px-2 py-0.5 rounded-md self-start shadow-xs">
-                        ✓ SELECTED
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Option 4: Mental Math (Grade 4 Olympiad) */}
-                  <div
-                    onClick={() => {
-                      setSelectedTopicMode("both");
-                      setSelectedSetId("mental-olympiad-g4");
-                    }}
-                    className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
-                      selectedSetId === "mental-olympiad-g4"
-                        ? "border-indigo-600 bg-indigo-600/10 ring-2 ring-indigo-500/40 shadow-md scale-[1.01]"
-                        : "border-slate-200 bg-white hover:border-indigo-400"
-                    }`}
-                  >
-                    <div>
-                      <span className="bg-indigo-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
-                        💡 OLYMPIAD MATH
-                      </span>
-                      <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight group-hover:text-indigo-700 transition">
-                        MENTAL MATH GRADE 4 (OLYMPIAD)
-                      </h4>
-                      <p className="text-[10px] text-slate-500 font-semibold mt-1">
-                        Mental Maths Olympiad syllabus drill.
-                      </p>
-                    </div>
-                    {selectedSetId === "mental-olympiad-g4" && (
-                      <span className="mt-2 text-[9px] font-black text-white bg-indigo-600 px-2 py-0.5 rounded-md self-start shadow-xs">
-                        ✓ SELECTED
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* 3rd MODE: Time Selector */}
+              {/* 4th MODE: Time Selector */}
               <div>
                 <div className="flex items-center justify-between mb-2 flex-wrap gap-1">
                   <label className="block text-xs font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <span className="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center font-black text-[10px]">3</span>
-                    Select Time (Mode 3):
+                    <span className="bg-amber-500 text-slate-950 w-5 h-5 rounded-full inline-flex items-center justify-center font-black text-[10px]">4</span>
+                    Select Time (Mode 4):
                   </label>
                   <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-md border border-amber-300">
                     Selected: {selectedTimeMinutes} Min{selectedTimeMinutes > 1 ? "s" : ""}
