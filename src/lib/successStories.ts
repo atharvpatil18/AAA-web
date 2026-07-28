@@ -143,7 +143,9 @@ export async function fetchSuccessStoriesFromCloud(): Promise<SuccessStory[]> {
     if (res.ok) {
       const payload = await res.json();
       const rawStories = payload?.data?.stories || payload?.stories || (Array.isArray(payload) ? payload : []);
-      cloud = Array.isArray(rawStories) ? rawStories : [];
+      cloud = (Array.isArray(rawStories) ? rawStories : []).filter(
+        (s) => s && s.id && !s.id.startsWith("test_") && s.studentName && s.highlight
+      );
     }
 
     // Merge: cloud wins for same id, but keep any local stories missing from cloud
@@ -157,8 +159,8 @@ export async function fetchSuccessStoriesFromCloud(): Promise<SuccessStory[]> {
     // Persist merged list locally
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(merged)); } catch {}
 
-    // If local had stories missing in cloud, sync merged back to cloud!
-    if (merged.length > cloud.length) {
+    // If local had new valid stories not in cloud, sync merged back to cloud!
+    if (merged.length !== cloud.length || (local.length > 0 && cloud.length === 0)) {
       fetch(STORIES_CLOUD_URL, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Accept: "application/json" },

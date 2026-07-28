@@ -77,23 +77,38 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
 
   // Map raw SuccessStory → SuccessItem (helper used for localStorage init and cloud refresh)
   const mapRawStories = (raw: SuccessStory[]): SuccessItem[] =>
-    raw.map((s) => ({
-      id: s.id,
-      type: s.storyType,
-      title: s.highlight,
-      studentName: s.studentName,
-      age: s.ageYears ? `${s.ageYears} Years` : undefined,
-      grade: s.courseLevel,
-      achievementText: s.aiGeneratedStory,
-      beforeText: s.beforeText,
-      afterText: s.afterText,
-      imageUrl: s.studentPhotoUrl || "/logo.png",
-      imageAlt: s.studentName,
-      tag: `${s.eventLevel === "international" ? "International Level" : s.eventLevel === "national_state" ? "National/State Level" : "School & Academy Level"} • ${s.eventDateFormatted || ""}`,
-      colorTheme: (s.eventLevel === "international" ? "gold" : s.eventLevel === "national_state" ? "orange" : "teal") as "gold" | "orange" | "teal",
-      mainCategory: s.eventLevel,
-      academySubCategory: s.course,
-    }));
+    (raw || [])
+      .filter((s) => s && s.id && !s.id.startsWith("test_") && s.highlight && s.studentName)
+      .map((s) => {
+        const dateStr = s.eventDateFormatted ? ` • ${s.eventDateFormatted}` : "";
+        const levelStr =
+          s.eventLevel === "international"
+            ? "International Level"
+            : s.eventLevel === "national_state"
+            ? "National/State Level"
+            : "School & Academy Level";
+        return {
+          id: s.id,
+          type: s.storyType || "competition",
+          title: s.highlight,
+          studentName: s.studentName,
+          age: s.ageYears ? `${s.ageYears} Years` : undefined,
+          grade: s.courseLevel,
+          achievementText: s.aiGeneratedStory,
+          beforeText: s.beforeText,
+          afterText: s.afterText,
+          imageUrl: s.studentPhotoUrl || "/logo.png",
+          imageAlt: s.studentName || "Student photo",
+          tag: `${levelStr}${dateStr}`,
+          colorTheme: (s.eventLevel === "international"
+            ? "gold"
+            : s.eventLevel === "national_state"
+            ? "orange"
+            : "teal") as "gold" | "orange" | "teal",
+          mainCategory: s.eventLevel || "academy_level",
+          academySubCategory: s.course,
+        };
+      });
 
   // Initialise from localStorage immediately (zero delay — no blank screen)
   // then refresh from cloud in background via useEffect below
@@ -881,10 +896,18 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                   {selectedItem.studentName && (
                     <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-gray-550 bg-[#F8F9FA] border border-gray-200 px-4 py-2 rounded-full w-fit">
                       <span>Student: {selectedItem.studentName}</span>
-                      <span className="text-gray-300">•</span>
-                      <span>Age: {selectedItem.age}</span>
-                      <span className="text-gray-300">•</span>
-                      <span>Class: {selectedItem.grade}</span>
+                      {selectedItem.age && (
+                        <>
+                          <span className="text-gray-300">•</span>
+                          <span>Age: {selectedItem.age}</span>
+                        </>
+                      )}
+                      {selectedItem.grade && (
+                        <>
+                          <span className="text-gray-300">•</span>
+                          <span>Class: {selectedItem.grade}</span>
+                        </>
+                      )}
                     </div>
                   )}
 
