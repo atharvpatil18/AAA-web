@@ -11,6 +11,7 @@ import { validateSanitizedEmail, validateSanitizedName, validateSanitizedMessage
 import { generateQuizWorksheetPDF } from "../lib/quizPdfGenerator";
 import { generateBrochurePDF } from "../lib/brochure";
 import { useLanguage } from "../lib/LanguageContext";
+import { getQuestionSetById } from "../data/practiceData";
 
 interface GuestSampleGatewayModalProps {
   isOpen: boolean;
@@ -94,12 +95,8 @@ export default function GuestSampleGatewayModal({
       displayName = guestName.trim();
     }
 
-    const topicTitle =
-      selectedTopicMode === "single"
-        ? "ADD & SUB SINGLE DIGIT DIRECT (4-5-6 ROWS)"
-        : selectedTopicMode === "double"
-        ? "ADD & SUB DOUBLE DIGIT DIRECT (4-5-6 ROWS)"
-        : "ADD & SUB MIXED SINGLE & DOUBLE DIGIT DIRECT (4-5-6 ROWS)";
+    const setObj = getQuestionSetById(selectedSetId);
+    const topicTitle = setObj ? setObj.title.replace(/^\d+\s+Questions\s*-\s*/i, "") : "Speed Math Practice Drill";
 
     setIsPdfGenerating(true);
     setErrorMsg("");

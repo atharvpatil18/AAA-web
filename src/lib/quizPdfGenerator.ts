@@ -73,6 +73,15 @@ export const generateQuizWorksheetPDF = async (
     const itemsPerCol = 5;
     const totalSheetPages = Math.ceil(questions.length / itemsPerPage);
 
+    // Determine accurate topic title from questionSet
+    let displayTopicTitle = selectedTopicTitle;
+    if (questionSet && questionSet.title) {
+      const cleanTitle = questionSet.title.replace(/^\d+\s+Questions\s*-\s*/i, "").trim();
+      if (cleanTitle) {
+        displayTopicTitle = cleanTitle;
+      }
+    }
+
     const renderWorksheetHeader = (sheetPageNum: number) => {
       // Top Header Bar
       doc.setFillColor(26, 46, 53); // Deep Navy
@@ -118,7 +127,9 @@ export const generateQuizWorksheetPDF = async (
       doc.text(`Date: ${new Date().toLocaleDateString("en-IN")}`, 115, infoY + 11.5);
 
       doc.setFont("Helvetica", "normal");
-      doc.text(`Topic: ${selectedTopicTitle}`, 13, infoY + 16.5);
+      // Split topic title if long to prevent overflow into questions metadata column
+      const safeTopicText = doc.splitTextToSize(`Topic: ${displayTopicTitle}`, 98)[0];
+      doc.text(safeTopicText, 13, infoY + 16.5);
       doc.text(`Questions: ${qCount} Qs`, 115, infoY + 16.5);
       doc.text(`Target Time: ${qCount <= 20 ? "5 Mins" : qCount <= 50 ? "10 Mins" : "20 Mins"}`, 155, infoY + 16.5);
 
@@ -205,8 +216,26 @@ export const generateQuizWorksheetPDF = async (
         doc.line(x + colWidth / 2 - 8, numY - 0.5, x + colWidth / 2 + 6, numY - 0.5);
       } else if (q.expression) {
         doc.setFont("Helvetica", "bold");
-        doc.setFontSize(9);
-        doc.text(q.expression, x + colWidth / 2, y + 16, { align: "center" });
+        const maxW = colWidth - 4; // 31.6mm max text width inside box
+        const expr = q.expression;
+        
+        let fontSize = 8.5;
+        if (expr.length > 50) fontSize = 6.5;
+        else if (expr.length > 30) fontSize = 7.2;
+        else if (expr.length > 18) fontSize = 8;
+        
+        doc.setFontSize(fontSize);
+        const lines = doc.splitTextToSize(expr, maxW);
+        const lineHeight = fontSize <= 7 ? 3.0 : 3.6;
+        const totalHeight = lines.length * lineHeight;
+        
+        // Vertically center inside the question card area (y+5 to y+30)
+        let textY = y + 6 + (24 - totalHeight) / 2 + (lineHeight * 0.75);
+
+        lines.forEach((lineText: string) => {
+          doc.text(lineText, x + colWidth / 2, textY, { align: "center" });
+          textY += lineHeight;
+        });
       }
 
       // Answer Box (For Student Handwritten Answer)
