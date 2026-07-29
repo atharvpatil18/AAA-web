@@ -448,7 +448,11 @@ export default function PracticeSession() {
                     </div>
                   ) : (
                     <div className="text-2xl xl:text-3xl font-black text-slate-900 font-mono tracking-wide bg-white/80 px-6 py-3 rounded-xl border border-teal-200/80 shadow-xs">
-                      {currentQuestion.expression || "5 + 3"} = ?
+                      {currentQuestion.expression
+                        ? (currentQuestion.expression.includes("=") || currentQuestion.expression.includes("?")
+                            ? currentQuestion.expression
+                            : `${currentQuestion.expression} = ?`)
+                        : "5 + 3 = ?"}
                     </div>
                   )
                 )}
@@ -712,7 +716,11 @@ export default function PracticeSession() {
                   </div>
                 ) : (
                   <div className="text-2xl font-black text-slate-900 font-mono tracking-wide bg-white/80 px-4 py-2 rounded-xl border border-teal-200/80 shadow-xs">
-                    {currentQuestion.expression || "5 + 3"} = ?
+                    {currentQuestion.expression
+                      ? (currentQuestion.expression.includes("=") || currentQuestion.expression.includes("?")
+                          ? currentQuestion.expression
+                          : `${currentQuestion.expression} = ?`)
+                      : "5 + 3 = ?"}
                   </div>
                 )
               )}
