@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PracticeAttemptResult } from "../types";
-import { Trophy, Clock, CheckCircle2, XCircle, HelpCircle, ArrowLeft, RefreshCw, Star, Sparkles, BookOpen, Flame, Award as Medal, TrendingUp, User, ListOrdered, ShieldCheck, Check, Rocket, Send, MessageSquare, X } from "lucide-react";
+import { Trophy, Clock, CheckCircle2, XCircle, HelpCircle, ArrowLeft, RefreshCw, Star, Sparkles, BookOpen, Flame, Award as Medal, TrendingUp, User, ListOrdered, ShieldCheck, Check, Rocket, Send, MessageSquare, X, Mail } from "lucide-react";
 import { syncStudentAttempts, saveVisitorFeedback, AttemptRecord } from "../lib/cloudSync";
 import { useAuth } from "../lib/AuthContext";
 import { generateAchievementCertificatePDF } from "../lib/certificateGenerator";
@@ -655,6 +655,113 @@ export default function PracticeResult() {
             </div>
           );
         })()}
+
+        {/* POST-QUIZ ONLY: REQUEST FULL ACCESS BANNER */}
+        <div className="mt-8 p-6 bg-slate-900 text-white rounded-3xl border-2 border-amber-500/40 space-y-4 shadow-xl">
+          <div className="flex items-center justify-between flex-wrap gap-2 border-b border-slate-800 pb-3">
+            <h4 className="font-black text-amber-400 text-base sm:text-lg flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-amber-400" /> Enjoyed the Sample Practice? Request Full Access
+            </h4>
+            <span className="text-xs font-black text-amber-300 bg-amber-500/20 px-3 py-1 rounded-full border border-amber-400/30">
+              Direct Contact
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+            Request complete course access via Email or WhatsApp to unlock all Abacus Math, Mental Math & Vedic Math levels!
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <a
+              href={`mailto:nehaatharv@gmail.com?subject=${encodeURIComponent("Request Course Access - Arnav Abacus Academy")}&body=${encodeURIComponent(`Hello Arnav Abacus Academy,\n\nI completed the sample practice drill (${result?.setTitle || "Quiz"}) and scored ${result?.scorePercentage}%!\n\nI would like to request full course access.\n\nMy Email ID: ${guestEmail || currentUser?.email || "[Insert Email]"}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-slate-800 hover:bg-slate-700 text-amber-300 text-xs sm:text-sm font-black py-3 px-5 rounded-2xl flex items-center justify-center gap-2.5 border border-slate-700 transition shadow-md"
+            >
+              <Mail className="w-4.5 h-4.5 text-amber-400" />
+              Email: nehaatharv@gmail.com
+            </a>
+            <a
+              href={`https://wa.me/919021924968?text=${encodeURIComponent(`Hello Arnav Abacus Academy, I completed the sample practice drill (${result?.setTitle || "Quiz"}) with ${result?.scorePercentage}% score and would like to request full course access for my email: ${guestEmail || currentUser?.email || "[Insert Email]"}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-black py-3 px-5 rounded-2xl flex items-center justify-center gap-2.5 shadow-md transition"
+            >
+              <MessageSquare className="w-4.5 h-4.5" />
+              WhatsApp: 90219 24968
+            </a>
+          </div>
+        </div>
+
+        {/* POST-QUIZ ONLY: INLINE FEEDBACK FORM CARD */}
+        <div className="mt-6 p-6 bg-white border-2 border-slate-200 rounded-3xl space-y-4 shadow-md">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <h4 className="font-black text-slate-900 text-sm uppercase tracking-wider flex items-center gap-2">
+              <Star className="w-4 h-4 text-amber-500 fill-amber-500" /> Give Us Your Feedback
+            </h4>
+            <span className="text-[10px] text-slate-500 font-bold bg-slate-100 px-2.5 py-1 rounded-md">Admin Recorded</span>
+          </div>
+
+          {feedbackSubmitted ? (
+            <div className="p-4 bg-emerald-100 border border-emerald-300 rounded-2xl text-emerald-900 text-xs font-extrabold flex items-center gap-2.5">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+              Thank you! Your feedback for this practice drill has been recorded.
+            </div>
+          ) : (
+            <form onSubmit={handleFeedbackSubmit} className="space-y-4">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-slate-700">Rating:</span>
+                <div className="flex items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setFeedbackRating(star)}
+                      className="p-1 cursor-pointer transition hover:scale-125"
+                    >
+                      <Star
+                        className={`w-6 h-6 ${
+                          star <= feedbackRating
+                            ? "text-amber-500 fill-amber-500"
+                            : "text-slate-300"
+                        }`}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <textarea
+                rows={3}
+                value={feedbackMsg}
+                onChange={(e) => setFeedbackMsg(e.target.value)}
+                placeholder="Share your sample practice experience or questions..."
+                className="w-full p-3.5 bg-slate-50 border-2 border-slate-200 rounded-xl text-xs font-semibold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition"
+              />
+
+              <div className="flex items-center justify-between gap-3 pt-1">
+                <a
+                  href={`https://wa.me/919021924968?text=${encodeURIComponent(
+                    `Feedback for ${result?.setTitle || "Quiz"} from ${guestEmail || currentUser?.email || "Student"}: ${feedbackMsg}`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1.5"
+                >
+                  <MessageSquare className="w-4 h-4 text-emerald-600" /> Send via WhatsApp
+                </a>
+
+                <button
+                  type="submit"
+                  disabled={feedbackSubmitting}
+                  className="bg-slate-900 hover:bg-slate-800 text-amber-400 font-black text-xs px-5 py-2.5 rounded-xl shadow-md flex items-center gap-2 transition cursor-pointer disabled:opacity-50"
+                >
+                  <Send className="w-4 h-4 text-amber-400" />
+                  Submit Feedback
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
 
         {/* OPTION 2: FEEDBACK SUBMISSION MODAL */}
         {showFeedbackModal && (
