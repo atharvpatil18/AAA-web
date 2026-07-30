@@ -6,11 +6,14 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { getAllApprovedRecords, isUserAdmin, syncApprovedRecordsFromCloud } from "./accessControl";
 
+import { jwtDecode } from "jwt-decode";
+
 export interface User {
   id: string; // Email ID is the ID
   name: string;
   email: string;
   role: "student";
+  picture?: string;
 }
 
 interface AuthContextProps {
@@ -19,6 +22,7 @@ interface AuthContextProps {
   isAdmin: boolean;
   sendEmailOTP: (email: string, name: string) => Promise<{ success: boolean; error?: string; otp: string }>;
   verifyEmailOTP: (email: string, name: string, otp: string) => Promise<{ success: boolean; error?: string }>;
+  loginWithGoogleCredential: (credentialResponse: any) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
 }
 
@@ -178,6 +182,57 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { success: true };
   };
 
+  const loginWithGoogleCredential = async (credentialResponse: any) => {
+    if (!credentialResponse?.credential) {
+      return { success: false, error: "Google Sign-In credential response is missing." };
+    }
+
+    try {
+      const decoded: any = jwtDecode(credentialResponse.credential);
+      const email = decoded.email?.toLowerCase().trim();
+      const name = decoded.name || (email ? email.split("@")[0] : "Google User");
+
+      if (!email) {
+        return { success: false, error: "Could not retrieve email from Google Account." };
+      }
+
+      const usersRaw = localStorage.getItem(USERS_DB_KEY);
+      const users = usersRaw ? JSON.parse(usersRaw) : [];
+
+      let matched = users.find((u: any) => u.email?.toLowerCase().trim() === email);
+      if (!matched) {
+        matched = {
+          id: email,
+          name,
+          email,
+          role: "student",
+          picture: decoded.picture,
+        };
+        users.push(matched);
+        localStorage.setItem(USERS_DB_KEY, JSON.stringify(users));
+      } else if (decoded.picture && !matched.picture) {
+        matched.picture = decoded.picture;
+        localStorage.setItem(USERS_DB_KEY, JSON.stringify(users));
+      }
+
+      const userPayload: User = {
+        id: matched.id,
+        name: matched.name || name,
+        email: matched.email || email,
+        role: "student",
+        picture: decoded.picture || matched.picture,
+      };
+
+      setCurrentUser(userPayload);
+      localStorage.setItem(SESSION_KEY, JSON.stringify(userPayload));
+
+      return { success: true };
+    } catch (err: any) {
+      console.error("Google login credential error:", err);
+      return { success: false, error: "Failed to decode Google Sign-In response token." };
+    }
+  };
+
   const logout = () => {
     setCurrentUser(null);
     localStorage.removeItem(SESSION_KEY);
@@ -187,7 +242,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const userIsAdmin = isUserAdmin(currentUser?.email);
 
   return (
-    <AuthContext.Provider value={{ currentUser, loading, isAdmin: userIsAdmin, sendEmailOTP, verifyEmailOTP, logout }}>
+    <AuthContext.Provider
+      value={{
+        currentUser,
+        loading,
+        isAdmin: userIsAdmin,
+        sendEmailOTP,
+        verifyEmailOTP,
+        loginWithGoogleCredential,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -13,9 +13,10 @@ import { generateQuizWorksheetPDF } from "../lib/quizPdfGenerator";
 import { generateBrochurePDF } from "../lib/brochure";
 import { useLanguage } from "../lib/LanguageContext";
 import { getQuestionSetById } from "../data/practiceData";
+import { GoogleLogin } from "@react-oauth/google";
 
 export default function Login() {
-  const { sendEmailOTP, verifyEmailOTP } = useAuth();
+  const { sendEmailOTP, verifyEmailOTP, loginWithGoogleCredential } = useAuth();
   const { language } = useLanguage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -532,6 +533,32 @@ export default function Login() {
                     {loading ? "Requesting OTP..." : "Get Verification Code"}
                     <ArrowRight className="w-4 h-4" />
                   </button>
+
+                  {/* Instant Google Login Divider & Button */}
+                  <div className="pt-3 border-t border-slate-200 text-center">
+                    <p className="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2.5">
+                      ✨ Or 1-Click Instant Login With
+                    </p>
+                    <div className="flex justify-center">
+                      <GoogleLogin
+                        onSuccess={async (credentialResponse) => {
+                          const res = await loginWithGoogleCredential(credentialResponse);
+                          if (res.success) {
+                            navigate(redirectTo);
+                          } else {
+                            setError(res.error || "Google Sign-In failed.");
+                          }
+                        }}
+                        onError={() => {
+                          setError("Google Sign-In authentication failed. Please try again.");
+                        }}
+                        theme="filled_blue"
+                        shape="pill"
+                        size="large"
+                        text="continue_with"
+                      />
+                    </div>
+                  </div>
                 </form>
               ) : (
                 <form onSubmit={handleVerifyOTP} className="space-y-4">
