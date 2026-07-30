@@ -324,6 +324,28 @@ export default function BlogPostDetail() {
                 }
               }
 
+              // Numbered List Items (e.g. 1. 2. 3. Cognitive skills)
+              if (/^\d+\.\s/.test(trimmed)) {
+                const numItems = trimmed.split(/(?=\d+\.\s)/).filter(Boolean);
+                return (
+                  <div key={idx} className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
+                    {numItems.map((item, nIdx) => {
+                      const clean = item.replace(/^\d+\.\s*/, "").replace(/\*\*/g, "").trim();
+                      return (
+                        <div key={nIdx} className="bg-gradient-to-r from-amber-50 to-orange-50/50 p-3.5 rounded-2xl border border-amber-200/70 flex items-center gap-3 shadow-xs">
+                          <span className="w-7 h-7 bg-vibrant-orange text-white font-black text-xs rounded-xl flex items-center justify-center shrink-0 shadow-sm">
+                            {nIdx + 1}
+                          </span>
+                          <span className="text-xs sm:text-sm font-bold text-slate-800">
+                            {clean}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              }
+
               // Bullet List Items
               if (trimmed.startsWith("- ")) {
                 const items = trimmed.split("\n- ");
@@ -352,12 +374,27 @@ export default function BlogPostDetail() {
                 );
               }
 
-              // Standard Readable Paragraph
+              // Standard Readable Paragraph with Inline **Bold** Parser
+              const renderFormattedInlineText = (text: string) => {
+                const parts = text.split(/(\*\*.*?\*\*)/g);
+                return parts.map((part, pIdx) => {
+                  if (part.startsWith("**") && part.endsWith("**")) {
+                    return (
+                      <strong key={pIdx} className="font-extrabold text-slate-900 bg-amber-100/60 px-1.5 py-0.5 rounded-md border border-amber-200/50">
+                        {part.slice(2, -2)}
+                      </strong>
+                    );
+                  }
+                  return part;
+                });
+              };
+
               return (
                 <p key={idx} className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
-                  {trimmed}
+                  {renderFormattedInlineText(trimmed)}
                 </p>
               );
+
             })}
           </div>
 
