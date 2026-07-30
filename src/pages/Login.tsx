@@ -345,8 +345,8 @@ export default function Login() {
           </h2>
           <p className="text-xs text-slate-300 mt-1 max-w-lg mx-auto">
             {authMode === "student"
-              ? "Sign in with email verification to join dynamic math drills & track scores"
-              : "Experience 100-question speed drills! Enter email to log in instantly & track live leaderboard rank."}
+              ? "Sign in with Google verification to join dynamic math drills & track scores"
+              : "Experience 100-question speed drills! Sign in with Google to log in instantly & track live leaderboard rank."}
           </p>
         </div>
 
@@ -359,7 +359,7 @@ export default function Login() {
             <span>🔥 WAKAD PUNE #1 ABACUS & VEDIC MATHS ACADEMY</span>
           </div>
           <span className="bg-amber-400/20 text-amber-300 text-[9px] font-extrabold px-2 py-0.5 rounded-full border border-amber-400/30 uppercase tracking-wider shrink-0 hidden sm:inline-block">
-            NO OTP REQUIRED
+            GOOGLE SIGN-IN
           </span>
         </div>
 
@@ -404,7 +404,7 @@ export default function Login() {
             className="w-full text-[10px] sm:text-xs font-black text-amber-300 flex items-center justify-center gap-1.5 animate-bounce cursor-pointer hover:text-white transition"
           >
             <Flame className="w-3.5 h-3.5 text-orange-400 fill-orange-400 animate-pulse shrink-0" />
-            <span>👇 CLICK BELOW TO LAUNCH FREE GUEST PRACTICE DRILL (NO OTP)</span>
+            <span>👇 CLICK BELOW TO LAUNCH FREE GUEST PRACTICE DRILL (GOOGLE SIGN-IN)</span>
             <ArrowDown className="w-3.5 h-3.5 text-amber-300 shrink-0" />
           </button>
         </div>
@@ -424,7 +424,7 @@ export default function Login() {
             }`}
           >
             <User className="w-3.5 h-3.5" />
-            Student Login (OTP)
+            Student Login (Google)
           </button>
 
           {/* Target Button for Free Guest Practice Drill */}
@@ -469,164 +469,34 @@ export default function Login() {
             </div>
           )}
 
-          {/* MODE 1: Student Login (OTP & Google 1-Click) */}
+          {/* MODE 1: Student Login (100% 1-Click Google Sign-In) */}
           {authMode === "student" && (
             <div className="space-y-4">
-              {simulatedOtp && otpSent && !isConfigured() && (
-                <div className="bg-amber-50 border-2 border-dashed border-amber-300 text-amber-900 rounded-xl p-4 mb-5 text-xs">
-                  <div className="font-bold flex items-center gap-1.5 text-amber-800 mb-1">
-                    <ShieldCheck className="w-4 h-4 text-amber-600" /> Simulated Email Gateway
-                  </div>
-                  <p className="text-slate-700">
-                    OTP sent to {email}: <span className="font-black font-mono text-base text-amber-900 tracking-wider bg-white px-2 py-0.5 rounded border border-amber-300/60 shadow-sm ml-1 select-all cursor-pointer">{simulatedOtp}</span>
-                  </p>
-                  <p className="text-[10px] text-slate-500 mt-1">Click the code to copy.</p>
+              <div className="p-6 bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white rounded-3xl border border-purple-800/50 text-center shadow-lg space-y-4">
+                <div className="flex items-center justify-center gap-1.5 text-amber-300 text-xs font-black uppercase tracking-wider">
+                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <span>1-CLICK INSTANT STUDENT LOGIN WITH GOOGLE</span>
                 </div>
-              )}
-
-              {!otpSent ? (
-                <form onSubmit={handleRequestOTP} className="space-y-4">
-                  {/* STEP 1: 1-CLICK INSTANT GOOGLE SIGN-IN AT TOP */}
-                  <div className="p-4 bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white rounded-2xl border border-purple-800/50 text-center shadow-md space-y-2.5">
-                    <div className="flex items-center justify-center gap-1.5 text-amber-300 text-[10px] font-black uppercase tracking-wider">
-                      <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                      <span>STEP 1: 1-CLICK INSTANT LOGIN WITH GOOGLE</span>
-                    </div>
-                    <div className="flex justify-center">
-                      <GoogleBtn
-                        onSuccess={async (credentialResponse) => {
-                          const res = await loginWithGoogleCredential(credentialResponse);
-                          if (res.success) {
-                            navigate(redirectTo);
-                          } else {
-                            setError(res.error || "Google Sign-In failed.");
-                          }
-                        }}
-                        onError={() => {
-                          setError("Google Sign-In authentication failed. Please try again.");
-                        }}
-                        text="continue_with"
-                      />
-                    </div>
-                    <p className="text-[11px] text-slate-300 font-medium">
-                      Instant verified login without manual typing or OTP delay.
-                    </p>
-                  </div>
-
-                  <div className="relative w-full flex items-center justify-center my-3">
-                    <div className="border-t border-slate-200 w-full" />
-                    <span className="bg-white px-3 text-[10px] font-black text-slate-500 uppercase tracking-wider">OR STEP 2: MANUAL EMAIL OTP</span>
-                    <div className="border-t border-slate-200 w-full" />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                      <span>Your Full Name</span>
-                      {email && <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Verified</span>}
-                    </label>
-                    <div className="relative">
-                      <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                      <input
-                        type="text"
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        placeholder="Enter student name (e.g. Aarav Gupta)"
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-vibrant-teal focus:ring-2 focus:ring-vibrant-teal/10 font-medium text-sm outline-none transition-all"
-                        required
-                        disabled={loading}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                      <span>Email Address</span>
-                      {email && <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Verified</span>}
-                    </label>
-                    <div className="relative">
-                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                      <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter email id (e.g. student@gmail.com)"
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-vibrant-teal focus:ring-2 focus:ring-vibrant-teal/10 font-medium text-sm outline-none transition-all"
-                        required
-                        disabled={loading}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Privacy Disclaimer */}
-                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 flex gap-2.5 text-[11px] text-slate-650 leading-relaxed font-medium">
-                    <Shield className="w-4 h-4 text-vibrant-teal shrink-0 mt-0.5" />
-                    <p>
-                      <span className="font-bold text-slate-800">Privacy Policy Disclaimer:</span> Your email address is processed strictly for local verification purposes and is <span className="font-bold text-vibrant-teal">not stored or recorded</span> on any databases by Arnav Abacus Academy.
-                    </p>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full bg-vibrant-teal hover:bg-vibrant-teal/90 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-98 transition-all cursor-pointer disabled:opacity-50"
-                    disabled={loading}
-                  >
-                    {loading ? "Requesting OTP..." : "Get Verification Code"}
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </form>
-              ) : (
-                <form onSubmit={handleVerifyOTP} className="space-y-4">
-                  <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs flex flex-col gap-1 text-slate-700">
-                    <div>
-                      <span className="text-slate-400 font-bold">Candidate:</span> <span className="font-black text-slate-900">{userName}</span>
-                    </div>
-                    <div>
-                      <span className="text-slate-400 font-bold">Email:</span> <span className="font-bold font-mono text-slate-900">{email}</span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between items-center mb-1.5">
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                        Enter 6-Digit OTP Code
-                      </label>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setOtpSent(false);
-                          setSimulatedOtp(null);
-                          setError(null);
-                        }}
-                        className="text-[10px] text-vibrant-teal hover:underline font-bold"
-                      >
-                        Change Details
-                      </button>
-                    </div>
-                    <div className="relative">
-                      <Key className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                      <input
-                        type="text"
-                        maxLength={6}
-                        value={otp}
-                        onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                        placeholder="******"
-                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:border-vibrant-teal focus:ring-2 focus:ring-vibrant-teal/10 font-black text-center tracking-[0.4em] text-sm outline-none transition-all"
-                        required
-                        disabled={loading}
-                      />
-                    </div>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full bg-vibrant-teal hover:bg-vibrant-teal/90 text-white font-black py-3 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-98 transition-all cursor-pointer disabled:opacity-50"
-                    disabled={loading}
-                  >
-                    {loading ? "Verifying..." : "Verify & Complete Join"}
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </form>
-              )}
+                <div className="flex justify-center py-2">
+                  <GoogleBtn
+                    onSuccess={async (credentialResponse) => {
+                      const res = await loginWithGoogleCredential(credentialResponse);
+                      if (res.success) {
+                        navigate(redirectTo);
+                      } else {
+                        setError(res.error || "Google Sign-In failed.");
+                      }
+                    }}
+                    onError={() => {
+                      setError("Google Sign-In authentication failed. Please try again.");
+                    }}
+                    text="continue_with"
+                  />
+                </div>
+                <p className="text-xs text-slate-300 font-medium max-w-sm mx-auto leading-relaxed">
+                  Sign in with your verified Google account to access your student practice zone, track drill scores, and view live leaderboard rankings instantly.
+                </p>
+              </div>
             </div>
           )}
 
