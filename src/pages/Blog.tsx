@@ -263,9 +263,9 @@ export default function Blog() {
                 subs.push({ email: subscriberEmail, subscribedAt: new Date().toISOString() });
                 localStorage.setItem("aaa_newsletter_subscribers", JSON.stringify(subs));
                 
-                // Dispatch EmailJS Welcome Email Trigger
+                // Dispatch EmailJS Email Trigger (Reusing existing configured Template)
                 const serviceId = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID;
-                const templateId = (import.meta as any).env.VITE_EMAILJS_NEWSLETTER_TEMPLATE_ID || (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID;
+                const templateId = (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID;
                 const publicKey = (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY;
 
                 if (serviceId && templateId && publicKey) {
@@ -277,20 +277,22 @@ export default function Blog() {
                       template_id: templateId,
                       user_id: publicKey,
                       template_params: {
+                        to_name: "Parent",
                         to_email: subscriberEmail,
-                        to_name: "Smart Parent",
                         from_name: "Arnav Abacus Academy",
-                        message: "Welcome to Sunday Brain Challenges curated by Neha Patil & Nitin Patil!"
+                        otp_code: "WELCOME-AAA-SUNDAY",
+                        message: "Thank you for subscribing to Arnav Abacus Academy Sunday Brain Challenges curated by Neha Patil & Nitin Patil!"
                       }
                     })
                   }).then(() => {
-                    console.log(`[EmailJS] Successfully dispatched confirmation email to ${subscriberEmail}`);
+                    console.log(`[EmailJS] Successfully dispatched newsletter email to ${subscriberEmail}`);
                   }).catch((err) => {
                     console.warn("[EmailJS] Dispatch failed:", err);
                   });
                 } else {
                   console.log(`[EmailJS Simulated] Confirmation email queued for: ${subscriberEmail}`);
                 }
+
                 
                 // Show Subscription Confirmation + Launch Sample Challenge
                 alert(`📩 Welcome Confirmation Dispatched to ${subscriberEmail}!\n\nCheck your inbox for your Sunday Brain Workout confirmation from Neha Patil & Nitin Patil.`);
