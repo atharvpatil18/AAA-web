@@ -7,6 +7,10 @@ export default function Blog() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isChallengeModalOpen, setIsChallengeModalOpen] = useState<boolean>(false);
+  const [userChallengeAns, setUserChallengeAns] = useState<string>("");
+  const [challengeStatus, setChallengeStatus] = useState<boolean | null>(null);
+
 
 
 
@@ -257,7 +261,7 @@ export default function Blog() {
                 const subs = JSON.parse(localStorage.getItem("aaa_newsletter_subscribers") || "[]");
                 subs.push({ email: input.value, subscribedAt: new Date().toISOString() });
                 localStorage.setItem("aaa_newsletter_subscribers", JSON.stringify(subs));
-                alert(`🎉 Thank you! ${input.value} has been subscribed to AAA Weekly Brain Challenges! Check your inbox this Sunday.`);
+                setIsChallengeModalOpen(true);
                 input.value = "";
               }
             }}
@@ -273,14 +277,118 @@ export default function Blog() {
               type="submit"
               className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase px-6 py-3 rounded-2xl shadow-lg transition-all whitespace-nowrap cursor-pointer"
             >
-              Subscribe Free
+              Subscribe & Try Sample
             </button>
           </form>
+
+          <div className="pt-2">
+            <button
+              onClick={() => setIsChallengeModalOpen(true)}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 bg-white/90 hover:bg-white px-4 py-2 rounded-xl shadow-sm transition-all cursor-pointer"
+            >
+              ⚡ Click Here to Preview This Week's Sample Brain Challenge
+            </button>
+          </div>
         </div>
 
       </div>
+
+      {/* Interactive Sample Brain Workout Challenge Modal */}
+      {isChallengeModalOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in duration-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-2xl">🧠</span>
+                <div>
+                  <h3 className="text-base font-black text-slate-900">Sample Sunday Brain Challenge</h3>
+                  <p className="text-xs text-vibrant-orange font-bold">Vedic Math & Anzan Speed Test</p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setIsChallengeModalOpen(false);
+                  setUserChallengeAns("");
+                  setChallengeStatus(null);
+                }}
+                className="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full font-black text-xs flex items-center justify-center transition-colors cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="bg-amber-50 border-2 border-amber-200 p-5 rounded-2xl space-y-3">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800 bg-amber-200/60 px-2.5 py-1 rounded-md">
+                Speed Problem #104
+              </span>
+              <h4 className="text-lg font-black text-slate-900">
+                Multiply using Nikhilam Sutra: <span className="text-vibrant-orange">98 × 96</span> = ?
+              </h4>
+              <p className="text-xs text-slate-600 font-medium">
+                Hint: 98 is (-2) from 100, 96 is (-4) from 100. (98 - 4 = 94) and (-2 × -4 = 08).
+              </p>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (userChallengeAns.trim() === "9408") {
+                    setChallengeStatus(true);
+                  } else {
+                    setChallengeStatus(false);
+                  }
+                }}
+                className="flex gap-2 pt-2"
+              >
+                <input
+                  type="number"
+                  required
+                  placeholder="Enter answer..."
+                  value={userChallengeAns}
+                  onChange={(e) => {
+                    setUserChallengeAns(e.target.value);
+                    setChallengeStatus(null);
+                  }}
+                  className="w-full px-4 py-2.5 bg-white border border-amber-300 rounded-xl text-sm font-bold text-slate-900 focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="bg-vibrant-orange hover:bg-vibrant-orange/90 text-white font-bold text-xs uppercase px-4 py-2.5 rounded-xl shadow-md transition-all cursor-pointer whitespace-nowrap"
+                >
+                  Submit
+                </button>
+              </form>
+
+              {challengeStatus === true && (
+                <div className="p-3 bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold rounded-xl flex items-center gap-2">
+                  🎉 Bingo! 98 × 96 = 9408. Your child will receive challenges like this every Sunday!
+                </div>
+              )}
+              {challengeStatus === false && (
+                <div className="p-3 bg-rose-100 border border-rose-300 text-rose-800 text-xs font-bold rounded-xl flex items-center gap-2">
+                  ❌ Not quite. 98 × 96 = 9408. Give it another try!
+                </div>
+              )}
+            </div>
+
+            <div className="pt-2 flex items-center justify-between">
+              <span className="text-[11px] text-slate-400 font-semibold">Curated by Neha Patil & Nitin Patil</span>
+              <button
+                onClick={() => {
+                  setIsChallengeModalOpen(false);
+                  setUserChallengeAns("");
+                  setChallengeStatus(null);
+                }}
+                className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2 rounded-xl uppercase tracking-wider cursor-pointer"
+              >
+                Close Preview
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
 
 
