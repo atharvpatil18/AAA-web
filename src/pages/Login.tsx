@@ -622,13 +622,14 @@ export default function Login() {
             <div className="space-y-6 animate-in fade-in duration-200">
               <form onSubmit={handleStartGuestPractice} className="space-y-5">
                 {/* 1-Click Instant Google Sign-In for Free Guest Practice */}
-                <div className="p-3.5 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 rounded-2xl border-2 border-amber-400/40 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="p-4 bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 rounded-2xl border-2 border-amber-400/50 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
                   <div>
-                    <span className="text-[10px] font-black text-amber-950 uppercase tracking-wider block">
-                      ⚡ 1-CLICK INSTANT GUEST DRILL WITH GOOGLE
+                    <span className="text-[10px] font-black text-amber-950 uppercase tracking-wider block flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                      STEP 1: SIGN IN WITH GOOGLE TO UNLOCK PRACTICE
                     </span>
-                    <p className="text-xs text-slate-650 font-bold">
-                      Auto-fill email & name to start practice instantly
+                    <p className="text-xs text-slate-700 font-bold mt-0.5">
+                      {guestEmail ? `✓ Verified via Google (${guestEmail})` : "Click below to auto-fill verified guest details & unlock practice drills."}
                     </p>
                   </div>
                   <div className="shrink-0">
@@ -638,7 +639,7 @@ export default function Login() {
                           try {
                             const decoded: any = jwtDecode(credentialResponse.credential);
                             const email = decoded.email || "";
-                            const name = decoded.name || email.split("@")[0] || "Guest";
+                            const name = decoded.name || email.split("@")[0] || "Guest Candidate";
                             setGuestEmail(email);
                             setGuestName(name);
                           } catch (e) {
@@ -652,35 +653,39 @@ export default function Login() {
                   </div>
                 </div>
 
-                {/* User Input */}
+                {/* Disabled Manual Entry Input Fields (Populated via Google Sign-In) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
-                      Guest Email ID <span className="text-red-500">*</span>
+                    <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                      <span>Guest Email ID <span className="text-red-500">*</span></span>
+                      {guestEmail && <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Verified</span>}
                     </label>
                     <div className="relative">
                       <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                       <input
                         type="email"
                         required
+                        disabled={true}
+                        readOnly={true}
                         value={guestEmail}
-                        onChange={(e) => setGuestEmail(e.target.value)}
-                        placeholder="you@example.com"
-                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition"
+                        placeholder="Click 'Continue with Google' above to auto-fill"
+                        className="w-full pl-10 pr-4 py-2.5 bg-slate-100 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-800 cursor-not-allowed outline-none select-none"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
-                      Student Name (Optional)
+                    <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                      <span>Student Name</span>
+                      {guestName && <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Google Profile</span>}
                     </label>
                     <input
                       type="text"
+                      disabled={true}
+                      readOnly={true}
                       value={guestName}
-                      onChange={(e) => setGuestName(e.target.value)}
-                      placeholder="Your Name (for Leaderboard)"
-                      className="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition"
+                      placeholder="Auto-filled via Google Account"
+                      className="w-full px-4 py-2.5 bg-slate-100 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-800 cursor-not-allowed outline-none select-none"
                     />
                   </div>
                 </div>
