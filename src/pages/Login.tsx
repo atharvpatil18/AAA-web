@@ -469,7 +469,7 @@ export default function Login() {
             </div>
           )}
 
-          {/* MODE 1: Student Login (OTP) */}
+          {/* MODE 1: Student Login (OTP & Google 1-Click) */}
           {authMode === "student" && (
             <div className="space-y-4">
               {simulatedOtp && otpSent && !isConfigured() && (
@@ -486,9 +486,43 @@ export default function Login() {
 
               {!otpSent ? (
                 <form onSubmit={handleRequestOTP} className="space-y-4">
+                  {/* STEP 1: 1-CLICK INSTANT GOOGLE SIGN-IN AT TOP */}
+                  <div className="p-4 bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white rounded-2xl border border-purple-800/50 text-center shadow-md space-y-2.5">
+                    <div className="flex items-center justify-center gap-1.5 text-amber-300 text-[10px] font-black uppercase tracking-wider">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                      <span>STEP 1: 1-CLICK INSTANT LOGIN WITH GOOGLE</span>
+                    </div>
+                    <div className="flex justify-center">
+                      <GoogleBtn
+                        onSuccess={async (credentialResponse) => {
+                          const res = await loginWithGoogleCredential(credentialResponse);
+                          if (res.success) {
+                            navigate(redirectTo);
+                          } else {
+                            setError(res.error || "Google Sign-In failed.");
+                          }
+                        }}
+                        onError={() => {
+                          setError("Google Sign-In authentication failed. Please try again.");
+                        }}
+                        text="continue_with"
+                      />
+                    </div>
+                    <p className="text-[11px] text-slate-300 font-medium">
+                      Instant verified login without manual typing or OTP delay.
+                    </p>
+                  </div>
+
+                  <div className="relative w-full flex items-center justify-center my-3">
+                    <div className="border-t border-slate-200 w-full" />
+                    <span className="bg-white px-3 text-[10px] font-black text-slate-500 uppercase tracking-wider">OR STEP 2: MANUAL EMAIL OTP</span>
+                    <div className="border-t border-slate-200 w-full" />
+                  </div>
+
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Your Full Name
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                      <span>Your Full Name</span>
+                      {email && <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Verified</span>}
                     </label>
                     <div className="relative">
                       <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -505,8 +539,9 @@ export default function Login() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                      Email Address
+                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                      <span>Email Address</span>
+                      {email && <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Verified</span>}
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -538,29 +573,6 @@ export default function Login() {
                     {loading ? "Requesting OTP..." : "Get Verification Code"}
                     <ArrowRight className="w-4 h-4" />
                   </button>
-
-                  {/* Instant Google Login Divider & Button */}
-                  <div className="pt-3 border-t border-slate-200 text-center">
-                    <p className="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider mb-2.5">
-                      ✨ Or 1-Click Instant Login With
-                    </p>
-                    <div className="flex justify-center">
-                      <GoogleBtn
-                        onSuccess={async (credentialResponse) => {
-                          const res = await loginWithGoogleCredential(credentialResponse);
-                          if (res.success) {
-                            navigate(redirectTo);
-                          } else {
-                            setError(res.error || "Google Sign-In failed.");
-                          }
-                        }}
-                        onError={() => {
-                          setError("Google Sign-In authentication failed. Please try again.");
-                        }}
-                        text="continue_with"
-                      />
-                    </div>
-                  </div>
                 </form>
               ) : (
                 <form onSubmit={handleVerifyOTP} className="space-y-4">
@@ -617,11 +629,12 @@ export default function Login() {
               )}
             </div>
           )}
+
           {/* MODE 2: Free Guest Sample Practice Drills Screen */}
           {authMode === "guest" && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <form onSubmit={handleStartGuestPractice} className="space-y-5">
-                {/* 1-Click Instant Google Sign-In for Free Guest Practice */}
+                {/* STEP 1: 1-Click Instant Google Sign-In for Free Guest Practice (Positioned First) */}
                 <div className="p-4 bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 rounded-2xl border-2 border-amber-400/50 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
                   <div>
                     <span className="text-[10px] font-black text-amber-950 uppercase tracking-wider block flex items-center gap-1.5">
@@ -653,42 +666,59 @@ export default function Login() {
                   </div>
                 </div>
 
-                {/* Disabled Manual Entry Input Fields (Populated via Google Sign-In) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                      <span>Guest Email ID <span className="text-red-500">*</span></span>
-                      {guestEmail && <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Verified</span>}
-                    </label>
-                    <div className="relative">
-                      <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
-                      <input
-                        type="email"
-                        required
-                        disabled={true}
-                        readOnly={true}
-                        value={guestEmail}
-                        placeholder="Click 'Continue with Google' above to auto-fill"
-                        className="w-full pl-10 pr-4 py-2.5 bg-slate-100 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-800 cursor-not-allowed outline-none select-none"
-                      />
+                {/* SHOW ENTIRE PRACTICE FORM SECTION ONLY AFTER GOOGLE SIGN IN */}
+                {!guestEmail ? (
+                  /* Lock Banner before Google Sign-In */
+                  <div className="p-8 bg-amber-500/10 border-2 border-dashed border-amber-400/60 rounded-3xl text-center space-y-3 shadow-xs">
+                    <div className="w-12 h-12 bg-amber-500 text-slate-950 rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-md">
+                      🔒
                     </div>
+                    <h3 className="text-sm sm:text-base font-black text-slate-900">
+                      Google Sign-In Required to Unlock Guest Practice Drills
+                    </h3>
+                    <p className="text-xs text-slate-650 font-bold max-w-md mx-auto leading-relaxed">
+                      Please complete Step 1 (Sign in with Google) above. Once verified, your guest details, course modes, practice drills, and printable PDF hub will display automatically!
+                    </p>
                   </div>
+                ) : (
+                  /* Displayed ONLY after Google Sign-In */
+                  <React.Fragment>
+                    {/* Disabled Manual Entry Input Fields (Populated via Google Sign-In) */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                          <span>Guest Email ID <span className="text-red-500">*</span></span>
+                          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Verified via Google</span>
+                        </label>
+                        <div className="relative">
+                          <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                          <input
+                            type="email"
+                            required
+                            disabled={true}
+                            readOnly={true}
+                            value={guestEmail}
+                            placeholder="Signed in via Google"
+                            className="w-full pl-10 pr-4 py-2.5 bg-slate-100 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-800 cursor-not-allowed outline-none select-none"
+                          />
+                        </div>
+                      </div>
 
-                  <div>
-                    <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                      <span>Student Name</span>
-                      {guestName && <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Google Profile</span>}
-                    </label>
-                    <input
-                      type="text"
-                      disabled={true}
-                      readOnly={true}
-                      value={guestName}
-                      placeholder="Auto-filled via Google Account"
-                      className="w-full px-4 py-2.5 bg-slate-100 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-800 cursor-not-allowed outline-none select-none"
-                    />
-                  </div>
-                </div>
+                      <div>
+                        <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                          <span>Student Name</span>
+                          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Google Profile</span>
+                        </label>
+                        <input
+                          type="text"
+                          disabled={true}
+                          readOnly={true}
+                          value={guestName}
+                          placeholder="Signed in via Google"
+                          className="w-full px-4 py-2.5 bg-slate-100 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-800 cursor-not-allowed outline-none select-none"
+                        />
+                      </div>
+                    </div>
 
                 {/* REDESIGNED MODE 1 & MODE 2 SELECTION ZONE */}
                 <div className="space-y-4 bg-slate-50 border-2 border-slate-200 p-5 rounded-2xl">
@@ -1239,7 +1269,9 @@ export default function Login() {
                     </div>
                   </div>
                 </div>
-              </form>
+              </React.Fragment>
+            )}
+          </form>
 
               {/* Request Course Access Banner */}
               <div className="p-5 bg-slate-900 text-white rounded-2xl border border-slate-800 space-y-3">

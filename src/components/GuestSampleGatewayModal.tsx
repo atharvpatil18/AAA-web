@@ -311,42 +311,59 @@ export default function GuestSampleGatewayModal({
               </div>
             </div>
 
-            {/* Disabled Manual Entry Input Fields (Populated via Google Sign-In) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                  <span>Guest Email ID <span className="text-red-500">*</span></span>
-                  {guestEmail && <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Verified</span>}
-                </label>
-                <div className="relative">
-                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
-                  <input
-                    type="email"
-                    required
-                    disabled={true}
-                    readOnly={true}
-                    value={guestEmail}
-                    placeholder="Click 'Continue with Google' above to auto-fill"
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-100 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-800 cursor-not-allowed outline-none select-none"
-                  />
+            {/* SHOW ENTIRE PRACTICE FORM SECTION ONLY AFTER GOOGLE SIGN IN */}
+            {!guestEmail ? (
+              /* Lock Banner before Google Sign-In */
+              <div className="p-8 bg-amber-500/10 border-2 border-dashed border-amber-400/60 rounded-3xl text-center space-y-3 shadow-xs">
+                <div className="w-12 h-12 bg-amber-500 text-slate-950 rounded-2xl flex items-center justify-center mx-auto text-xl font-black shadow-md">
+                  🔒
                 </div>
+                <h3 className="text-sm sm:text-base font-black text-slate-900">
+                  Google Sign-In Required to Unlock Guest Practice Drills
+                </h3>
+                <p className="text-xs text-slate-650 font-bold max-w-md mx-auto leading-relaxed">
+                  Please complete Step 1 (Sign in with Google) above. Once verified, your guest details, course modes, practice drills, and printable PDF hub will display automatically!
+                </p>
               </div>
+            ) : (
+              /* Displayed ONLY after Google Sign-In */
+              <React.Fragment>
+                {/* Disabled Manual Entry Input Fields (Populated via Google Sign-In) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                      <span>Guest Email ID <span className="text-red-500">*</span></span>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Verified via Google</span>
+                    </label>
+                    <div className="relative">
+                      <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+                      <input
+                        type="email"
+                        required
+                        disabled={true}
+                        readOnly={true}
+                        value={guestEmail}
+                        placeholder="Signed in via Google"
+                        className="w-full pl-10 pr-4 py-2.5 bg-slate-100 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-800 cursor-not-allowed outline-none select-none"
+                      />
+                    </div>
+                  </div>
 
-              <div>
-                <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                  <span>Student Name</span>
-                  {guestName && <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Google Profile</span>}
-                </label>
-                <input
-                  type="text"
-                  disabled={true}
-                  readOnly={true}
-                  value={guestName}
-                  placeholder="Auto-filled via Google Account"
-                  className="w-full px-4 py-2.5 bg-slate-100 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-800 cursor-not-allowed outline-none select-none"
-                />
-              </div>
-            </div>
+                  <div>
+                    <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                      <span>Student Name</span>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">✓ Google Profile</span>
+                    </label>
+                    <input
+                      type="text"
+                      disabled={true}
+                      readOnly={true}
+                      value={guestName}
+                      placeholder="Signed in via Google"
+                      className="w-full px-4 py-2.5 bg-slate-100 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-800 cursor-not-allowed outline-none select-none"
+                    />
+                  </div>
+                </div>
 
             {/* REDESIGNED MODE 1 & MODE 2 SELECTION ZONE */}
             <div className="space-y-4 bg-slate-50 border-2 border-slate-200 p-5 rounded-2xl">
@@ -897,7 +914,9 @@ export default function GuestSampleGatewayModal({
                 </div>
               </div>
             </div>
-          </form>
+          </React.Fragment>
+        )}
+      </form>
 
           {/* Request Course Access Banner */}
           <div className="p-5 bg-slate-900 text-white rounded-2xl border border-slate-800 space-y-3">
