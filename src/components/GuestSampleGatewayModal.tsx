@@ -12,8 +12,6 @@ import { generateQuizWorksheetPDF } from "../lib/quizPdfGenerator";
 import { generateBrochurePDF } from "../lib/brochure";
 import { useLanguage } from "../lib/LanguageContext";
 import { getQuestionSetById } from "../data/practiceData";
-import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 
 interface GuestSampleGatewayModalProps {
   isOpen: boolean;
@@ -275,41 +273,6 @@ export default function GuestSampleGatewayModal({
           )}
 
           <form onSubmit={handleStart} className="space-y-5">
-            {/* 1-Click Instant Google Login for Guest Practice */}
-            <div className="p-3 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 rounded-2xl border-2 border-amber-400/40 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div>
-                <span className="text-[10px] font-black text-amber-950 uppercase tracking-wider block">
-                  ⚡ 1-CLICK INSTANT GUEST DRILL
-                </span>
-                <p className="text-xs text-slate-650 font-bold">
-                  Auto-fill email & start practice instantly
-                </p>
-              </div>
-              <div className="shrink-0">
-                <GoogleLogin
-                  onSuccess={(credentialResponse) => {
-                    if (credentialResponse?.credential) {
-                      try {
-                        const decoded: any = jwtDecode(credentialResponse.credential);
-                        const email = decoded.email || "";
-                        const name = decoded.name || email.split("@")[0] || "Guest";
-                        setGuestEmail(email);
-                        setGuestName(name);
-                        onStartSamplePractice(email, name, selectedSetId, selectedQuestionCount, selectedTimeMinutes * 60);
-                      } catch (e) {
-                        console.error("Google Guest token decode failed", e);
-                      }
-                    }
-                  }}
-                  onError={() => setErrorMsg("Google Guest login failed.")}
-                  theme="filled_blue"
-                  shape="pill"
-                  size="medium"
-                  text="signin_with"
-                />
-              </div>
-            </div>
-
             {/* User Input */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
