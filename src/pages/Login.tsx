@@ -16,6 +16,10 @@ import { getQuestionSetById } from "../data/practiceData";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
+const GoogleBtn = React.memo(({ onSuccess, onError, text = "continue_with" }: { onSuccess: (r: any) => void; onError: () => void; text?: "continue_with" | "signin_with" }) => {
+  return <GoogleLogin onSuccess={onSuccess} onError={onError} theme="filled_blue" shape="pill" size="medium" text={text} />;
+});
+
 export default function Login() {
   const { sendEmailOTP, verifyEmailOTP, loginWithGoogleCredential } = useAuth();
   const { language } = useLanguage();
@@ -541,7 +545,7 @@ export default function Login() {
                       ✨ Or 1-Click Instant Login With
                     </p>
                     <div className="flex justify-center">
-                      <GoogleLogin
+                      <GoogleBtn
                         onSuccess={async (credentialResponse) => {
                           const res = await loginWithGoogleCredential(credentialResponse);
                           if (res.success) {
@@ -553,9 +557,6 @@ export default function Login() {
                         onError={() => {
                           setError("Google Sign-In authentication failed. Please try again.");
                         }}
-                        theme="filled_blue"
-                        shape="pill"
-                        size="large"
                         text="continue_with"
                       />
                     </div>
@@ -631,7 +632,7 @@ export default function Login() {
                     </p>
                   </div>
                   <div className="shrink-0">
-                    <GoogleLogin
+                    <GoogleBtn
                       onSuccess={(credentialResponse) => {
                         if (credentialResponse?.credential) {
                           try {
@@ -646,9 +647,6 @@ export default function Login() {
                         }
                       }}
                       onError={() => setError("Google Guest Sign-In failed.")}
-                      theme="filled_blue"
-                      shape="pill"
-                      size="medium"
                       text="continue_with"
                     />
                   </div>

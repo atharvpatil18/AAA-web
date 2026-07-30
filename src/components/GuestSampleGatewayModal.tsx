@@ -15,6 +15,10 @@ import { getQuestionSetById } from "../data/practiceData";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
+const GoogleBtn = React.memo(({ onSuccess, onError, text = "continue_with" }: { onSuccess: (r: any) => void; onError: () => void; text?: "continue_with" | "signin_with" }) => {
+  return <GoogleLogin onSuccess={onSuccess} onError={onError} theme="filled_blue" shape="pill" size="medium" text={text} />;
+});
+
 interface GuestSampleGatewayModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -286,7 +290,7 @@ export default function GuestSampleGatewayModal({
                 </p>
               </div>
               <div className="shrink-0">
-                <GoogleLogin
+                <GoogleBtn
                   onSuccess={(credentialResponse) => {
                     if (credentialResponse?.credential) {
                       try {
@@ -301,9 +305,6 @@ export default function GuestSampleGatewayModal({
                     }
                   }}
                   onError={() => setErrorMsg("Google Guest Sign-In failed.")}
-                  theme="filled_blue"
-                  shape="pill"
-                  size="medium"
                   text="continue_with"
                 />
               </div>
