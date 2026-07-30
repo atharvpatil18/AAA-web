@@ -69,8 +69,9 @@ export default function AdminSuccessStoryManager() {
       } else {
         alert(`⚠️ Sync sent but could not verify. HTTP ${res.status}. Please try again.`);
       }
-    } catch (e) {
-      alert("⚠️ Cloud sync error. Please check your network connection and try again.");
+    } catch (e: any) {
+      const errDetail = e?.message ? ` (${e.message})` : "";
+      alert(`⚠️ Cloud sync temporary connection error${errDetail}.\n\nYour stories are safe and saved locally on this device. Please check internet connection or retry in a few moments.`);
     } finally {
       setIsSyncing(false);
     }

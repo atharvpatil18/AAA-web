@@ -27,11 +27,9 @@ export interface SuccessStory {
 
 const STORAGE_KEY = "aaa_published_success_stories_v2";
 
-/**
- * SINGLE combined cloud endpoint for stories + applauds.
- * Using one blob = fewer API calls = no rate limits.
- */
-const CLOUD_URL = "https://jsonblob.com/api/jsonBlob/019fa81d-0104-7348-beae-a82900883473";
+const CLOUD_URL_PRIMARY = "https://jsonblob.com/api/jsonBlob/019fa81d-0104-7348-beae-a82900883473";
+const CLOUD_URL_SECONDARY = "https://jsonblob.com/api/jsonBlob/019f9065-ec4f-7d60-b80c-07b7f039afe6";
+const CLOUD_URL = CLOUD_URL_PRIMARY;
 
 /**
  * Format JS Date or YYYY-MM-DD string into dd-mmm-yy (e.g. 15-Mar-25)
@@ -138,37 +136,47 @@ export async function syncSuccessStoriesToCloud(): Promise<void> {
   const stories = getSuccessStories();
   const storiesForCloud = stripBase64(stories);
 
-  try {
-    // First read current cloud data to preserve applauds
-    let existingApplauds: Record<string, number> = {};
+  let lastError: Error | null = null;
+  const urlsToTry = [CLOUD_URL_PRIMARY, CLOUD_URL_SECONDARY];
+
+  for (const url of urlsToTry) {
     try {
-      const getRes = await fetch(CLOUD_URL, { headers: { Accept: "application/json" } });
-      if (getRes.ok) {
-        const current = await getRes.json();
-        existingApplauds = current?.applauds || {};
+      // First read current cloud data to preserve applauds
+      let existingApplauds: Record<string, number> = {};
+      try {
+        const getRes = await fetch(url, { headers: { Accept: "application/json" } });
+        if (getRes.ok) {
+          const current = await getRes.json();
+          existingApplauds = current?.applauds || {};
+        }
+      } catch { /* ignore read failure — just overwrite */ }
+
+      const body = JSON.stringify({ stories: storiesForCloud, applauds: existingApplauds });
+      const sizeKB = Math.round(new Blob([body]).size / 1024);
+      console.log(`[Cloud Sync] PUT ${stories.length} stories (${sizeKB} KB) to ${url}...`);
+
+      const res = await fetch(url, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body,
+      });
+
+      if (res.ok) {
+        console.log(`[Cloud Sync] ✅ ${stories.length} stories synced successfully to ${url}.`);
+        return; // Success!
+      } else {
+        const errText = await res.text().catch(() => "");
+        console.warn(`[Cloud Sync] Endpoint ${url} returned HTTP ${res.status}:`, errText);
+        lastError = new Error(`HTTP ${res.status}: ${res.statusText}`);
       }
-    } catch { /* ignore read failure — just overwrite */ }
-
-    const body = JSON.stringify({ stories: storiesForCloud, applauds: existingApplauds });
-    const sizeKB = Math.round(new Blob([body]).size / 1024);
-    console.log(`[Cloud Sync] PUT ${stories.length} stories (${sizeKB} KB)...`);
-
-    const res = await fetch(CLOUD_URL, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body,
-    });
-
-    if (!res.ok) {
-      const errText = await res.text().catch(() => "");
-      console.error(`[Cloud Sync] FAILED: HTTP ${res.status} ${res.statusText}`, errText);
-      throw new Error(`HTTP ${res.status}`);
+    } catch (e: any) {
+      console.warn(`[Cloud Sync] Failed connecting to ${url}:`, e);
+      lastError = e instanceof Error ? e : new Error(String(e));
     }
+  }
 
-    console.log(`[Cloud Sync] ✅ ${stories.length} stories synced successfully.`);
-  } catch (e) {
-    console.warn("[Cloud Sync] Error:", e);
-    throw e; // Re-throw so caller knows it failed
+  if (lastError) {
+    throw lastError;
   }
 }
 
