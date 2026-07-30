@@ -334,79 +334,29 @@ export default function Login() {
 
       <div className={`w-full ${authMode === "guest" ? "max-w-2xl" : "max-w-md"} bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden relative z-10 transition-all duration-300`}>
         
-        {/* Visual Brand Header Banner */}
-        <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white p-6 text-center border-b border-purple-900/40 relative">
-          <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            {authMode === "student" ? "Academy Student & Parent Portal" : "Free Guest Practice Gateway"}
+        {/* Sleek Modern Brand Header (Unified & High Converting) */}
+        <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white p-6 text-center border-b border-purple-900/40 relative space-y-3">
+          {/* Top Category Badge with SEO Details */}
+          <div className="inline-flex items-center gap-2 bg-amber-500/15 text-amber-300 border border-amber-500/40 px-3.5 py-1 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider flex-wrap justify-center">
+            <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400 animate-pulse shrink-0" />
+            <span>Wakad Pune #1 Abacus & Vedic Maths Academy</span>
+            <span className="text-amber-400/50 hidden sm:inline">•</span>
+            <span className="text-amber-400 font-extrabold">Google Sign-In</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-black font-display tracking-tight text-white">
-            {authMode === "student" ? "Access Arnav Abacus Practice Zone" : "Free Guest Practice Drills (100 Qs / 10 Mins)"}
-          </h2>
-          <p className="text-xs text-slate-300 mt-1 max-w-lg mx-auto">
+
+          {/* Main SEO Title */}
+          <h2 className="text-xl sm:text-2xl font-black font-display tracking-tight text-white leading-snug">
             {authMode === "student"
-              ? "Sign in with Google verification to join dynamic math drills & track scores"
-              : "Experience 100-question speed drills! Sign in with Google to log in instantly & track live leaderboard rank."}
+              ? "Access Arnav Abacus Practice Zone"
+              : "Free Guest Practice Drills (100 Qs / 10 Mins)"}
+          </h2>
+
+          {/* Subtitle with SEO Keywords */}
+          <p className="text-xs text-slate-300 max-w-lg mx-auto leading-relaxed font-medium">
+            {authMode === "student"
+              ? "Sign in with Google verification to join dynamic math drills & track scores."
+              : "Test 10X mental calculation speed with free speed drills! Sign in with Google to auto-fill verified credentials & track live leaderboard rank."}
           </p>
-        </div>
-
-        {/* ONE RIBBON FOR ONE TEXT MESSAGE ARCHITECTURE */}
-        
-        {/* RIBBON 1: ACADEMY RECOGNITION RIBBON */}
-        <div className="bg-slate-950 text-amber-400 border-b border-amber-500/40 px-4 py-2.5 flex items-center justify-between gap-2 shadow-sm relative z-10">
-          <div className="flex items-center gap-2 font-black text-[11px] uppercase tracking-wider">
-            <Flame className="w-4 h-4 fill-amber-400 text-amber-400 animate-pulse shrink-0" />
-            <span>🔥 WAKAD PUNE #1 ABACUS & VEDIC MATHS ACADEMY</span>
-          </div>
-          <span className="bg-amber-400/20 text-amber-300 text-[9px] font-extrabold px-2 py-0.5 rounded-full border border-amber-400/30 uppercase tracking-wider shrink-0 hidden sm:inline-block">
-            GOOGLE SIGN-IN
-          </span>
-        </div>
-
-        {/* RIBBON 2: MAIN SPEED MATH CHALLENGE RIBBON */}
-        <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 p-4 sm:p-5 text-slate-950 border-b border-amber-300 relative overflow-hidden group shadow-inner space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="bg-slate-950 text-amber-400 p-2 rounded-xl shrink-0 shadow-md">
-              <Zap className="w-5 h-5 fill-amber-400 text-amber-400" />
-            </div>
-            <div>
-              <span className="bg-slate-950/20 text-slate-950 text-[10px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider inline-block">
-                INSTANT FREE DRILL
-              </span>
-              <h3 className="text-sm sm:text-base font-black tracking-tight text-slate-950 leading-snug">
-                Test 10X Mental Calculation Speed ({selectedQuestionCount} Qs Speed Drill)
-              </h3>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              setAuthMode("guest");
-              setError(null);
-            }}
-            className="w-full bg-slate-950 hover:bg-slate-900 text-amber-400 hover:text-amber-300 text-xs sm:text-sm font-black py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-xl hover:scale-[1.01] active:scale-98 transition-all cursor-pointer border border-amber-400/80 group-hover:ring-4 group-hover:ring-amber-400/30 uppercase tracking-wide"
-          >
-            <Zap className="w-4 h-4 fill-amber-400 text-amber-400 shrink-0" />
-            <span>START FREE GUEST PRACTICE DRILL</span>
-            <ArrowDown className="w-4 h-4 animate-bounce text-amber-400 shrink-0" />
-          </button>
-        </div>
-
-        {/* RIBBON 3: DIRECT POINTER ACTION RIBBON */}
-        <div className="bg-slate-900 text-amber-300 border-b border-slate-800 px-4 py-2.5 relative z-10">
-          <button
-            type="button"
-            onClick={() => {
-              setAuthMode("guest");
-              setError(null);
-            }}
-            className="w-full text-[10px] sm:text-xs font-black text-amber-300 flex items-center justify-center gap-1.5 animate-bounce cursor-pointer hover:text-white transition"
-          >
-            <Flame className="w-3.5 h-3.5 text-orange-400 fill-orange-400 animate-pulse shrink-0" />
-            <span>👇 CLICK BELOW TO LAUNCH FREE GUEST PRACTICE DRILL (GOOGLE SIGN-IN)</span>
-            <ArrowDown className="w-3.5 h-3.5 text-amber-300 shrink-0" />
-          </button>
         </div>
 
         {/* Toggle Switch Bar with Dynamic Flashing Callout & Arrow */}
