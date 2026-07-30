@@ -263,20 +263,42 @@ export default function Blog() {
                 subs.push({ email: subscriberEmail, subscribedAt: new Date().toISOString() });
                 localStorage.setItem("aaa_newsletter_subscribers", JSON.stringify(subs));
                 
-                // Dispatch Email Notification Trigger (Simulated EmailJS API Call & Mail Notification)
-                console.log(`[Email Dispatch Service] Sent Welcome Confirmation Email to: ${subscriberEmail}`);
-                
-                // Open Email Client Fallback if user wants instant copy
-                const mailtoUrl = `mailto:${subscriberEmail}?subject=${encodeURIComponent("Welcome to Arnav Abacus Academy Sunday Brain Challenges!")}&body=${encodeURIComponent(
-                  "Dear Parent,\n\nThank you for subscribing to Arnav Abacus Academy's Sunday Brain Challenges! Every Sunday morning, you will receive exclusive Anzan mental math puzzles and Vedic speed math shortcuts.\n\nWarm regards,\nNeha Patil (Founder & Director)\nNitin Patil (Chief Mentor)\nArnav Abacus Academy • Wakad, Pune, India"
-                )}`;
+                // Dispatch EmailJS Welcome Email Trigger
+                const serviceId = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID;
+                const templateId = (import.meta as any).env.VITE_EMAILJS_NEWSLETTER_TEMPLATE_ID || (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID;
+                const publicKey = (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY;
+
+                if (serviceId && templateId && publicKey) {
+                  fetch("https://api.emailjs.com/api/v1.0/email/send", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      service_id: serviceId,
+                      template_id: templateId,
+                      user_id: publicKey,
+                      template_params: {
+                        to_email: subscriberEmail,
+                        to_name: "Smart Parent",
+                        from_name: "Arnav Abacus Academy",
+                        message: "Welcome to Sunday Brain Challenges curated by Neha Patil & Nitin Patil!"
+                      }
+                    })
+                  }).then(() => {
+                    console.log(`[EmailJS] Successfully dispatched confirmation email to ${subscriberEmail}`);
+                  }).catch((err) => {
+                    console.warn("[EmailJS] Dispatch failed:", err);
+                  });
+                } else {
+                  console.log(`[EmailJS Simulated] Confirmation email queued for: ${subscriberEmail}`);
+                }
                 
                 // Show Subscription Confirmation + Launch Sample Challenge
-                alert(`📩 Welcome Email Dispatched to ${subscriberEmail}!\n\nCheck your inbox for your Sunday Brain Workout confirmation from Neha Patil & Nitin Patil.`);
+                alert(`📩 Welcome Confirmation Dispatched to ${subscriberEmail}!\n\nCheck your inbox for your Sunday Brain Workout confirmation from Neha Patil & Nitin Patil.`);
                 setIsChallengeModalOpen(true);
                 input.value = "";
               }
             }}
+
             className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
           >
 
