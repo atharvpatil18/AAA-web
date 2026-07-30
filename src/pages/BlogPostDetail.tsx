@@ -274,6 +274,32 @@ export default function BlogPostDetail() {
                 );
               }
 
+              // Custom Interactive Action Button Callout
+              if (trimmed === "[CLAIM_FREE_DEMO_BUTTON]") {
+                return (
+                  <div key={idx} className="my-8 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl text-center space-y-4">
+                    <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
+                      ✨ Limited Free Assessment Seats Available in Wakad, Pune
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                      Ready to Unlock Your Child's Full Brain Potential?
+                    </h3>
+                    <p className="text-sm text-amber-100 max-w-xl mx-auto">
+                      Book a 1-on-1 Free Abacus & Vedic Math Skill Assessment Session with Neha Patil & Nitin Patil.
+                    </p>
+                    <div className="pt-2">
+                      <button
+                        onClick={() => navigate("/contact")}
+                        className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm uppercase tracking-wider px-8 py-4 rounded-2xl shadow-2xl hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2 border border-slate-700"
+                      >
+                        🎁 Claim Free Demo & Math Assessment →
+                      </button>
+                    </div>
+                  </div>
+                );
+              }
+
+
               // Blockquotes / Founder Messages
               if (trimmed.startsWith("> ")) {
                 const quoteText = trimmed.replace(/^>\s*/gm, "").replace(/[\*\_>]+/g, "").trim();

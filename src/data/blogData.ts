@@ -89,10 +89,14 @@ Founder & Director, Arnav Abacus Academy • Wakad, Pune, India
 
 ---
 
-### Book Your Free Trial Demo Today
-Give your child the gift of lifelong confidence, focus, and speed math skills!
+### Claim Your Free Demo & Math Assessment Today
+
+Give your child the gift of lifelong confidence, focus, and 10X calculation speed!
+
+[CLAIM_FREE_DEMO_BUTTON]
     `,
     comments: [
+
       {
         id: "c-01",
         author: "Sunita Deshmukh",
