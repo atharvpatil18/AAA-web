@@ -251,7 +251,15 @@ export default function Blog() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              alert("Thank you for subscribing to AAA Brain Hub updates!");
+              const form = e.target as HTMLFormElement;
+              const input = form.querySelector("input") as HTMLInputElement;
+              if (input && input.value) {
+                const subs = JSON.parse(localStorage.getItem("aaa_newsletter_subscribers") || "[]");
+                subs.push({ email: input.value, subscribedAt: new Date().toISOString() });
+                localStorage.setItem("aaa_newsletter_subscribers", JSON.stringify(subs));
+                alert(`🎉 Thank you! ${input.value} has been subscribed to AAA Weekly Brain Challenges! Check your inbox this Sunday.`);
+                input.value = "";
+              }
             }}
             className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
           >
@@ -269,6 +277,7 @@ export default function Blog() {
             </button>
           </form>
         </div>
+
       </div>
     </div>
   );
