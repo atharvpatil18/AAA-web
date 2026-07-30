@@ -289,27 +289,27 @@ export default function Login() {
   );
 
   return (
-    <div className="bg-slate-50 min-h-screen py-10 px-4 flex flex-col items-center justify-center relative overflow-hidden">
+    <div className="bg-slate-50 min-h-screen pt-2 sm:pt-4 pb-12 px-2 sm:px-4 flex flex-col items-center justify-start relative overflow-hidden">
       {/* Decorative Blur Spheres */}
       <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-vibrant-orange/10 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-vibrant-teal/10 rounded-full blur-3xl pointer-events-none"></div>
 
       {/* Concise & Simplified Speed Math Resource Banner */}
-      <div className="w-full max-w-2xl mb-6 p-4 rounded-3xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-2 border-amber-400/40 text-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm relative z-10">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-gradient-to-br from-amber-500 to-orange-500 text-slate-950 rounded-2xl shadow-md shrink-0">
-            <BookOpen className="w-5 h-5 fill-slate-950" />
+      <div className="w-full max-w-2xl mb-3 sm:mb-5 p-3.5 sm:p-4 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-2 border-amber-400/40 text-slate-900 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 shadow-sm relative z-10">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <div className="p-2.5 sm:p-3 bg-gradient-to-br from-amber-500 to-orange-500 text-slate-950 rounded-2xl shadow-md shrink-0">
+            <BookOpen className="w-4.5 h-4.5 sm:w-5 sm:h-5 fill-slate-950" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-black text-amber-950 bg-amber-400/30 border border-amber-400/50 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+              <span className="text-[9px] sm:text-[10px] font-black text-amber-950 bg-amber-400/30 border border-amber-400/50 px-2 py-0.5 rounded-full uppercase tracking-wider">
                 ⚡ ACADEMY SOP GUIDE
               </span>
             </div>
-            <h4 className="font-black text-sm text-slate-900 mt-1 leading-snug">
+            <h4 className="font-black text-xs sm:text-sm text-slate-900 mt-0.5 leading-snug">
               Speed Math SOP Manual & Academy Brochure
             </h4>
-            <p className="text-xs text-slate-650 font-bold mt-0.5">
+            <p className="text-[11px] sm:text-xs text-slate-650 font-bold mt-0.5">
               3-Mode Practice SOP • NEP 2020 Math Framework • Curriculum Standards
             </p>
           </div>
@@ -334,27 +334,27 @@ export default function Login() {
         </div>
       </div>
 
-      <div className={`w-full ${authMode === "guest" ? "max-w-2xl" : "max-w-md"} bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden relative z-10 transition-all duration-300`}>
+      <div className={`w-full ${authMode === "guest" ? "max-w-2xl" : "max-w-md"} bg-white rounded-2xl sm:rounded-3xl border border-slate-200 shadow-xl overflow-hidden relative z-10 transition-all duration-300`}>
         
         {/* Sleek Modern Brand Header (Unified & High Converting) */}
-        <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white p-6 text-center border-b border-purple-900/40 relative space-y-3">
+        <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white p-4 sm:p-6 text-center border-b border-purple-900/40 relative space-y-2.5 sm:space-y-3">
           {/* Top Category Badge with SEO Details */}
-          <div className="inline-flex items-center gap-2 bg-amber-500/15 text-amber-300 border border-amber-500/40 px-3.5 py-1 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider flex-wrap justify-center">
-            <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400 animate-pulse shrink-0" />
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-amber-500/15 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full text-[9px] sm:text-xs font-black uppercase tracking-wider flex-wrap justify-center">
+            <Flame className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 fill-amber-400 animate-pulse shrink-0" />
             <span>Wakad Pune #1 Abacus & Vedic Maths Academy</span>
             <span className="text-amber-400/50 hidden sm:inline">•</span>
             <span className="text-amber-400 font-extrabold">Google Sign-In</span>
           </div>
 
           {/* Main SEO Title */}
-          <h2 className="text-xl sm:text-2xl font-black font-display tracking-tight text-white leading-snug">
+          <h2 className="text-lg sm:text-2xl font-black font-display tracking-tight text-white leading-snug">
             {authMode === "student"
               ? "Access Arnav Abacus Practice Zone"
               : "Free Guest Practice Drills (100 Qs / 10 Mins)"}
           </h2>
 
           {/* Subtitle with SEO Keywords */}
-          <p className="text-xs text-slate-300 max-w-lg mx-auto leading-relaxed font-medium">
+          <p className="text-[11px] sm:text-xs text-slate-300 max-w-lg mx-auto leading-relaxed font-medium">
             {authMode === "student"
               ? "Sign in with Google verification to join dynamic math drills & track scores."
               : "Test 10X mental calculation speed with free speed drills! Sign in with Google to auto-fill verified credentials & track live leaderboard rank."}
@@ -362,21 +362,21 @@ export default function Login() {
         </div>
 
         {/* Toggle Switch Bar with Dynamic Flashing Callout & Arrow */}
-        <div className="p-3 bg-slate-100 border-b border-slate-200 flex gap-2 relative">
+        <div className="p-2 sm:p-3 bg-slate-100 border-b border-slate-200 flex gap-2 relative">
           <button
             type="button"
             onClick={() => {
               setAuthMode("student");
               setError(null);
             }}
-            className={`flex-1 py-3 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+            className={`flex-1 py-2.5 sm:py-3 px-2 sm:px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
               authMode === "student"
                 ? "bg-slate-900 text-white shadow-md"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
             }`}
           >
             <User className="w-3.5 h-3.5" />
-            Student Login (Google)
+            <span>Student Login</span>
           </button>
 
           {/* Target Button for Free Guest Practice Drill */}
@@ -387,19 +387,19 @@ export default function Login() {
                 setAuthMode("guest");
                 setError(null);
               }}
-              className={`w-full py-3 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+              className={`w-full py-2.5 sm:py-3 px-2 sm:px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                 authMode === "guest"
                   ? "bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 shadow-lg font-black border border-amber-300"
                   : "bg-gradient-to-r from-amber-400/30 via-orange-400/30 to-amber-400/30 text-amber-950 border-2 border-amber-500 hover:bg-amber-400/40 ring-4 ring-amber-400/40 animate-pulse font-black shadow-md"
               }`}
             >
-              <Zap className="w-4 h-4 text-amber-600 fill-amber-600 animate-bounce" />
-              Free Guest Practice Drill
+              <Zap className="w-3.5 h-3.5 text-amber-600 fill-amber-600 animate-bounce" />
+              <span>Free Guest Drill</span>
             </button>
           </div>
         </div>
 
-        <div className="p-6 md:p-8">
+        <div className="p-4 sm:p-6 md:p-8">
           
           {/* Error and Success notifications */}
           {error && (
