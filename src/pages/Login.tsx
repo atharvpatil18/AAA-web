@@ -294,40 +294,42 @@ export default function Login() {
       <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-vibrant-orange/10 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-vibrant-teal/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      {/* Speed Math SOP User Manual & Academy Brochure Access Banner (Top Priority Position) */}
-      <div className="w-full max-w-2xl mb-6 p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/15 to-amber-500/15 border-2 border-amber-500/50 text-slate-900 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-md relative z-10">
-        <div className="flex items-center space-x-3">
-          <div className="p-3 bg-vibrant-orange text-white rounded-2xl shadow-md shrink-0">
-            <BookOpen className="w-6 h-6" />
+      {/* Concise & Simplified Speed Math Resource Banner */}
+      <div className="w-full max-w-2xl mb-6 p-4 rounded-3xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-2 border-amber-400/40 text-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm relative z-10">
+        <div className="flex items-center gap-3">
+          <div className="p-3 bg-gradient-to-br from-amber-500 to-orange-500 text-slate-950 rounded-2xl shadow-md shrink-0">
+            <BookOpen className="w-5 h-5 fill-slate-950" />
           </div>
           <div>
-            <span className="text-[10px] font-black text-vibrant-orange bg-vibrant-orange/10 px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block">
-              📖 Official Resource & User Manual (Refer Before Free Guest Drill)
-            </span>
-            <h4 className="font-black text-sm text-vibrant-dark mt-0.5">
-              Speed Math SOP User Manual & Academy Brochure (2-Page A4 PDF)
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-black text-amber-950 bg-amber-400/30 border border-amber-400/50 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                ⚡ ACADEMY SOP GUIDE
+              </span>
+            </div>
+            <h4 className="font-black text-sm text-slate-900 mt-1 leading-snug">
+              Speed Math SOP Manual & Academy Brochure
             </h4>
-            <p className="text-xs text-gray-650 font-semibold mt-0.5">
-              Review our 3-Mode Practice SOP, NEP 2020 cognitive math framework, parent diagnostic workflow, and syllabus comparison before selecting your free drill.
+            <p className="text-xs text-slate-650 font-bold mt-0.5">
+              3-Mode Practice SOP • NEP 2020 Math Framework • Curriculum Standards
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 w-full md:w-auto shrink-0 flex-wrap sm:flex-nowrap">
+        <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
           <Link
             to="/brochure?tab=manual"
-            className="flex-1 sm:flex-initial px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center"
+            className="flex-1 sm:flex-initial px-3.5 py-2.5 bg-slate-950 hover:bg-slate-900 text-amber-400 font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center"
           >
             <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-            View Online Manual
+            <span>Read Manual</span>
           </Link>
           <button
             type="button"
             onClick={() => generateBrochurePDF(language)}
-            className="flex-1 sm:flex-initial px-4 py-2.5 bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center"
+            className="flex-1 sm:flex-initial px-3.5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-black text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer text-center"
           >
-            <Rocket className="w-3.5 h-3.5" />
-            Download PDF
+            <Rocket className="w-3.5 h-3.5 fill-slate-950" />
+            <span>Get PDF</span>
           </button>
         </div>
       </div>
