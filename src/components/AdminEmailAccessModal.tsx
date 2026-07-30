@@ -241,13 +241,66 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
 
   if (!isOpen) return null;
 
+  // Combine stored feedbacks + all guest attempt emails + active guest user so no visitor activity is ever hidden
+  const allCombinedFeedbacks = (() => {
+    const feedbackMap = new Map<string, VisitorFeedback>();
+
+    feedbacks.forEach((fb) => {
+      if (fb.guestEmail) {
+        feedbackMap.set(fb.guestEmail.toLowerCase().trim(), fb);
+      }
+    });
+
+    allAttempts.forEach((att) => {
+      const email = (att.userEmail || att.userId || "").toLowerCase().trim();
+      if (email && email.includes("@")) {
+        const existing = feedbackMap.get(email);
+        if (!existing) {
+          feedbackMap.set(email, {
+            id: `att_visitor_${email}_${att.timestamp || Date.now()}`,
+            guestEmail: email,
+            guestName: att.userName || email.split("@")[0],
+            rating: att.scorePercentage >= 75 ? 5 : 4,
+            message: `🎯 Completed Practice Drill: ${att.setTitle || att.level || "Speed Drill"} (${att.scorePercentage}% Score, ${att.correctCount}/${att.totalQuestions} Correct)`,
+            sampleScore: `${att.scorePercentage}% (${att.correctCount}/${att.totalQuestions})`,
+            submittedAt: att.completedAt ? new Date(att.completedAt).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) : "Recently",
+            timestamp: att.timestamp || (att.completedAt ? new Date(att.completedAt).getTime() : Date.now()),
+          });
+        }
+      }
+    });
+
+    try {
+      const rawGuest = localStorage.getItem("aaa_guest_user");
+      if (rawGuest) {
+        const guestObj = JSON.parse(rawGuest);
+        const email = (guestObj.email || "").toLowerCase().trim();
+        if (email && email.includes("@") && !feedbackMap.has(email)) {
+          feedbackMap.set(email, {
+            id: `guest_user_${email}`,
+            guestEmail: email,
+            guestName: guestObj.name || email.split("@")[0],
+            rating: 5,
+            message: `🔑 Verified Google Guest Practice Session Active`,
+            submittedAt: "Active Session",
+            timestamp: Date.now(),
+          });
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    return Array.from(feedbackMap.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+  })();
+
   const filteredRecords = records.filter(
     (r) =>
       r.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (r.studentName && r.studentName.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  const filteredFeedbacks = feedbacks.filter(
+  const filteredFeedbacks = allCombinedFeedbacks.filter(
     (f) =>
       f.guestEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (f.guestName && f.guestName.toLowerCase().includes(searchTerm.toLowerCase())) ||
@@ -315,7 +368,7 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
             }`}
           >
             <MessageSquare className="w-4 h-4 text-amber-400" />
-            Visitor Feedback Manager ({feedbacks.length})
+            Visitor Feedback Manager ({allCombinedFeedbacks.length})
           </button>
           <button
             onClick={() => setActiveTab("stories")}

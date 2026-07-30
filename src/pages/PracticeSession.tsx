@@ -260,6 +260,38 @@ export default function PracticeSession() {
               userAnswers: results.userAnswers,
               questions: questionSet.questions,
             };
+
+            // Store in global attempts DB and sync across mobile/desktop via student email or guest email
+            let guestObj: any = {};
+            try {
+              const raw = localStorage.getItem("aaa_guest_user");
+              if (raw) guestObj = JSON.parse(raw);
+            } catch (e) {
+              guestObj = {};
+            }
+
+            const activeEmail = (currentUser?.email || guestObj.email || "guest_visitor@arnavabacus.com").toLowerCase().trim();
+            const activeName = currentUser?.name || guestObj.name || (activeEmail.includes("@") ? activeEmail.split("@")[0] : "Guest Candidate");
+
+            const attemptRecord = {
+              ...resultPayload,
+              userId: currentUser?.id || activeEmail,
+              userName: activeName,
+              userEmail: activeEmail,
+            };
+            saveStudentAttempt(attemptRecord);
+
+            // Auto-record sample visitor test into Admin Visitor Feedback Manager
+            if (!currentUser && activeEmail && activeEmail.includes("@")) {
+              saveVisitorFeedback({
+                guestEmail: activeEmail,
+                guestName: activeName,
+                rating: results.scorePercentage >= 75 ? 5 : 4,
+                message: `🎯 Completed Speed Practice Drill: ${questionSet.title} (${questionSet.level}) — Score: ${results.scorePercentage}% (${results.correctCount}/${questionSet.questions.length} Correct in ${results.timeTakenSeconds}s).`,
+                sampleScore: `${results.scorePercentage}% (${results.correctCount}/${questionSet.questions.length})`,
+              });
+            }
+
             sessionStorage.setItem("last_practice_result", JSON.stringify(resultPayload));
             navigate("/practice/results");
           }}
