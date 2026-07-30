@@ -29,7 +29,7 @@ export default function BlogPostDetail() {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        if (parsed[0]?.author?.name !== "Neha Patil" || parsed[0]?.coverImage !== INITIAL_BLOG_POSTS[0].coverImage) {
+        if (parsed[0]?.id !== "blog-0" || !parsed[0]?.content.includes("[CLAIM_FREE_DEMO_BUTTON]")) {
           allPosts = INITIAL_BLOG_POSTS;
           localStorage.setItem("aaa_blog_posts", JSON.stringify(INITIAL_BLOG_POSTS));
         } else {
@@ -41,6 +41,7 @@ export default function BlogPostDetail() {
     } else {
       localStorage.setItem("aaa_blog_posts", JSON.stringify(INITIAL_BLOG_POSTS));
     }
+
 
 
     setPosts(allPosts);

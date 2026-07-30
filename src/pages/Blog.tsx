@@ -21,15 +21,15 @@ export default function Blog() {
         const parsed = JSON.parse(stored);
         // Sync author or image update if cached old data exists
         if (
-          parsed[0]?.author?.name !== INITIAL_BLOG_POSTS[0].author.name ||
-          parsed[2]?.author?.name !== INITIAL_BLOG_POSTS[2].author.name ||
-          parsed[0]?.coverImage !== INITIAL_BLOG_POSTS[0].coverImage
+          parsed[0]?.id !== "blog-0" ||
+          !parsed[0]?.content.includes("[CLAIM_FREE_DEMO_BUTTON]")
         ) {
           localStorage.setItem("aaa_blog_posts", JSON.stringify(INITIAL_BLOG_POSTS));
           setPosts(INITIAL_BLOG_POSTS);
         } else {
           setPosts(parsed);
         }
+
 
       } catch (e) {
         setPosts(INITIAL_BLOG_POSTS);
