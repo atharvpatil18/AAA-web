@@ -14,6 +14,7 @@ import { generateBrochurePDF } from "../lib/brochure";
 import { useLanguage } from "../lib/LanguageContext";
 import { getQuestionSetById } from "../data/practiceData";
 import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login() {
   const { sendEmailOTP, verifyEmailOTP, loginWithGoogleCredential } = useAuth();
@@ -615,12 +616,45 @@ export default function Login() {
               )}
             </div>
           )}
-
           {/* MODE 2: Free Guest Sample Practice Drills Screen */}
           {authMode === "guest" && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <form onSubmit={handleStartGuestPractice} className="space-y-5">
-                {/* Guest Email Inputs */}
+                {/* 1-Click Instant Google Sign-In for Free Guest Practice */}
+                <div className="p-3.5 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 rounded-2xl border-2 border-amber-400/40 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[10px] font-black text-amber-950 uppercase tracking-wider block">
+                      ⚡ 1-CLICK INSTANT GUEST DRILL WITH GOOGLE
+                    </span>
+                    <p className="text-xs text-slate-650 font-bold">
+                      Auto-fill email & name to start practice instantly
+                    </p>
+                  </div>
+                  <div className="shrink-0">
+                    <GoogleLogin
+                      onSuccess={(credentialResponse) => {
+                        if (credentialResponse?.credential) {
+                          try {
+                            const decoded: any = jwtDecode(credentialResponse.credential);
+                            const email = decoded.email || "";
+                            const name = decoded.name || email.split("@")[0] || "Guest";
+                            setGuestEmail(email);
+                            setGuestName(name);
+                          } catch (e) {
+                            console.error("Google Guest token decode error:", e);
+                          }
+                        }
+                      }}
+                      onError={() => setError("Google Guest Sign-In failed.")}
+                      theme="filled_blue"
+                      shape="pill"
+                      size="medium"
+                      text="continue_with"
+                    />
+                  </div>
+                </div>
+
+                {/* User Input */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
@@ -646,7 +680,7 @@ export default function Login() {
                     <input
                       type="text"
                       value={guestName}
-                  onChange={(e) => setGuestName(e.target.value)}
+                      onChange={(e) => setGuestName(e.target.value)}
                       placeholder="Your Name (for Leaderboard)"
                       className="w-full px-4 py-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-amber-500 focus:bg-white transition"
                     />
