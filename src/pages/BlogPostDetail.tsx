@@ -248,11 +248,119 @@ export default function BlogPostDetail() {
           <img src={post.coverImage} alt={post.title} className="w-full h-80 sm:h-96 object-cover" />
         </div>
 
-        {/* Article Body */}
-        <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-slate-200 space-y-8">
-          <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed text-sm sm:text-base whitespace-pre-line font-normal">
-            {post.content}
+        {/* Article Body with Premium Blog Typography */}
+        <div className="bg-white rounded-3xl p-6 sm:p-12 shadow-sm border border-slate-200 space-y-8">
+          <div className="article-body text-slate-800 leading-relaxed text-base space-y-6">
+            {post.content.split("\n\n").map((block, idx) => {
+              const trimmed = block.trim();
+              if (!trimmed) return null;
+
+              // H3 Headings
+              if (trimmed.startsWith("### ")) {
+                return (
+                  <h3 key={idx} className="text-xl sm:text-2xl font-black text-slate-900 pt-6 pb-2 border-b border-amber-200/60 flex items-center gap-2">
+                    <span className="w-2 h-6 bg-vibrant-orange rounded-full inline-block"></span>
+                    {trimmed.replace("### ", "")}
+                  </h3>
+                );
+              }
+
+              // H4 Headings
+              if (trimmed.startsWith("#### ")) {
+                return (
+                  <h4 key={idx} className="text-lg font-black text-slate-900 pt-4 text-vibrant-orange">
+                    {trimmed.replace("#### ", "")}
+                  </h4>
+                );
+              }
+
+              // Blockquotes
+              if (trimmed.startsWith("> ")) {
+                return (
+                  <blockquote key={idx} className="my-6 p-6 bg-amber-50/80 border-l-4 border-vibrant-orange rounded-r-2xl italic text-slate-800 font-medium text-sm sm:text-base shadow-xs">
+                    {trimmed.replace("> ", "").replace(/\"/g, "")}
+                  </blockquote>
+                );
+              }
+
+              // Horizontal Divider
+              if (trimmed === "---") {
+                return <hr key={idx} className="my-8 border-slate-200" />;
+              }
+
+              // Markdown Tables
+              if (trimmed.includes("|")) {
+                const rows = trimmed.split("\n").filter(r => !r.includes(":---"));
+                if (rows.length > 0) {
+                  return (
+                    <div key={idx} className="my-6 overflow-x-auto rounded-2xl border border-slate-200 shadow-xs">
+                      <table className="w-full text-left text-xs sm:text-sm">
+                        {rows.map((row, rIdx) => {
+                          const cols = row.split("|").filter(c => c.trim() !== "");
+                          if (rIdx === 0) {
+                            return (
+                              <thead key={rIdx} className="bg-slate-900 text-white font-bold uppercase text-[11px] tracking-wider">
+                                <tr>
+                                  {cols.map((c, cIdx) => (
+                                    <th key={cIdx} className="p-3.5 sm:p-4">{c.replace(/\*\*/g, "").trim()}</th>
+                                  ))}
+                                </tr>
+                              </thead>
+                            );
+                          }
+                          return (
+                            <tbody key={rIdx} className="divide-y divide-slate-100 bg-white">
+                              <tr className="hover:bg-slate-50/80 transition-colors">
+                                {cols.map((c, cIdx) => (
+                                  <td key={cIdx} className="p-3.5 sm:p-4 text-slate-700 font-medium">{c.replace(/\*\*/g, "").trim()}</td>
+                                ))}
+                              </tr>
+                            </tbody>
+                          );
+                        })}
+                      </table>
+                    </div>
+                  );
+                }
+              }
+
+              // Bullet List Items
+              if (trimmed.startsWith("- ")) {
+                const items = trimmed.split("\n- ");
+                return (
+                  <ul key={idx} className="space-y-2.5 my-4">
+                    {items.map((item, iIdx) => {
+                      const cleanItem = item.replace(/^- /, "").trim();
+                      const parts = cleanItem.split(":");
+                      return (
+                        <li key={iIdx} className="flex items-start gap-3 bg-slate-50/70 p-3 rounded-xl border border-slate-100">
+                          <span className="w-5 h-5 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</span>
+                          <span className="text-sm font-medium text-slate-700 leading-normal">
+                            {parts.length > 1 ? (
+                              <>
+                                <strong className="text-slate-900 font-bold">{parts[0].replace(/\*\*/g, "")}:</strong>
+                                {parts.slice(1).join(":")}
+                              </>
+                            ) : (
+                              cleanItem.replace(/\*\*/g, "")
+                            )}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                );
+              }
+
+              // Standard Readable Paragraph
+              return (
+                <p key={idx} className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
+                  {trimmed}
+                </p>
+              );
+            })}
           </div>
+
 
           {/* Interactive In-Article Mini Vedic Math Game Widget if on Vedic Post */}
           {post.category === "Vedic Math" && (
