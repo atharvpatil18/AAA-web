@@ -1081,16 +1081,22 @@ export default function Login() {
 
                 {/* Launch Button with Dynamic Caption & PDF Download Option */}
                 <div className="space-y-3 pt-1">
-                  <button
-                    type="submit"
-                    className="w-full py-4 px-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-xs sm:text-sm rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.01] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300 uppercase tracking-tight"
-                  >
-                    <Rocket className="w-5 h-5 fill-slate-950 animate-bounce shrink-0" />
-                    <span>
-                      START FREE GUEST PRACTICE DRILL ({selectedQuestionCount} Qs • {selectedTimeMinutes} MINS • {selectedTopicMode === "single" ? "SINGLE DIGIT DIRECT" : selectedTopicMode === "double" ? "DOUBLE DIGIT DIRECT" : "BOTH SINGLE & DOUBLE"})
-                    </span>
-                    <ArrowRight className="w-5 h-5 shrink-0" />
-                  </button>
+                  {(() => {
+                    const currentSetObj = getQuestionSetById(selectedSampleSetId);
+                    const currentTopicLabel = currentSetObj ? currentSetObj.title.replace(/^\d+\s+Questions\s*-\s*/i, "").toUpperCase() : "SPEED MATH DRILL";
+                    return (
+                      <button
+                        type="submit"
+                        className="w-full py-4 px-6 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-700 text-slate-950 font-black text-xs sm:text-sm rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.01] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300 uppercase tracking-tight"
+                      >
+                        <Rocket className="w-5 h-5 fill-slate-950 animate-bounce shrink-0" />
+                        <span>
+                          START FREE GUEST PRACTICE DRILL ({selectedQuestionCount} Qs • {selectedTimeMinutes} MINS • {currentTopicLabel})
+                        </span>
+                        <ArrowRight className="w-5 h-5 shrink-0" />
+                      </button>
+                    );
+                  })()}
 
                   {/* Printable PDF Worksheet Distribution Options */}
                   <div className="p-4 bg-slate-900 text-white rounded-2xl border border-slate-800 space-y-3 shadow-md">
