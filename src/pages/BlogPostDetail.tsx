@@ -95,7 +95,7 @@ export default function BlogPostDetail() {
     localStorage.setItem("aaa_blog_posts", JSON.stringify(updatedPostsList));
   };
 
-  // Handle In-Blog Poll Vote
+  // Handle In-Blog Poll Vote & Save Team Analytics Data
   const handlePollVote = (optionId: string) => {
     if (!post || !post.poll || votedOptionId) return;
 
@@ -112,10 +112,22 @@ export default function BlogPostDetail() {
     setVotedOptionId(optionId);
     localStorage.setItem(`aaa_poll_voted_${post.poll.id}`, optionId);
 
+    // Save to Team Analytics Database (for parent psychology & curriculum research)
+    const analytics = JSON.parse(localStorage.getItem("aaa_poll_analytics") || "[]");
+    analytics.push({
+      pollId: post.poll.id,
+      question: post.poll.question,
+      selectedOptionId: optionId,
+      selectedOptionText: post.poll.options.find(o => o.id === optionId)?.text,
+      timestamp: new Date().toISOString()
+    });
+    localStorage.setItem("aaa_poll_analytics", JSON.stringify(analytics));
+
     const updatedPostsList = posts.map((p) => (p.id === post.id ? updatedPost : p));
     setPosts(updatedPostsList);
     localStorage.setItem("aaa_blog_posts", JSON.stringify(updatedPostsList));
   };
+
 
   // Basic Profanity & Slang moderation list
   const BAD_WORDS = [
