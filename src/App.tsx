@@ -9,20 +9,23 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingCTA from "./components/FloatingCTA";
 import Home from "./pages/Home";
-import Mentor from "./pages/Mentor";
-import Programs from "./pages/Programs";
-import Contact from "./pages/Contact";
-import Faqs from "./pages/Faqs";
-import CampaignPage from "./pages/CampaignPage";
-import Showcase from "./pages/Showcase";
-import NewsEvents from "./pages/NewsEvents";
-import InteractiveBrochure from "./pages/InteractiveBrochure";
-import PracticeHub from "./pages/PracticeHub";
-import PracticeSession from "./pages/PracticeSession";
-import PracticeResult from "./pages/PracticeResult";
-import Login from "./pages/Login";
-import Blog from "./pages/Blog";
-import BlogPostDetail from "./pages/BlogPostDetail";
+
+// React.lazy dynamic code splitting for sub-routes to optimize initial bundle load speed
+const Mentor = React.lazy(() => import("./pages/Mentor"));
+const Programs = React.lazy(() => import("./pages/Programs"));
+const Contact = React.lazy(() => import("./pages/Contact"));
+const Faqs = React.lazy(() => import("./pages/Faqs"));
+const CampaignPage = React.lazy(() => import("./pages/CampaignPage"));
+const Showcase = React.lazy(() => import("./pages/Showcase"));
+const NewsEvents = React.lazy(() => import("./pages/NewsEvents"));
+const InteractiveBrochure = React.lazy(() => import("./pages/InteractiveBrochure"));
+const PracticeHub = React.lazy(() => import("./pages/PracticeHub"));
+const PracticeSession = React.lazy(() => import("./pages/PracticeSession"));
+const PracticeResult = React.lazy(() => import("./pages/PracticeResult"));
+const Login = React.lazy(() => import("./pages/Login"));
+const Blog = React.lazy(() => import("./pages/Blog"));
+const BlogPostDetail = React.lazy(() => import("./pages/BlogPostDetail"));
+
 
 
 import { LanguageProvider } from "./lib/LanguageContext";
@@ -147,31 +150,40 @@ export default function App() {
 
           {/* Core dynamic route component view */}
           <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/mentor" element={<Mentor />} />
-              <Route path="/programs" element={<Programs />} />
-              
-              {/* Authenticated Practice Hub sub-routes */}
-              <Route path="/practice" element={<ProtectedRoute><PracticeHub /></ProtectedRoute>} />
-              <Route path="/practice/session" element={<ProtectedRoute><PracticeSession /></ProtectedRoute>} />
-              <Route path="/practice/results" element={<ProtectedRoute><PracticeResult /></ProtectedRoute>} />
-              
-              <Route path="/login" element={<Login />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/showcase" element={<Showcase />} />
-              <Route path="/gallery" element={<Showcase defaultTab="gallery" />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogPostDetail />} />
-              <Route path="/news" element={<NewsEvents />} />
+            <React.Suspense
+              fallback={
+                <div className="min-h-[60vh] flex items-center justify-center">
+                  <div className="w-8 h-8 border-4 border-vibrant-orange border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              }
+            >
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/mentor" element={<Mentor />} />
+                <Route path="/programs" element={<Programs />} />
+                
+                {/* Authenticated Practice Hub sub-routes */}
+                <Route path="/practice" element={<ProtectedRoute><PracticeHub /></ProtectedRoute>} />
+                <Route path="/practice/session" element={<ProtectedRoute><PracticeSession /></ProtectedRoute>} />
+                <Route path="/practice/results" element={<ProtectedRoute><PracticeResult /></ProtectedRoute>} />
+                
+                <Route path="/login" element={<Login />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/showcase" element={<Showcase />} />
+                <Route path="/gallery" element={<Showcase defaultTab="gallery" />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:slug" element={<BlogPostDetail />} />
+                <Route path="/news" element={<NewsEvents />} />
 
-              <Route path="/faqs" element={<Faqs />} />
-              <Route path="/brochure" element={<InteractiveBrochure />} />
-              <Route path="/campaigns/:slug" element={<CampaignPage />} />
-              {/* Fallback routing */}
-              <Route path="*" element={<Home />} />
-            </Routes>
+                <Route path="/faqs" element={<Faqs />} />
+                <Route path="/brochure" element={<InteractiveBrochure />} />
+                <Route path="/campaigns/:slug" element={<CampaignPage />} />
+                {/* Fallback routing */}
+                <Route path="*" element={<Home />} />
+              </Routes>
+            </React.Suspense>
           </main>
+
 
           {/* Footers for branding, socials and locations */}
           <Footer />

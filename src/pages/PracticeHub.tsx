@@ -511,7 +511,7 @@ export default function PracticeHub() {
               <Medal className="w-4.5 h-4.5" />
               My Performance History
             </button>
-             <button
+            <button
               onClick={() => setHubTab("leaderboard")}
               className={`flex items-center gap-2 py-3.5 px-6 font-black text-sm border-b-4 transition-all whitespace-nowrap cursor-pointer ${
                 hubTab === "leaderboard"
@@ -520,7 +520,14 @@ export default function PracticeHub() {
               }`}
             >
               <Trophy className="w-4.5 h-4.5" />
-              Leaderboards
+              Student Rank Leaderboard
+            </button>
+            <button
+              onClick={() => setHubTab("performance")}
+              className="flex items-center gap-2 py-3.5 px-6 font-black text-sm border-b-4 border-transparent text-amber-600 hover:text-amber-800 transition-all whitespace-nowrap cursor-pointer ml-auto"
+            >
+              <Flame className="w-4.5 h-4.5 text-orange-500 fill-orange-500 animate-pulse" />
+              🔥 5-Day Daily Streak
             </button>
             {currentUser && isUserAdmin(currentUser.email) && (
               <button
