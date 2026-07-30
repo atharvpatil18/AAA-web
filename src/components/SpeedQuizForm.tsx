@@ -32,8 +32,10 @@ export default function SpeedQuizForm({
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const questions = questionSet?.questions || [];
-  const totalQuestions = questions.length || 1;
+  const questions = (Array.isArray(questionSet?.questions) && questionSet.questions.length > 0)
+    ? questionSet.questions
+    : [{ id: 1, numbers: [5, 3, 2], correctAnswer: 10, conceptTag: "Speed Practice" }];
+  const totalQuestions = questions.length;
 
   // React Hook Form initialization
   const { control, handleSubmit, getValues } = useForm<QuizFormValues>({

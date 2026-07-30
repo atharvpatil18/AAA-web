@@ -5168,139 +5168,136 @@ export function getCustomizedSet(
     timeLimitSeconds = customTimeSeconds || 1200;
   }
 
-  // Synthesize questions deterministically for the given attempt seed
+  // Synthesize questions deterministically for the given attempt seed with STRICT ZERO-REPETITION deduplication
   const expandedQuestions: Question[] = [];
+  const seenSignatures = new Set<string>();
 
-  if (setId.endsWith("-overall")) {
-    const allSets = getAllQuestionSets();
-    const siblingSets = allSets.filter(
-      (s) => s.category === base.category && s.level === base.level && !s.id.endsWith("-overall")
-    );
+  for (let i = 0; i < targetCount; i++) {
+    let finalQ: Question | null = null;
 
-    if (siblingSets.length > 0) {
-      for (let i = 0; i < targetCount; i++) {
-        const sibling = siblingSets[i % siblingSets.length];
-        const dynamicQ = generateDynamicAbacusQuestion(sibling.id, i + 1, seed);
+    if (setId.endsWith("-overall")) {
+      const allSets = getAllQuestionSets();
+      const siblingSets = allSets.filter(
+        (s) => s.category === base.category && s.level === base.level && !s.id.endsWith("-overall")
+      );
 
-        if (dynamicQ) {
-          expandedQuestions.push({
-            ...dynamicQ,
-            id: i + 1,
-            conceptTag: `${base.level} Overall [${sibling.title}]`,
-          });
-        } else if (sibling.questions && sibling.questions.length > 0) {
-          const siblingQ = sibling.questions[i % sibling.questions.length];
-          expandedQuestions.push({
-            ...siblingQ,
-            id: i + 1,
-            conceptTag: `${base.level} Overall [${sibling.title}]`,
-          });
-        } else {
-          const hasBaseQuestions = Array.isArray(base?.questions) && base.questions.length > 0;
-          const baseQ = hasBaseQuestions
-            ? base.questions[i % base.questions.length]
-            : { id: i + 1, numbers: [2, 5, -1], correctAnswer: 6, conceptTag: `${base.level} Overall` };
-
-          const fallbackNumbers = baseQ.numbers || (baseQ.expression ? undefined : [2, 5, -1]);
-          const fallbackExpression = baseQ.expression || (!baseQ.numbers ? "5 + 3" : undefined);
-          const fallbackAns = typeof baseQ.correctAnswer === "number" ? baseQ.correctAnswer : (fallbackNumbers ? fallbackNumbers.reduce((a, b) => a + b, 0) : 8);
-
-          expandedQuestions.push({
-            ...baseQ,
-            id: i + 1,
-            numbers: fallbackNumbers,
-            expression: fallbackExpression,
-            correctAnswer: fallbackAns,
-            conceptTag: baseQ.conceptTag || `${base.level} Overall`,
-          });
+      if (siblingSets.length > 0) {
+        for (let tryCount = 0; tryCount < 15; tryCount++) {
+          const sibling = siblingSets[(i + tryCount) % siblingSets.length];
+          const cand = generateDynamicAbacusQuestion(sibling.id, i + 1, `${seed}_q${i}_try${tryCount}`);
+          if (cand) {
+            const sig = cand.numbers ? cand.numbers.join(",") : (cand.expression || `${cand.correctAnswer}`);
+            if (!seenSignatures.has(sig)) {
+              seenSignatures.add(sig);
+              finalQ = {
+                ...cand,
+                id: i + 1,
+                conceptTag: `${base.level} Overall [${sibling.title}]`,
+              };
+              break;
+            }
+          }
         }
       }
-    }
-  }
-
-  if (setId === "abacus-sr-mixed-direct-under100" || setId === "abacus-sr-mixed-direct") {
-    for (let i = 0; i < targetCount; i++) {
+    } else if (setId === "abacus-sr-mixed-direct-under100" || setId === "abacus-sr-mixed-direct") {
       const targetSubSet = i % 2 === 0 ? "abacus-sr1-single-direct-5-6row" : "abacus-sr2-double-direct";
-      const dynamicQ = generateDynamicAbacusQuestion(targetSubSet, i + 1, seed);
-      if (dynamicQ) {
-        // Ensure final sum is < 100
-        let numbers = dynamicQ.numbers;
-        let sum = numbers.reduce((a, b) => a + b, 0);
-        if (sum >= 100) {
-          numbers = [24, 15, -12, 30]; // 57 (< 100)
-          sum = 57;
+      for (let tryCount = 0; tryCount < 15; tryCount++) {
+        const cand = generateDynamicAbacusQuestion(targetSubSet, i + 1, `${seed}_q${i}_try${tryCount}`);
+        if (cand) {
+          let numbers = cand.numbers;
+          let sum = numbers.reduce((a, b) => a + b, 0);
+          if (sum >= 100) {
+            numbers = [24 + (i % 5), 15, -12, 30];
+            sum = numbers.reduce((a, b) => a + b, 0);
+          }
+          const sig = numbers.join(",");
+          if (!seenSignatures.has(sig)) {
+            seenSignatures.add(sig);
+            finalQ = {
+              ...cand,
+              id: i + 1,
+              numbers,
+              correctAnswer: sum,
+              conceptTag: "Mixed Direct (Sum < 100)",
+            };
+            break;
+          }
         }
-        expandedQuestions.push({
-          ...dynamicQ,
-          id: i + 1,
-          numbers,
-          correctAnswer: sum,
-          conceptTag: "Mixed Direct (Sum < 100)",
-        });
-      } else {
-        expandedQuestions.push({
-          id: i + 1,
-          numbers: [24, 15, -12, 30],
-          correctAnswer: 57,
-          conceptTag: "Mixed Direct (Sum < 100)",
-        });
       }
-    }
-  } else if (setId === "abacus-sr-mixed-direct-over99") {
-    for (let i = 0; i < targetCount; i++) {
-      const dynamicQ = generateDynamicAbacusQuestion("abacus-sr2-double-direct", i + 1, seed);
-      if (dynamicQ) {
-        let numbers = dynamicQ.numbers;
-        let sum = numbers.reduce((a, b) => a + b, 0);
-        // Ensure total sum > 99
-        if (sum <= 99) {
-          const boost = 100 - sum + (i % 5) * 10 + 5;
-          numbers = [...numbers, boost];
-          sum += boost;
+    } else if (setId === "abacus-sr-mixed-direct-over99") {
+      for (let tryCount = 0; tryCount < 15; tryCount++) {
+        const cand = generateDynamicAbacusQuestion("abacus-sr2-double-direct", i + 1, `${seed}_q${i}_try${tryCount}`);
+        if (cand) {
+          let numbers = cand.numbers;
+          let sum = numbers.reduce((a, b) => a + b, 0);
+          if (sum <= 99) {
+            const boost = 100 - sum + (i % 5) * 10 + 5;
+            numbers = [...numbers, boost];
+            sum += boost;
+          }
+          const sig = numbers.join(",");
+          if (!seenSignatures.has(sig)) {
+            seenSignatures.add(sig);
+            finalQ = {
+              ...cand,
+              id: i + 1,
+              numbers,
+              correctAnswer: sum,
+              conceptTag: "Mixed Direct (Sum > 99)",
+            };
+            break;
+          }
         }
-        expandedQuestions.push({
-          ...dynamicQ,
-          id: i + 1,
-          numbers,
-          correctAnswer: sum,
-          conceptTag: "Mixed Direct (Sum > 99)",
-        });
-      } else {
-        expandedQuestions.push({
-          id: i + 1,
-          numbers: [45, 52, 18, -10],
-          correctAnswer: 105,
-          conceptTag: "Mixed Direct (Sum > 99)",
-        });
       }
     }
-  }
 
-  if (expandedQuestions.length === 0) {
-    for (let i = 0; i < targetCount; i++) {
-      const dynamicQ = generateDynamicAbacusQuestion(setId, i + 1, seed);
-      if (dynamicQ) {
-        expandedQuestions.push(dynamicQ);
-      } else {
-        const hasBaseQuestions = Array.isArray(base?.questions) && base.questions.length > 0;
-        const baseQ = hasBaseQuestions
-          ? base.questions[i % base.questions.length]
-          : { id: i + 1, numbers: [2, 5, -1], correctAnswer: 6, conceptTag: "Speed Practice Drill" };
-
-        const fallbackNumbers = baseQ.numbers || (baseQ.expression ? undefined : [2, 5, -1]);
-        const fallbackExpression = baseQ.expression || (!baseQ.numbers ? "5 + 3" : undefined);
-        const fallbackAns = typeof baseQ.correctAnswer === "number" ? baseQ.correctAnswer : (fallbackNumbers ? fallbackNumbers.reduce((a, b) => a + b, 0) : 8);
-
-        expandedQuestions.push({
-          ...baseQ,
-          id: i + 1,
-          numbers: fallbackNumbers,
-          expression: fallbackExpression,
-          correctAnswer: fallbackAns,
-          conceptTag: baseQ.conceptTag || "Practice Question",
-        });
+    // Default dynamic generator with deduplication retry
+    if (!finalQ) {
+      for (let tryCount = 0; tryCount < 15; tryCount++) {
+        const cand = generateDynamicAbacusQuestion(setId, i + 1, `${seed}_q${i}_try${tryCount}`);
+        if (cand) {
+          const sig = cand.numbers ? cand.numbers.join(",") : (cand.expression || `${cand.correctAnswer}`);
+          if (!seenSignatures.has(sig)) {
+            seenSignatures.add(sig);
+            finalQ = { ...cand, id: i + 1 };
+            break;
+          }
+        }
       }
     }
+
+    // Static Base Question Fallback with Offset Mutation so numbers never repeat
+    if (!finalQ) {
+      const hasBaseQuestions = Array.isArray(base?.questions) && base.questions.length > 0;
+      const baseIndex = i % (hasBaseQuestions ? base.questions.length : 1);
+      const baseQ = hasBaseQuestions
+        ? base.questions[baseIndex]
+        : { id: i + 1, numbers: [2 + i, 5, -1], correctAnswer: 6 + i, conceptTag: "Speed Practice Drill" };
+
+      let fallbackNumbers = baseQ.numbers ? [...baseQ.numbers] : undefined;
+      if (fallbackNumbers && i >= (base.questions?.length || 1)) {
+        const offset = Math.floor(i / (base.questions?.length || 1));
+        fallbackNumbers = fallbackNumbers.map((n) => (n > 0 ? n + offset : Math.min(-1, n - offset)));
+      }
+
+      const sig = fallbackNumbers ? fallbackNumbers.join(",") : (baseQ.expression || `base_${i}`);
+      seenSignatures.add(sig);
+
+      const fallbackAns = fallbackNumbers
+        ? fallbackNumbers.reduce((a, b) => a + b, 0)
+        : (baseQ.correctAnswer || 8);
+
+      finalQ = {
+        ...baseQ,
+        id: i + 1,
+        numbers: fallbackNumbers,
+        expression: baseQ.expression,
+        correctAnswer: fallbackAns,
+        conceptTag: baseQ.conceptTag || "Practice Question",
+      };
+    }
+
+    expandedQuestions.push(finalQ);
   }
 
   return {
