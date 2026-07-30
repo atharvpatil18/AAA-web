@@ -164,6 +164,20 @@ export async function syncSuccessStoriesToCloud(): Promise<void> {
       if (res.ok) {
         console.log(`[Cloud Sync] ✅ ${stories.length} stories synced successfully to ${url}.`);
         return; // Success!
+      } else if (res.status === 429) {
+        console.warn(`[Cloud Sync] Endpoint ${url} rate-limited (HTTP 429). Retrying after 1.5s delay...`);
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        const retryRes = await fetch(url, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body,
+        });
+        if (retryRes.ok) {
+          console.log(`[Cloud Sync] ✅ ${stories.length} stories synced successfully after 429 retry.`);
+          return;
+        } else {
+          lastError = new Error(`HTTP 429: Too Many Requests`);
+        }
       } else {
         const errText = await res.text().catch(() => "");
         console.warn(`[Cloud Sync] Endpoint ${url} returned HTTP ${res.status}:`, errText);
