@@ -184,10 +184,11 @@ Calculated mentally in under 3 seconds! 🚀
     publishedAt: "July 20, 2026",
     tags: ["Parenting Tips", "Screen Time", "Child Habits", "Focus"],
     author: {
-      name: "Neha Patil",
-      role: "Founder & Director of Arnav Abacus Academy",
+      name: "Nitin Patil",
+      role: "Chief Mentor & Parent-Student Synergy Director",
       avatar: "🌱"
     },
+
 
     reactions: {
       insightful: 55,
