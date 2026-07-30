@@ -439,7 +439,7 @@ export default function GuestSampleGatewayModal({
                   </label>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className={`grid grid-cols-1 ${selectedCourse === "abacus" ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-3"} gap-3`}>
                   {selectedCourse === "abacus" && (
                     <>
                       {/* Abacus Topic 1 */}
@@ -496,28 +496,55 @@ export default function GuestSampleGatewayModal({
                         )}
                       </div>
 
-                      {/* Abacus Topic 3 */}
+                      {/* Abacus Topic 3: Both Mixed (Sum < 100) */}
                       <div
-                        onClick={() => setSelectedSetId("abacus-sr-mixed-direct")}
+                        onClick={() => setSelectedSetId("abacus-sr-mixed-direct-under100")}
                         className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
-                          selectedSetId === "abacus-sr-mixed-direct"
+                          selectedSetId === "abacus-sr-mixed-direct-under100" || selectedSetId === "abacus-sr-mixed-direct"
                             ? "border-purple-500 bg-purple-500/10 ring-2 ring-purple-400/40 shadow-md scale-[1.01]"
                             : "border-slate-200 bg-white hover:border-purple-300"
                         }`}
                       >
                         <div>
                           <span className="bg-purple-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
-                            ⚡ BOTH MIXED
+                            ⚡ BOTH MIXED (&lt; 100)
                           </span>
                           <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
-                            BOTH SINGLE & DOUBLE DIGIT
+                            BOTH SINGLE & DOUBLE (SUM &lt; 100)
                           </h4>
                           <p className="text-[10px] text-slate-500 font-semibold mt-1">
-                            Challenge both 1-digit & 2-digit mixed rows.
+                            1-Digit & 2-Digit mixed rows with total sum less than 100.
                           </p>
                         </div>
-                        {selectedSetId === "abacus-sr-mixed-direct" && (
+                        {(selectedSetId === "abacus-sr-mixed-direct-under100" || selectedSetId === "abacus-sr-mixed-direct") && (
                           <span className="mt-2 text-[9px] font-black text-white bg-purple-600 px-2 py-0.5 rounded-md self-start shadow-xs">
+                            ✓ SELECTED
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Abacus Topic 4: Both Mixed (Sum > 99) */}
+                      <div
+                        onClick={() => setSelectedSetId("abacus-sr-mixed-direct-over99")}
+                        className={`p-3 rounded-2xl border-2 transition-all cursor-pointer relative flex flex-col justify-between group ${
+                          selectedSetId === "abacus-sr-mixed-direct-over99"
+                            ? "border-rose-600 bg-rose-600/10 ring-2 ring-rose-500/40 shadow-md scale-[1.01]"
+                            : "border-slate-200 bg-white hover:border-rose-300"
+                        }`}
+                      >
+                        <div>
+                          <span className="bg-rose-600 text-white text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            🚀 BOTH MIXED (&gt; 99)
+                          </span>
+                          <h4 className="font-black text-xs text-slate-900 mt-2 leading-tight">
+                            BOTH SINGLE & DOUBLE (SUM &gt; 99)
+                          </h4>
+                          <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                            1-Digit & 2-Digit mixed rows with total sum greater than 99.
+                          </p>
+                        </div>
+                        {selectedSetId === "abacus-sr-mixed-direct-over99" && (
+                          <span className="mt-2 text-[9px] font-black text-white bg-rose-600 px-2 py-0.5 rounded-md self-start shadow-xs">
                             ✓ SELECTED
                           </span>
                         )}

@@ -341,6 +341,34 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
 
   // SR-1 Curriculum Sets
   {
+    id: "abacus-sr-mixed-direct-under100",
+    title: "BOTH SINGLE & DOUBLE DIGIT (SUM < 100)",
+    category: "abacus",
+    level: "SR-1",
+    topic: "Mixed Single & Double Digit (Sum < 100)",
+    description: "Speed practice combining 1-digit & 2-digit mixed rows where addition sum is less than 100.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [24, 15, -12, 30], correctAnswer: 57, conceptTag: "Mixed (Sum < 100)" },
+      { id: 2, numbers: [12, 5, 31, -8, 20], correctAnswer: 60, conceptTag: "Mixed (Sum < 100)" },
+    ]
+  },
+  {
+    id: "abacus-sr-mixed-direct-over99",
+    title: "BOTH SINGLE & DOUBLE DIGIT (SUM > 99)",
+    category: "abacus",
+    level: "SR-1",
+    topic: "Mixed Single & Double Digit (Sum > 99)",
+    description: "Speed practice combining 1-digit & 2-digit mixed rows where addition sum is more than 99.",
+    questionCount: 20,
+    timeLimitSeconds: 240,
+    questions: [
+      { id: 1, numbers: [45, 52, 18, -10], correctAnswer: 105, conceptTag: "Mixed (Sum > 99)" },
+      { id: 2, numbers: [38, 44, 25, -5], correctAnswer: 102, conceptTag: "Mixed (Sum > 99)" },
+    ]
+  },
+  {
     id: "abacus-sr-mixed-direct",
     title: "BOTH SINGLE & DOUBLE DIGIT DIRECT (4-5-6 ROWS)",
     category: "abacus",
@@ -350,7 +378,7 @@ export const ABACUS_QUESTION_SETS: QuestionSet[] = [
     questionCount: 20,
     timeLimitSeconds: 240,
     questions: [
-      { id: 1, numbers: [2, 5, -1, 3], correctAnswer: 9, conceptTag: "Single Digit Direct" },
+      { id: 1, numbers: [24, 15, -12, 30], correctAnswer: 57, conceptTag: "Single & Double Direct" },
       { id: 2, numbers: [24, 15, -12, 30], correctAnswer: 57, conceptTag: "Double Digit Direct" },
     ]
   },
@@ -5190,22 +5218,59 @@ export function getCustomizedSet(
     }
   }
 
-  if (setId === "abacus-sr-mixed-direct") {
+  if (setId === "abacus-sr-mixed-direct-under100" || setId === "abacus-sr-mixed-direct") {
     for (let i = 0; i < targetCount; i++) {
       const targetSubSet = i % 2 === 0 ? "abacus-sr1-single-direct-5-6row" : "abacus-sr2-double-direct";
       const dynamicQ = generateDynamicAbacusQuestion(targetSubSet, i + 1, seed);
       if (dynamicQ) {
+        // Ensure final sum is < 100
+        let numbers = dynamicQ.numbers;
+        let sum = numbers.reduce((a, b) => a + b, 0);
+        if (sum >= 100) {
+          numbers = [24, 15, -12, 30]; // 57 (< 100)
+          sum = 57;
+        }
         expandedQuestions.push({
           ...dynamicQ,
           id: i + 1,
-          conceptTag: i % 2 === 0 ? "Single Digit Direct (5-6 Rows)" : "Double Digit Direct (4-5 Rows)",
+          numbers,
+          correctAnswer: sum,
+          conceptTag: "Mixed Direct (Sum < 100)",
         });
       } else {
         expandedQuestions.push({
           id: i + 1,
-          numbers: i % 2 === 0 ? [2, 5, -1, 3] : [24, 15, -12, 30],
-          correctAnswer: i % 2 === 0 ? 9 : 57,
-          conceptTag: i % 2 === 0 ? "Single Digit Direct" : "Double Digit Direct",
+          numbers: [24, 15, -12, 30],
+          correctAnswer: 57,
+          conceptTag: "Mixed Direct (Sum < 100)",
+        });
+      }
+    }
+  } else if (setId === "abacus-sr-mixed-direct-over99") {
+    for (let i = 0; i < targetCount; i++) {
+      const dynamicQ = generateDynamicAbacusQuestion("abacus-sr2-double-direct", i + 1, seed);
+      if (dynamicQ) {
+        let numbers = dynamicQ.numbers;
+        let sum = numbers.reduce((a, b) => a + b, 0);
+        // Ensure total sum > 99
+        if (sum <= 99) {
+          const boost = 100 - sum + (i % 5) * 10 + 5;
+          numbers = [...numbers, boost];
+          sum += boost;
+        }
+        expandedQuestions.push({
+          ...dynamicQ,
+          id: i + 1,
+          numbers,
+          correctAnswer: sum,
+          conceptTag: "Mixed Direct (Sum > 99)",
+        });
+      } else {
+        expandedQuestions.push({
+          id: i + 1,
+          numbers: [45, 52, 18, -10],
+          correctAnswer: 105,
+          conceptTag: "Mixed Direct (Sum > 99)",
         });
       }
     }
