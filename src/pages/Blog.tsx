@@ -370,19 +370,27 @@ export default function Blog() {
               )}
             </div>
 
-            <div className="pt-2 flex items-center justify-between">
-              <span className="text-[11px] text-slate-400 font-semibold">Curated by Neha Patil & Nitin Patil</span>
+            <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px] text-slate-500 font-medium">
+              <div>
+                <span className="font-bold text-slate-800 block">
+                  Curated by Neha Patil (Founder & Director) / Nitin Patil (Chief Mentor)
+                </span>
+                <span className="text-[10px] text-vibrant-orange font-semibold block">
+                  📍 Arnav Abacus Academy • Wakad, Pune, Maharashtra, India
+                </span>
+              </div>
               <button
                 onClick={() => {
                   setIsChallengeModalOpen(false);
                   setUserChallengeAns("");
                   setChallengeStatus(null);
                 }}
-                className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2 rounded-xl uppercase tracking-wider cursor-pointer"
+                className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2 rounded-xl uppercase tracking-wider cursor-pointer whitespace-nowrap self-end sm:self-auto"
               >
                 Close Preview
               </button>
             </div>
+
           </div>
         </div>
       )}
