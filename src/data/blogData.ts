@@ -82,9 +82,10 @@ Rather than focusing solely on memorizing shortcuts, we use Abacus and Vedic Mat
 ### A Personal Message from Our Founder
 
 > "When I started Arnav Abacus Academy in Wakad, Pune, my dream was never to create another coaching class. My dream was to build a sanctuary where children enjoy learning, parents feel supported, and every child is empowered to discover their true potential."
-> 
-> **— Neha Patil**  
-> *Founder & Director, Arnav Abacus Academy • Wakad, Pune, India*
+
+**Neha Patil**  
+Founder & Director, Arnav Abacus Academy • Wakad, Pune, India
+
 
 ---
 

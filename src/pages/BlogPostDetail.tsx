@@ -274,14 +274,32 @@ export default function BlogPostDetail() {
                 );
               }
 
-              // Blockquotes
+              // Blockquotes / Founder Messages
               if (trimmed.startsWith("> ")) {
+                const quoteText = trimmed.replace(/^>\s*/gm, "").replace(/[\*\_>]+/g, "").trim();
                 return (
-                  <blockquote key={idx} className="my-6 p-6 bg-amber-50/80 border-l-4 border-vibrant-orange rounded-r-2xl italic text-slate-800 font-medium text-sm sm:text-base shadow-xs">
-                    {trimmed.replace("> ", "").replace(/\"/g, "")}
-                  </blockquote>
+                  <div key={idx} className="my-8 bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-amber-500/10 border-2 border-amber-300/60 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-sm">
+                    <div className="text-4xl text-vibrant-orange font-serif mb-2 select-none">“</div>
+                    <p className="text-base sm:text-lg font-medium text-slate-800 italic leading-relaxed relative z-10 mb-6">
+                      {quoteText}
+                    </p>
+                    
+                    {/* Enhanced Founder Signature Badge */}
+                    <div className="flex items-center gap-3.5 pt-4 border-t border-amber-200/60">
+                      <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-vibrant-orange to-amber-400 text-white font-black flex items-center justify-center text-lg shadow-md shrink-0">
+                        ✨
+                      </div>
+                      <div>
+                        <h4 className="text-sm font-black text-slate-900 tracking-tight">Neha Patil</h4>
+                        <p className="text-xs text-vibrant-orange font-bold">
+                          Founder & Director • Arnav Abacus Academy, Wakad, Pune, India
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 );
               }
+
 
               // Horizontal Divider
               if (trimmed === "---") {
