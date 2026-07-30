@@ -21,6 +21,9 @@ import PracticeHub from "./pages/PracticeHub";
 import PracticeSession from "./pages/PracticeSession";
 import PracticeResult from "./pages/PracticeResult";
 import Login from "./pages/Login";
+import Blog from "./pages/Blog";
+import BlogPostDetail from "./pages/BlogPostDetail";
+
 
 import { LanguageProvider } from "./lib/LanguageContext";
 import { AuthProvider, useAuth } from "./lib/AuthContext";
@@ -158,7 +161,10 @@ export default function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/showcase" element={<Showcase />} />
               <Route path="/gallery" element={<Showcase defaultTab="gallery" />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPostDetail />} />
               <Route path="/news" element={<NewsEvents />} />
+
               <Route path="/faqs" element={<Faqs />} />
               <Route path="/brochure" element={<InteractiveBrochure />} />
               <Route path="/campaigns/:slug" element={<CampaignPage />} />

@@ -31,13 +31,17 @@ export default function Navbar() {
     { name: t("navHome"), path: "/" },
     { name: t("navPrograms"), path: "/programs" },
     { name: t("navPractice"), path: "/practice" },
-    { name: t("navBrochure"), path: "/brochure" },
     { name: t("navSuccess"), path: "/showcase" },
+    { name: "Blog", path: "/blog" },
     { name: t("navNews"), path: "/news" },
-    { name: t("navMentor"), path: "/mentor" },
     { name: t("navFaqs"), path: "/faqs" },
+    { name: t("navBrochure"), path: "/brochure" },
+    { name: t("navMentor"), path: "/mentor" },
     { name: t("navContact"), path: "/contact" }
   ];
+
+
+
 
   const currentPath = location.pathname;
 
@@ -132,18 +136,18 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center gap-8">
-            <ul className="flex items-center gap-7">
+          <div className="hidden xl:flex items-center gap-6">
+            <ul className="flex items-center gap-4.5">
               {navLinks.map((link) => {
                 const isActive = currentPath === link.path;
                 return (
                   <li key={link.name}>
                     <Link
                       to={link.path}
-                      className={`text-sm font-semibold tracking-wide transition-colors duration-150 py-1.5 relative ${
+                      className={`text-xs font-bold tracking-tight transition-colors duration-150 py-1.5 whitespace-nowrap relative ${
                         isActive
                           ? "text-vibrant-orange after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-vibrant-orange after:rounded-full"
-                          : "text-gray-660 hover:text-vibrant-orange"
+                          : "text-slate-700 hover:text-vibrant-orange"
                       }`}
                     >
                       {link.name}
@@ -152,6 +156,7 @@ export default function Navbar() {
                 );
               })}
             </ul>
+
 
             {/* CTA Button with Flat shadow replacement */}
             <div className="flex items-center gap-3 shrink-0">

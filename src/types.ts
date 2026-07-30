@@ -111,3 +111,56 @@ export interface PracticeAttemptResult {
   questions: Question[];
 }
 
+export interface BlogPollOption {
+  id: string;
+  text: string;
+  votes: number;
+}
+
+export interface BlogPoll {
+  id: string;
+  question: string;
+  options: BlogPollOption[];
+  totalVotes: number;
+}
+
+export interface BlogComment {
+  id: string;
+  author: string;
+  role: "Parent" | "Student" | "Educator" | "Visitor";
+  avatarBg: string;
+  content: string;
+  createdAt: string;
+  likes: number;
+}
+
+export interface BlogReactions {
+  insightful: number;
+  mindBlowing: number;
+  inspiring: number;
+  helpful: number;
+}
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: {
+    name: string;
+    role: string;
+    avatar: string;
+  };
+  category: "Brain Development" | "Abacus Tips" | "Vedic Math" | "Parenting" | "Student Stories";
+  coverImage: string;
+  readTime: string;
+  publishedAt: string;
+  tags: string[];
+  featured?: boolean;
+  poll?: BlogPoll;
+  reactions: BlogReactions;
+  comments: BlogComment[];
+}
+
+
