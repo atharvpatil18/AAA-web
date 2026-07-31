@@ -136,7 +136,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden xl:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-6">
             <ul className="flex items-center gap-4.5">
               {navLinks.map((link) => {
                 const isActive = currentPath === link.path;

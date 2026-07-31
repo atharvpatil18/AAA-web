@@ -99,13 +99,13 @@ export default function InteractiveBrochure() {
               <span>{t("brochureTabManual")}</span>
             </button>
             <button
-              onClick={() => navigate("/showcase")}
+              onClick={() => handleTabChange("success")}
               className={`flex-1 py-2 px-2.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                 activeDocTab === "success"
                   ? "bg-purple-900 text-white shadow-md"
                   : "bg-purple-50 text-purple-900 border border-purple-200 hover:bg-purple-100"
               }`}
-              title="Navigate to Main Menu Our Success Hall of Fame"
+              title="View Our Success Hall of Fame"
             >
               <Award className="w-3.5 h-3.5 text-purple-600" />
               <span>{t("brochureTabSuccess")}</span>
