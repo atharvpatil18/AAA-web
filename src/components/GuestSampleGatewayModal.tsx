@@ -32,7 +32,7 @@ export default function GuestSampleGatewayModal({
   onStartSamplePractice,
   initialSetId = "abacus-sr1-single-direct-5-6row",
 }: GuestSampleGatewayModalProps) {
-  const { language } = useLanguage();
+  const { language, t, formatNumber } = useLanguage();
   const [guestEmail, setGuestEmail] = useState("");
   const [guestName, setGuestName] = useState("");
   const [selectedCourse, setSelectedCourse] = useState<"abacus" | "mental" | "vedic">("abacus");

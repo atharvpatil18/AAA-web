@@ -247,7 +247,7 @@ const LEVEL_THEMES: Record<string, { gradient: string; badgeColor: string; tagIc
 
 export default function PracticeHub() {
   const { currentUser } = useAuth();
-  const { language } = useLanguage();
+  const { language, t, formatNumber } = useLanguage();
 
   const [activeCategory, setActiveCategory] = useState<PracticeCategory>("abacus");
   const [selectedMode, setSelectedMode] = useState<PracticeMode>("exam");
