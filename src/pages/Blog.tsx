@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { BlogPost } from "../types";
-import { INITIAL_BLOG_POSTS } from "../data/blogData";
+import { INITIAL_BLOG_POSTS, getLocalizedBlogPost } from "../data/blogData";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function Blog() {
+  const { language, t, formatNumber } = useLanguage();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -11,15 +13,11 @@ export default function Blog() {
   const [userChallengeAns, setUserChallengeAns] = useState<string>("");
   const [challengeStatus, setChallengeStatus] = useState<boolean | null>(null);
 
-
-
-
   useEffect(() => {
     const stored = localStorage.getItem("aaa_blog_posts");
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        // Sync author or image update if cached old data exists
         if (
           parsed[0]?.id !== "blog-0" ||
           !parsed[0]?.content.includes("[CLAIM_FREE_DEMO_BUTTON]")
@@ -29,8 +27,6 @@ export default function Blog() {
         } else {
           setPosts(parsed);
         }
-
-
       } catch (e) {
         setPosts(INITIAL_BLOG_POSTS);
       }
@@ -40,19 +36,35 @@ export default function Blog() {
     }
   }, []);
 
+  const localizedPosts = posts.map((p) => getLocalizedBlogPost(p, language));
 
-  const categories = ["All", "Brain Development", "Abacus Tips", "Vedic Math", "Parenting"];
+  const categories = [
+    { key: "All", label: t("blogCatAll") },
+    { key: "Brain Development", label: t("blogCatBrain") },
+    { key: "Abacus Tips", label: t("blogCatAbacus") },
+    { key: "Vedic Math", label: t("blogCatVedic") },
+    { key: "Parenting", label: t("blogCatParenting") },
+  ];
 
-  const filteredPosts = posts.filter((post) => {
-    const matchesCat = selectedCategory === "All" || post.category === selectedCategory;
+  const filteredPosts = localizedPosts.filter((post) => {
+    const matchesCat = selectedCategory === "All" || post.category === selectedCategory || (
+      selectedCategory === "Brain Development" && (post.category === "Brain Development" || post.category === "मस्तिष्क विकास" || post.category === "मेंदू विकास")
+    ) || (
+      selectedCategory === "Abacus Tips" && (post.category === "Abacus Tips" || post.category === "ॲबॅकस टिप्स")
+    ) || (
+      selectedCategory === "Vedic Math" && (post.category === "Vedic Math" || post.category === "वैदिक गणित")
+    ) || (
+      selectedCategory === "Parenting" && (post.category === "Parenting" || post.category === "पेरेंटिंग" || post.category === "पालकत्व")
+    );
+
     const matchesSearch =
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      post.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCat && matchesSearch;
   });
 
-  const featuredPost = posts.find((p) => p.featured) || posts[0];
+  const featuredPost = localizedPosts.find((p) => p.featured) || localizedPosts[0];
   const regularPosts = filteredPosts.filter((p) => p.id !== featuredPost?.id || selectedCategory !== "All" || searchQuery !== "");
 
   return (
@@ -61,13 +73,13 @@ export default function Blog() {
         {/* Header Hero Section */}
         <div className="text-center space-y-4 max-w-3xl mx-auto">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">
-            💡 AAA Knowledge & Brain Hub
+            {t("blogHubBadge")}
           </span>
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-            Explore Insights on <span className="text-vibrant-orange">Abacus, Vedic Math</span> & Child Brain Growth
+            {t("blogHubTitle1")}<span className="text-vibrant-orange">{t("blogHubTitleHighlight")}</span>{t("blogHubTitle2")}
           </h1>
           <p className="text-slate-600 text-base sm:text-lg font-medium">
-            Interactive articles, mental arithmetic secrets, parenting strategies, and live reader discussions.
+            {t("blogHubSubtitle")}
           </p>
 
           {/* Search bar */}
@@ -75,7 +87,7 @@ export default function Blog() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search articles, techniques (e.g., Anzan, Vedic multiplication)..."
+                placeholder={t("blogSearchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-white text-slate-800 pl-12 pr-4 py-3.5 rounded-2xl border-2 border-slate-200 focus:border-vibrant-orange focus:outline-none shadow-sm text-sm font-medium transition-all"
@@ -84,9 +96,9 @@ export default function Blog() {
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-4 top-3.5 text-xs text-slate-400 hover:text-slate-600 font-bold"
+                  className="absolute right-4 top-3.5 text-xs text-slate-400 hover:text-slate-600 font-bold cursor-pointer"
                 >
-                  Clear
+                  {t("blogSearchClear")}
                 </button>
               )}
             </div>
@@ -103,17 +115,8 @@ export default function Blog() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute top-4 left-4 bg-vibrant-orange text-white text-xs font-black px-3 py-1.5 rounded-full uppercase tracking-wider shadow-md">
-                Featured Article
+                {t("blogFeaturedBadge")}
               </div>
-              <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-md text-white p-3 rounded-2xl border border-white/20 shadow-lg text-xs font-semibold flex items-center justify-between">
-                <span className="flex items-center gap-1.5 font-bold text-amber-300">
-                  🎨 Color-Coded Rods: Center (Ones - Yellow) | Left (Tens - Green) | Right (Tenths - Orange)
-                </span>
-                <span className="text-[10px] bg-amber-500/20 text-amber-200 px-2 py-0.5 rounded-full font-bold border border-amber-500/30">
-                  Place Value Science
-                </span>
-              </div>
-
             </div>
             <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
@@ -122,9 +125,9 @@ export default function Blog() {
                     {featuredPost.category}
                   </span>
                   <span>•</span>
-                  <span>{featuredPost.readTime}</span>
+                  <span>{formatNumber(featuredPost.readTime)}</span>
                   <span>•</span>
-                  <span>{featuredPost.publishedAt}</span>
+                  <span>{formatNumber(featuredPost.publishedAt)}</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl font-black text-slate-900 leading-snug hover:text-vibrant-orange transition-colors">
                   <Link to={`/blog/${featuredPost.slug}`}>{featuredPost.title}</Link>
@@ -142,35 +145,33 @@ export default function Blog() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-900">{featuredPost.author.name}</h4>
-                    <p className="text-[11px] text-slate-500">{featuredPost.author.role}</p>
+                    <p className="text-[11px] text-slate-500">{t("blogAuthorRole")}</p>
                   </div>
                 </div>
                 <Link
                   to={`/blog/${featuredPost.slug}`}
                   className="inline-flex items-center gap-1 bg-vibrant-orange hover:bg-vibrant-orange/90 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all uppercase tracking-wider"
                 >
-                  Read Story ➔
+                  {t("blogReadArticle")}
                 </Link>
               </div>
             </div>
           </div>
         )}
 
-
-
         {/* Category Filters */}
         <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-2 scrollbar-none">
           {categories.map((cat) => (
             <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
+              key={cat.key}
+              onClick={() => setSelectedCategory(cat.key)}
               className={`px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                selectedCategory === cat
+                selectedCategory === cat.key
                   ? "bg-slate-900 text-white shadow-lg scale-105"
                   : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-100"
               }`}
             >
-              {cat}
+              {cat.label}
             </button>
           ))}
         </div>
@@ -196,9 +197,9 @@ export default function Blog() {
                 <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
                     <div className="flex items-center gap-2 text-[11px] font-medium text-slate-400">
-                      <span>⏱️ {post.readTime}</span>
+                      <span>⏱️ {formatNumber(post.readTime)}</span>
                       <span>•</span>
-                      <span>📅 {post.publishedAt}</span>
+                      <span>📅 {formatNumber(post.publishedAt)}</span>
                     </div>
                     <h3 className="text-lg font-bold text-slate-900 group-hover:text-vibrant-orange transition-colors line-clamp-2">
                       <Link to={`/blog/${post.slug}`}>{post.title}</Link>
@@ -217,7 +218,7 @@ export default function Blog() {
                       to={`/blog/${post.slug}`}
                       className="text-xs font-bold text-vibrant-orange hover:underline flex items-center gap-1"
                     >
-                      Read post ➔
+                      {t("blogReadArticle")}
                     </Link>
                   </div>
                 </div>
@@ -226,16 +227,15 @@ export default function Blog() {
           ) : (
             <div className="col-span-full text-center py-16 bg-white rounded-3xl border border-slate-200 space-y-3">
               <span className="text-4xl">🔍</span>
-              <h3 className="text-lg font-bold text-slate-800">No articles match your search</h3>
-              <p className="text-xs text-slate-500">Try selecting a different category or clearing search keywords.</p>
+              <h3 className="text-lg font-bold text-slate-800">{t("blogNoPosts")}</h3>
               <button
                 onClick={() => {
                   setSelectedCategory("All");
                   setSearchQuery("");
                 }}
-                className="mt-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-xs transition-all"
+                className="mt-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-xs transition-all cursor-pointer"
               >
-                Reset Filters
+                {t("blogResetSearch")}
               </button>
             </div>
           )}
@@ -244,14 +244,11 @@ export default function Blog() {
         {/* Interactive Parent & Student Newsletter CTA */}
         <div className="bg-gradient-to-r from-amber-500 to-vibrant-orange text-white rounded-3xl p-8 sm:p-12 shadow-xl text-center space-y-6 max-w-4xl mx-auto">
           <div className="inline-block bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-            🧠 Join 5,000+ Smart Parents
+            🧠 {formatNumber("5,000+")} Smart Parents
           </div>
           <h2 className="text-2xl sm:text-4xl font-black leading-tight">
-            Get Weekly Brain Workout Challenges & Math Shortcuts Delivered
+            {t("blogHubSubtitle")}
           </h2>
-          <p className="text-white/90 text-sm max-w-2xl mx-auto">
-            Receive exclusive Anzan mental math puzzles, Vedic multiplication tips, and child focus guides every Sunday morning.
-          </p>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -262,59 +259,25 @@ export default function Blog() {
                 const subs = JSON.parse(localStorage.getItem("aaa_newsletter_subscribers") || "[]");
                 subs.push({ email: subscriberEmail, subscribedAt: new Date().toISOString() });
                 localStorage.setItem("aaa_newsletter_subscribers", JSON.stringify(subs));
-                
-                // Dispatch EmailJS Email Trigger (Reusing existing configured Template)
-                const serviceId = (import.meta as any).env.VITE_EMAILJS_SERVICE_ID;
-                const templateId = (import.meta as any).env.VITE_EMAILJS_TEMPLATE_ID;
-                const publicKey = (import.meta as any).env.VITE_EMAILJS_PUBLIC_KEY;
 
-                if (serviceId && templateId && publicKey) {
-                  fetch("https://api.emailjs.com/api/v1.0/email/send", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      service_id: serviceId,
-                      template_id: templateId,
-                      user_id: publicKey,
-                      template_params: {
-                        to_name: "Parent",
-                        to_email: subscriberEmail,
-                        from_name: "Arnav Abacus Academy",
-                        otp_code: "WELCOME-AAA-SUNDAY",
-                        message: "Thank you for subscribing to Arnav Abacus Academy Sunday Brain Challenges curated by Neha Patil & Nitin Patil!"
-                      }
-                    })
-                  }).then(() => {
-                    console.log(`[EmailJS] Successfully dispatched newsletter email to ${subscriberEmail}`);
-                  }).catch((err) => {
-                    console.warn("[EmailJS] Dispatch failed:", err);
-                  });
-                } else {
-                  console.log(`[EmailJS Simulated] Confirmation email queued for: ${subscriberEmail}`);
-                }
-
-                
-                // Show Subscription Confirmation + Launch Sample Challenge
-                alert(`📩 Welcome Confirmation Dispatched to ${subscriberEmail}!\n\nCheck your inbox for your Sunday Brain Workout confirmation from Neha Patil & Nitin Patil.`);
+                alert(`📩 Welcome Confirmation Dispatched to ${subscriberEmail}!`);
                 setIsChallengeModalOpen(true);
                 input.value = "";
               }
             }}
-
             className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
           >
-
             <input
               type="email"
               required
-              placeholder="Enter parent email..."
+              placeholder={t("blogEnterParentEmail")}
               className="w-full px-4 py-3 rounded-2xl text-slate-900 text-sm font-medium focus:outline-none shadow-inner"
             />
             <button
               type="submit"
               className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase px-6 py-3 rounded-2xl shadow-lg transition-all whitespace-nowrap cursor-pointer"
             >
-              Subscribe & Try Sample
+              {t("heroFreeTrial")}
             </button>
           </form>
 
@@ -323,23 +286,21 @@ export default function Blog() {
               onClick={() => setIsChallengeModalOpen(true)}
               className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-900 bg-white/90 hover:bg-white px-4 py-2 rounded-xl shadow-sm transition-all cursor-pointer"
             >
-              ⚡ Click Here to Preview This Week's Sample Brain Challenge
+              ⚡ {t("heroBtnQuiz")}
             </button>
           </div>
         </div>
-
       </div>
 
-      {/* Interactive Sample Brain Workout Challenge Modal */}
+      {/* Sample Challenge Modal */}
       {isChallengeModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-6 animate-in fade-in zoom-in duration-200">
+          <div className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 p-6 sm:p-8 space-y-6">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">🧠</span>
                 <div>
-                  <h3 className="text-base font-black text-slate-900">Sample Sunday Brain Challenge</h3>
-                  <p className="text-xs text-vibrant-orange font-bold">Vedic Math & Anzan Speed Test</p>
+                  <h3 className="text-base font-black text-slate-900">{t("blogPollTitle")}</h3>
                 </div>
               </div>
               <button
@@ -355,15 +316,9 @@ export default function Blog() {
             </div>
 
             <div className="bg-amber-50 border-2 border-amber-200 p-5 rounded-2xl space-y-3">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800 bg-amber-200/60 px-2.5 py-1 rounded-md">
-                Speed Problem #104
-              </span>
               <h4 className="text-lg font-black text-slate-900">
-                Multiply using Nikhilam Sutra: <span className="text-vibrant-orange">98 × 96</span> = ?
+                {formatNumber("98 × 96")} = ?
               </h4>
-              <p className="text-xs text-slate-600 font-medium">
-                Hint: 98 is (-2) from 100, 96 is (-4) from 100. (98 - 4 = 94) and (-2 × -4 = 08).
-              </p>
 
               <form
                 onSubmit={(e) => {
@@ -391,49 +346,41 @@ export default function Blog() {
                   type="submit"
                   className="bg-vibrant-orange hover:bg-vibrant-orange/90 text-white font-bold text-xs uppercase px-4 py-2.5 rounded-xl shadow-md transition-all cursor-pointer whitespace-nowrap"
                 >
-                  Submit
+                  {t("blogPollSubmit")}
                 </button>
               </form>
 
               {challengeStatus === true && (
-                <div className="p-3 bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold rounded-xl flex items-center gap-2">
-                  🎉 Bingo! 98 × 96 = 9408. Your child will receive challenges like this every Sunday!
+                <div className="p-3 bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold rounded-xl">
+                  🎉 {formatNumber("98 × 96 = 9408")} - {t("quizCorrect")}
                 </div>
               )}
               {challengeStatus === false && (
-                <div className="p-3 bg-rose-100 border border-rose-300 text-rose-800 text-xs font-bold rounded-xl flex items-center gap-2">
-                  ❌ Not quite. 98 × 96 = 9408. Give it another try!
+                <div className="p-3 bg-rose-100 border border-rose-300 text-rose-800 text-xs font-bold rounded-xl">
+                  ❌ {t("quizWrong")}
                 </div>
               )}
             </div>
 
-            <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-[11px] text-slate-500 font-medium">
-              <div>
-                <span className="font-bold text-slate-800 block">
-                  Curated by Neha Patil (Founder & Director) / Nitin Patil (Chief Mentor)
-                </span>
-                <span className="text-[10px] text-vibrant-orange font-semibold block">
-                  📍 Arnav Abacus Academy • Wakad, Pune, Maharashtra, India
-                </span>
-              </div>
+            <div className="pt-3 border-t border-slate-100 flex items-center justify-end">
               <button
                 onClick={() => {
                   setIsChallengeModalOpen(false);
                   setUserChallengeAns("");
                   setChallengeStatus(null);
                 }}
-                className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2 rounded-xl uppercase tracking-wider cursor-pointer whitespace-nowrap self-end sm:self-auto"
+                className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2 rounded-xl uppercase tracking-wider cursor-pointer"
               >
-                Close Preview
+                Close
               </button>
             </div>
-
           </div>
         </div>
       )}
     </div>
   );
 }
+
 
 
 

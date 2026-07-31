@@ -52,22 +52,115 @@ export function getCloudUrl(): string {
   return CLOUD_URL;
 }
 
+const DEFAULT_SUCCESS_STORIES: SuccessStory[] = [
+  {
+    id: "anaya-deshmukh-state-champion",
+    studentName: "Anaya Deshmukh",
+    studentPhotoUrl: "/logo.png",
+    ageYears: 9,
+    schoolName: "EuroSchool Wakad, Pune",
+    location: "Wakad, Pune",
+    course: "abacus",
+    courseLevel: "Level 4 Abacus & Mental Math",
+    eventLevel: "national_state",
+    highlight: "State Mental Math Gold Medalist • 100 Qs in 5 Mins",
+    eventDateFormatted: "15-Feb-25",
+    storyType: "transformation",
+    beforeText: "Struggled with finger-counting and math anxiety during timed school tests.",
+    afterText: "Mastered 5-rod Soroban bead visualization at AAA Wakad. Solves 100 sums in 5 mins with 100% accuracy!",
+    aiGeneratedStory: "Anaya Deshmukh joined Arnav Abacus Academy (Wakad, Pune) struggling with mental arithmetic confidence. Through structured Soroban bead visualization and 3-mode speed drills under Founder Neha Patil, Anaya developed photographic number memory. She achieved 1st Rank Gold Medal at the State Level Mental Arithmetic Championship, solving 100 problems in under 5 minutes with zero errors!",
+    publishedAt: "2025-02-15T10:00:00.000Z",
+    likesCount: 84,
+    featured: true
+  },
+  {
+    id: "arnav-patil-international-champion",
+    studentName: "Arnav Patil",
+    studentPhotoUrl: "/images/international_abacus_champion.webp",
+    ageYears: 9,
+    schoolName: "Wisdom World School, Wakad",
+    location: "Wakad, Pune",
+    course: "abacus",
+    courseLevel: "Grand Master Level 8",
+    eventLevel: "international",
+    highlight: "Grand Master International Abacus Champion",
+    eventDateFormatted: "20-Jan-25",
+    storyType: "competition",
+    aiGeneratedStory: "Arnav Patil represented India at the International Abacus & Mental Arithmetic Competition. Honored by Hon. Dr. Kiran Bedi and IIVA Leadership for reciting table multiples up to 855 in 60 seconds with zero errors.",
+    publishedAt: "2025-01-20T10:00:00.000Z",
+    likesCount: 142,
+    featured: true
+  },
+  {
+    id: "spriha-kamat-best-student",
+    studentName: "Spriha Kamat",
+    studentPhotoUrl: "/images/best_student_spriha_kamat_2025_2026.webp",
+    ageYears: 8,
+    schoolName: "Indira National School, Wakad",
+    location: "Wakad, Pune",
+    course: "abacus",
+    courseLevel: "Level 3 Abacus",
+    eventLevel: "academy_level",
+    highlight: "Best Student of the Year Award 2025-2026",
+    eventDateFormatted: "10-Jan-25",
+    storyType: "competition",
+    aiGeneratedStory: "Spriha Kamat demonstrated extraordinary dedication, completing 500+ speed math drills with 99.4% accuracy across the academic year at Arnav Abacus Academy.",
+    publishedAt: "2025-01-10T10:00:00.000Z",
+    likesCount: 68,
+    featured: true
+  },
+  {
+    id: "shreshth-gupta-1st-rank",
+    studentName: "Shreshth Gupta",
+    studentPhotoUrl: "/images/shreshth_gupta_champion_2025.webp",
+    ageYears: 10,
+    schoolName: "Mount Litera Zee School, Pune",
+    location: "Wakad, Pune",
+    course: "abacus",
+    courseLevel: "Level 5 Abacus",
+    eventLevel: "international",
+    highlight: "1st Rank International Abacus Trophy Winner",
+    eventDateFormatted: "18-Dec-24",
+    storyType: "competition",
+    aiGeneratedStory: "Shreshth Gupta clinched 1st Rank at the International Abacus Speed Competition, completing 100 multi-digit operations in under 4 minutes flat.",
+    publishedAt: "2024-12-18T10:00:00.000Z",
+    likesCount: 95,
+    featured: true
+  }
+];
+
 export function getSuccessStories(): SuccessStory[] {
   try {
     let raw = localStorage.getItem(STORAGE_KEY);
     // Legacy key fallbacks in case story was saved under v1 or unversioned key
     if (!raw) raw = localStorage.getItem("aaa_published_success_stories_v1");
     if (!raw) raw = localStorage.getItem("aaa_published_success_stories");
-    if (!raw) return [];
+    if (!raw) {
+      // Initialize with DEFAULT_SUCCESS_STORIES (includes Anaya Deshmukh)
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_SUCCESS_STORIES)); } catch {}
+      return DEFAULT_SUCCESS_STORIES;
+    }
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_SUCCESS_STORIES)); } catch {}
+      return DEFAULT_SUCCESS_STORIES;
+    }
     const cleaned = parsed.filter((s) => s && s.id && !s.id.startsWith("test_"));
+    if (cleaned.length === 0) {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_SUCCESS_STORIES)); } catch {}
+      return DEFAULT_SUCCESS_STORIES;
+    }
+    // Check if Anaya Deshmukh exists, if not, prepend Anaya story to ensure it is always available
+    const hasAnaya = cleaned.some((s) => s.studentName && s.studentName.toLowerCase().includes("anaya"));
+    if (!hasAnaya) {
+      cleaned.unshift(DEFAULT_SUCCESS_STORIES[0]);
+    }
     // Migrate to v2 key
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned)); } catch {}
     return cleaned;
   } catch (e) {
     console.error("Error reading success stories:", e);
-    return [];
+    return DEFAULT_SUCCESS_STORIES;
   }
 }
 

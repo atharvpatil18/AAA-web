@@ -53,13 +53,13 @@ export default function InteractiveBrochure() {
         {/* 1. Header Intro */}
         <div className="text-center md:text-left space-y-3 max-w-2xl">
           <span className="text-[10px] font-extrabold text-vibrant-orange bg-vibrant-orange/10 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            📖 2-Page Official Resource & User Manual
+            {t("brochureHeaderBadge")}
           </span>
           <h1 className="font-display font-black text-3xl sm:text-5xl text-vibrant-dark leading-tight">
-            Academy Brochure & Speed Math SOP User Manual
+            {t("brochureHeaderTitle")}
           </h1>
           <p className="text-gray-650 text-sm sm:text-base font-semibold leading-relaxed">
-            Explore our whole-brain soroban abacus methodology, student olympiad wins, and the 3-Mode Speed Math Practice SOP User Manual aligned with NEP 2020 cognitive framework.
+            {t("brochureSub")}
           </p>
         </div>
 
@@ -71,7 +71,7 @@ export default function InteractiveBrochure() {
             className="bg-vibrant-orange hover:bg-vibrant-orange/95 text-white px-8 py-4 rounded-2xl font-black text-xs sm:text-sm shadow-lg hover:shadow-xl active:scale-97 transition-all flex items-center justify-center gap-2.5 cursor-pointer border-2 border-amber-300 w-full sm:w-auto md:w-72 uppercase tracking-wide"
           >
             <Download className="w-4 h-4 animate-bounce shrink-0" />
-            <span>Download 2-Page PDF (Brochure + SOP Manual)</span>
+            <span>{t("brochureDownloadPdf")}</span>
           </button>
 
           {/* Tab Switcher */}
@@ -85,7 +85,7 @@ export default function InteractiveBrochure() {
               }`}
             >
               <FileText className="w-3.5 h-3.5 text-amber-400" />
-              <span>Brochure</span>
+              <span>{t("brochureTabBrochure")}</span>
             </button>
             <button
               onClick={() => handleTabChange("manual")}
@@ -96,7 +96,7 @@ export default function InteractiveBrochure() {
               }`}
             >
               <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-              <span>SOP Manual</span>
+              <span>{t("brochureTabManual")}</span>
             </button>
             <button
               onClick={() => navigate("/showcase")}
@@ -108,7 +108,7 @@ export default function InteractiveBrochure() {
               title="Navigate to Main Menu Our Success Hall of Fame"
             >
               <Award className="w-3.5 h-3.5 text-purple-600" />
-              <span>Our Success</span>
+              <span>{t("brochureTabSuccess")}</span>
             </button>
           </div>
         </div>
@@ -126,13 +126,13 @@ export default function InteractiveBrochure() {
             <div className="space-y-2 z-10 max-w-2xl">
               <span className="bg-slate-950/40 text-amber-200 border border-amber-300/40 px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider inline-flex items-center gap-1.5 shadow-sm">
                 <Sparkles className="w-4 h-4 text-amber-300 animate-spin" />
-                BECOME A SPEED MATH WIZARD • NEP 2020 BRAIN DRILLS 🚀
+                {t("manualWizardBadge")}
               </span>
               <h2 className="text-2xl md:text-4xl font-black font-display text-white tracking-tight leading-tight">
-                Speed Math Simulator SOP & Student Practice Guide 🧮
+                {t("manualTitle")}
               </h2>
               <p className="text-xs md:text-sm font-semibold text-slate-100/90 leading-relaxed">
-                Master 10X mental calculation speeds! Learn how to use Soroban Abacus bead visualization and ancient Vedic Math shortcuts to eliminate finger-counting and math fear.
+                {t("manualSub")}
               </p>
             </div>
 
@@ -141,7 +141,7 @@ export default function InteractiveBrochure() {
               className="z-10 bg-slate-950 hover:bg-slate-900 text-amber-300 hover:text-white px-6 py-4 rounded-2xl font-black text-xs md:text-sm shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2.5 cursor-pointer border-2 border-amber-400 shrink-0 uppercase tracking-wide"
             >
               <Download className="w-5 h-5 text-amber-400 animate-bounce" />
-              <span>Download 2-Page Color PDF Manual</span>
+              <span>{t("manualDownloadColorPdf")}</span>
             </button>
           </div>
 
@@ -153,20 +153,20 @@ export default function InteractiveBrochure() {
               </div>
               <div>
                 <span className="text-[10px] font-black text-vibrant-orange bg-vibrant-orange/10 px-3 py-1 rounded-full uppercase tracking-wider">
-                  🌟 STEP 1: UNDERSTAND THE MATH MAGIC
+                  🌟 {t("manualStep1Badge")}
                 </span>
                 <h3 className="text-lg md:text-xl font-black text-vibrant-dark mt-1">
-                  1. Whole-Brain Calculation Methodology & Brain Agility
+                  {t("manualStep1Title")}
                 </h3>
               </div>
             </div>
 
             <p className="text-xs md:text-sm text-slate-700 font-semibold leading-relaxed">
-              Arnav Abacus Academy (Wakad, Pune) provides a whole-brain speed math simulator aligning with NEP 2020 cognitive guidelines. By integrating physical soroban abacus bead visualization with ancient Vedic math shortcuts, students achieve 10X faster mental calculation speeds while building photographic focus.
+              {t("manualStep1Desc")}
             </p>
 
             <div className="p-4 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-teal-500/10 border-2 border-dashed border-amber-300 rounded-2xl text-xs md:text-sm text-slate-800 font-bold flex flex-wrap items-center gap-2">
-              <span className="text-vibrant-orange font-black">Core Course Focus & Syllabus Synergy:</span>
+              <span className="text-vibrant-orange font-black">{t("manualSyllabusSynergy")}</span>
               <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Abacus Classes in Wakad Pune</span>
               <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Speed Math Simulator</span>
               <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Vedic Math Shortcuts</span>
@@ -182,10 +182,10 @@ export default function InteractiveBrochure() {
               </div>
               <div>
                 <span className="text-[10px] font-black text-vibrant-teal bg-vibrant-teal/10 px-3 py-1 rounded-full uppercase tracking-wider">
-                  🎮 STEP 2: CONFIGURE YOUR GAME DRILL
+                  🎮 {t("manualStep2Badge")}
                 </span>
                 <h3 className="text-lg md:text-xl font-black text-vibrant-dark mt-1">
-                  2. Speed Math Simulator User Manual (3-Mode Game Challenge)
+                  {t("manualStep2Title")}
                 </h3>
               </div>
             </div>
@@ -196,13 +196,13 @@ export default function InteractiveBrochure() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-black bg-vibrant-orange text-white px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
-                      MODE 1
+                      {t("manualMode1")}
                     </span>
                     <span className="text-xl">🎯</span>
                   </div>
-                  <h4 className="font-black text-base md:text-lg text-slate-900">Select Question Volume</h4>
+                  <h4 className="font-black text-base md:text-lg text-slate-900">{t("manualSelectVol")}</h4>
                   <p className="text-xs md:text-sm text-slate-600 font-semibold leading-relaxed">
-                    Choose between <strong>10 Qs, 20 Qs, 50 Qs, 100 Qs, or 200 Qs</strong>! 10 questions for daily speed warm-ups; 100-200 questions for Olympiad competition stamina.
+                    Choose between <strong>{formatNumber(10)} Qs, {formatNumber(20)} Qs, {formatNumber(50)} Qs, {formatNumber(100)} Qs, or {formatNumber(200)} Qs</strong>! {formatNumber(10)} questions for daily speed warm-ups; {formatNumber(100)}-{formatNumber(200)} questions for Olympiad competition stamina.
                   </p>
                 </div>
                 <div className="pt-3 border-t border-orange-200/60 text-[11px] font-bold text-vibrant-orange flex items-center gap-1">
@@ -216,11 +216,11 @@ export default function InteractiveBrochure() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-black bg-vibrant-teal text-white px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
-                      MODE 2
+                      {t("manualMode2")}
                     </span>
                     <span className="text-xl">⚡</span>
                   </div>
-                  <h4 className="font-black text-base md:text-lg text-slate-900">Select Speed Math Topic</h4>
+                  <h4 className="font-black text-base md:text-lg text-slate-900">{t("manualSelectTopic")}</h4>
                   <p className="text-xs md:text-sm text-slate-600 font-semibold leading-relaxed">
                     Choose <strong>Single Digit Direct (4-5-6 Rows)</strong>, <strong>Double Digit Direct (4-5-6 Rows)</strong>, or <strong>Both (Mixed Rows)</strong> to move soroban beads mentally!
                   </p>

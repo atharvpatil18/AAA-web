@@ -562,7 +562,7 @@ export default function PracticeHub() {
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">
                           <h4 className="font-bold text-sm text-white">
-                            {currentUser ? `Access Account: ${currentUser.email}` : `Guest Practice Session: ${guestObj.email}`}
+                            {currentUser ? `Access Account: ${currentUser.email}` : `${t("pracGuestBannerTitle")}${guestObj.email}`}
                           </h4>
                           {isUserAdmin(currentUser?.email) && (
                             <span className="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-black border border-amber-500/30 uppercase">
@@ -572,7 +572,7 @@ export default function PracticeHub() {
                         </div>
                         <p className="text-xs text-slate-300 mt-0.5">
                           {(() => {
-                            if (!currentUser) return "Logged in for free sample practice drills. Progress & leaderboard scores are saved under your email.";
+                            if (!currentUser) return t("pracGuestBannerSub");
                             if (isUserAdmin(currentUser.email)) return "Root Administrator Access: Full access to all Abacus & Vedic Math courses, levels, quiz & learn modes.";
                             const rec = getApprovedRecord(currentUser.email);
                             if (!rec || !rec.permissions || rec.permissions.length === 0) return "No specific level permissions configured for this email. Contact your instructor.";
@@ -622,7 +622,7 @@ export default function PracticeHub() {
                 >
                   <div className="w-full flex flex-col items-center">
                     <span className={`text-base md:text-lg font-black mb-2.5 ${activeCategory === "abacus" ? "text-vibrant-orange" : "text-slate-800"}`}>
-                      Abacus Practice
+                      {t("pracAbacusTitle")}
                     </span>
                     <div className="w-full h-32 rounded-xl overflow-hidden border border-slate-200 shadow-xs relative bg-slate-50 flex items-center justify-center">
                       <img
@@ -633,7 +633,7 @@ export default function PracticeHub() {
                     </div>
                   </div>
                   <p className="text-[11px] font-bold text-slate-600 text-center mt-2.5 leading-tight">
-                    Arnav Abacus Academy, Wakad Pune
+                    {t("pracAbacusSub")}
                   </p>
                 </div>
 
@@ -648,7 +648,7 @@ export default function PracticeHub() {
                 >
                   <div className="w-full flex flex-col items-center">
                     <span className={`text-base md:text-lg font-black mb-2.5 ${activeCategory === "vedic" ? "text-vibrant-teal" : "text-slate-800"}`}>
-                      Vedic Maths Practice
+                      {t("pracVedicTitle")}
                     </span>
                     <div className="w-full h-32 rounded-xl overflow-hidden border border-slate-200 shadow-xs relative bg-white flex items-center justify-center p-2">
                       <img
@@ -659,7 +659,7 @@ export default function PracticeHub() {
                     </div>
                   </div>
                   <p className="text-[11px] font-bold text-slate-600 text-center mt-2.5 leading-tight">
-                    IIVA Authorised Vedic Math Center
+                    {t("pracVedicSub")}
                   </p>
                 </div>
 
@@ -674,16 +674,16 @@ export default function PracticeHub() {
                 >
                   <div className="w-full flex flex-col items-center">
                     <span className={`text-base md:text-lg font-black mb-2.5 ${activeCategory === "mental" ? "text-indigo-600" : "text-slate-800"}`}>
-                      Mental Math (Olympiad)
+                      {t("pracMentalTitle")}
                     </span>
                     <div className="w-full h-32 rounded-xl overflow-hidden border border-indigo-100 shadow-xs relative bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-3 text-center text-white">
                       <Zap className="w-8 h-8 text-amber-400 mb-1 animate-pulse" />
-                      <span className="text-xs font-black tracking-wide text-amber-300">OLYMPIAD DRILLS</span>
-                      <span className="text-[10px] text-indigo-200">Grades 1 to 9 (Olympiad Aligned)</span>
+                      <span className="text-xs font-black tracking-wide text-amber-300">{t("pracOlympiadDrills")}</span>
+                      <span className="text-[10px] text-indigo-200">{t("pracOlympiadGrades")}</span>
                     </div>
                   </div>
                   <p className="text-[11px] font-bold text-slate-600 text-center mt-2.5 leading-tight">
-                    Mental Maths Olympiad Syllabus
+                    {t("pracMentalSub")}
                   </p>
                 </div>
               </div>
@@ -694,15 +694,15 @@ export default function PracticeHub() {
                   <div>
                     <h3 className="font-black text-base md:text-lg flex items-center gap-2 text-amber-300">
                       <Flame className="w-5 h-5 text-orange-400 animate-bounce" />
-                      Select Practice Challenge Mode:
+                      {t("pracSelectModeTitle")}
                     </h3>
-                    <p className="text-xs text-slate-300">Choose mode type and question length (10 Qs, 20 Qs, 50 Qs).</p>
+                    <p className="text-xs text-slate-300">{t("pracSelectModeSub")}</p>
                   </div>
                   
                   {/* Question Count Selector (10 Qs, 20 Qs, 50 Qs) */}
                   <div className="flex items-center gap-2 bg-white/10 p-1 rounded-xl border border-white/20">
                     <span className="text-xs font-bold text-amber-300 px-2 flex items-center gap-1">
-                      <Layers className="w-3.5 h-3.5" /> Qs Count:
+                      <Layers className="w-3.5 h-3.5" /> {t("pracQsCount")}
                     </span>
                     {([10, 20, 50] as QuestionCountChoice[]).map((count) => (
                       <button
@@ -714,7 +714,7 @@ export default function PracticeHub() {
                             : "text-slate-300 hover:text-white hover:bg-white/10"
                         }`}
                       >
-                        {count} Qs
+                        {formatNumber(count)} Qs
                       </button>
                     ))}
                   </div>
@@ -753,17 +753,17 @@ export default function PracticeHub() {
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-vibrant-orange" />
                     <h2 className="text-lg font-black text-slate-900">
-                      {activeCategory === "vedic" ? "Vedic Math Level Curriculum" : "Abacus Level Curriculum"}
+                      {activeCategory === "vedic" ? "Vedic Math Level Curriculum" : t("pracCurriculumTitle")}
                     </h2>
                     <span className="text-xs font-bold text-slate-700 bg-white px-2.5 py-0.5 rounded-full border border-slate-200">
-                      {currentSets.length} Sets
+                      {formatNumber(currentSets.length)} {t("pracSetsCount")}
                     </span>
                   </div>
 
                   {/* Age Group Filter Tabs for Kids Aged 4-14 Years */}
                   <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-300 shadow-xs w-full sm:w-auto overflow-x-auto">
                     <span className="text-[11px] font-black text-slate-700 uppercase px-2 tracking-wider flex items-center gap-1">
-                      <Users className="w-3.5 h-3.5 text-vibrant-orange" /> Age Filter:
+                      <Users className="w-3.5 h-3.5 text-vibrant-orange" /> {t("pracAgeFilter")}
                     </span>
                     <button
                       onClick={() => setAgeFilter("all")}
@@ -773,7 +773,7 @@ export default function PracticeHub() {
                           : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                       }`}
                     >
-                      🌈 All Levels (4-14 Yrs)
+                      🌈 {t("pracFilterAll")}
                     </button>
                     <button
                       onClick={() => setAgeFilter("junior")}
@@ -783,7 +783,7 @@ export default function PracticeHub() {
                           : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                       }`}
                     >
-                      👧👦 Junior (Ages 4–8)
+                      👧👦 {t("pracFilterJunior")}
                     </button>
                     <button
                       onClick={() => setAgeFilter("senior")}
@@ -793,7 +793,7 @@ export default function PracticeHub() {
                           : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                       }`}
                     >
-                      🎓⚡ Senior (Ages 9–14)
+                      🎓⚡ {t("pracFilterSenior")}
                     </button>
                   </div>
                 </div>

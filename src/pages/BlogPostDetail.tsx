@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { BlogPost, BlogComment } from "../types";
-import { INITIAL_BLOG_POSTS } from "../data/blogData";
+import { INITIAL_BLOG_POSTS, getLocalizedBlogPost } from "../data/blogData";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function BlogPostDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const { language, t, formatNumber } = useLanguage();
 
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [post, setPost] = useState<BlogPost | null>(null);
   const [scrollProgress, setScrollProgress] = useState<number>(0);
+
 
   // Interactive Poll state
   const [votedOptionId, setVotedOptionId] = useState<string | null>(null);
@@ -224,7 +227,7 @@ export default function BlogPostDetail() {
             onClick={() => navigate("/blog")}
             className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 hover:text-amber-300 transition-colors cursor-pointer"
           >
-            ← Back to All Articles
+            {t("blogBackToBlog")}
           </button>
           
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-300">
@@ -232,9 +235,9 @@ export default function BlogPostDetail() {
               {post.category}
             </span>
             <span>•</span>
-            <span>⏱️ {post.readTime}</span>
+            <span>⏱️ {formatNumber(post.readTime)}</span>
             <span>•</span>
-            <span>📅 {post.publishedAt}</span>
+            <span>📅 {formatNumber(post.publishedAt)}</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight">
@@ -248,7 +251,7 @@ export default function BlogPostDetail() {
             </div>
             <div>
               <h3 className="text-sm font-bold text-white">{post.author.name}</h3>
-              <p className="text-xs text-slate-400">{post.author.role}</p>
+              <p className="text-xs text-slate-400">{t("blogAuthorRole")}</p>
             </div>
           </div>
         </div>
@@ -512,7 +515,7 @@ export default function BlogPostDetail() {
               <div className="flex items-center gap-2">
                 <span className="text-xl">📊</span>
                 <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                  Interactive Reader Poll ({post.poll.totalVotes} Votes)
+                  {t("blogPollTitle")} ({formatNumber(post.poll.totalVotes)} {t("blogPollTotalVotes")})
                 </span>
               </div>
               <h3 className="text-lg sm:text-xl font-bold">{post.poll.question}</h3>
@@ -548,7 +551,7 @@ export default function BlogPostDetail() {
                           {opt.text}
                         </span>
                         {votedOptionId && (
-                          <span className="text-xs font-bold text-amber-400">{percentage}%</span>
+                          <span className="text-xs font-bold text-amber-400">{formatNumber(percentage)}%</span>
                         )}
                       </div>
                     </button>
@@ -557,7 +560,7 @@ export default function BlogPostDetail() {
               </div>
               {votedOptionId && (
                 <p className="text-[11px] text-slate-400 text-center font-medium">
-                  ✓ Thank you for sharing your thoughts with the AAA community!
+                  ✓ {t("blogPollVoted")}
                 </p>
               )}
             </div>
@@ -566,7 +569,7 @@ export default function BlogPostDetail() {
           {/* Reader Reactions Bar */}
           <div className="pt-6 border-t border-slate-100 space-y-4">
             <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider text-center sm:text-left">
-              How did you find this article?
+              Article Reactions:
             </h4>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <button
@@ -574,28 +577,28 @@ export default function BlogPostDetail() {
                 className="p-3 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-300 rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-800"
               >
                 <span>💡</span>
-                <span className="text-xs font-bold">Insightful ({post.reactions.insightful})</span>
+                <span className="text-xs font-bold">{t("blogReactionInsightful")} ({formatNumber(post.reactions.insightful)})</span>
               </button>
               <button
                 onClick={() => handleReaction("mindBlowing")}
                 className="p-3 bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-800"
               >
                 <span>🧠</span>
-                <span className="text-xs font-bold">Mind Blowing ({post.reactions.mindBlowing})</span>
+                <span className="text-xs font-bold">{t("blogReactionMindBlowing")} ({formatNumber(post.reactions.mindBlowing)})</span>
               </button>
               <button
                 onClick={() => handleReaction("inspiring")}
                 className="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-800"
               >
                 <span>👏</span>
-                <span className="text-xs font-bold">Inspiring ({post.reactions.inspiring})</span>
+                <span className="text-xs font-bold">{t("blogReactionInspiring")} ({formatNumber(post.reactions.inspiring)})</span>
               </button>
               <button
                 onClick={() => handleReaction("helpful")}
                 className="p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-800"
               >
                 <span>❤️</span>
-                <span className="text-xs font-bold">Helpful ({post.reactions.helpful})</span>
+                <span className="text-xs font-bold">{t("blogReactionHelpful")} ({formatNumber(post.reactions.helpful)})</span>
               </button>
             </div>
           </div>
