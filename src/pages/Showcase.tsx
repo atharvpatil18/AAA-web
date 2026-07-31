@@ -419,6 +419,21 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       academySubCategory: "abacus"
     },
     {
+      id: "gallery-anaya-pagar",
+      type: "competition",
+      title: t("showcaseItem14Title"),
+      studentName: "Anaya Pagar",
+      age: "9 Years",
+      grade: "Grade 4",
+      tag: t("showcaseTag14"),
+      achievementText: t("showcaseItem14Text"),
+      imageUrl: "/logo.png",
+      imageAlt: "Anaya Pagar holding State Abacus Olympiad Gold Medal",
+      colorTheme: "gold",
+      mainCategory: "national_state",
+      academySubCategory: "abacus"
+    },
+    {
       id: "story-1",
       type: "transformation",
       title: "Zeroing Down Silly Mistakes",

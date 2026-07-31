@@ -54,8 +54,8 @@ export function getCloudUrl(): string {
 
 const DEFAULT_SUCCESS_STORIES: SuccessStory[] = [
   {
-    id: "anaya-deshmukh-state-champion",
-    studentName: "Anaya Deshmukh",
+    id: "anaya-pagar-state-champion",
+    studentName: "Anaya Pagar",
     studentPhotoUrl: "/logo.png",
     ageYears: 9,
     schoolName: "EuroSchool Wakad, Pune",
@@ -68,7 +68,7 @@ const DEFAULT_SUCCESS_STORIES: SuccessStory[] = [
     storyType: "transformation",
     beforeText: "Struggled with finger-counting and math anxiety during timed school tests.",
     afterText: "Mastered 5-rod Soroban bead visualization at AAA Wakad. Solves 100 sums in 5 mins with 100% accuracy!",
-    aiGeneratedStory: "Anaya Deshmukh joined Arnav Abacus Academy (Wakad, Pune) struggling with mental arithmetic confidence. Through structured Soroban bead visualization and 3-mode speed drills under Founder Neha Patil, Anaya developed photographic number memory. She achieved 1st Rank Gold Medal at the State Level Mental Arithmetic Championship, solving 100 problems in under 5 minutes with zero errors!",
+    aiGeneratedStory: "Anaya Pagar joined Arnav Abacus Academy (Wakad, Pune) struggling with mental arithmetic confidence. Through structured Soroban bead visualization and 3-mode speed drills under Founder Neha Patil, Anaya developed photographic number memory. She achieved 1st Rank Gold Medal at the State Level Mental Arithmetic Championship, solving 100 problems in under 5 minutes with zero errors!",
     publishedAt: "2025-02-15T10:00:00.000Z",
     likesCount: 84,
     featured: true
