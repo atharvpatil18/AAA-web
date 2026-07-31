@@ -378,6 +378,8 @@ export const translations = {
     showcaseItem12Text: "Devaansh Ganjoo rewrote the rulebook with a perfect 100/100 in Abacus Runner Level 1 at 2.2x speed and excellent handwriting! Driven by laser focus and a heart of gold, he shines in class. We also honor his super support squad—Happy Father's Day to his dad and Happy Birthday to his mom! Next stop: National & International stages! 🏆",
     showcaseItem13Title: "Champion & Birthday Boy: Meet Sushmit!",
     showcaseItem13Text: "Happy Birthday, Sushmit! 🎂 We celebrate our birthday boy’s recent triumph: scoring a PERFECT 100/100 in Abacus Sr. KG and winning the Championship Trophy! Structured and curious, Sushmit stands out for his proactive habits and excellent handwriting. Heartfelt thanks to Supermom Manisha and Teacher Neha. Our future International Math Champion is destined for greatness! 🏆",
+    showcaseItem14Title: "1st Rank State Mental Math Gold Medalist: Anaya Pagar",
+    showcaseItem14Text: "Huge congratulations to our brilliant student Anaya Pagar for securing 1st Rank Gold Medal at the State Mental Math Championship! Anaya solved 100 speed math problems in 5 minutes flat with 100% accuracy under the guidance of Founder Neha Patil at Arnav Abacus Academy.",
 
     showcaseTag1: "International Champion",
     showcaseTag2: "Double Champion",
@@ -1302,6 +1304,8 @@ export const translations = {
     showcaseItem12Text: "देवांश गंजू ने शानदार २.२ गुना गति और बेहतरीन लिखावट के साथ एबाकस रनर लेवल १ में १००/१०० का परफेक्ट स्कोर बनाया है ! लेज़र फोकस और दयालु दिल के साथ क्लास में चमकने वाले देवांश के सुपर परिवार (पापा को फादर्स डे और मम्मी को जन्मदिन) को भी बधाई। अगला पड़ाव: राष्ट्रीय और अंतर्राष्ट्रीय मंच ! 🏆",
     showcaseItem13Title: "चैंपियन और बर्थडे बॉय: मिलिए सुशमित से!",
     showcaseItem13Text: "हैप्पी बर्थडे, सुशमित ! 🎂 हम अपने बर्थडे बॉय की हालिया जीत का जश्न मना रहे हैं: एबाकस सीनियर केजी में परफेक्ट १००/१०० स्कोर और चैम्पियनशिप ट्रॉफी ! सुशमित अपनी जिज्ञासु प्रवृत्ति, बेहतरीन लिखावट और अनुशासन के लिए जाने जाते हैं। उनकी सुपरमॉम मनीषा और नेहा मैम को बहुत-बहुत आभार। हमारे भविष्य के अंतर्राष्ट्रीय गणित चैंपियन का भविष्य उज्ज्वल है ! 🏆",
+    showcaseItem14Title: "राज्य मानसिक गणित स्वर्ण पदक विजेता: अनाया पगार",
+    showcaseItem14Text: "हमारी मेधावी छात्रा अनाया पगार को राज्य स्तरीय मानसिक गणित चैम्पियनशिप में प्रथम स्थान स्वर्ण पदक प्राप्त करने पर हार्दिक बधाई! अनाया ने अर्णव अबेकस एकेडमी में संस्थापक नेहा पाटिल के मार्गदर्शन में 5 मिनट में 100% सटीकता के साथ 100 गणितीय समस्याओं को हल किया।",
 
     showcaseTag1: "अंतर्राष्ट्रीय चैंपियन",
     showcaseTag2: "डबल चैंपियन",
@@ -2226,6 +2230,8 @@ export const translations = {
     showcaseItem12Text: "देवांश गंजू याने उत्कृष्ट हस्ताक्षरासह आणि २.२ पट वेगवान गतीने ॲबॅकस रनर लेव्हल १ मध्ये १००/१०० मिळवून इतिहास रचला आहे ! लेझर फोकस आणि दयाळू वृत्तीने सर्वांचे मन जिंकणाऱ्या देवांशच्या पालकांना (वडिलांना फादर्स डे आणि आईला वाढदिवस) मनःपूर्वक शुभेच्छा। पुढील लक्ष्य: राष्ट्रीय व आंतरराष्ट्रीय स्तरावरील यश ! 🏆",
     showcaseItem13Title: "चॅम्पियन आणि बर्थडे बॉय: भेटा सुशमितला!",
     showcaseItem13Text: "हॅपी बर्थडे, सुशमित ! 🎂 आम्ही आपल्या या विद्यार्थ्याच्या दुहेरी आनंदाचे स्वागत करतो: ॲबॅकस सीनियर केजीमध्ये १००/१०० गुण आणि चॅम्पियनशिप ट्रॉफी ! सुशमित त्याच्या जिज्ञासू वृत्तीसाठी, शिस्तीसाठी आणि सुंदर हस्ताक्षरासाठी ओळखला जातो। त्याची सुपरमॉम मनीषा आणि नेहा मॅडमचे मनापासून आभार। आमचा भावी आंतरराष्ट्रीय गणित चॅम्पियन यशाच्या शिखरावर पोहोचेल यात शंका नाही ! 🏆",
+    showcaseItem14Title: "राज्यस्तरीय मानसिक गणित सुवर्णपदक विजेती: अनाया पगार",
+    showcaseItem14Text: "राज्यस्तरीय मानसिक गणित स्पर्धेत प्रथम क्रमांक सुवर्णपदक मिळवल्याबद्दल आमची हुशार विद्यार्थिनी अनाया पगार हिचे हार्दिक अभिनंदन! अनायाने अर्णव ॲबॅकस अकॅडमीमध्ये संचालिका नेहा पाटील यांच्या मार्गदर्शनाखाली ५ मिनिटांत १००% अचूकतेसह १०० प्रश्न सोडवले.",
 
     showcaseTag1: "आंतरराष्ट्रीय विजेता",
     showcaseTag2: "सलग दोनदा विजेता",

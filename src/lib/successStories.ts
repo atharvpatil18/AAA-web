@@ -66,7 +66,9 @@ export function getSuccessStories(): SuccessStory[] {
     const seen = new Set<string>();
     const cleaned = parsed.filter((s) => {
       if (!s || !s.id || s.id.startsWith("test_") || !s.studentName) return false;
-      const key = `${(s.studentName || "").toLowerCase().trim()}_${(s.highlight || "").toLowerCase().trim()}`;
+      const sName = (s.studentName || "").toLowerCase().trim();
+      if (sName.includes("deshmukh") || sName.includes("test")) return false;
+      const key = `${sName}_${(s.highlight || "").toLowerCase().trim()}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;

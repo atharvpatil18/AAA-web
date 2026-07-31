@@ -417,6 +417,21 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       colorTheme: "gold",
       mainCategory: "academy_level",
       academySubCategory: "abacus"
+    },
+    {
+      id: "gallery-anaya-pagar",
+      type: "competition",
+      title: t("showcaseItem14Title"),
+      studentName: "Anaya Pagar",
+      age: "9 Years",
+      grade: "Grade 4",
+      tag: t("showcaseTag14"),
+      achievementText: t("showcaseItem14Text"),
+      imageUrl: "/logo.png",
+      imageAlt: "Anaya Pagar holding State Mental Math Gold Medal",
+      colorTheme: "gold",
+      mainCategory: "national_state",
+      academySubCategory: "abacus"
     }
   ];
 
@@ -424,11 +439,14 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
   // Filter and deduplicate adminStories against static showcaseData
   const showcaseTitleKeys = new Set(showcaseData.map(i => (i.studentName || i.title).toLowerCase().trim()));
   const uniqueAdminStories = adminStories.filter(i => {
-    const key = (i.studentName || i.title).toLowerCase().trim();
-    return !showcaseTitleKeys.has(key);
+    const nameKey = (i.studentName || "").toLowerCase().trim();
+    const titleKey = (i.title || "").toLowerCase().trim();
+    if (!nameKey || nameKey.includes("deshmukh") || nameKey.includes("test")) return false;
+    return !showcaseTitleKeys.has(nameKey) && !showcaseTitleKeys.has(titleKey);
   });
 
-  const allCombinedItems = [...uniqueAdminStories, ...showcaseData];
+  // Showcase strictly the 14 verified achievements plus any new unique published stories
+  const allCombinedItems = [...showcaseData, ...uniqueAdminStories];
   const visibleItems = allCombinedItems;
 
   const filteredItems = visibleItems.filter(item => {
