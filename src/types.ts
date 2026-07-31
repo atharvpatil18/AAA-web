@@ -152,7 +152,7 @@ export interface BlogPost {
     role: string;
     avatar: string;
   };
-  category: "Brain Development" | "Abacus Tips" | "Vedic Math" | "Parenting" | "Student Stories";
+  category: string;
   coverImage: string;
   readTime: string;
   publishedAt: string;

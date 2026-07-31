@@ -25,6 +25,8 @@ const PracticeResult = React.lazy(() => import("./pages/PracticeResult"));
 const Login = React.lazy(() => import("./pages/Login"));
 const Blog = React.lazy(() => import("./pages/Blog"));
 const BlogPostDetail = React.lazy(() => import("./pages/BlogPostDetail"));
+const WorksheetVault = React.lazy(() => import("./pages/WorksheetVault"));
+const TeacherFranchise = React.lazy(() => import("./pages/TeacherFranchise"));
 
 
 
@@ -176,6 +178,8 @@ export default function App() {
                 <Route path="/blog/:slug" element={<BlogPostDetail />} />
                 <Route path="/news" element={<NewsEvents />} />
 
+                <Route path="/worksheets" element={<WorksheetVault />} />
+                <Route path="/teacher-franchise" element={<TeacherFranchise />} />
                 <Route path="/faqs" element={<Faqs />} />
                 <Route path="/brochure" element={<InteractiveBrochure />} />
                 <Route path="/campaigns/:slug" element={<CampaignPage />} />

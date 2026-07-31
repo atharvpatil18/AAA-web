@@ -15,7 +15,7 @@ export default function InteractiveBrochure() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const tabParam = searchParams.get("tab");
-  const { language, t } = useLanguage();
+  const { language, t, formatNumber } = useLanguage();
   const [isFlipped, setIsFlipped] = useState(false);
   const [activeDocTab, setActiveDocTab] = useState<"brochure" | "manual" | "success">(
     tabParam === "manual" ? "manual" : tabParam === "success" ? "success" : "brochure"

@@ -59,6 +59,60 @@ export default function PracticeSession() {
   const [instantFeedback, setInstantFeedback] = useState<{ isCorrect: boolean; message: string; cheer: string } | null>(null);
   const [mobileNavExpanded, setMobileNavExpanded] = useState(false);
 
+  // 🎙️ Audio Flash Anzan Voice Speed Dictation State
+  const [isAnzanDictating, setIsAnzanDictating] = useState(false);
+  const [anzanSpeedSeconds, setAnzanSpeedSeconds] = useState<number>(1.5);
+  const anzanTimeoutRef = useRef<any>(null);
+
+  const speakText = (text: string) => {
+    if (!soundEnabled || !("speechSynthesis" in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = anzanSpeedSeconds <= 1 ? 1.2 : 1.0;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.warn("Speech synthesis error", e);
+    }
+  };
+
+  const toggleAnzanDictation = () => {
+    if (isAnzanDictating) {
+      setIsAnzanDictating(false);
+      if (anzanTimeoutRef.current) clearTimeout(anzanTimeoutRef.current);
+      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    } else {
+      setIsAnzanDictating(true);
+      dictateCurrentQuestion();
+    }
+  };
+
+  const dictateCurrentQuestion = () => {
+    if (!currentQuestion) return;
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+
+    if (currentQuestion.rows && currentQuestion.rows.length > 0) {
+      let stepIndex = 0;
+      const speakNextRow = () => {
+        if (stepIndex < currentQuestion.rows!.length) {
+          const val = currentQuestion.rows![stepIndex];
+          const text = val > 0 ? `Plus ${val}` : `Minus ${Math.abs(val)}`;
+          speakText(text);
+          stepIndex++;
+          anzanTimeoutRef.current = setTimeout(speakNextRow, anzanSpeedSeconds * 1000);
+        } else {
+          setTimeout(() => speakText("That's that! Enter your answer."), 1000);
+          setIsAnzanDictating(false);
+        }
+      };
+      speakNextRow();
+    } else {
+      speakText(`Question: ${currentQuestion.prompt || currentQuestion.expression}`);
+      setIsAnzanDictating(false);
+    }
+  };
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const currentQuestion: Question | undefined = questionSet?.questions?.[currentIndex];
@@ -351,6 +405,20 @@ export default function PracticeSession() {
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
+          <button
+            type="button"
+            onClick={toggleAnzanDictation}
+            title="Audio Flash Anzan Voice Dictation Mode"
+            className={`p-1.5 px-3 rounded-xl border text-xs font-black transition flex items-center gap-1.5 cursor-pointer ${
+              isAnzanDictating
+                ? "bg-rose-600 text-white border-rose-500 animate-pulse shadow-md"
+                : "bg-gradient-to-r from-purple-900 to-indigo-900 text-purple-200 border-purple-700 hover:border-amber-400"
+            }`}
+          >
+            <Volume2 className={`w-4 h-4 ${isAnzanDictating ? "animate-bounce text-yellow-300" : "text-amber-400"}`} />
+            <span>{isAnzanDictating ? "Dictating..." : "🎙️ Audio Anzan"}</span>
+          </button>
+
           <button
             type="button"
             onClick={() => setSoundEnabled(!soundEnabled)}
