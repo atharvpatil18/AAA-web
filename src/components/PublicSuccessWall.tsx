@@ -173,11 +173,20 @@ export default function PublicSuccessWall() {
                   {/* Student Identity */}
                   <div className="flex items-center gap-4">
                     <div className="relative shrink-0">
-                      <img
-                        src={story.studentPhotoUrl || "/logo.png"}
-                        alt={story.studentName}
-                        className="w-20 h-20 rounded-2xl object-cover border-4 border-amber-400 shadow-md group-hover:scale-105 transition-transform duration-300"
-                      />
+                      {story.studentPhotoUrl && story.studentPhotoUrl !== "/logo.png" ? (
+                        <img
+                          src={story.studentPhotoUrl}
+                          alt={story.studentName}
+                          className="w-20 h-20 rounded-2xl object-cover border-4 border-amber-400 shadow-md group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-amber-600 border-4 border-amber-300 shadow-md flex flex-col items-center justify-center text-white group-hover:scale-105 transition-transform duration-300">
+                          <span className="text-xl">🏆</span>
+                          <span className="text-[10px] font-black tracking-wider uppercase opacity-90">
+                            {story.studentName ? story.studentName.split(" ").map(n => n[0]).join("").slice(0, 2) : "AAA"}
+                          </span>
+                        </div>
+                      )}
                       <div className="absolute -bottom-2 -right-2 bg-amber-500 text-slate-950 p-1.5 rounded-full shadow-md">
                         <Award className="w-4 h-4" />
                       </div>

@@ -522,8 +522,15 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
   ];
 
 
-  const allCombinedItems = [...adminStories, ...showcaseData];
-  const visibleItems = allCombinedItems.filter(item => !!item.imageUrl);
+  // Filter and deduplicate adminStories against static showcaseData
+  const showcaseTitleKeys = new Set(showcaseData.map(i => (i.studentName || i.title).toLowerCase().trim()));
+  const uniqueAdminStories = adminStories.filter(i => {
+    const key = (i.studentName || i.title).toLowerCase().trim();
+    return !showcaseTitleKeys.has(key);
+  });
+
+  const allCombinedItems = [...uniqueAdminStories, ...showcaseData];
+  const visibleItems = allCombinedItems;
 
   const filteredItems = visibleItems.filter(item => {
     if (activeCategory !== "all" && item.mainCategory !== activeCategory) {
@@ -653,12 +660,19 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                   className={`aspect-[4/3] w-full relative overflow-hidden flex items-center justify-center border-b-4 ${borderCol} bg-[#F3F1EC] cursor-pointer group`}
                   onClick={() => setSelectedItem(item)}
                 >
-                  {item.imageUrl && (
+                  {item.imageUrl && item.imageUrl !== "/logo.png" ? (
                     <img 
                       src={item.imageUrl} 
                       alt={item.imageAlt} 
                       className="w-full h-full object-contain p-3 transition-transform duration-300 group-hover:scale-[1.03]"
                     />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-amber-500/20 via-orange-500/10 to-teal-500/20 flex flex-col items-center justify-center p-6 text-center">
+                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 text-white flex items-center justify-center font-black text-3xl shadow-md border-2 border-white mb-2">
+                        🏆
+                      </div>
+                      <span className="text-base font-black text-vibrant-dark tracking-tight">{item.studentName || item.title}</span>
+                    </div>
                   )}
                   
                   {/* Category Tag Badge in Top Left */}

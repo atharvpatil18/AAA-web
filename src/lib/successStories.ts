@@ -61,7 +61,17 @@ export function getSuccessStories(): SuccessStory[] {
     if (!raw) return [];
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
-    const cleaned = parsed.filter((s) => s && s.id && !s.id.startsWith("test_"));
+    
+    // Deduplicate and filter invalid test stories
+    const seen = new Set<string>();
+    const cleaned = parsed.filter((s) => {
+      if (!s || !s.id || s.id.startsWith("test_") || !s.studentName) return false;
+      const key = `${(s.studentName || "").toLowerCase().trim()}_${(s.highlight || "").toLowerCase().trim()}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    
     // Migrate to v2 key
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned)); } catch {}
     return cleaned;
