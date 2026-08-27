@@ -49,10 +49,22 @@ export interface LevelPermission {
   accessMode: AccessFeatureMode; // "quiz" | "learn" | "both"
 }
 
+export interface BatchSchedule {
+  id: string;
+  name: string; // e.g. "Online - Tue/Thu (4:00 PM - 5:00 PM)"
+  teacherName: string; // e.g. "Neha Patil"
+  course: "abacus" | "vedic" | "mental" | "school_math";
+  days: string; // e.g. "Tue + Thu"
+  timeSlot: string; // e.g. "04:30 PM - 05:30 PM"
+  status?: "active" | "full" | "upcoming";
+  createdAt?: string;
+}
+
 export interface ApprovedEmailRecord {
   email: string;
   studentName?: string;
   isAdmin?: boolean;
+  batchId?: string;
   permissions: LevelPermission[];
   createdAt?: string;
 }
