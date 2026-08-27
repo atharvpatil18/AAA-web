@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// jsPDF is dynamically imported inside generateAchievementCertificatePDF to optimize initial bundle load
+import { jsPDF } from "jspdf";
 
 export interface CertificateData {
   studentName?: string;
@@ -20,7 +20,6 @@ export interface CertificateData {
 
 export async function generateAchievementCertificatePDF(data: CertificateData) {
   try {
-    const { jsPDF } = await import("jspdf");
     const doc = new jsPDF({
       orientation: "landscape",
       unit: "mm",

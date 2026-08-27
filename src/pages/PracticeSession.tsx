@@ -38,18 +38,6 @@ export default function PracticeSession() {
     }
   }, [currentUser]);
 
-  // Prevent accidental page reloads/closing during active speed quiz sessions
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (!isFinished) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [isFinished]);
-
   // Access Guard
   useEffect(() => {
     if (currentUser?.email && questionSet) {

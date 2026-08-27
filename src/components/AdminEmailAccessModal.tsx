@@ -49,7 +49,6 @@ import {
 } from "../lib/cloudSync";
 import { validateSanitizedEmail, validateSanitizedName } from "../lib/securitySanitizer";
 import AdminSuccessStoryManager from "./AdminSuccessStoryManager";
-import AdminBatchManager from "./AdminBatchManager";
 import { syncSuccessStoriesToCloud } from "../lib/successStories";
 
 interface AdminEmailAccessModalProps {
@@ -61,7 +60,7 @@ const ABACUS_LEVELS = ["JR-0", "JR-1", "JR-2", "JR-3", "SR-1", "SR-2", "SR-3", "
 const VEDIC_LEVELS = ["JVM-1", "SVM-0", "SVM-1", "SVM-2", "SVM-3", "SVM-4", "SVM-5", "SVM-6"];
 
 export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAccessModalProps) {
-  const [activeTab, setActiveTab] = useState<"access" | "feedback" | "stories" | "batches">("access");
+  const [activeTab, setActiveTab] = useState<"access" | "feedback" | "stories">("access");
   const [records, setRecords] = useState<ApprovedEmailRecord[]>([]);
   const [feedbacks, setFeedbacks] = useState<VisitorFeedback[]>([]);
   const [allAttempts, setAllAttempts] = useState<AttemptRecord[]>([]);
@@ -382,25 +381,10 @@ export default function AdminEmailAccessModal({ isOpen, onClose }: AdminEmailAcc
             <Sparkles className="w-4 h-4 text-purple-400" />
             Our Success Manager
           </button>
-          <button
-            onClick={() => setActiveTab("batches")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer ${
-              activeTab === "batches"
-                ? "bg-orange-500 text-white shadow-md font-extrabold"
-                : "text-slate-400 hover:text-white hover:bg-slate-800"
-            }`}
-          >
-            <BookOpen className="w-4 h-4 text-orange-400" />
-            Batches & Schedules
-          </button>
         </div>
 
         {/* Content Body */}
-        {activeTab === "batches" ? (
-          <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-slate-900/80">
-            <AdminBatchManager />
-          </div>
-        ) : activeTab === "stories" ? (
+        {activeTab === "stories" ? (
           <div className="p-4 sm:p-6 overflow-y-auto flex-1 bg-slate-900/80">
             <AdminSuccessStoryManager />
           </div>

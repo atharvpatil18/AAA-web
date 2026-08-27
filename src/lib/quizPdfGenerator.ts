@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-// jsPDF is dynamically imported inside generateQuizWorksheetPDF to optimize initial bundle load
+import { jsPDF } from "jspdf";
 import { getCustomizedSet } from "../data/practiceData";
 
 export const generateQuizWorksheetPDF = async (
@@ -14,7 +14,6 @@ export const generateQuizWorksheetPDF = async (
   action: "preview" | "download" = "preview"
 ) => {
   try {
-    const { jsPDF } = await import("jspdf");
     const doc = new jsPDF({
       orientation: "portrait",
       unit: "mm",
