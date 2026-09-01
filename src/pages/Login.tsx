@@ -403,14 +403,43 @@ export default function Login() {
           
           {/* Error and Success notifications */}
           {error && (
-            <div className="mb-6 p-3.5 bg-red-50 border-2 border-red-200 text-red-700 text-xs font-black rounded-xl flex items-center justify-between shadow-xs">
-              <div className="flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
-                <span>{error}</span>
+            <div className="mb-6 p-4 bg-red-50 border-2 border-red-200 text-red-800 text-xs font-black rounded-xl space-y-3 shadow-xs">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
+                  <span>{error}</span>
+                </div>
+                <button type="button" onClick={() => setError(null)} className="text-red-400 hover:text-red-600 text-base leading-none">
+                  &times;
+                </button>
               </div>
-              <button type="button" onClick={() => setError(null)} className="text-red-400 hover:text-red-600">
-                &times;
-              </button>
+
+              {/* Registration Options Box when email is unregistered */}
+              {(error.toLowerCase().includes("registered") || error.toLowerCase().includes("database")) && (
+                <div className="pt-2 border-t border-red-200/80 space-y-2">
+                  <p className="text-[11px] font-bold text-slate-700">
+                    Register through WhatsApp contact or Email (as per Arnav Abacus Academy records):
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <a
+                      href={`https://wa.me/919021924968?text=${encodeURIComponent("Hello Arnav Abacus Academy, my email address is not registered in your student database. Please register my details via WhatsApp contact as per academy records.")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 bg-[#25D366] text-white px-3 py-2 rounded-lg font-black text-xs hover:opacity-90 transition-opacity"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      Register via WhatsApp (+91 9021924968)
+                    </a>
+                    <a
+                      href={`mailto:nehaatharv@gmail.com?subject=${encodeURIComponent("Student Registration Request - Arnav Abacus Academy")}&body=${encodeURIComponent("Hello Arnav Abacus Academy team,\n\nMy email address is not yet registered in your student database.\n\nStudent Name:\nParent Mobile / Email (as per academy records):\nLevel:")}`}
+                      className="inline-flex items-center justify-center gap-1.5 bg-slate-900 text-white px-3 py-2 rounded-lg font-black text-xs hover:opacity-90 transition-opacity"
+                    >
+                      <Mail className="w-3.5 h-3.5" />
+                      Register via Email (nehaatharv@gmail.com)
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

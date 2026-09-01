@@ -5,7 +5,7 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Calendar, Phone, ArrowRight, Smartphone, Compass, Sparkles, BookOpen, Star, ChevronDown, ChevronUp } from "lucide-react";
+import { Calendar, Phone, ArrowRight, Smartphone, Compass, Sparkles, BookOpen, Star, ChevronDown, ChevronUp, Mail, MessageSquare, Trophy } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
@@ -25,6 +25,7 @@ interface NewsItem {
 export default function NewsEvents() {
   const { t } = useLanguage();
   const [expandedEvents, setExpandedEvents] = useState<Record<string, boolean>>({});
+  const [showResultsModal, setShowResultsModal] = useState(false);
 
   const toggleEvent = (id: string) => {
     setExpandedEvents(prev => ({
@@ -96,8 +97,7 @@ export default function NewsEvents() {
         t("news4Detail3"),
         t("news4Detail4")
       ],
-      colorTheme: "gold",
-      imageUrl: "mental_math_power_sessions_july_2026.jpg"
+      colorTheme: "gold"
     }
   ];
 
@@ -152,6 +152,38 @@ export default function NewsEvents() {
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-vibrant-teal/10 flex items-center justify-center border border-vibrant-teal/20">✓</div>
                 <span>{t("newsAppFeat4")}</span>
+              </div>
+            </div>
+
+            {/* Registration Options Box as per Academy Records */}
+            <div className="mt-4 p-5 bg-[#FFF9E6] border-2 border-vibrant-dark rounded-2xl space-y-3">
+              <div className="font-black text-xs md:text-sm text-vibrant-dark flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-vibrant-orange" />
+                {t("newsAppRegisterTitle")}
+              </div>
+              <p className="text-[11px] md:text-xs text-gray-600 font-medium leading-relaxed">
+                {t("newsAppRegisterSubtitle")}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                <a
+                  href={`https://wa.me/919021924968?text=${encodeURIComponent("Hello Arnav Abacus Academy, I would like to register my student details via WhatsApp contact as per academy records for early app & portal access.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-black text-xs px-4 py-2.5 rounded-xl border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:opacity-95 transition-all"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  {t("registerViaWhatsApp")}
+                </a>
+                <a
+                  href={`mailto:nehaatharv@gmail.com?subject=${encodeURIComponent("Student Registration Request - Arnav Abacus Academy Records")}&body=${encodeURIComponent("Hello Arnav Abacus Academy team,\n\nI would like to register my email address in your official student database for app and student portal access.\n\nStudent Name:\nParent Contact / Email (as per academy records):\nLevel:")}`}
+                  className="inline-flex items-center justify-center gap-2 bg-vibrant-teal text-vibrant-dark font-black text-xs px-4 py-2.5 rounded-xl border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:opacity-95 transition-all"
+                >
+                  <Mail className="w-4 h-4" />
+                  {t("registerViaEmail")}
+                </a>
+              </div>
+              <div className="text-[10px] text-gray-500 font-bold italic pt-1">
+                {t("recordsNote")}
               </div>
             </div>
 
@@ -268,13 +300,44 @@ export default function NewsEvents() {
                               </div>
                             )}
                           </div>
+
+                          {/* Registration Box for news-4 */}
+                          {item.id === "news-4" && (
+                            <div className="mt-4 p-4 bg-[#FFF9E6] border-2 border-vibrant-dark rounded-2xl space-y-2.5">
+                              <div className="font-black text-xs md:text-sm text-vibrant-dark flex items-center gap-2">
+                                <Sparkles className="w-4 h-4 text-vibrant-orange" />
+                                Register for Mental Math Power Sessions (Oct 10-11, 2026)
+                              </div>
+                              <p className="text-[11px] md:text-xs text-gray-600 font-medium">
+                                Option to register through WhatsApp contact (+91 9021924968) or Email (nehaatharv@gmail.com) as per Arnav Abacus Academy records:
+                              </p>
+                              <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                                <a
+                                  href={`https://wa.me/919021924968?text=${encodeURIComponent("Hello Arnav Abacus Academy, I would like to register my child for the Mental Math Power Sessions & Excellence Challenge (Oct 10-11, 2026).")}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-black text-xs px-4 py-2.5 rounded-xl border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:opacity-95 transition-all"
+                                >
+                                  <MessageSquare className="w-4 h-4" />
+                                  {t("registerViaWhatsApp")}
+                                </a>
+                                <a
+                                  href={`mailto:nehaatharv@gmail.com?subject=${encodeURIComponent("Mental Math Power Sessions Registration - Oct 2026")}&body=${encodeURIComponent("Hello Arnav Abacus Academy team,\n\nI would like to register my child for the Mental Math Power Sessions & Excellence Challenge on October 10-11, 2026.\n\nStudent Name:\nParent Contact / Email (as per academy records):\nGrade/Level:")}`}
+                                  className="inline-flex items-center justify-center gap-2 bg-vibrant-teal text-vibrant-dark font-black text-xs px-4 py-2.5 rounded-xl border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:opacity-95 transition-all"
+                                >
+                                  <Mail className="w-4 h-4" />
+                                  {t("registerViaEmail")}
+                                </a>
+                              </div>
+                            </div>
+                          )}
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
 
-                  {/* Toggle Button */}
-                  <div className="pt-2">
+                  {/* Action Buttons */}
+                  <div className="pt-2 flex flex-wrap items-center gap-3">
                     <button
                       onClick={() => toggleEvent(item.id)}
                       className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider border-2 border-vibrant-dark transition-all duration-150 shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none ${
@@ -286,6 +349,37 @@ export default function NewsEvents() {
                       <span>{isExpanded ? t("newsHideDetails") : t("newsViewDetails")}</span>
                       {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
                     </button>
+
+                    {item.id === "news-2" && (
+                      <button
+                        onClick={() => setShowResultsModal(true)}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-vibrant-gold text-vibrant-dark border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-amber-400 transition-all"
+                      >
+                        <Trophy className="w-4 h-4 text-vibrant-dark fill-vibrant-dark" />
+                        <span>{t("news2ResultsBtn")}</span>
+                      </button>
+                    )}
+
+                    {item.id === "news-4" && (
+                      <div className="flex flex-wrap items-center gap-2">
+                        <a
+                          href={`https://wa.me/919021924968?text=${encodeURIComponent("Hello Arnav Abacus Academy, I would like to register for the Mental Math Power Sessions (Oct 10-11, 2026).")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-[#25D366] text-white border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:opacity-90 transition-all"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5" />
+                          <span>WhatsApp</span>
+                        </a>
+                        <a
+                          href={`mailto:nehaatharv@gmail.com?subject=${encodeURIComponent("Mental Math Power Sessions Registration - Oct 2026")}`}
+                          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider bg-vibrant-teal text-vibrant-dark border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:opacity-90 transition-all"
+                        >
+                          <Mail className="w-3.5 h-3.5" />
+                          <span>Email</span>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -293,6 +387,171 @@ export default function NewsEvents() {
           })}
         </div>
       </section>
+
+      {/* Results Showcase Modal for IIVA Competition & Felicitation */}
+      <AnimatePresence>
+        {showResultsModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
+            onClick={() => setShowResultsModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#FFFDF9] border-4 border-vibrant-dark rounded-[32px] shadow-[12px_12px_0_0_#1A2E35] max-w-4xl w-full p-5 md:p-8 overflow-hidden relative space-y-6 max-h-[92vh] overflow-y-auto"
+            >
+              {/* Header */}
+              <div className="flex items-start justify-between gap-4 border-b-2 border-dashed border-vibrant-dark/20 pb-4">
+                <div className="space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[10px] font-black text-vibrant-gold bg-slate-900 border border-vibrant-gold/30 px-3 py-1 rounded-full uppercase tracking-wider inline-block">
+                      🏆 8 GOLDS • 1 ACADEMY • INFINITE PRIDE
+                    </span>
+                    <span className="text-[10px] font-black text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full uppercase tracking-wider inline-block">
+                      🇮🇳 15TH AUG 2026 FELICITATION CEREMONY
+                    </span>
+                  </div>
+                  <h2 className="font-display font-black text-2xl md:text-3xl text-vibrant-dark">
+                    Celebrating 8 Golden Champions!
+                  </h2>
+                  <p className="text-xs md:text-sm text-gray-600 font-bold leading-relaxed">
+                    IIVA State Level Abacus & Vedic Math Competition 2026 • Felicitation held on 15th Aug 2026 at Arnav Abacus Academy Wakad, Pune by Founder & Director Neha Patil.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowResultsModal(false)}
+                  className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border-2 border-vibrant-dark text-vibrant-dark font-black text-xs transition-colors shrink-0"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Main Content Grid: Left Poster & Right Champion Details */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                {/* Left Column: Poster Image */}
+                <div className="lg:col-span-5 flex flex-col items-center justify-center space-y-3">
+                  <div className="w-full border-4 border-vibrant-dark rounded-2xl overflow-hidden bg-white shadow-[6px_6px_0_0_#1A2E35]">
+                    <img 
+                      src="/iiva_state_champions_2026.jpg" 
+                      alt="Celebrating 8 Golden Champions - Arnav Abacus Academy"
+                      className="w-full h-auto object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="text-[11px] text-center font-black text-vibrant-dark bg-[#FFF5CC] border-2 border-vibrant-dark px-3 py-1.5 rounded-xl w-full">
+                    🎖️ Gold Medals Awarded by Founder & Director Neha Patil
+                  </div>
+                </div>
+
+                {/* Right Column: Detailed Breakdown of Champions & Cash Awards */}
+                <div className="lg:col-span-7 space-y-4">
+                  
+                  {/* SPOTLIGHT CHAMPION: ARNAV PATIL */}
+                  <div className="p-4 bg-gradient-to-br from-[#FFF9E6] to-[#FFE6B3] border-3 border-vibrant-dark rounded-2xl space-y-3 shadow-[4px_4px_0_0_#1A2E35] relative overflow-hidden">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <span className="text-[10px] font-black text-slate-900 bg-vibrant-gold px-2.5 py-1 rounded-full uppercase tracking-wider border border-vibrant-dark">
+                        👑 1ST RANK DOUBLE STATE CHAMPION
+                      </span>
+                      <span className="text-[10px] font-black text-emerald-900 bg-emerald-300 px-2.5 py-1 rounded-full uppercase tracking-wider border border-vibrant-dark">
+                        🚀 DIRECT ENTRY TO DEC'26 NATIONALS
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 className="font-display font-black text-xl md:text-2xl text-vibrant-dark">
+                        ARNAV PATIL
+                      </h3>
+                      <p className="text-xs font-black text-vibrant-orange mt-0.5">
+                        State 1st Rank in Abacus & 1st Rank in Vedic Mathematics!
+                      </p>
+                    </div>
+
+                    <div className="space-y-1.5 text-xs text-vibrant-dark font-bold bg-white/80 p-3 rounded-xl border border-vibrant-dark/20">
+                      <div className="flex items-center justify-between">
+                        <span>• Abacus (200 Questions):</span>
+                        <span className="text-emerald-700 font-black">13 Mins (100% Accuracy)</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>• Vedic Math (75 Questions):</span>
+                        <span className="text-emerald-700 font-black">7 Mins (100% Accuracy)</span>
+                      </div>
+                      <div className="flex items-center justify-between pt-1 border-t border-dashed border-vibrant-dark/20 text-vibrant-orange font-black">
+                        <span>💰 IIVA Cash Rewards Won:</span>
+                        <span>₹2,100 (Abacus) + ₹2,100 (Vedic) = ₹4,200</span>
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] font-bold text-gray-700 italic leading-relaxed bg-[#FFFDF9] p-2.5 rounded-xl border border-dashed border-vibrant-dark/30">
+                      🌟 <span className="font-black text-vibrant-dark">Appreciation:</span> "Supersonic Mental Arithmetic Phenomenon! Arnav didn't just solve math problems—he redefined human speed boundaries with surgical 100% accuracy, proving that dedication unlocks true genius!"
+                    </p>
+                  </div>
+
+                  {/* RUNNER-UP SPOTLIGHTS */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="p-3 bg-[#E0FAF5] border-2 border-vibrant-dark rounded-xl space-y-1.5">
+                      <div className="text-[10px] font-black text-vibrant-teal uppercase tracking-wider flex items-center gap-1">
+                        🥈 2ND RANK • NAVYA PATIL
+                      </div>
+                      <div className="text-xs font-black text-vibrant-dark">Batch 1st Rank Gold Medalist</div>
+                      <div className="text-[11px] font-bold text-gray-600">200 Abacus Qs in 19 Mins (100% Acc)</div>
+                      <p className="text-[10px] text-teal-900 font-medium italic">"Steely resolve and flawless execution under high competition pressure!"</p>
+                    </div>
+
+                    <div className="p-3 bg-[#FFF0E0] border-2 border-vibrant-dark rounded-xl space-y-1.5">
+                      <div className="text-[10px] font-black text-vibrant-orange uppercase tracking-wider flex items-center gap-1">
+                        🥉 3RD RANK • MANASVI BAGUL
+                      </div>
+                      <div className="text-xs font-black text-vibrant-dark">Exemplary Performance Gold Medalist</div>
+                      <div className="text-[11px] font-bold text-gray-600">200 Abacus Qs in 17 Mins (98% Acc)</div>
+                      <p className="text-[10px] text-orange-900 font-medium italic">"Blazing tempo coupled with supreme numerical grit!"</p>
+                    </div>
+                  </div>
+
+                  {/* 5 GOLDEN STARS */}
+                  <div className="p-3.5 bg-slate-50 border-2 border-vibrant-dark rounded-xl space-y-2">
+                    <div className="font-black text-xs text-vibrant-dark uppercase tracking-wider flex items-center justify-between">
+                      <span>⭐ OUR 5 GOLDEN STARS (GOLD MEDALISTS)</span>
+                      <span className="text-[10px] font-bold bg-vibrant-gold/30 text-amber-900 px-2 py-0.5 rounded-md">200 Qs / 20 Mins Challenge</span>
+                    </div>
+                    <div className="flex flex-wrap gap-2 text-xs font-black text-slate-800">
+                      <span className="bg-white border border-vibrant-dark px-2.5 py-1 rounded-lg">⭐ Aarav Vora</span>
+                      <span className="bg-white border border-vibrant-dark px-2.5 py-1 rounded-lg">⭐ Devaansh Ganjoo</span>
+                      <span className="bg-white border border-vibrant-dark px-2.5 py-1 rounded-lg">⭐ Spriha Kamath</span>
+                      <span className="bg-white border border-vibrant-dark px-2.5 py-1 rounded-lg">⭐ Chaitanya Bhave</span>
+                      <span className="bg-white border border-vibrant-dark px-2.5 py-1 rounded-lg">⭐ Shaurya Atkare</span>
+                    </div>
+                    <p className="text-[10px] text-gray-600 font-bold italic pt-0.5">
+                      "Precision today, Champions forever! Each golden star demonstrated photographic visual memory and ultimate discipline."
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* Footer Actions */}
+              <div className="pt-3 flex flex-col sm:flex-row items-center justify-between gap-4 border-t-2 border-dashed border-vibrant-dark/20">
+                <div className="text-xs text-gray-600 font-bold flex items-center gap-1.5">
+                  <span>📍 Ceremony Venue:</span>
+                  <span className="text-vibrant-dark font-black">Arnav Abacus Academy, Wakad Pune</span>
+                </div>
+                <Link
+                  to="/showcase"
+                  onClick={() => setShowResultsModal(false)}
+                  className="w-full sm:w-auto bg-vibrant-orange text-white font-black text-xs px-6 py-3 rounded-xl border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-orange-600 transition-all text-center inline-flex items-center justify-center gap-2"
+                >
+                  <span>{t("viewFullShowcase")}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* 4. Bottom CTA Section */}
       <section className="py-20 md:py-28 bg-[#FF6321] text-white border-t-4 border-vibrant-dark relative">
