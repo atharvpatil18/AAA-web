@@ -9,6 +9,7 @@ import { Calendar, Phone, ArrowRight, Smartphone, Compass, Sparkles, BookOpen, S
 import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
+import ShareButton from "../components/ShareButton";
 
 interface NewsItem {
   id: string;
@@ -37,6 +38,23 @@ export default function NewsEvents() {
   const handleCtaClick = () => {
     trackDemoClick("news_page_bottom_cta");
   };
+
+  // Auto-expand & scroll to event if deep-linked via hash (e.g., #news-2)
+  React.useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.includes("#news-")) {
+      const newsId = hash.split("#").pop();
+      if (newsId) {
+        setExpandedEvents(prev => ({ ...prev, [newsId]: true }));
+        setTimeout(() => {
+          const el = document.getElementById(newsId);
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 300);
+      }
+    }
+  }, []);
 
   const newsData: NewsItem[] = [
     {
@@ -245,7 +263,8 @@ export default function NewsEvents() {
             return (
               <div 
                 key={item.id}
-                className={`bg-[#FFFDF9] border-4 ${borderCol} rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_${shadowCol}] p-6 md:p-8 lg:p-10 flex flex-col md:flex-row gap-6 md:gap-10 hover:scale-[1.005] transition-transform`}
+                id={item.id}
+                className={`bg-[#FFFDF9] border-4 ${borderCol} rounded-[32px] overflow-hidden shadow-[8px_8px_0_0_${shadowCol}] p-6 md:p-8 lg:p-10 flex flex-col md:flex-row gap-6 md:gap-10 hover:scale-[1.005] transition-transform scroll-mt-24`}
               >
                 {/* Date marker block */}
                 <div className="md:w-56 shrink-0 space-y-4">
@@ -359,6 +378,13 @@ export default function NewsEvents() {
                         <span>{t("news2ResultsBtn")}</span>
                       </button>
                     )}
+
+                    <ShareButton
+                      title={item.title}
+                      text={item.summary}
+                      url={`/news-events#${item.id}`}
+                      size="sm"
+                    />
 
                     {item.id === "news-4" && (
                       <div className="flex flex-wrap items-center gap-2">
