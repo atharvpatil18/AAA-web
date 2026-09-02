@@ -382,7 +382,7 @@ export default function NewsEvents() {
                     <ShareButton
                       title={item.title}
                       text={item.summary}
-                      url={`/news-events#${item.id}`}
+                      url={`/news#${item.id}`}
                       size="sm"
                     />
 

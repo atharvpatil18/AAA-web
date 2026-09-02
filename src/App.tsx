@@ -177,6 +177,7 @@ export default function App() {
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<BlogPostDetail />} />
                 <Route path="/news" element={<NewsEvents />} />
+                <Route path="/news-events" element={<NewsEvents />} />
 
                 <Route path="/worksheets" element={<WorksheetVault />} />
                 <Route path="/teacher-franchise" element={<TeacherFranchise />} />
