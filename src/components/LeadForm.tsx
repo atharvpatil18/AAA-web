@@ -9,6 +9,7 @@ import { Sparkles, Gift, Send, Landmark, ArrowRight, CheckCircle2 } from "lucide
 import { useLanguage } from "../lib/LanguageContext";
 import { jsPDF } from "jspdf";
 import { validateSanitizedName, sanitizeHtml } from "../lib/securitySanitizer";
+import { dispatchLeadToWebhook } from "../lib/leadWebhook";
 
 interface LeadFormProps {
   sourceCampaign?: string;
@@ -587,6 +588,21 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
     } catch (e) {
       console.warn("Failed to save local lead record:", e);
     }
+
+    // Dispatch asynchronously to Centralized Google Sheet Webhook
+    dispatchLeadToWebhook({
+      leadType: "Demo Class",
+      parentName: `${salutation} ${parentName}`.trim(),
+      studentName: studentName.trim(),
+      phone: "Via WhatsApp",
+      childAge,
+      program,
+      countryCode,
+      classMode: classMode === "online" ? "Online Video Class (Zoom/Meet)" : "Offline (Wakad Pune Center)",
+      curriculumOrRole: schoolCurriculum,
+      campaign: sourceCampaign || "Website Lead Form",
+      notes: expStr.trim(),
+    });
 
     const encodedText = encodeURIComponent(textMessage);
     const whatsappUrl = `https://wa.me/919021924968?text=${encodedText}`;

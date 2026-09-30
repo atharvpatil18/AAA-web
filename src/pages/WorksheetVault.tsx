@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { Download, FileText, Sparkles, CheckCircle2, BookOpen, Layers, Filter, ShieldCheck, Mail, User, Phone, ArrowRight } from "lucide-react";
 import { generateQuizWorksheetPDF } from "../lib/quizPdfGenerator";
 import { ABACUS_QUESTION_SETS, VEDIC_QUESTION_SETS } from "../data/practiceData";
+import { dispatchLeadToWebhook } from "../lib/leadWebhook";
 
 export default function WorksheetVault() {
   const [category, setCategory] = useState<"abacus" | "vedic">("abacus");
@@ -16,6 +17,9 @@ export default function WorksheetVault() {
   const [userPhone, setUserPhone] = useState("");
   const [downloadSuccess, setDownloadSuccess] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  const [pendingDownload, setPendingDownload] = useState<{ set: any; includeAnswers: boolean } | null>(null);
+  const [showGateModal, setShowGateModal] = useState(false);
 
   const activeSets = category === "abacus" ? ABACUS_QUESTION_SETS : VEDIC_QUESTION_SETS;
 
@@ -27,65 +31,96 @@ export default function WorksheetVault() {
   // Extract unique levels
   const availableLevels = Array.from(new Set(activeSets.map(s => s.level)));
 
-  const handleDownloadWorksheet = async (set: any, includeAnswers: boolean = false) => {
+  const executeDownload = async (targetSet: any, includeAnswers: boolean, nameToUse: string, phoneToUse: string, emailToUse: string) => {
     setIsGenerating(true);
     setDownloadSuccess(null);
 
+    const cleanName = (nameToUse || "Parent Lead").trim();
+    const cleanEmail = (emailToUse || "parent@arnavabacus.com").trim();
+    const cleanPhone = (phoneToUse || "").trim();
+
     // Save lead info if provided
-    if (userEmail || userName || userPhone) {
-      const cleanName = (userName || "Parent Lead").trim();
-      const cleanEmail = (userEmail || "anonymous@lead.com").trim();
-      const cleanPhone = (userPhone || "").trim();
-
-      const leads = JSON.parse(localStorage.getItem("aaa_worksheet_leads") || "[]");
-      leads.unshift({
-        name: cleanName,
-        email: cleanEmail,
-        phone: cleanPhone,
-        worksheet: set.title,
-        downloadedAt: new Date().toISOString()
-      });
-      localStorage.setItem("aaa_worksheet_leads", JSON.stringify(leads.slice(0, 100)));
-
-      // Also record into unified academy leads
+    if (cleanPhone || nameToUse || emailToUse) {
       try {
+        const leads = JSON.parse(localStorage.getItem("aaa_worksheet_leads") || "[]");
+        leads.unshift({
+          name: cleanName,
+          email: cleanEmail,
+          phone: cleanPhone,
+          worksheet: targetSet.title,
+          includeAnswers,
+          downloadedAt: new Date().toISOString()
+        });
+        localStorage.setItem("aaa_worksheet_leads", JSON.stringify(leads.slice(0, 100)));
+
+        // Also record into unified academy leads CRM
         const unified = JSON.parse(localStorage.getItem("aaa_leads_history") || "[]");
         unified.unshift({
           id: `lead_ws_${Date.now()}`,
           parentName: cleanName,
           studentName: cleanName,
-          childAge: "Not specified",
-          program: `Worksheet: ${set.title}`,
+          childAge: "Worksheet Student",
+          program: `Worksheet: ${targetSet.title}${includeAnswers ? " (With Key)" : ""}`,
           countryCode: "+91",
           classMode: "worksheet_download",
           timeZone: "Asia/Kolkata",
           schoolCurriculum: cleanPhone ? `WhatsApp: ${cleanPhone}` : "N/A",
-          campaign: `Worksheet Vault (${category.toUpperCase()} ${set.level})`,
+          campaign: `Worksheet Vault (${category.toUpperCase()} ${targetSet.level})`,
           submittedAt: new Date().toISOString(),
         });
         localStorage.setItem("aaa_leads_history", JSON.stringify(unified.slice(0, 100)));
       } catch (err) {
         console.warn("Unified lead sync err:", err);
       }
+
+      // Dispatch to Centralized Google Sheet Webhook
+      dispatchLeadToWebhook({
+        leadType: "Worksheet Download",
+        parentName: cleanName,
+        studentName: cleanName,
+        phone: cleanPhone,
+        email: cleanEmail,
+        childAge: "Student",
+        program: `${category.toUpperCase()} ${targetSet.level}: ${targetSet.title}`,
+        classMode: includeAnswers ? "PDF Download (With Answer Key)" : "PDF Download (Practice Sheet)",
+        campaign: `Worksheet Vault (${category.toUpperCase()} ${targetSet.level})`,
+        notes: `Downloaded ${targetSet.title}`,
+      });
     }
 
     try {
       await generateQuizWorksheetPDF(
-        userName || "Student",
-        set.id,
-        set.title,
-        set.questions ? set.questions.length : 20,
-        "download"
+        cleanName !== "Parent Lead" ? cleanName : "Student",
+        targetSet.id,
+        targetSet.title,
+        targetSet.questions ? targetSet.questions.length : 20,
+        "download",
+        includeAnswers
       );
 
-      setDownloadSuccess(`Successfully generated "${set.title}" PDF Worksheet!`);
-      setTimeout(() => setDownloadSuccess(null), 4000);
+      setDownloadSuccess(
+        `Generated "${targetSet.title}" ${includeAnswers ? "with Complete Answer Key" : "Practice Sheet"}! Check your downloads.`
+      );
+      setTimeout(() => setDownloadSuccess(null), 5000);
     } catch (e) {
       console.error("Failed to generate PDF", e);
-      alert("Generating PDF... Please check your downloads folder.");
+      alert("Preparing PDF download... Please check your downloads folder.");
     } finally {
       setIsGenerating(false);
+      setShowGateModal(false);
+      setPendingDownload(null);
     }
+  };
+
+  const handleDownloadClick = (set: any, includeAnswers: boolean = false) => {
+    // If parent has not filled in their phone or name, prompt them with the quick personalized download modal
+    if (!userName.trim() && !userPhone.trim()) {
+      setPendingDownload({ set, includeAnswers });
+      setShowGateModal(true);
+      return;
+    }
+
+    executeDownload(set, includeAnswers, userName, userPhone, userEmail);
   };
 
   return (
@@ -226,7 +261,7 @@ export default function WorksheetVault() {
 
               <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
                 <button
-                  onClick={() => handleDownloadWorksheet(set, false)}
+                  onClick={() => handleDownloadClick(set, false)}
                   disabled={isGenerating}
                   className="flex-1 py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow cursor-pointer"
                 >
@@ -234,10 +269,10 @@ export default function WorksheetVault() {
                   Print Worksheet
                 </button>
                 <button
-                  onClick={() => handleDownloadWorksheet(set, true)}
+                  onClick={() => handleDownloadClick(set, true)}
                   disabled={isGenerating}
                   className="py-2.5 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl font-extrabold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
-                  title="Download Worksheet with Answer Key"
+                  title="Download Worksheet with Complete Answer Key"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   Answer Key
@@ -247,6 +282,126 @@ export default function WorksheetVault() {
           ))}
         </div>
       </div>
+
+      {/* Quick Download & Personalization Modal */}
+      {showGateModal && pendingDownload && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 p-6 relative">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <span className="p-2 bg-amber-100 text-amber-800 rounded-xl">
+                  <Sparkles className="w-5 h-5 text-amber-600" />
+                </span>
+                <div>
+                  <h3 className="text-base font-extrabold text-slate-900">Personalize Your Worksheet</h3>
+                  <p className="text-xs text-slate-500 font-medium">{pendingDownload.set.title}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowGateModal(false)}
+                className="text-slate-400 hover:text-slate-600 text-lg font-bold p-1 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-xs text-slate-600 mb-4 font-medium leading-relaxed">
+              Enter the student/parent name and WhatsApp number to customize the worksheet header with the candidate name and save your free practice progress.
+            </p>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                executeDownload(
+                  pendingDownload.set,
+                  pendingDownload.includeAnswers,
+                  userName,
+                  userPhone,
+                  userEmail
+                );
+              }}
+              className="space-y-3"
+            >
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  Candidate / Parent Name <span className="text-rose-500">*</span>
+                </label>
+                <div className="relative">
+                  <User className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Aarav Sharma"
+                    value={userName}
+                    onChange={(e) => setUserName(e.target.value)}
+                    className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  WhatsApp Number <span className="text-rose-500">*</span>
+                </label>
+                <div className="relative">
+                  <Phone className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+                  <input
+                    type="tel"
+                    required
+                    placeholder="e.g. 9876543210"
+                    value={userPhone}
+                    onChange={(e) => setUserPhone(e.target.value)}
+                    className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold text-slate-700 mb-1">
+                  Email Address <span className="text-slate-400 font-normal">(Optional)</span>
+                </label>
+                <div className="relative">
+                  <Mail className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+                  <input
+                    type="email"
+                    placeholder="e.g. parent@gmail.com"
+                    value={userEmail}
+                    onChange={(e) => setUserEmail(e.target.value)}
+                    className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-2 flex flex-col gap-2">
+                <button
+                  type="submit"
+                  disabled={isGenerating}
+                  className="w-full py-2.5 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-xl text-xs flex items-center justify-center gap-2 transition shadow cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  {isGenerating ? "Generating PDF..." : pendingDownload.includeAnswers ? "Download Worksheet + Answer Key" : "Download Printable Worksheet"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    executeDownload(
+                      pendingDownload.set,
+                      pendingDownload.includeAnswers,
+                      "Student",
+                      "",
+                      ""
+                    );
+                  }}
+                  className="text-[11px] text-slate-500 hover:text-slate-800 text-center py-1 font-medium underline cursor-pointer"
+                >
+                  Skip & download as anonymous Guest Student
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

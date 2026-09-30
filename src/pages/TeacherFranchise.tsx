@@ -6,6 +6,7 @@
 import React, { useState } from "react";
 import { Award, BookOpen, CheckCircle2, ShieldCheck, Users, GraduationCap, Building2, Sparkles, Phone, Mail, MapPin, Send, ArrowRight, Check } from "lucide-react";
 import { validateSanitizedName, validateSanitizedEmail } from "../lib/securitySanitizer";
+import { dispatchLeadToWebhook } from "../lib/leadWebhook";
 
 interface InquiryFormProps {
   inquiryType: "teacher" | "franchise";
@@ -71,6 +72,21 @@ function ProfessionalInquiryForm({ inquiryType }: InquiryFormProps) {
     } catch (err) {
       console.warn("Failed persisting professional lead:", err);
     }
+
+    // Dispatch to Centralized Google Sheet Webhook
+    dispatchLeadToWebhook({
+      leadType: inquiryType === "teacher" ? "Teacher Training" : "Franchise Inquiry",
+      parentName: cleanName,
+      studentName: cleanName,
+      phone: cleanPhone,
+      email: email.trim(),
+      childAge: "Adult / Professional",
+      program: typeLabel,
+      classMode: preferredMode,
+      curriculumOrRole: `City: ${city || "Pune"} | Role: ${profession}`,
+      campaign: typeLabel,
+      notes: notes.trim(),
+    });
 
     // Format WhatsApp inquiry text
     const message = `Hello Neha Ma'am! I would like to inquire about the ${typeLabel} at Arnav Abacus Academy.

@@ -11,7 +11,8 @@ export const generateQuizWorksheetPDF = async (
   selectedSetId: string = "abacus-sr1-single-direct-5-6row",
   selectedTopicTitle: string = "ADD & SUB SINGLE DIGIT DIRECT (4-5-6 ROWS)",
   qCount: number = 20,
-  action: "preview" | "download" = "preview"
+  action: "preview" | "download" = "preview",
+  includeAnswers: boolean = false
 ) => {
   try {
     const doc = new jsPDF({
@@ -236,6 +237,112 @@ export const generateQuizWorksheetPDF = async (
           doc.text(lineText, x + colWidth / 2, textY, { align: "center" });
           textY += lineHeight;
         });
+      } else {
+        // Fallback & Visual Bead Representation / Identification for JR-0 Questions
+        const isBeadIdent = selectedSetId.includes("bead-identification") ||
+          (q.conceptTag && q.conceptTag.toLowerCase().includes("identification"));
+        const isBeadRep = selectedSetId.includes("bead-representation") ||
+          (q.conceptTag && q.conceptTag.toLowerCase().includes("representation"));
+
+        if (isBeadIdent || isBeadRep) {
+          const targetVal = typeof q.correctAnswer === "number" ? q.correctAnswer : parseInt(`${q.correctAnswer}`, 10) || 0;
+          const numDigits = targetVal >= 100 ? 3 : targetVal >= 10 ? 2 : 1;
+          const digits: number[] = [];
+          if (numDigits === 3) {
+            digits.push(Math.floor(targetVal / 100) % 10);
+            digits.push(Math.floor(targetVal / 10) % 10);
+            digits.push(targetVal % 10);
+          } else if (numDigits === 2) {
+            digits.push(Math.floor(targetVal / 10) % 10);
+            digits.push(targetVal % 10);
+          } else {
+            digits.push(targetVal % 10);
+          }
+
+          if (isBeadRep) {
+            // "Represent [Number] on Soroban"
+            doc.setFont("Helvetica", "bold");
+            doc.setFontSize(7.5);
+            doc.setTextColor(15, 23, 42);
+            doc.text("Represent on Abacus:", x + colWidth / 2, y + 8, { align: "center" });
+
+            doc.setFont("Courier", "bold");
+            doc.setFontSize(14);
+            doc.setTextColor(234, 88, 12);
+            doc.text(`${targetVal}`, x + colWidth / 2, y + 15, { align: "center" });
+
+            doc.setFont("Helvetica", "normal");
+            doc.setFontSize(6.5);
+            doc.setTextColor(100, 116, 139);
+            doc.text("(Draw beads below)", x + colWidth / 2, y + 20, { align: "center" });
+          } else {
+            // "Identify Number from Beads" -> Draw Soroban Diagram
+            doc.setFont("Helvetica", "bold");
+            doc.setFontSize(6);
+            doc.setTextColor(100, 116, 139);
+            doc.text("Read the Beads:", x + colWidth / 2, y + 7.5, { align: "center" });
+
+            // Draw miniature Soroban abacus frame
+            const frameW = numDigits === 1 ? 14 : numDigits === 2 ? 22 : 28;
+            const frameH = 17;
+            const frameX = x + (colWidth - frameW) / 2;
+            const frameY = y + 9;
+
+            // Outer frame
+            doc.setFillColor(248, 250, 252);
+            doc.setDrawColor(51, 65, 85);
+            doc.setLineWidth(0.35);
+            doc.roundedRect(frameX, frameY, frameW, frameH, 0.8, 0.8, "FD");
+
+            // Horizontal dividing beam
+            const beamY = frameY + 5;
+            doc.setFillColor(71, 85, 105);
+            doc.rect(frameX, beamY, frameW, 1.2, "F");
+
+            // Draw Rods & Beads
+            const rodSpacing = frameW / (numDigits + 1);
+            digits.forEach((digit, rIdx) => {
+              const rodX = frameX + (rIdx + 1) * rodSpacing;
+              
+              // Vertical Rod Line
+              doc.setDrawColor(148, 163, 184);
+              doc.setLineWidth(0.3);
+              doc.line(rodX, frameY + 0.5, rodX, frameY + frameH - 0.5);
+
+              // Upper bead (value 5)
+              const hasUpper = digit >= 5;
+              // If active, it touches beam from above (beamY - 1.2), else rests at frame top (frameY + 0.6)
+              const upperY = hasUpper ? beamY - 1.3 : frameY + 0.6;
+              doc.setFillColor(hasUpper ? 234 : 203, hasUpper ? 88 : 213, hasUpper ? 12 : 225); // amber active vs slate inactive
+              doc.setDrawColor(71, 85, 105);
+              doc.setLineWidth(0.15);
+              doc.roundedRect(rodX - 1.5, upperY, 3, 1.2, 0.4, 0.4, "FD");
+
+              // Lower beads (up to 4 beads)
+              const lowerActive = digit % 5;
+              for (let b = 0; b < 4; b++) {
+                // b=0..3 from top to bottom
+                // If active, lower beads slide UP toward beam
+                const isActive = b < lowerActive;
+                const lowerY = isActive 
+                  ? beamY + 1.2 + 0.3 + b * 1.5 // clustered near beam
+                  : frameY + frameH - 1.4 - (3 - b) * 1.5; // resting near bottom frame
+                
+                doc.setFillColor(isActive ? 13 : 203, isActive ? 148 : 213, isActive ? 136 : 225); // teal active vs slate inactive
+                doc.setDrawColor(71, 85, 105);
+                doc.setLineWidth(0.15);
+                doc.roundedRect(rodX - 1.5, lowerY, 3, 1.2, 0.4, 0.4, "FD");
+              }
+            });
+          }
+        } else {
+          // General fallback for any unexpected question type
+          doc.setFont("Helvetica", "bold");
+          doc.setFontSize(8);
+          doc.setTextColor(30, 41, 59);
+          const fallbackText = q.conceptTag || "Practice Question";
+          doc.text(fallbackText, x + colWidth / 2, y + 16, { align: "center" });
+        }
       }
 
       // Answer Box (For Student Handwritten Answer)
@@ -249,6 +356,14 @@ export const generateQuizWorksheetPDF = async (
       doc.setDrawColor(148, 163, 184);
       doc.setLineWidth(0.3);
       doc.roundedRect(x + 8.5, ansY, colWidth - 11, 4.8, 1, 1, "FD");
+
+      // Fill in correct answer if Answer Key mode is requested
+      if (includeAnswers && q.correctAnswer !== undefined) {
+        doc.setFont("Courier", "bold");
+        doc.setFontSize(8.5);
+        doc.setTextColor(13, 148, 136); // Emerald / teal bold answer text
+        doc.text(`${q.correctAnswer}`, x + colWidth / 2 + 3, ansY + 3.5, { align: "center" });
+      }
 
       // Evaluation Box (For Correct or Wrong Check mark)
       const evalY = y + cellHeight - 5;
