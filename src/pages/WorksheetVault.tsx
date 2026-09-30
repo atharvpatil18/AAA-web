@@ -74,18 +74,22 @@ export default function WorksheetVault() {
       }
 
       // Dispatch to Centralized Google Sheet Webhook
-      dispatchLeadToWebhook({
-        leadType: "Worksheet Download",
-        parentName: cleanName,
-        studentName: cleanName,
-        phone: cleanPhone,
-        email: cleanEmail,
-        childAge: "Student",
-        program: `${category.toUpperCase()} ${targetSet.level}: ${targetSet.title}`,
-        classMode: includeAnswers ? "PDF Download (With Answer Key)" : "PDF Download (Practice Sheet)",
-        campaign: `Worksheet Vault (${category.toUpperCase()} ${targetSet.level})`,
-        notes: `Downloaded ${targetSet.title}`,
-      });
+      try {
+        await dispatchLeadToWebhook({
+          leadType: "Worksheet Download",
+          parentName: cleanName,
+          studentName: cleanName,
+          phone: cleanPhone,
+          email: cleanEmail,
+          childAge: "Student",
+          program: `${category.toUpperCase()} ${targetSet.level}: ${targetSet.title}`,
+          classMode: includeAnswers ? "PDF Download (With Answer Key)" : "PDF Download (Practice Sheet)",
+          campaign: `Worksheet Vault (${category.toUpperCase()} ${targetSet.level})`,
+          notes: `Downloaded ${targetSet.title}`,
+        });
+      } catch (webhookErr) {
+        console.warn("Lead webhook error in WorksheetVault:", webhookErr);
+      }
     }
 
     try {
@@ -113,11 +117,23 @@ export default function WorksheetVault() {
   };
 
   const handleDownloadClick = (set: any, includeAnswers: boolean = false) => {
-    // If parent has not filled in their phone or name, prompt them with the quick personalized download modal
-    if (!userName.trim() && !userPhone.trim()) {
-      setPendingDownload({ set, includeAnswers });
-      setShowGateModal(true);
-      return;
+    // If downloading Answer Key, parent Name AND WhatsApp phone number are strictly required.
+    // If downloading practice sheet without answer key, prompt modal if phone or name is missing.
+    const hasName = Boolean(userName.trim());
+    const hasPhone = Boolean(userPhone.trim());
+
+    if (includeAnswers) {
+      if (!hasName || !hasPhone) {
+        setPendingDownload({ set, includeAnswers: true });
+        setShowGateModal(true);
+        return;
+      }
+    } else {
+      if (!hasName && !hasPhone) {
+        setPendingDownload({ set, includeAnswers: false });
+        setShowGateModal(true);
+        return;
+      }
     }
 
     executeDownload(set, includeAnswers, userName, userPhone, userEmail);
