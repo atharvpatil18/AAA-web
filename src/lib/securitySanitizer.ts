@@ -28,6 +28,7 @@ const VULGAR_PROFANITY_PATTERNS = [
   /\b(randi|r*ndi|randwa)\b/i,
   /\b(hijra|chakka)\b/i,
   /\b(terimaa|teribhen)\b/i,
+  /\b(lavdya|jhava|bulli|jhaat|chinal)\b/i, // Marathi & regional abusive slang
 ];
 
 // Keyboard Mashing & Dummy Content Patterns
@@ -43,6 +44,9 @@ const KEYBOARD_MASH_PATTERNS = [
   /test123 test123/i,
   /junkjunk/i,
   /dummy text/i,
+  /lorem ipsum/i,
+  /bla bla bla/i,
+  /blah blah/i,
 ];
 
 // Blocklist of dummy & fake email domains/prefixes
@@ -54,7 +58,33 @@ const DUMMY_EMAIL_PREFIXES = [
 const DUMMY_EMAIL_DOMAINS = [
   "test.com", "example.com", "fake.com", "dummy.com", "temp.com", "asdf.com",
   "qwerty.com", "aaa.com", "bbb.com", "xxx.com", "xyz.com", "sample.com",
-  "mail.com", "email.com", "no.com", "invalid.com", "trashmail.com", "dispostable.com"
+  "mail.com", "email.com", "no.com", "invalid.com", "trashmail.com", "dispostable.com",
+  "mailinator.com", "guerrillamail.com", "tempmail.com", "10minutemail.com"
+];
+
+// Common fake / junk phone numbers that should be strictly rejected
+const JUNK_PHONE_PATTERNS = [
+  /^0+$/,
+  /^1+$/,
+  /^2+$/,
+  /^3+$/,
+  /^4+$/,
+  /^5+$/,
+  /^6+$/,
+  /^7+$/,
+  /^8+$/,
+  /^9+$/,
+  /^1234567890$/,
+  /^0123456789$/,
+  /^9876543210$/, // Common dummy phone used in placeholders
+  /^1122334455$/,
+  /^9988776655$/,
+  /^0000000000$/,
+  /^1111111111$/,
+  /^9999999999$/,
+  /^8888888888$/,
+  /^7777777777$/,
+  /^6666666666$/,
 ];
 
 import DOMPurify from "dompurify";
@@ -218,3 +248,85 @@ export function validateSanitizedMessage(message: string): { valid: boolean; san
 
   return { valid: true, sanitized };
 }
+
+/**
+ * Validates candidate / parent phone numbers.
+ * Blocks junk, repetitive, fake series, and invalid lengths.
+ */
+export function validateSanitizedPhone(
+  phone: string,
+  countryCode: string = "+91"
+): { valid: boolean; sanitized: string; error?: string } {
+  if (!phone) {
+    return { valid: false, sanitized: "", error: "Please enter your WhatsApp / mobile phone number." };
+  }
+
+  // Strip spaces, dashes, parentheses
+  const digitsOnly = phone.replace(/\D/g, "");
+
+  if (!digitsOnly || digitsOnly.length < 7) {
+    return { valid: false, sanitized: "", error: "Phone number is too short. Please enter a valid mobile number." };
+  }
+
+  if (digitsOnly.length > 15) {
+    return { valid: false, sanitized: "", error: "Phone number is too long. Please enter a valid mobile number." };
+  }
+
+  // Check against common dummy / repetitive numbers
+  for (const junkPattern of JUNK_PHONE_PATTERNS) {
+    if (junkPattern.test(digitsOnly)) {
+      return {
+        valid: false,
+        sanitized: "",
+        error: "Please enter a valid, active phone number (test/placeholder numbers are not accepted)."
+      };
+    }
+  }
+
+  // For Indian numbers (+91), validate 10-digit mobile standards (must start with 6, 7, 8, or 9)
+  if (countryCode === "+91" || (!phone.startsWith("+") && digitsOnly.length === 10)) {
+    if (digitsOnly.length === 10) {
+      const firstDigit = digitsOnly[0];
+      if (!["6", "7", "8", "9"].includes(firstDigit)) {
+        return {
+          valid: false,
+          sanitized: "",
+          error: "Indian mobile numbers must be 10 digits and start with 6, 7, 8, or 9."
+        };
+      }
+    } else if (digitsOnly.length === 12 && digitsOnly.startsWith("91")) {
+      const firstDigit = digitsOnly[2];
+      if (!["6", "7", "8", "9"].includes(firstDigit)) {
+        return {
+          valid: false,
+          sanitized: "",
+          error: "Indian mobile numbers must start with 6, 7, 8, or 9."
+        };
+      }
+    }
+  }
+
+  // Format clean digits with country code
+  const formatted = digitsOnly.length === 10 && !phone.startsWith("+")
+    ? `${countryCode} ${digitsOnly}`
+    : phone.trim();
+
+  return { valid: true, sanitized: formatted };
+}
+
+/**
+ * Sanitizes input against CSV / Formula Injection attacks in Google Sheets / Excel.
+ * Neutralizes strings beginning with '=', '+', '-', '@', '\t', '\r'.
+ */
+export function sanitizeForGoogleSheets(value: string | undefined | null): string {
+  if (!value) return "N/A";
+  const clean = sanitizeInput(String(value));
+
+  // If starts with dangerous formula trigger characters, prepend single quote (')
+  if (/^[=\+\-@\t\r]/.test(clean)) {
+    return `'${clean}`;
+  }
+
+  return clean;
+}
+

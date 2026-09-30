@@ -1,7 +1,4 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
+import { sanitizeForGoogleSheets, containsProfanityOrVulgarity } from "./securitySanitizer";
 
 export interface UnifiedLeadPayload {
   leadType: "Demo Class" | "Teacher Training" | "Franchise Inquiry" | "Worksheet Download" | "Contact Inquiry";
@@ -16,11 +13,13 @@ export interface UnifiedLeadPayload {
   curriculumOrRole?: string;
   campaign?: string;
   notes?: string;
+  honeypot?: string; // Bot trap field
 }
 
 /**
  * Dispatch lead to the centralized Google Sheet Webhook.
  * Uses mode: "no-cors" so requests succeed without CORS preflight hurdles.
+ * Validates against bot honeypot, profane content, and spreadsheet formula injection.
  */
 export async function dispatchLeadToWebhook(payload: UnifiedLeadPayload): Promise<boolean> {
   const webhookUrl = (import.meta as any).env.VITE_LEADS_WEBHOOK_URL;
@@ -30,11 +29,21 @@ export async function dispatchLeadToWebhook(payload: UnifiedLeadPayload): Promis
     return false;
   }
 
+  // 1. Bot Honeypot Protection: If hidden honeypot field was filled, reject silently
+  if (payload.honeypot && payload.honeypot.trim() !== "") {
+    console.warn("Spam bot submission blocked via honeypot trap.");
+    return false;
+  }
+
+  // 2. Anti-Profanity & Vulgarity Gatekeeper
+  const textToCheck = `${payload.parentName || ""} ${payload.studentName || ""} ${payload.email || ""} ${payload.notes || ""}`;
+  if (containsProfanityOrVulgarity(textToCheck)) {
+    console.warn("Vulgar or abusive content blocked from Google Sheets CRM.");
+    return false;
+  }
+
   try {
-    // In Google Sheets, any string starting with "+" (like "+91 9876543210")
-    // is automatically interpreted as a math formula: =+91 9876543210.
-    // The space causes Google Sheets to throw "#ERROR! Formula parse error".
-    // Prepending a single quote (') forces Google Sheets to treat it as plain text.
+    // 3. Phone formatting with formula protection
     let formattedPhone = "N/A";
     if (payload.phone && payload.phone.trim() !== "") {
       const raw = payload.phone.trim();
@@ -43,19 +52,20 @@ export async function dispatchLeadToWebhook(payload: UnifiedLeadPayload): Promis
       formattedPhone = `'${fullPhone}`;
     }
 
+    // 4. Formula injection sanitization on all user-supplied text
     const dataToSend = {
       timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-      leadType: payload.leadType || "Website Inquiry",
-      parentName: payload.parentName || "N/A",
-      studentName: payload.studentName || payload.parentName || "N/A",
+      leadType: sanitizeForGoogleSheets(payload.leadType || "Website Inquiry"),
+      parentName: sanitizeForGoogleSheets(payload.parentName || "N/A"),
+      studentName: sanitizeForGoogleSheets(payload.studentName || payload.parentName || "N/A"),
       phone: formattedPhone,
-      email: payload.email || "N/A",
-      childAge: payload.childAge || "N/A",
-      program: payload.program || "N/A",
-      classMode: payload.classMode || "N/A",
-      curriculumOrRole: payload.curriculumOrRole || "N/A",
-      campaign: payload.campaign || "Website",
-      notes: payload.notes || "",
+      email: sanitizeForGoogleSheets(payload.email || "N/A"),
+      childAge: sanitizeForGoogleSheets(payload.childAge || "N/A"),
+      program: sanitizeForGoogleSheets(payload.program || "N/A"),
+      classMode: sanitizeForGoogleSheets(payload.classMode || "N/A"),
+      curriculumOrRole: sanitizeForGoogleSheets(payload.curriculumOrRole || "N/A"),
+      campaign: sanitizeForGoogleSheets(payload.campaign || "Website"),
+      notes: sanitizeForGoogleSheets(payload.notes || ""),
     };
 
     // Google Apps Script accepts POST payloads
@@ -74,3 +84,4 @@ export async function dispatchLeadToWebhook(payload: UnifiedLeadPayload): Promis
     return false;
   }
 }
+

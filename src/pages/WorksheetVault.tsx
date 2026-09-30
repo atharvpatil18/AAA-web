@@ -4,10 +4,11 @@
  */
 
 import React, { useState } from "react";
-import { Download, FileText, Sparkles, CheckCircle2, BookOpen, Layers, Filter, ShieldCheck, Mail, User, Phone, ArrowRight } from "lucide-react";
+import { Download, FileText, Sparkles, CheckCircle2, BookOpen, Layers, Filter, ShieldCheck, Mail, User, Phone, ArrowRight, AlertCircle } from "lucide-react";
 import { generateQuizWorksheetPDF } from "../lib/quizPdfGenerator";
 import { ABACUS_QUESTION_SETS, VEDIC_QUESTION_SETS } from "../data/practiceData";
 import { dispatchLeadToWebhook } from "../lib/leadWebhook";
+import { validateSanitizedName, validateSanitizedPhone, validateSanitizedEmail } from "../lib/securitySanitizer";
 
 export default function WorksheetVault() {
   const [category, setCategory] = useState<"abacus" | "vedic">("abacus");
@@ -15,6 +16,8 @@ export default function WorksheetVault() {
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
   const [userPhone, setUserPhone] = useState("");
+  const [botHoneypot, setBotHoneypot] = useState(""); // Invisible bot trap
+  const [validationError, setValidationError] = useState<string | null>(null);
   const [downloadSuccess, setDownloadSuccess] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -32,12 +35,55 @@ export default function WorksheetVault() {
   const availableLevels = Array.from(new Set(activeSets.map(s => s.level)));
 
   const executeDownload = async (targetSet: any, includeAnswers: boolean, nameToUse: string, phoneToUse: string, emailToUse: string) => {
+    setValidationError(null);
+
+    // If Honeypot bot field was filled, reject silently
+    if (botHoneypot.trim()) {
+      return;
+    }
+
+    let cleanName = (nameToUse || "").trim();
+    let cleanPhone = (phoneToUse || "").trim();
+    let cleanEmail = (emailToUse || "").trim();
+
+    // If downloading Answer Key or user entered information, validate against junk/vulgarity
+    if (includeAnswers || cleanName || cleanPhone || cleanEmail) {
+      if (includeAnswers || cleanName) {
+        const nameVal = validateSanitizedName(cleanName || "Parent Lead");
+        if (!nameVal.valid) {
+          setValidationError(nameVal.error || "Please enter a valid human name.");
+          setShowGateModal(true);
+          return;
+        }
+        cleanName = nameVal.sanitized;
+      }
+
+      if (includeAnswers || cleanPhone) {
+        const phoneVal = validateSanitizedPhone(cleanPhone);
+        if (!phoneVal.valid) {
+          setValidationError(phoneVal.error || "Please enter a valid 10-digit WhatsApp phone number.");
+          setShowGateModal(true);
+          return;
+        }
+        cleanPhone = phoneVal.sanitized;
+      }
+
+      if (cleanEmail) {
+        const emailVal = validateSanitizedEmail(cleanEmail);
+        if (!emailVal.valid) {
+          setValidationError(emailVal.error || "Please enter a valid personal email address.");
+          setShowGateModal(true);
+          return;
+        }
+        cleanEmail = emailVal.sanitized;
+      }
+    }
+
+    if (!cleanName) cleanName = "Parent Lead";
+    if (!cleanEmail) cleanEmail = "parent@arnavabacus.com";
+
     setIsGenerating(true);
     setDownloadSuccess(null);
-
-    const cleanName = (nameToUse || "Parent Lead").trim();
-    const cleanEmail = (emailToUse || "parent@arnavabacus.com").trim();
-    const cleanPhone = (phoneToUse || "").trim();
 
     // Save lead info if provided
     if (cleanPhone || nameToUse || emailToUse) {
@@ -86,6 +132,7 @@ export default function WorksheetVault() {
           classMode: includeAnswers ? "PDF Download (With Answer Key)" : "PDF Download (Practice Sheet)",
           campaign: `Worksheet Vault (${category.toUpperCase()} ${targetSet.level})`,
           notes: `Downloaded ${targetSet.title}`,
+          honeypot: botHoneypot,
         });
       } catch (webhookErr) {
         console.warn("Lead webhook error in WorksheetVault:", webhookErr);
@@ -117,14 +164,22 @@ export default function WorksheetVault() {
   };
 
   const handleDownloadClick = (set: any, includeAnswers: boolean = false) => {
-    // If downloading Answer Key, parent Name AND WhatsApp phone number are strictly required.
-    // If downloading practice sheet without answer key, prompt modal if phone or name is missing.
+    setValidationError(null);
     const hasName = Boolean(userName.trim());
     const hasPhone = Boolean(userPhone.trim());
 
     if (includeAnswers) {
       if (!hasName || !hasPhone) {
         setPendingDownload({ set, includeAnswers: true });
+        setShowGateModal(true);
+        return;
+      }
+      // If filled in top bar, validate right away
+      const nameCheck = validateSanitizedName(userName);
+      const phoneCheck = validateSanitizedPhone(userPhone);
+      if (!nameCheck.valid || !phoneCheck.valid) {
+        setPendingDownload({ set, includeAnswers: true });
+        setValidationError(nameCheck.error || phoneCheck.error || "Please verify your details.");
         setShowGateModal(true);
         return;
       }
@@ -335,6 +390,13 @@ export default function WorksheetVault() {
               )}
             </p>
 
+            {validationError && (
+              <div className="mb-3 p-2.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl text-xs font-semibold flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                <span>{validationError}</span>
+              </div>
+            )}
+
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -348,6 +410,17 @@ export default function WorksheetVault() {
               }}
               className="space-y-3"
             >
+              {/* Invisible Honeypot Trap for bots */}
+              <input
+                type="text"
+                name="website_url_hp"
+                value={botHoneypot}
+                onChange={(e) => setBotHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
               <div>
                 <label className="block text-[11px] font-bold text-slate-700 mb-1">
                   Candidate / Parent Name <span className="text-rose-500">*</span>

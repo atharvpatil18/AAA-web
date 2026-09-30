@@ -4,6 +4,8 @@ import { BlogPost, BlogComment } from "../types";
 import { INITIAL_BLOG_POSTS, getLocalizedBlogPost } from "../data/blogData";
 import { useLanguage } from "../lib/LanguageContext";
 
+import { validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
+
 export default function BlogPostDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -21,6 +23,8 @@ export default function BlogPostDetail() {
   const [commentName, setCommentName] = useState("");
   const [commentRole, setCommentRole] = useState<"Parent" | "Student" | "Educator" | "Visitor">("Parent");
   const [commentText, setCommentText] = useState("");
+  const [commentHoneypot, setCommentHoneypot] = useState(""); // Bot trap
+  const [commentError, setCommentError] = useState<string | null>(null);
 
   // Quick Mental Math Mini Game state inside the post
   const [userMathAns, setUserMathAns] = useState("");
@@ -132,41 +136,38 @@ export default function BlogPostDetail() {
   };
 
 
-  // Basic Profanity & Slang moderation list
-  const BAD_WORDS = [
-    "badword", "idiot", "stupid", "fool", "crap", "rubbish", "hate", "scam", 
-    "abuse", "dumb", "ugly", "fake", "spam"
-  ];
-
-  const filterProfanity = (text: string) => {
-    let clean = text;
-    BAD_WORDS.forEach((word) => {
-      const regex = new RegExp(`\\b${word}\\b`, "gi");
-      clean = clean.replace(regex, "*****");
-    });
-    return clean;
-  };
-
-  const sanitizeInput = (text: string) => {
-    return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  };
-
   // Handle Adding New Comment
   const handleAddComment = (e: React.FormEvent) => {
     e.preventDefault();
+    setCommentError(null);
+
+    // Honeypot check
+    if (commentHoneypot.trim()) {
+      return;
+    }
+
     if (!commentName.trim() || !commentText.trim() || !post) return;
 
-    // Security & Moderation checks
-    const sanitizedName = sanitizeInput(commentName.trim()).slice(0, 50); // Limit name length
-    const moderatedText = filterProfanity(sanitizeInput(commentText.trim())).slice(0, 500); // Limit comment length
+    // Security & Anti-Vulgarity / Anti-Spam checks
+    const nameVal = validateSanitizedName(commentName);
+    if (!nameVal.valid) {
+      setCommentError(nameVal.error || "Please enter a valid name.");
+      return;
+    }
+
+    const msgVal = validateSanitizedMessage(commentText);
+    if (!msgVal.valid) {
+      setCommentError(msgVal.error || "Please enter a constructive, respectful comment.");
+      return;
+    }
 
     const bgColors = ["bg-purple-500", "bg-blue-500", "bg-emerald-500", "bg-amber-500", "bg-rose-500"];
     const newComment: BlogComment = {
       id: `c-${Date.now()}`,
-      author: sanitizedName,
+      author: nameVal.sanitized,
       role: commentRole,
       avatarBg: bgColors[Math.floor(Math.random() * bgColors.length)],
-      content: moderatedText,
+      content: msgVal.sanitized,
       createdAt: "Just now",
       likes: 0,
     };
@@ -649,6 +650,24 @@ export default function BlogPostDetail() {
 
           {/* Submit Comment Form */}
           <form onSubmit={handleAddComment} className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4">
+            {/* Invisible Honeypot Trap */}
+            <input
+              type="text"
+              name="comment_hp_field"
+              value={commentHoneypot}
+              onChange={(e) => setCommentHoneypot(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+              className="hidden"
+              aria-hidden="true"
+            />
+
+            {commentError && (
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-bold">
+                {commentError}
+              </div>
+            )}
+
             <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Leave your thoughts or ask a mentor</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input

@@ -5,7 +5,7 @@
 
 import React, { useState } from "react";
 import { Award, BookOpen, CheckCircle2, ShieldCheck, Users, GraduationCap, Building2, Sparkles, Phone, Mail, MapPin, Send, ArrowRight, Check } from "lucide-react";
-import { validateSanitizedName, validateSanitizedEmail } from "../lib/securitySanitizer";
+import { validateSanitizedName, validateSanitizedEmail, validateSanitizedPhone } from "../lib/securitySanitizer";
 import { dispatchLeadToWebhook } from "../lib/leadWebhook";
 
 interface InquiryFormProps {
@@ -22,6 +22,7 @@ function ProfessionalInquiryForm({ inquiryType }: InquiryFormProps) {
   );
   const [preferredMode, setPreferredMode] = useState("Online Live Virtual");
   const [notes, setNotes] = useState("");
+  const [botHoneypot, setBotHoneypot] = useState(""); // Invisible bot trap
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,15 +30,20 @@ function ProfessionalInquiryForm({ inquiryType }: InquiryFormProps) {
     e.preventDefault();
     setError(null);
 
+    // Bot trap check
+    if (botHoneypot.trim()) {
+      return;
+    }
+
     const nameVal = validateSanitizedName(fullName);
     if (!nameVal.valid) {
       setError(nameVal.error || "Please enter a valid full name.");
       return;
     }
 
-    const cleanPhone = phone.trim().replace(/\D/g, "");
-    if (cleanPhone.length < 10) {
-      setError("Please enter a valid 10-digit phone number.");
+    const phoneVal = validateSanitizedPhone(phone, "+91");
+    if (!phoneVal.valid) {
+      setError(phoneVal.error || "Please enter a valid 10-digit WhatsApp number.");
       return;
     }
 
@@ -86,6 +92,7 @@ function ProfessionalInquiryForm({ inquiryType }: InquiryFormProps) {
       curriculumOrRole: `City: ${city || "Pune"} | Role: ${profession}`,
       campaign: typeLabel,
       notes: notes.trim(),
+      honeypot: botHoneypot,
     });
 
     // Format WhatsApp inquiry text
@@ -148,6 +155,18 @@ ${notes.trim() ? `Note / Query: ${notes.trim()}\n` : ""}`;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Invisible Honeypot Trap */}
+      <input
+        type="text"
+        name="website_url_hp"
+        value={botHoneypot}
+        onChange={(e) => setBotHoneypot(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        className="hidden"
+        aria-hidden="true"
+      />
+
       {error && (
         <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-bold">
           {error}

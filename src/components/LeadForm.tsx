@@ -23,6 +23,7 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
   const [studentName, setStudentName] = useState("");
   const [childAge, setChildAge] = useState("7-9");
   const [program, setProgram] = useState(defaultProgram);
+  const [botHoneypot, setBotHoneypot] = useState(""); // Invisible bot trap
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [redirectSuccess, setRedirectSuccess] = useState(false);
   const [validationError, setValidationError] = useState("");
@@ -496,6 +497,11 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     e.preventDefault();
     setValidationError("");
 
+    // Bot trap check
+    if (botHoneypot.trim()) {
+      return;
+    }
+
     // Security & Anti-Vulgarity Validation
     const parentVal = validateSanitizedName(parentName);
     if (!parentVal.valid) {
@@ -602,6 +608,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
       curriculumOrRole: schoolCurriculum,
       campaign: sourceCampaign || "Website Lead Form",
       notes: expStr.trim(),
+      honeypot: botHoneypot,
     });
 
     const encodedText = encodeURIComponent(textMessage);
@@ -685,6 +692,18 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+          {/* Invisible Honeypot Trap for spam bots */}
+          <input
+            type="text"
+            name="website_url_hp"
+            value={botHoneypot}
+            onChange={(e) => setBotHoneypot(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            className="hidden"
+            aria-hidden="true"
+          />
+
           {validationError && (
             <div className="bg-red-50 text-red-600 p-3 rounded-lg text-xs font-medium border border-red-100">
               {validationError}
