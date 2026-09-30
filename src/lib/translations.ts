@@ -53,7 +53,7 @@ export const translations = {
 
     // TrustBar
     trustTrained: "200+ Students",
-    trustExp: "3+ Years Exp",
+    trustExp: "4+ Years Exp",
     trustAwards: "100+ Awards",
     trustRating: "5/5 Ratings",
 
@@ -542,7 +542,7 @@ export const translations = {
 
     teacherCert1: "IIVA Certified International Abacus Master & Vedic Math Coach",
     teacherCert2: "Expert in Child Psychology & Visualization Practice",
-    teacherCert3: "Over 3+ Years of Direct Mentorial Excellence",
+    teacherCert3: "Over 4+ Years of Direct Mentorial Excellence",
     teacherCert4: "Tailored 1-on-1 Personalized Attention System for Every Student",
     teacherCert5: "Official License Owner of a Skill India Authorised  Vedic Math Center, Wakad, Pune, India",
     teacherTopRated: "Top Rated Mentor",
@@ -988,7 +988,7 @@ export const translations = {
 
     // TrustBar
     trustTrained: "200+ छात्र",
-    trustExp: "3+ वर्ष अनुभव",
+    trustExp: "4+ वर्ष अनुभव",
     trustAwards: "100+ पुरस्कार",
     trustRating: "5/5 रेटिंग",
 
@@ -1477,7 +1477,7 @@ export const translations = {
 
     teacherCert1: "IIVA प्रमाणित अंतर्राष्ट्रीय एबाकस मास्टर और वैदिक गणित कोच",
     teacherCert2: "बाल मनोविज्ञान और विज़ुअलाइज़ेशन अभ्यास में विशेषज्ञ",
-    teacherCert3: "3+ वर्षों से अधिक का प्रत्यक्ष शिक्षण अनुभव",
+    teacherCert3: "4+ वर्षों से अधिक का प्रत्यक्ष शिक्षण अनुभव",
     teacherCert4: "हर छात्र के लिए व्यक्तिगत 1-ऑन-1 ध्यान प्रणाली",
     teacherCert5: "स्किल इंडिया अधिकृत वैदिक गणित केंद्र की आधिकारिक लाइसेंस स्वामी, वाकड, पुणे, भारत",
     teacherTopRated: "टॉप रेटेड मेंटर",
@@ -1923,7 +1923,7 @@ export const translations = {
 
     // TrustBar
     trustTrained: "२००+ विद्यार्थी",
-    trustExp: "३+ वर्षे अनुभव",
+    trustExp: "४+ वर्षे अनुभव",
     trustAwards: "१००+ पुरस्कार",
     trustRating: "५/५ रेटिंग",
 
@@ -2411,7 +2411,7 @@ export const translations = {
 
     teacherCert1: "IIVA प्रमाणित आंतरराष्ट्रीय ॲबॅकस मास्टर आणि वैदिक गणित मार्गदर्शक",
     teacherCert2: "बाल मानसशास्त्र आणि विजुअलायझेशन तंत्रातील तज्ज्ञ",
-    teacherCert3: "३+ वर्षांहून अधिक काळ अध्यापनाचा प्रदीर्घ अनुभव",
+    teacherCert3: "४+ वर्षांहून अधिक काळ अध्यापनाचा प्रदीर्घ अनुभव",
     teacherCert4: "प्रत्येक विद्यार्थ्याकडे वैयक्तिक लक्ष देण्याची पद्धत",
     teacherCert5: "स्किल इंडिया अधिकृत वैदिक गणित केंद्राच्या अधिकृत परवानाधारक व संचालक, वाकड, पुणे, भारत",
     teacherTopRated: "सर्वोत्कृष्ट मार्गदर्शक",

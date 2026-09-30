@@ -32,7 +32,7 @@ export default function TrustBar() {
     {
       id: "experience",
       label: t("trustExpLabel"),
-      target: 3,
+      target: 4,
       suffix: "+",
       subtext: t("trustExpSub"),
       icon: Calendar,
