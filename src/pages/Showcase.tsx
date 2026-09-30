@@ -11,6 +11,7 @@ import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import { getSuccessStories, fetchSuccessStoriesFromCloud, getCloudUrl } from "../lib/successStories";
 import type { SuccessStory } from "../lib/successStories";
+import { sanitizeHtml } from "../lib/securitySanitizer";
 
 /* ── Confetti helper (reused from PublicSuccessWall) ── */
 interface ConfettiParticle { id: number; x: number; y: number; color: string; angle: number; speed: number; size: number; opacity: number; }
@@ -667,7 +668,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                               <div className={`pl-4 border-l-4 ${isTeal ? 'border-vibrant-teal' : isOrange ? 'border-vibrant-orange' : 'border-vibrant-gold'} py-1 bg-[#F8F9FA] rounded-r-xl`}>
                                 <p 
                                   className="text-xs md:text-sm text-gray-655 leading-relaxed font-semibold"
-                                  dangerouslySetInnerHTML={{ __html: item.achievementText || "" }}
+                                  dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.achievementText || "") }}
                                 />
                               </div>
                             )}
@@ -870,7 +871,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                       <div className="pl-4 border-l-4 border-vibrant-teal py-1 bg-[#F8F9FA] rounded-r-xl p-4">
                         <p
                           className="text-sm md:text-base text-gray-700 leading-relaxed font-semibold"
-                          dangerouslySetInnerHTML={{ __html: selectedItem.achievementText || "" }}
+                          dangerouslySetInnerHTML={{ __html: sanitizeHtml(selectedItem.achievementText || "") }}
                         />
                       </div>
                     )}

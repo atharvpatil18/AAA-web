@@ -44,9 +44,9 @@ function ScrollToTop() {
   return null;
 }
 
-// Protected Route Guard for Practice Hub
+// Route wrapper for Practice Hub and Session views
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { currentUser, loading } = useAuth();
+  const { loading } = useAuth();
   
   if (loading) {
     return (
@@ -54,12 +54,6 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
         <div className="w-8 h-8 border-4 border-vibrant-orange border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
-  }
-
-  const hasGuestAccess = !!localStorage.getItem("aaa_guest_user");
-
-  if (!currentUser && !hasGuestAccess) {
-    localStorage.setItem("aaa_guest_user", JSON.stringify({ email: "guest_visitor@arnavabacus.com", name: "Guest Student" }));
   }
 
   return <>{children}</>;

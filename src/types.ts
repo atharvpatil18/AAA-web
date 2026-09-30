@@ -69,7 +69,9 @@ export type PracticeMode =
 export interface Question {
   id: number;
   numbers?: number[]; // For abacus vertical stack (e.g. [7, -6, 1, 5, -1, -5])
+  rows?: number[]; // Optional alias for vertical stack used in dictation
   expression?: string; // For Vedic math or horizontal math (e.g. "97 x 95")
+  prompt?: string; // Optional question prompt
   correctAnswer: number;
   explanation?: string;
   conceptTag?: string; // e.g. "Small Friends (+4 = +5 - 1)", "Nikhilam Sutra"

@@ -32,16 +32,41 @@ export default function WorksheetVault() {
     setDownloadSuccess(null);
 
     // Save lead info if provided
-    if (userEmail || userName) {
+    if (userEmail || userName || userPhone) {
+      const cleanName = (userName || "Parent Lead").trim();
+      const cleanEmail = (userEmail || "anonymous@lead.com").trim();
+      const cleanPhone = (userPhone || "").trim();
+
       const leads = JSON.parse(localStorage.getItem("aaa_worksheet_leads") || "[]");
-      leads.push({
-        name: userName || "Parent Lead",
-        email: userEmail || "anonymous@lead.com",
-        phone: userPhone,
+      leads.unshift({
+        name: cleanName,
+        email: cleanEmail,
+        phone: cleanPhone,
         worksheet: set.title,
         downloadedAt: new Date().toISOString()
       });
-      localStorage.setItem("aaa_worksheet_leads", JSON.stringify(leads));
+      localStorage.setItem("aaa_worksheet_leads", JSON.stringify(leads.slice(0, 100)));
+
+      // Also record into unified academy leads
+      try {
+        const unified = JSON.parse(localStorage.getItem("aaa_leads_history") || "[]");
+        unified.unshift({
+          id: `lead_ws_${Date.now()}`,
+          parentName: cleanName,
+          studentName: cleanName,
+          childAge: "Not specified",
+          program: `Worksheet: ${set.title}`,
+          countryCode: "+91",
+          classMode: "worksheet_download",
+          timeZone: "Asia/Kolkata",
+          schoolCurriculum: cleanPhone ? `WhatsApp: ${cleanPhone}` : "N/A",
+          campaign: `Worksheet Vault (${category.toUpperCase()} ${set.level})`,
+          submittedAt: new Date().toISOString(),
+        });
+        localStorage.setItem("aaa_leads_history", JSON.stringify(unified.slice(0, 100)));
+      } catch (err) {
+        console.warn("Unified lead sync err:", err);
+      }
     }
 
     try {
@@ -90,10 +115,10 @@ export default function WorksheetVault() {
                 <ShieldCheck className="w-4 h-4" /> Instantly Download PDF Sheets
               </span>
               <h3 className="text-xl font-extrabold text-slate-900">
-                Get Customized Daily Math Worksheets Sent to Your Email
+                Personalize & Download High-Quality Printable Worksheets
               </h3>
               <p className="text-xs text-slate-500 font-medium">
-                Enter your details to download unlimited worksheets for Junior & Senior Abacus and Vedic Maths.
+                Enter your details to generate custom PDF worksheets with full answer keys for home drills and speed practice.
               </p>
             </div>
 

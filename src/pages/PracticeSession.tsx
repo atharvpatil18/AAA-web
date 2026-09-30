@@ -92,11 +92,12 @@ export default function PracticeSession() {
     if (!currentQuestion) return;
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
 
-    if (currentQuestion.rows && currentQuestion.rows.length > 0) {
+    const questionNumbers = currentQuestion.numbers || currentQuestion.rows;
+    if (questionNumbers && questionNumbers.length > 0) {
       let stepIndex = 0;
       const speakNextRow = () => {
-        if (stepIndex < currentQuestion.rows!.length) {
-          const val = currentQuestion.rows![stepIndex];
+        if (stepIndex < questionNumbers.length) {
+          const val = questionNumbers[stepIndex];
           const text = val > 0 ? `Plus ${val}` : `Minus ${Math.abs(val)}`;
           speakText(text);
           stepIndex++;

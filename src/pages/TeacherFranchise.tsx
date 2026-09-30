@@ -4,8 +4,265 @@
  */
 
 import React, { useState } from "react";
-import { Award, BookOpen, CheckCircle2, ShieldCheck, Users, GraduationCap, Building2, Sparkles, Phone, Mail, MapPin, Send, ArrowRight } from "lucide-react";
-import LeadForm from "../components/LeadForm";
+import { Award, BookOpen, CheckCircle2, ShieldCheck, Users, GraduationCap, Building2, Sparkles, Phone, Mail, MapPin, Send, ArrowRight, Check } from "lucide-react";
+import { validateSanitizedName, validateSanitizedEmail } from "../lib/securitySanitizer";
+
+interface InquiryFormProps {
+  inquiryType: "teacher" | "franchise";
+}
+
+function ProfessionalInquiryForm({ inquiryType }: InquiryFormProps) {
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
+  const [profession, setProfession] = useState(
+    inquiryType === "teacher" ? "School / Tuition Teacher" : "Education Entrepreneur"
+  );
+  const [preferredMode, setPreferredMode] = useState("Online Live Virtual");
+  const [notes, setNotes] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    const nameVal = validateSanitizedName(fullName);
+    if (!nameVal.valid) {
+      setError(nameVal.error || "Please enter a valid full name.");
+      return;
+    }
+
+    const cleanPhone = phone.trim().replace(/\D/g, "");
+    if (cleanPhone.length < 10) {
+      setError("Please enter a valid 10-digit phone number.");
+      return;
+    }
+
+    if (email.trim()) {
+      const emailVal = validateSanitizedEmail(email);
+      if (!emailVal.valid) {
+        setError(emailVal.error || "Please enter a valid email address.");
+        return;
+      }
+    }
+
+    const cleanName = nameVal.sanitized;
+    const typeLabel = inquiryType === "teacher" ? "Teacher Training Certification" : "Academy Center Franchise Inquiry";
+
+    // Persist lead locally in unified storage
+    try {
+      const existingLeads = JSON.parse(localStorage.getItem("aaa_leads_history") || "[]");
+      existingLeads.unshift({
+        id: `lead_prof_${Date.now()}`,
+        parentName: cleanName,
+        studentName: cleanName,
+        childAge: "Adult / Professional",
+        program: typeLabel,
+        countryCode: "+91",
+        classMode: preferredMode,
+        timeZone: "Asia/Kolkata",
+        schoolCurriculum: `City: ${city || "Pune"} | Role: ${profession}`,
+        campaign: typeLabel,
+        submittedAt: new Date().toISOString(),
+      });
+      localStorage.setItem("aaa_leads_history", JSON.stringify(existingLeads.slice(0, 100)));
+    } catch (err) {
+      console.warn("Failed persisting professional lead:", err);
+    }
+
+    // Format WhatsApp inquiry text
+    const message = `Hello Neha Ma'am! I would like to inquire about the ${typeLabel} at Arnav Abacus Academy.
+Name: ${cleanName}
+Contact Phone: +91 ${cleanPhone}
+${email.trim() ? `Email: ${email.trim()}\n` : ""}City / Location: ${city.trim() || "Pune, India"}
+Background: ${profession}
+Preferred Mode: ${preferredMode}
+${notes.trim() ? `Note / Query: ${notes.trim()}\n` : ""}`;
+
+    const encoded = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/919021924968?text=${encoded}`;
+
+    setSubmitted(true);
+    try {
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    } catch (err) {
+      console.warn("Window open failed:", err);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-6 text-center space-y-4 animate-fade-in">
+        <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
+          <CheckCircle2 className="w-8 h-8" />
+        </div>
+        <h4 className="font-extrabold text-slate-900 text-lg">Inquiry Successfully Registered!</h4>
+        <p className="text-xs text-slate-600 leading-relaxed font-medium">
+          Thank you, <strong>{fullName}</strong>. Your inquiry for{" "}
+          <strong>{inquiryType === "teacher" ? "Teacher Training Certification" : "Center Franchise"}</strong> has been recorded. Neha Patil will connect with you with the prospectus and fee structure.
+        </p>
+        <div className="pt-2 space-y-2">
+          <a
+            href={`https://wa.me/919021924968?text=${encodeURIComponent(`Hello Neha Ma'am! I registered my inquiry for ${inquiryType === "teacher" ? "Teacher Training" : "Franchise"}. Name: ${fullName}.`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-2"
+          >
+            <span>Open Direct WhatsApp Chat</span>
+            <ArrowRight className="w-4 h-4" />
+          </a>
+          <button
+            onClick={() => {
+              setSubmitted(false);
+              setFullName("");
+              setPhone("");
+              setEmail("");
+              setNotes("");
+            }}
+            className="text-xs text-slate-500 font-bold hover:text-slate-800 underline transition cursor-pointer"
+          >
+            Submit Another Inquiry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-xl font-bold">
+          {error}
+        </div>
+      )}
+
+      <div>
+        <label className="block text-xs font-bold text-slate-700 mb-1">Full Name *</label>
+        <input
+          type="text"
+          required
+          placeholder="e.g. Priya Sharma"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+        />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label className="block text-xs font-bold text-slate-700 mb-1">WhatsApp Mobile *</label>
+          <input
+            type="tel"
+            required
+            placeholder="10-digit number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
+          <input
+            type="email"
+            placeholder="name@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label className="block text-xs font-bold text-slate-700 mb-1">City / Region *</label>
+          <input
+            type="text"
+            required
+            placeholder="e.g. Pune, Mumbai, Bangalore"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-700 mb-1">
+            {inquiryType === "teacher" ? "Current Background" : "Proposed Model"}
+          </label>
+          <select
+            value={profession}
+            onChange={(e) => setProfession(e.target.value)}
+            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          >
+            {inquiryType === "teacher" ? (
+              <>
+                <option value="School / Tuition Teacher">School / Tuition Teacher</option>
+                <option value="Home Tutor / Parent">Home Tutor / Parent</option>
+                <option value="College Graduate / Fresher">College Graduate / Fresher</option>
+                <option value="Education Entrepreneur">Education Entrepreneur</option>
+              </>
+            ) : (
+              <>
+                <option value="New Learning Center Setup">New Learning Center Setup</option>
+                <option value="Existing Coaching Center Add-on">Existing Coaching Center Add-on</option>
+                <option value="Home-Based Micro Center">Home-Based Micro Center</option>
+                <option value="School Partnership Model">School Partnership Model</option>
+              </>
+            )}
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-xs font-bold text-slate-700 mb-1">Preferred Training Mode</label>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => setPreferredMode("Online Live Virtual")}
+            className={`py-2 px-3 rounded-xl text-xs font-bold border transition cursor-pointer ${
+              preferredMode === "Online Live Virtual"
+                ? "bg-amber-500 text-slate-950 border-amber-600 shadow-sm"
+                : "bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100"
+            }`}
+          >
+            🌐 Online Live Virtual
+          </button>
+          <button
+            type="button"
+            onClick={() => setPreferredMode("Wakad Pune Center")}
+            className={`py-2 px-3 rounded-xl text-xs font-bold border transition cursor-pointer ${
+              preferredMode === "Wakad Pune Center"
+                ? "bg-amber-500 text-slate-950 border-amber-600 shadow-sm"
+                : "bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-100"
+            }`}
+          >
+            🏫 Wakad Pune Center
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-xs font-bold text-slate-700 mb-1">Message / Questions (Optional)</label>
+        <textarea
+          rows={2}
+          placeholder="Any specific questions regarding batches, fee structure or kits..."
+          value={notes}
+          onChange={(e) => setNotes(e.target.value)}
+          className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-black py-3.5 px-4 rounded-xl text-xs tracking-wider uppercase shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+      >
+        <Send className="w-4 h-4" />
+        <span>{inquiryType === "teacher" ? "Apply for Teacher Training Course" : "Request Franchise Prospectus"}</span>
+      </button>
+    </form>
+  );
+}
 
 export default function TeacherFranchise() {
   const [activeTab, setActiveTab] = useState<"teacher" | "franchise">("teacher");
@@ -99,7 +356,7 @@ export default function TeacherFranchise() {
                   <Send className="w-4 h-4 text-amber-500" /> Apply for Next Teacher Training Batch
                 </h3>
                 <p className="text-xs text-slate-500 mb-6 font-medium">Fill in your contact details for curriculum syllabus & fee structure details.</p>
-                <LeadForm defaultProgram="Teacher Training Certification" />
+                <ProfessionalInquiryForm inquiryType="teacher" />
               </div>
             </div>
 
@@ -168,7 +425,7 @@ export default function TeacherFranchise() {
                   <Building2 className="w-4 h-4 text-amber-500" /> Apply for Center Franchise
                 </h3>
                 <p className="text-xs text-slate-500 mb-6 font-medium">Get detailed franchise prospectus and revenue share models.</p>
-                <LeadForm defaultProgram="Academy Center Franchise Inquiry" />
+                <ProfessionalInquiryForm inquiryType="franchise" />
               </div>
             </div>
           </div>

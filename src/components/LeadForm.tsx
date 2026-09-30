@@ -8,7 +8,7 @@ import { trackLeadFormSubmission } from "../lib/analytics";
 import { Sparkles, Gift, Send, Landmark, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
 import { jsPDF } from "jspdf";
-import { validateSanitizedName } from "../lib/securitySanitizer";
+import { validateSanitizedName, sanitizeHtml } from "../lib/securitySanitizer";
 
 interface LeadFormProps {
   sourceCampaign?: string;
@@ -567,16 +567,40 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
 अभ्यासक्रम: ${schoolCurriculum}${expStrMr}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
     }
 
+    // Persist lead safely so it is never lost even if WhatsApp is closed or cancelled
+    try {
+      const existingLeads = JSON.parse(localStorage.getItem("aaa_leads_history") || "[]");
+      existingLeads.unshift({
+        id: `lead_${Date.now()}`,
+        parentName: `${salutation} ${parentName}`.trim(),
+        studentName: studentName.trim(),
+        childAge,
+        program,
+        countryCode,
+        classMode,
+        timeZone,
+        schoolCurriculum,
+        campaign: sourceCampaign || "Website Lead Form",
+        submittedAt: new Date().toISOString(),
+      });
+      localStorage.setItem("aaa_leads_history", JSON.stringify(existingLeads.slice(0, 100)));
+    } catch (e) {
+      console.warn("Failed to save local lead record:", e);
+    }
+
     const encodedText = encodeURIComponent(textMessage);
     const whatsappUrl = `https://wa.me/919021924968?text=${encodedText}`;
 
-    // Simulate smooth redirection
+    // Display confirmation and open WhatsApp safely in a new tab
     setTimeout(() => {
       setRedirectSuccess(true);
-      setTimeout(() => {
-        window.location.href = whatsappUrl;
-      }, 1500);
-    }, 1000);
+      setIsSubmitting(false);
+      try {
+        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      } catch (err) {
+        console.warn("Popup blocked or failed:", err);
+      }
+    }, 600);
   };
 
   if (redirectSuccess) {
@@ -593,21 +617,30 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
         </h3>
         <p 
           className="text-emerald-808/90 max-w-sm leading-relaxed mb-6 text-xs md:text-sm font-medium"
-          dangerouslySetInnerHTML={{ __html: t("formSuccessDesc") }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(t("formSuccessDesc")) }}
         />
-        <div className="flex items-center gap-3 bg-emerald-50 text-emerald-800 px-5 py-3 rounded-full text-sm font-medium border border-emerald-100">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-          </span>
-          {t("formRedirecting")}
-        </div>
-        <p className="text-xs text-gray-405 mt-6 font-semibold">
-          {language === "hi" ? "रीडायरेक्ट नहीं हुआ?" : language === "mr" ? "दुसरीकडे पाठवले नाही का?" : "Didn't redirect?"}{" "}
-          <a href={`https://wa.me/919021924968`} className="text-emerald-600 underline font-medium hover:text-emerald-700">
-            {language === "hi" ? "मैन्युअल बुकिंग के लिए यहाँ क्लिक करें" : language === "mr" ? "मॅन्युअली बुक करण्यासाठी येथे क्लिक करा" : "Click here to continue manual booking"}
+        
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-sm">
+          <a
+            href={`https://wa.me/919021924968?text=${encodeURIComponent(`Hello Arnav Abacus Academy! My name is ${parentName} (Student: ${studentName}). I submitted a demo request for ${program}.`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-full text-sm shadow-md transition-all flex items-center justify-center gap-2"
+          >
+            <span>{language === "hi" ? "व्हाट्सएप चैट खोलें" : language === "mr" ? "व्हॉट्सॲप चॅट उघडा" : "Open WhatsApp Chat"}</span>
+            <ArrowRight className="w-4 h-4" />
           </a>
-        </p>
+          <button
+            onClick={() => {
+              setRedirectSuccess(false);
+              setParentName("");
+              setStudentName("");
+            }}
+            className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-4 rounded-full text-xs transition-all cursor-pointer"
+          >
+            {language === "hi" ? "नया फॉर्म भरें" : language === "mr" ? "नवीन फॉर्म भरा" : "Submit Another Request"}
+          </button>
+        </div>
       </div>
     );
   }

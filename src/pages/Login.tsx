@@ -226,7 +226,7 @@ export default function Login() {
     const displayName = guestName.trim() || (guestEmail ? guestEmail.split("@")[0] : "Candidate");
     const subject = encodeURIComponent(`Arnav Abacus Academy Speed Math Practice Worksheet (${selectedQuestionCount} Qs)`);
     const body = encodeURIComponent(
-      `Hi!\n\nHere is the printable Speed Math Worksheet & Academy Brochure for ${displayName}.\nTopic: ${selectedTopicMode.toUpperCase()} (${selectedQuestionCount} Questions)\n\nAttached is your downloaded Speed Math Practice Worksheet PDF.\n\nArnav Abacus Academy • Wakad, Pune\nWhatsApp: +91 90219 24968 | Email: nehaatharv@gmail.com`
+      `Hi!\n\nHere are the details for the Speed Math Practice Worksheet & Academy Brochure for ${displayName}.\nTopic: ${selectedTopicMode.toUpperCase()} (${selectedQuestionCount} Questions)\n\nNote: Your generated PDF worksheet has been downloaded to your device's Downloads folder. Please attach it to this email if forwarding to family or students.\n\nArnav Abacus Academy • Wakad, Pune\nWhatsApp: +91 90219 24968 | Email: nehaatharv@gmail.com`
     );
     window.open(`mailto:${guestEmail || ""}?subject=${subject}&body=${body}`, "_blank");
   };

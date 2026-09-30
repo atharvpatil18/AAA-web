@@ -197,7 +197,7 @@ export default function SpeedChallengeWidget() {
     }
     
     const encoded = encodeURIComponent(message);
-    window.location.href = `https://wa.me/919021924968?text=${encoded}`;
+    window.open(`https://wa.me/919021924968?text=${encoded}`, "_blank", "noopener,noreferrer");
   };
 
   const currentQuestion = questions[questionIndex];

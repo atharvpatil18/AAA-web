@@ -57,8 +57,21 @@ const DUMMY_EMAIL_DOMAINS = [
   "mail.com", "email.com", "no.com", "invalid.com", "trashmail.com", "dispostable.com"
 ];
 
+import DOMPurify from "dompurify";
+
 /**
- * Strips HTML tags, script execution attributes, SQL injection signatures, and dangerous characters.
+ * Sanitizes rich HTML string using DOMPurify to eliminate XSS vectors.
+ */
+export function sanitizeHtml(html: string): string {
+  if (!html) return "";
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ["b", "i", "em", "strong", "span", "p", "br", "ul", "ol", "li", "a"],
+    ALLOWED_ATTR: ["href", "target", "rel", "class"]
+  });
+}
+
+/**
+ * Strips HTML tags, script execution attributes, and dangerous characters.
  */
 export function sanitizeInput(input: string): string {
   if (!input) return "";
@@ -69,9 +82,6 @@ export function sanitizeInput(input: string): string {
   
   // Neutralize script execution prefixes
   clean = clean.replace(/(javascript:|vbscript:|data:|onload=|onerror=|onclick=|onmouseover=)/gi, "");
-  
-  // Neutralize common SQL Injection patterns
-  clean = clean.replace(/(\b(SELECT|INSERT|DELETE|UPDATE|DROP|UNION|ALTER|CREATE|EXEC)\b|--|\/\*|\*\/|;)/gi, "");
 
   return clean;
 }

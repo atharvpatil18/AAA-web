@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Phone, Mail, Clock, Menu, X, ArrowRight, MessageCircle, Globe } from "lucide-react";
+import { Phone, Mail, Clock, Menu, X, ArrowRight, MessageCircle, Globe, ChevronDown } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import { Language } from "../lib/translations";
@@ -16,8 +16,25 @@ export default function Navbar() {
   const { language, setLanguage, t } = useLanguage();
   const { currentUser, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+        setMoreMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    setIsOpen(false);
+    setMoreMenuOpen(false);
+  }, [location.pathname]);
 
   if (location.pathname === "/practice/session") {
     return null;
@@ -27,17 +44,37 @@ export default function Navbar() {
     trackDemoClick("navbar_header_cta");
   };
 
-  const navLinks = [
+  const primaryNavLinks = [
     { name: t("navHome"), path: "/" },
     { name: t("navPrograms"), path: "/programs" },
     { name: t("navPractice"), path: "/practice" },
+    { name: "Worksheets", path: "/worksheets" },
     { name: t("navSuccess"), path: "/showcase" },
+  ];
+
+  const moreNavLinks = [
+    { name: t("navMentor"), path: "/mentor" },
+    { name: "Teacher & Franchise", path: "/teacher-franchise" },
+    { name: "Blog", path: "/blog" },
+    { name: t("navNews"), path: "/news" },
+    { name: t("navBrochure"), path: "/brochure" },
+    { name: t("navFaqs"), path: "/faqs" },
+    { name: t("navContact"), path: "/contact" },
+  ];
+
+  const allNavLinks = [
+    { name: t("navHome"), path: "/" },
+    { name: t("navPrograms"), path: "/programs" },
+    { name: t("navPractice"), path: "/practice" },
+    { name: "Worksheets", path: "/worksheets" },
+    { name: t("navSuccess"), path: "/showcase" },
+    { name: "Teacher & Franchise", path: "/teacher-franchise" },
     { name: "Blog", path: "/blog" },
     { name: t("navNews"), path: "/news" },
     { name: t("navFaqs"), path: "/faqs" },
     { name: t("navBrochure"), path: "/brochure" },
     { name: t("navMentor"), path: "/mentor" },
-    { name: t("navContact"), path: "/contact" }
+    { name: t("navContact"), path: "/contact" },
   ];
 
 
@@ -136,9 +173,9 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center gap-6">
-            <ul className="flex items-center gap-4.5">
-              {navLinks.map((link) => {
+          <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+            <ul className="flex items-center gap-3 xl:gap-5">
+              {primaryNavLinks.map((link) => {
                 const isActive = currentPath === link.path;
                 return (
                   <li key={link.name}>
@@ -155,11 +192,49 @@ export default function Navbar() {
                   </li>
                 );
               })}
+
+              {/* More / Explore Dropdown */}
+              <li className="relative" ref={moreMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setMoreMenuOpen(!moreMenuOpen)}
+                  className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer ${
+                    moreNavLinks.some((l) => l.path === currentPath)
+                      ? "text-vibrant-orange"
+                      : "text-slate-700 hover:text-vibrant-orange"
+                  }`}
+                  aria-expanded={moreMenuOpen}
+                >
+                  <span>Explore</span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${moreMenuOpen ? "rotate-180" : ""}`} />
+                </button>
+
+                {moreMenuOpen && (
+                  <div className="absolute top-full right-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-fade-in">
+                    {moreNavLinks.map((subLink) => {
+                      const isSubActive = currentPath === subLink.path;
+                      return (
+                        <Link
+                          key={subLink.name}
+                          to={subLink.path}
+                          onClick={() => setMoreMenuOpen(false)}
+                          className={`block px-4 py-2 text-xs font-bold transition-colors ${
+                            isSubActive
+                              ? "bg-amber-50 text-vibrant-orange"
+                              : "text-slate-700 hover:bg-slate-50 hover:text-vibrant-orange"
+                          }`}
+                        >
+                          {subLink.name}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </li>
             </ul>
 
-
-            {/* CTA Button with Flat shadow replacement */}
-            <div className="flex items-center gap-3 shrink-0">
+            {/* CTA Buttons */}
+            <div className="flex items-center gap-2 xl:gap-3 shrink-0">
               {currentUser ? (
                 <div className="flex items-center gap-3 bg-slate-100 pl-4 pr-2 py-1 rounded-full border border-slate-200">
                   <div className="text-right">
@@ -184,15 +259,15 @@ export default function Navbar() {
                     onClick={handleBookDemoClick}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-vibrant-teal hover:bg-vibrant-teal/95 text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center"
+                    className="bg-vibrant-teal hover:bg-vibrant-teal/95 text-white px-3.5 xl:px-5 py-2 rounded-full font-bold text-xs xl:text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center whitespace-nowrap"
                   >
-                    {t("bookFreeDemo")}
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span>{t("bookFreeDemo")}</span>
+                    <ArrowRight className="w-3.5 h-3.5 shrink-0" />
                   </a>
 
                   <Link
                     to="/login"
-                    className="bg-vibrant-orange hover:bg-vibrant-orange/95 text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center"
+                    className="bg-vibrant-orange hover:bg-vibrant-orange/95 text-white px-3.5 xl:px-5 py-2 rounded-full font-bold text-xs xl:text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center whitespace-nowrap"
                   >
                     Sign In
                   </Link>
@@ -218,8 +293,8 @@ export default function Navbar() {
           }`}
         >
           <div className="bg-vibrant-cream px-5 py-4 space-y-3.5 shadow-inner">
-            <ul className="space-y-2">
-              {navLinks.map((link) => {
+            <ul className="space-y-1.5 max-h-[60vh] overflow-y-auto">
+              {allNavLinks.map((link) => {
                 const isActive = currentPath === link.path;
                 return (
                   <li key={link.name}>
