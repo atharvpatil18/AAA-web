@@ -289,11 +289,13 @@ export default function WorksheetVault() {
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 p-6 relative">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <span className="p-2 bg-amber-100 text-amber-800 rounded-xl">
-                  <Sparkles className="w-5 h-5 text-amber-600" />
+                <span className={`p-2 rounded-xl ${pendingDownload.includeAnswers ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"}`}>
+                  {pendingDownload.includeAnswers ? <CheckCircle2 className="w-5 h-5 text-emerald-600" /> : <Sparkles className="w-5 h-5 text-amber-600" />}
                 </span>
                 <div>
-                  <h3 className="text-base font-extrabold text-slate-900">Personalize Your Worksheet</h3>
+                  <h3 className="text-base font-extrabold text-slate-900">
+                    {pendingDownload.includeAnswers ? "Unlock Complete Answer Key" : "Personalize Your Worksheet"}
+                  </h3>
                   <p className="text-xs text-slate-500 font-medium">{pendingDownload.set.title}</p>
                 </div>
               </div>
@@ -306,7 +308,15 @@ export default function WorksheetVault() {
             </div>
 
             <p className="text-xs text-slate-600 mb-4 font-medium leading-relaxed">
-              Enter the student/parent name and WhatsApp number to customize the worksheet header with the candidate name and save your free practice progress.
+              {pendingDownload.includeAnswers ? (
+                <span>
+                  Please enter your <strong>Parent / Student Name</strong> and <strong>WhatsApp Number</strong> to unlock and download the complete step-by-step solution and answer key.
+                </span>
+              ) : (
+                <span>
+                  Enter your details to customize the worksheet header with the student's name, or skip to download as a guest student.
+                </span>
+              )}
             </p>
 
             <form
@@ -376,27 +386,37 @@ export default function WorksheetVault() {
                 <button
                   type="submit"
                   disabled={isGenerating}
-                  className="w-full py-2.5 px-4 bg-amber-500 hover:bg-amber-600 text-slate-950 font-black rounded-xl text-xs flex items-center justify-center gap-2 transition shadow cursor-pointer"
+                  className={`w-full py-2.5 px-4 font-black rounded-xl text-xs flex items-center justify-center gap-2 transition shadow cursor-pointer ${
+                    pendingDownload.includeAnswers
+                      ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                      : "bg-amber-500 hover:bg-amber-600 text-slate-950"
+                  }`}
                 >
                   <Download className="w-4 h-4" />
-                  {isGenerating ? "Generating PDF..." : pendingDownload.includeAnswers ? "Download Worksheet + Answer Key" : "Download Printable Worksheet"}
+                  {isGenerating
+                    ? "Generating PDF..."
+                    : pendingDownload.includeAnswers
+                    ? "Unlock & Download Complete Answer Key"
+                    : "Download Printable Worksheet"}
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    executeDownload(
-                      pendingDownload.set,
-                      pendingDownload.includeAnswers,
-                      "Student",
-                      "",
-                      ""
-                    );
-                  }}
-                  className="text-[11px] text-slate-500 hover:text-slate-800 text-center py-1 font-medium underline cursor-pointer"
-                >
-                  Skip & download as anonymous Guest Student
-                </button>
+                {!pendingDownload.includeAnswers && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      executeDownload(
+                        pendingDownload.set,
+                        false,
+                        "Student",
+                        "",
+                        ""
+                      );
+                    }}
+                    className="text-[11px] text-slate-500 hover:text-slate-800 text-center py-1 font-medium underline cursor-pointer"
+                  >
+                    Skip & download as anonymous Guest Student
+                  </button>
+                )}
               </div>
             </form>
           </div>

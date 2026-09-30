@@ -4,6 +4,7 @@
  */
 
 import { jsPDF } from "jspdf";
+import QRCode from "qrcode";
 import { getCustomizedSet } from "../data/practiceData";
 
 export const generateQuizWorksheetPDF = async (
@@ -54,6 +55,7 @@ export const generateQuizWorksheetPDF = async (
 
     let logoBase64 = "";
     let photoBase64 = "";
+    let qrCodeBase64 = "";
     try {
       logoBase64 = await getBase64FromUrl("/logo.png", true);
     } catch (e) {
@@ -63,6 +65,22 @@ export const generateQuizWorksheetPDF = async (
       photoBase64 = await getBase64FromUrl("/teacher-profile.jpg", true);
     } catch (e) {
       console.warn("Photo load error", e);
+    }
+    try {
+      const waMsg = encodeURIComponent(
+        `Hello Neha Ma'am! I downloaded the "${selectedTopicTitle}" worksheet from your website. Student: ${studentName || "Guest Student"}. I would like to check answers / book a free trial demo!`
+      );
+      const waUrl = `https://wa.me/919021924968?text=${waMsg}`;
+      qrCodeBase64 = await QRCode.toDataURL(waUrl, {
+        margin: 1,
+        width: 140,
+        color: {
+          dark: "#1A2E35",
+          light: "#FFFFFF",
+        },
+      });
+    } catch (e) {
+      console.warn("QR code generation error", e);
     }
 
     // =========================================================================
@@ -594,10 +612,10 @@ export const generateQuizWorksheetPDF = async (
 
     drawBrochureSeparator(183);
 
-    // 5. CALL TO ACTION & CONTACT
+    // 5. CALL TO ACTION & CONTACT (With Scannable WhatsApp QR Code)
     const ctaY = 188;
     doc.setFillColor(26, 46, 53);
-    doc.roundedRect(12, ctaY, 186, 32, 2, 2, "F");
+    doc.roundedRect(12, ctaY, 186, 34, 2, 2, "F");
 
     doc.setTextColor(255, 255, 255);
     doc.setFont("Helvetica", "bold");
@@ -605,15 +623,27 @@ export const generateQuizWorksheetPDF = async (
     doc.text("ENROLL YOUR CHILD AT ARNAV ABACUS ACADEMY", 18, ctaY + 6);
 
     doc.setFont("Helvetica", "normal");
-    doc.setFontSize(8.5);
+    doc.setFontSize(8);
     doc.setTextColor(210, 210, 210);
-    doc.text("- Book a Free 1-on-1 Math Diagnostic Session to check calculation speed & focus.", 18, ctaY + 12);
-    doc.text("Physical Center: Adv. Balaji Sagar Bungalow, Opp. Creative Cameo, Wakad, Pune, MH, India.", 18, ctaY + 17.5);
+    doc.text("• Book a Free 1-on-1 Math Diagnostic Session with Master Trainer Neha Patil.", 18, ctaY + 12);
+    doc.text("• Physical Hub: Adv. Balaji Sagar Bungalow, Opp Creative Cameo, Wakad, Pune.", 18, ctaY + 17.5);
 
     doc.setFont("Helvetica", "bold");
-    doc.setFontSize(10);
+    doc.setFontSize(9);
     doc.setTextColor(242, 100, 25);
-    doc.text("WhatsApp / Call: +91 90219 24968   |   Email: nehaatharv@gmail.com", 18, ctaY + 25.5);
+    doc.text("Call / WhatsApp: +91 90219 24968  |  Email: nehaatharv@gmail.com", 18, ctaY + 26);
+
+    // Scannable WhatsApp QR Code block on the right
+    if (qrCodeBase64) {
+      doc.setFillColor(255, 255, 255);
+      doc.roundedRect(165, ctaY + 3, 28, 28, 1.5, 1.5, "F");
+      doc.addImage(qrCodeBase64, "PNG", 166.5, ctaY + 4, 25, 22);
+
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(5.5);
+      doc.setTextColor(26, 46, 53);
+      doc.text("SCAN TO CHAT", 179, ctaY + 28.5, { align: "center" });
+    }
 
     // Microfooter
     doc.setFont("Helvetica", "normal");
