@@ -14,7 +14,7 @@ declare global {
  * Default fallback GA4 Measurement ID if not provided in environment
  */
 export const GA4_MEASUREMENT_ID =
-  ((import.meta as any).env?.VITE_GA4_MEASUREMENT_ID as string) || "G-VC40JH2BX3";
+  ((import.meta as any).env?.VITE_GA4_MEASUREMENT_ID as string) || "G-M2EL9MYSRL";
 
 /**
  * Initialize Google Analytics 4 / dataLayer cleanly without duplicates
