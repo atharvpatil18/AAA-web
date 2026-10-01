@@ -38,11 +38,12 @@ export default function DemoBookingModal({
     e.preventDefault();
     setErrorMsg("");
 
-    const cleanParentName = validateSanitizedName(parentName);
-    if (!cleanParentName || cleanParentName.length < 2) {
-      setErrorMsg("Please enter a valid parent name (at least 2 letters).");
+    const nameValidation = validateSanitizedName(parentName);
+    if (!nameValidation.valid || !nameValidation.sanitized) {
+      setErrorMsg(nameValidation.error || "Please enter a valid parent name (at least 2 letters).");
       return;
     }
+    const cleanParentName = nameValidation.sanitized;
 
     const cleanPhone = phone.replace(/[^0-9]/g, "");
     if (cleanPhone.length < 10) {
