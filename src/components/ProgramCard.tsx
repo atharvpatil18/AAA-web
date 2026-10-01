@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Program } from "../types";
 import { Check, Sparkles, Flame, GraduationCap, ArrowRight, ChevronDown, ChevronUp, ShieldCheck } from "lucide-react";
-import { trackDemoClick } from "../lib/analytics";
+import { trackProgramView, trackWhatsAppClick, trackDemoRequest } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 interface ProgramCardProps {
@@ -77,7 +77,19 @@ export default function ProgramCard({ program }: ProgramCardProps) {
   const currentTheme = getThemeClasses(program.imageTheme);
 
   const handleApplyClick = () => {
-    trackDemoClick("program_card_cta", { programName: program.title });
+    trackWhatsAppClick("program_card_book_trial", program.title);
+    trackDemoRequest({
+      source: "program_card",
+      program: program.title,
+      deliveryMode: "offline_and_online",
+    });
+  };
+
+  const handleToggleExpand = () => {
+    if (!isExpanded) {
+      trackProgramView(program.title, "program_card_expand");
+    }
+    setIsExpanded(!isExpanded);
   };
 
   const readMoreText = language === "hi" ? "और पढ़ें" : language === "mr" ? "अधिक वाचा" : "Read More";
@@ -136,7 +148,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
 
         {/* Toggle Button */}
         <button
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={handleToggleExpand}
           className="text-xs font-bold text-vibrant-orange hover:text-vibrant-orange/80 transition-colors mb-6 cursor-pointer flex items-center gap-1 focus:outline-none"
         >
           {isExpanded ? (
@@ -207,13 +219,20 @@ export default function ProgramCard({ program }: ProgramCardProps) {
       </div>
 
       {/* Button Action footer */}
-      <div>
+      <div className="space-y-2">
+        <Link
+          to={program.id === "abacus" ? "/programs/abacus" : program.id === "vedic-math" ? "/programs/vedic-maths" : "/programs/school-maths"}
+          className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-full text-center flex items-center justify-center py-2.5 text-xs font-bold uppercase tracking-wider cursor-pointer duration-150 transition-all gap-1.5 shadow-xs"
+        >
+          <span>View Full Program Hub</span>
+          <ArrowRight className="w-3.5 h-3.5 shrink-0" />
+        </Link>
         <a
           href="https://wa.me/919021924968"
           onClick={handleApplyClick}
           target="_blank"
           rel="noopener noreferrer"
-          className={`w-full ${currentTheme.btn} rounded-full text-center flex items-center justify-center py-3.5 text-xs md:text-sm font-bold uppercase tracking-wider cursor-pointer duration-150 transition-all gap-2`}
+          className={`w-full ${currentTheme.btn} rounded-full text-center flex items-center justify-center py-3 text-xs md:text-sm font-bold uppercase tracking-wider cursor-pointer duration-150 transition-all gap-2`}
         >
           {t("progBookTrial")}
           <ArrowRight className="w-4 h-4 shrink-0" />

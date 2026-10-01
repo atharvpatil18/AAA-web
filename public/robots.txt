@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://arnavabacus.com/sitemap.xml
+# Exclude private practice sessions and auth routes from web crawlers
+Disallow: /practice/session
+Disallow: /practice/results
+Disallow: /login
+Disallow: /#/practice/session
+Disallow: /#/practice/results
+Disallow: /#/login
+
+# Canonical Sitemap
+Sitemap: https://arnavabacusacademy-web.vercel.app/sitemap.xml

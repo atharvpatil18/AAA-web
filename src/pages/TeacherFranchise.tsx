@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { Award, BookOpen, CheckCircle2, ShieldCheck, Users, GraduationCap, Building2, Sparkles, Phone, Mail, MapPin, Send, ArrowRight, Check } from "lucide-react";
 import { validateSanitizedName, validateSanitizedEmail, validateSanitizedPhone } from "../lib/securitySanitizer";
 import { dispatchLeadToWebhook } from "../lib/leadWebhook";
+import { trackEnquiryFormSubmit, trackWhatsAppClick } from "../lib/analytics";
 
 interface InquiryFormProps {
   inquiryType: "teacher" | "franchise";
@@ -46,6 +47,7 @@ function ProfessionalInquiryForm({ inquiryType }: InquiryFormProps) {
       setError(phoneVal.error || "Please enter a valid 10-digit WhatsApp number.");
       return;
     }
+    const cleanPhone = phoneVal.sanitized;
 
     if (email.trim()) {
       const emailVal = validateSanitizedEmail(email);
@@ -106,6 +108,16 @@ ${notes.trim() ? `Note / Query: ${notes.trim()}\n` : ""}`;
 
     const encoded = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/919021924968?text=${encoded}`;
+
+    // Track canonical conversion events (Zero-PII)
+    trackEnquiryFormSubmit({
+      program: typeLabel,
+      childAgeGroup: "Adult / Professional",
+      classMode: preferredMode,
+      sourceCampaign: typeLabel,
+      audienceType: inquiryType === "teacher" ? "teacher" : "franchise",
+    });
+    trackWhatsAppClick("teacher_franchise_form", typeLabel);
 
     setSubmitted(true);
     try {

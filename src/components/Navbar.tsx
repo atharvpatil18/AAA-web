@@ -6,7 +6,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Phone, Mail, Clock, Menu, X, ArrowRight, MessageCircle, Globe, ChevronDown } from "lucide-react";
-import { trackDemoClick } from "../lib/analytics";
+import { trackWhatsAppClick, trackCallClick, trackDemoRequest } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import { Language } from "../lib/translations";
 import { generateBrochurePDF } from "../lib/brochure";
@@ -17,14 +17,19 @@ export default function Navbar() {
   const { currentUser, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [programMenuOpen, setProgramMenuOpen] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement>(null);
+  const programMenuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
         setMoreMenuOpen(false);
+      }
+      if (programMenuRef.current && !programMenuRef.current.contains(event.target as Node)) {
+        setProgramMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -34,6 +39,7 @@ export default function Navbar() {
   useEffect(() => {
     setIsOpen(false);
     setMoreMenuOpen(false);
+    setProgramMenuOpen(false);
   }, [location.pathname]);
 
   if (location.pathname === "/practice/session") {
@@ -41,12 +47,28 @@ export default function Navbar() {
   }
 
   const handleBookDemoClick = () => {
-    trackDemoClick("navbar_header_cta");
+    trackWhatsAppClick("navbar_header_cta", "book_free_demo");
+    trackDemoRequest({
+      source: "navbar_header",
+      program: "General Inquiry",
+      deliveryMode: "offline_and_online",
+    });
   };
+
+  const handleCallClick = () => {
+    trackCallClick("navbar_top_banner");
+  };
+
+  const programNavLinks = [
+    { name: "All Programs Overview", path: "/programs" },
+    { name: "Abacus Mental Arithmetic", path: "/programs/abacus" },
+    { name: "Vedic Mathematics", path: "/programs/vedic-maths" },
+    { name: "School Maths Foundation", path: "/programs/school-maths" },
+  ];
 
   const primaryNavLinks = [
     { name: t("navHome"), path: "/" },
-    { name: t("navPrograms"), path: "/programs" },
+    { name: t("navPrograms"), path: "/programs", hasDropdown: true },
     { name: t("navPractice"), path: "/practice" },
     { name: "Worksheets", path: "/worksheets" },
     { name: t("navSuccess"), path: "/showcase" },
@@ -65,6 +87,9 @@ export default function Navbar() {
   const allNavLinks = [
     { name: t("navHome"), path: "/" },
     { name: t("navPrograms"), path: "/programs" },
+    { name: "↳ Abacus (Ages 4-14)", path: "/programs/abacus" },
+    { name: "↳ Vedic Maths (Ages 10+)", path: "/programs/vedic-maths" },
+    { name: "↳ School Maths (Class 1-10)", path: "/programs/school-maths" },
     { name: t("navPractice"), path: "/practice" },
     { name: "Worksheets", path: "/worksheets" },
     { name: t("navSuccess"), path: "/showcase" },
@@ -114,6 +139,7 @@ export default function Navbar() {
               </a>
               <a 
                 href="https://wa.me/919021924968" 
+                onClick={() => trackWhatsAppClick("navbar_top_bar", "direct_chat")}
                 className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -176,6 +202,49 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             <ul className="flex items-center gap-3 xl:gap-5">
               {primaryNavLinks.map((link) => {
+                if (link.hasDropdown) {
+                  const isAnyProgramActive = currentPath === "/programs" || currentPath.startsWith("/programs/");
+                  return (
+                    <li key={link.name} className="relative" ref={programMenuRef}>
+                      <button
+                        type="button"
+                        onClick={() => setProgramMenuOpen(!programMenuOpen)}
+                        className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer relative ${
+                          isAnyProgramActive
+                            ? "text-vibrant-orange after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-vibrant-orange after:rounded-full"
+                            : "text-slate-700 hover:text-vibrant-orange"
+                        }`}
+                        aria-expanded={programMenuOpen}
+                      >
+                        <span>{link.name}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${programMenuOpen ? "rotate-180" : ""}`} />
+                      </button>
+
+                      {programMenuOpen && (
+                        <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-fade-in">
+                          {programNavLinks.map((pLink) => {
+                            const isPActive = currentPath === pLink.path;
+                            return (
+                              <Link
+                                key={pLink.name}
+                                to={pLink.path}
+                                onClick={() => setProgramMenuOpen(false)}
+                                className={`block px-4 py-2 text-xs font-bold transition-colors ${
+                                  isPActive
+                                    ? "bg-amber-50 text-vibrant-orange"
+                                    : "text-slate-700 hover:bg-slate-50 hover:text-vibrant-orange"
+                                }`}
+                              >
+                                {pLink.name}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </li>
+                  );
+                }
+
                 const isActive = currentPath === link.path;
                 return (
                   <li key={link.name}>

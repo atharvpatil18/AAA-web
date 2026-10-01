@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useEffect } from "react";
-import { HashRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingCTA from "./components/FloatingCTA";
@@ -13,6 +13,11 @@ import Home from "./pages/Home";
 // React.lazy dynamic code splitting for sub-routes to optimize initial bundle load speed
 const Mentor = React.lazy(() => import("./pages/Mentor"));
 const Programs = React.lazy(() => import("./pages/Programs"));
+const ProgramAbacus = React.lazy(() => import("./pages/ProgramAbacus"));
+const ProgramVedicMaths = React.lazy(() => import("./pages/ProgramVedicMaths"));
+const ProgramSchoolMaths = React.lazy(() => import("./pages/ProgramSchoolMaths"));
+const GuideAbacusVsVedicMaths = React.lazy(() => import("./pages/GuideAbacusVsVedicMaths"));
+const GuideDoesAbacusConfuseSchoolMath = React.lazy(() => import("./pages/GuideDoesAbacusConfuseSchoolMath"));
 const Contact = React.lazy(() => import("./pages/Contact"));
 const Faqs = React.lazy(() => import("./pages/Faqs"));
 const CampaignPage = React.lazy(() => import("./pages/CampaignPage"));
@@ -27,11 +32,25 @@ const Blog = React.lazy(() => import("./pages/Blog"));
 const BlogPostDetail = React.lazy(() => import("./pages/BlogPostDetail"));
 const WorksheetVault = React.lazy(() => import("./pages/WorksheetVault"));
 const TeacherFranchise = React.lazy(() => import("./pages/TeacherFranchise"));
+const NotFound = React.lazy(() => import("./pages/NotFound"));
 
-
-
+import SEOHead from "./components/SEOHead";
 import { LanguageProvider } from "./lib/LanguageContext";
 import { AuthProvider, useAuth } from "./lib/AuthContext";
+
+// Automatically redirect any legacy hash URLs (e.g. /#/programs -> /programs) so no parent bookmarks break
+function LegacyHashRedirector() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (window.location.hash && window.location.hash.startsWith("#/")) {
+      const cleanPath = window.location.hash.slice(1); // remove leading '#'
+      navigate(cleanPath, { replace: true });
+    }
+  }, [navigate]);
+
+  return null;
+}
 
 // Scroll restorer child to reset window scroll position on route switches
 function ScrollToTop() {
@@ -139,7 +158,9 @@ export default function App() {
       <LanguageProvider>
         <AuthProvider>
           <Router>
+            <LegacyHashRedirector />
             <ScrollToTop />
+            <SEOHead />
             <div className="flex flex-col min-h-screen bg-slate-50 font-sans antialiased text-gray-800">
           
           {/* Sticky Header with alert bar and links */}
@@ -158,6 +179,11 @@ export default function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/mentor" element={<Mentor />} />
                 <Route path="/programs" element={<Programs />} />
+                <Route path="/programs/abacus" element={<ProgramAbacus />} />
+                <Route path="/programs/vedic-maths" element={<ProgramVedicMaths />} />
+                <Route path="/programs/school-maths" element={<ProgramSchoolMaths />} />
+                <Route path="/parent-guides/abacus-vs-vedic-maths" element={<GuideAbacusVsVedicMaths />} />
+                <Route path="/parent-guides/does-abacus-confuse-school-math" element={<GuideDoesAbacusConfuseSchoolMath />} />
                 
                 {/* Authenticated Practice Hub sub-routes */}
                 <Route path="/practice" element={<ProtectedRoute><PracticeHub /></ProtectedRoute>} />
@@ -178,8 +204,8 @@ export default function App() {
                 <Route path="/faqs" element={<Faqs />} />
                 <Route path="/brochure" element={<InteractiveBrochure />} />
                 <Route path="/campaigns/:slug" element={<CampaignPage />} />
-                {/* Fallback routing */}
-                <Route path="*" element={<Home />} />
+                {/* 404 Fallback routing for invalid URLs */}
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </React.Suspense>
           </main>

@@ -4,6 +4,7 @@
  */
 
 import React from "react";
+import { Link } from "react-router-dom";
 import ProgramCard from "../components/ProgramCard";
 import LeadForm from "../components/LeadForm";
 import { PROGRAMS } from "../data";
@@ -33,6 +34,28 @@ export default function Programs() {
           <p className="text-[#A2C4C9] text-xs md:text-sm font-semibold max-w-2xl mx-auto leading-relaxed">
             {t("progPageSubtitle")}
           </p>
+
+          {/* Canonical Sub-Program Quick Links */}
+          <div className="pt-4 flex flex-wrap justify-center gap-3">
+            <Link
+              to="/programs/abacus"
+              className="bg-vibrant-gold hover:bg-vibrant-gold/90 text-vibrant-dark font-black text-xs px-4 py-2.5 rounded-xl shadow-md transition-all uppercase tracking-wider"
+            >
+              Abacus Program (Ages 4–14) →
+            </Link>
+            <Link
+              to="/programs/vedic-maths"
+              className="bg-vibrant-teal hover:bg-vibrant-teal/90 text-white font-black text-xs px-4 py-2.5 rounded-xl shadow-md transition-all uppercase tracking-wider"
+            >
+              Vedic Maths (Ages 10+) →
+            </Link>
+            <Link
+              to="/programs/school-maths"
+              className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-black text-xs px-4 py-2.5 rounded-xl shadow-md transition-all uppercase tracking-wider"
+            >
+              School Maths & Olympiad →
+            </Link>
+          </div>
         </div>
       </section>
 

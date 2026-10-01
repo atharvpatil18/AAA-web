@@ -6,10 +6,15 @@
 import React, { useState, useEffect } from "react";
 import { Testimonial } from "../types";
 import { Star, ChevronLeft, ChevronRight, Quote, CheckCircle2 } from "lucide-react";
+import { trackTestimonialsView } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function TestimonialCarousel() {
   const { language, t } = useLanguage();
+
+  useEffect(() => {
+    trackTestimonialsView();
+  }, []);
 
   const testimonials: Testimonial[] = [
     {

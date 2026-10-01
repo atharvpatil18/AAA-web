@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { MessageSquare, X, PhoneCall } from "lucide-react";
-import { trackDemoClick } from "../lib/analytics";
+import { trackWhatsAppClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function FloatingCTA() {
@@ -34,7 +34,7 @@ export default function FloatingCTA() {
   }, []);
 
   const handleWhatsappClick = () => {
-    trackDemoClick("floating_whatsapp_bubble");
+    trackWhatsAppClick("floating_whatsapp_bubble", "parent_direct_chat");
     const message = encodeURIComponent(t("floatWhatsappMessage"));
     window.open(`https://wa.me/919021924968?text=${message}`, "_blank");
   };

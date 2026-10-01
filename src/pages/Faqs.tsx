@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LeadForm from "../components/LeadForm";
 import { HelpCircle, ChevronDown, ChevronUp, Sparkles, MessageSquare, ArrowRight } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
@@ -95,6 +95,37 @@ export default function Faqs() {
   const [openedFaqs, setOpenedFaqs] = useState<Record<string, boolean>>({
     faq1: true, // First open by default
   });
+
+  useEffect(() => {
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer,
+        },
+      })),
+    };
+
+    let scriptTag = document.getElementById("faq-schema-jsonld");
+    if (!scriptTag) {
+      scriptTag = document.createElement("script");
+      scriptTag.id = "faq-schema-jsonld";
+      scriptTag.setAttribute("type", "application/ld+json");
+      document.head.appendChild(scriptTag);
+    }
+    scriptTag.textContent = JSON.stringify(faqSchema);
+
+    return () => {
+      const existing = document.getElementById("faq-schema-jsonld");
+      if (existing) {
+        existing.remove();
+      }
+    };
+  }, [faqItems]);
 
   const toggleFaq = (id: string) => {
     setOpenedFaqs((prev) => ({

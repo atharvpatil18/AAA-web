@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { trackLeadFormSubmission } from "../lib/analytics";
+import { trackEnquiryFormStart, trackEnquiryFormSubmit, trackDemoRequest } from "../lib/analytics";
 import { Sparkles, Gift, Send, Landmark, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
 import { jsPDF } from "jspdf";
@@ -517,8 +517,20 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
 
     setIsSubmitting(true);
     
-    // Log conversion event
-    trackLeadFormSubmission(parentName, childAge, program);
+    // Log conversion events: Primary Conversions
+    trackEnquiryFormSubmit({
+      program,
+      childAgeGroup: childAge,
+      classMode,
+      sourceCampaign: sourceCampaign || "LeadForm",
+      audienceType: "parent",
+    });
+
+    trackDemoRequest({
+      source: sourceCampaign || "LeadForm",
+      program,
+      deliveryMode: classMode,
+    });
 
     // Form custom WhatsApp message template
     let parentExpectations = [];
@@ -691,7 +703,11 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
           {t("formEvaluationDesc")}
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+        <form 
+          onSubmit={handleSubmit} 
+          onFocus={() => trackEnquiryFormStart("demo_booking_form")}
+          className="space-y-4 pt-2"
+        >
           {/* Invisible Honeypot Trap for spam bots */}
           <input
             type="text"

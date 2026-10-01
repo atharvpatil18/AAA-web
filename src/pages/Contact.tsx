@@ -3,17 +3,29 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
+import React, { useEffect } from "react";
 import LeadForm from "../components/LeadForm";
 import { MapPin, Phone, Mail, Clock, CheckCircle } from "lucide-react";
-import { trackDemoClick } from "../lib/analytics";
+import { trackContactPageView, trackCallClick, trackLocationClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function Contact() {
   const { t } = useLanguage();
 
+  useEffect(() => {
+    trackContactPageView();
+  }, []);
+
+  const handlePhoneClick = () => {
+    trackCallClick("contact_page_phone_button");
+  };
+
+  const handleLocationClick = () => {
+    trackLocationClick("contact_page_address_card");
+  };
+
   const handleSupportClick = (source: string) => {
-    trackDemoClick(`contact_page_${source}`);
+    trackCallClick(`contact_page_${source}`);
   };
 
   return (
@@ -56,7 +68,10 @@ export default function Contact() {
             {/* Direct Icons Lists */}
             <div className="space-y-6">
               {/* Address */}
-              <div className="bg-[#FFFDF9] border-4 border-vibrant-dark rounded-[32px] p-6 shadow-[8px_8px_0_0_#1A2E35] flex items-start gap-4">
+              <div 
+                onClick={handleLocationClick}
+                className="bg-[#FFFDF9] border-4 border-vibrant-dark rounded-[32px] p-6 shadow-[8px_8px_0_0_#1A2E35] flex items-start gap-4 cursor-pointer hover:shadow-lg transition-shadow"
+              >
                 <div className="w-12 h-12 bg-vibrant-orange text-white border-2 border-vibrant-dark rounded-xl flex items-center justify-center shrink-0">
                   <MapPin className="w-5 h-5 text-white" />
                 </div>
@@ -84,7 +99,7 @@ export default function Contact() {
                   </h3>
                   <a 
                     href="tel:+919021924968" 
-                    onClick={() => handleSupportClick("tel_call")}
+                    onClick={handlePhoneClick}
                     className="font-black text-vibrant-dark hover:text-vibrant-orange text-sm md:text-base block"
                   >
                     +91 90219 24968

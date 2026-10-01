@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X, Heart, Share2, Check } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { trackDemoClick } from "../lib/analytics";
+import { trackDemoClick, trackResultsPageView } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import { getSuccessStories, fetchSuccessStoriesFromCloud, getCloudUrl } from "../lib/successStories";
 import type { SuccessStory } from "../lib/successStories";
@@ -117,6 +117,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
   });
 
   useEffect(() => {
+    trackResultsPageView();
     // Background cloud refresh — updates stories for parents on any device
     const refreshStories = () => {
       fetchSuccessStoriesFromCloud()

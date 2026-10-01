@@ -18,7 +18,7 @@
 
 
     <!-- Primary & Local SEO Metadata -->
-    <meta name="description" content="Arnav Abacus Academy &amp; Vedic Maths Classes in Wakad, Pune, India. Top-rated mental arithmetic, speed math drills, 10X calculation speed &amp; kid brain development coaching." />
+    <meta name="description" content="Arnav Abacus Academy &amp; Vedic Maths Classes in Wakad, Pune, India. Top-rated mental arithmetic, speed math drills, visual memory &amp; kid brain development coaching." />
     <meta name="keywords" content="Arnav Abacus Academy, Abacus Classes Wakad Pune, Vedic Maths Wakad, Abacus Coaching Pune India, Speed Math Drills, Kid Brain Development Wakad" />
     <meta name="author" content="Arnav Abacus Academy" />
     <meta name="robots" content="index, follow" />
@@ -26,25 +26,62 @@
     <!-- OpenGraph Social Cards -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Arnav Abacus Academy &amp; Vedic Maths Classes - Wakad, Pune" />
-    <meta property="og:description" content="Master 10X mental calculation speed with Abacus &amp; Vedic Math drills! Free sample practice sessions available." />
+    <meta property="og:description" content="Build calculation speed, visual memory, and math confidence with Abacus &amp; Vedic Math drills! Free sample practice sessions available." />
     <meta property="og:image" content="./logo.png" />
 
-    <!-- Schema.org EducationalOrganization Structured Data -->
+    <!-- Schema.org EducationalOrganization & LocalBusiness Structured Data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "EducationalOrganization",
-      "name": "Arnav Abacus Academy & Vedic Maths",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Wakad Brain Center",
-        "addressLocality": "Wakad, Pune",
-        "addressRegion": "Maharashtra",
-        "addressCountry": "India"
-      },
-      "telephone": "+91-9021924968",
-      "email": "nehaatharv@gmail.com",
-      "url": "https://arnavabacus.com"
+      "@graph": [
+        {
+          "@type": "EducationalOrganization",
+          "@id": "https://arnavabacusacademy-web.vercel.app/#organization",
+          "name": "Arnav Abacus Academy & Vedic Maths Classes",
+          "alternateName": "Arnav Abacus Academy",
+          "url": "https://arnavabacusacademy-web.vercel.app/",
+          "logo": "https://arnavabacusacademy-web.vercel.app/logo.png",
+          "telephone": "+91-9021924968",
+          "email": "nehaatharv@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL",
+            "addressLocality": "Wakad, Pune",
+            "addressRegion": "Maharashtra",
+            "postalCode": "411057",
+            "addressCountry": "IN"
+          }
+        },
+        {
+          "@type": "LocalBusiness",
+          "@id": "https://arnavabacusacademy-web.vercel.app/#localbusiness",
+          "name": "Arnav Abacus Academy - Wakad Pune Center",
+          "image": "https://arnavabacusacademy-web.vercel.app/logo.png",
+          "telephone": "+91-9021924968",
+          "url": "https://arnavabacusacademy-web.vercel.app/",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL",
+            "addressLocality": "Wakad, Pune",
+            "addressRegion": "Maharashtra",
+            "postalCode": "411057",
+            "addressCountry": "IN"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 18.5975866,
+            "longitude": 73.7810869
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+              "opens": "09:00",
+              "closes": "19:30"
+            }
+          ]
+        }
+      ]
     }
     </script>
   </head>
