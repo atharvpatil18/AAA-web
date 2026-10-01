@@ -39,11 +39,11 @@ export default function DemoBookingModal({
     setErrorMsg("");
 
     const nameValidation = validateSanitizedName(parentName);
-    if (!nameValidation.valid || !nameValidation.sanitized) {
+    if (!nameValidation.valid) {
       setErrorMsg(nameValidation.error || "Please enter a valid parent name (at least 2 letters).");
       return;
     }
-    const cleanParentName = nameValidation.sanitized;
+    const cleanParentName = nameValidation.sanitized || parentName.trim();
 
     const cleanPhone = phone.replace(/[^0-9]/g, "");
     if (cleanPhone.length < 10) {
