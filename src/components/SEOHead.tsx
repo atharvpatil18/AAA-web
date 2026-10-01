@@ -58,6 +58,21 @@ const ROUTE_META_MAP: Record<string, RouteMeta> = {
     description: "Explore how Abacus calculation relates to school column arithmetic. Learn why temporary calculation mixing occurs and how to guide your child with clarity.",
     canonicalPath: "/parent-guides/does-abacus-confuse-school-math",
   },
+  "/parent-guides/why-children-use-finger-counting": {
+    title: "Why Children Use Finger Counting & Mental Math Habits | AAA",
+    description: "Learn why finger counting is a natural concrete stage in early math, how mental calculation strategies develop gradually, and how parents can guide children with patience.",
+    canonicalPath: "/parent-guides/why-children-use-finger-counting",
+  },
+  "/parent-guides/why-smart-children-make-silly-math-mistakes": {
+    title: "Why Children Make Calculation Mistakes in Math | Arnav Abacus Academy",
+    description: "Understand why children make calculation mistakes even when understanding concepts. Explore procedural error causes, worked examples, and a constructive parent review routine.",
+    canonicalPath: "/parent-guides/why-smart-children-make-silly-math-mistakes",
+  },
+  "/parent-guides/ideal-age-to-start-abacus": {
+    title: "What Is the Ideal Age to Start Abacus? A Parent's Guide | AAA",
+    description: "Discover the best age considerations for abacus learning (ages 4-14, peak foundation 5-9), readiness factors, age-group breakdowns, and how to evaluate suitability.",
+    canonicalPath: "/parent-guides/ideal-age-to-start-abacus",
+  },
   "/mentor": {
     title: "Meet Neha Patil | Certified Master Abacus & Vedic Maths Mentor Wakad",
     description: "Learn about Neha Patil, founder and master trainer at Arnav Abacus Academy. IIVA certified, 3+ years experience coaching 200+ Pune and global students.",

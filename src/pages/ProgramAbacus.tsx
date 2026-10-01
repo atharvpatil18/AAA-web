@@ -353,7 +353,7 @@ export default function ProgramAbacus() {
                 What is the ideal age to start Abacus classes?
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed pl-6">
-                The program welcomes children aged 4 to 14 years. The optimal foundation window is between 5 and 9 years, when children are developing concrete number concepts and neuroplasticity for visualization is high. If you are also exploring Vedic Maths for an older child, read our <Link to="/parent-guides/abacus-vs-vedic-maths" className="text-vibrant-orange font-bold hover:underline">Abacus vs Vedic Maths parent guide</Link>.
+                The program welcomes children aged 4 to 14 years. The optimal foundation window is between 5 and 9 years, when children are developing concrete number concepts and visualization habits. For a comprehensive readiness checklist, see our guide on <Link to="/parent-guides/ideal-age-to-start-abacus" className="text-vibrant-orange font-bold hover:underline">the ideal age to start abacus</Link>. If you are also exploring Vedic Maths for an older child (ages 10+), read our <Link to="/parent-guides/abacus-vs-vedic-maths" className="text-vibrant-orange font-bold hover:underline">Abacus vs Vedic Maths comparison</Link>.
               </p>
             </div>
 

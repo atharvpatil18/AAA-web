@@ -377,7 +377,7 @@ export default function ProgramSchoolMaths() {
                 How do mental math shortcuts fit into school math?
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed pl-6">
-                Students write down all required curriculum proof steps for the teacher, while using mental shortcuts and Vedic checks internally to compute answers accurately and cross-verify solutions before submitting their paper.
+                Students write down all required curriculum proof steps for the teacher, while using mental shortcuts and Vedic checks internally to compute answers accurately and cross-verify solutions before submitting their paper. For guidance on why children make procedural calculation errors despite understanding concepts, see our parent guide on <Link to="/parent-guides/why-smart-children-make-silly-math-mistakes" className="text-amber-600 font-bold hover:underline">understanding calculation mistakes</Link>.
               </p>
             </div>
           </div>
