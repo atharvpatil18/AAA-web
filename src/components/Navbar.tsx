@@ -11,6 +11,7 @@ import { useLanguage } from "../lib/LanguageContext";
 import { Language } from "../lib/translations";
 import { generateBrochurePDF } from "../lib/brochure";
 import { useAuth } from "../lib/AuthContext";
+import DemoBookingModal from "./DemoBookingModal";
 
 export default function Navbar() {
   const { language, setLanguage, t } = useLanguage();
@@ -18,6 +19,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [programMenuOpen, setProgramMenuOpen] = useState(false);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const programMenuRef = useRef<HTMLDivElement>(null);
@@ -323,16 +325,16 @@ export default function Navbar() {
                 </div>
               ) : (
                 <>
-                  <a
-                    href="https://wa.me/919021924968"
-                    onClick={handleBookDemoClick}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => {
+                      handleBookDemoClick();
+                      setIsDemoModalOpen(true);
+                    }}
                     className="bg-vibrant-teal hover:bg-vibrant-teal/95 text-white px-3.5 xl:px-5 py-2 rounded-full font-bold text-xs xl:text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center whitespace-nowrap"
                   >
                     <span>{t("bookFreeDemo")}</span>
                     <ArrowRight className="w-3.5 h-3.5 shrink-0" />
-                  </a>
+                  </button>
 
                   <Link
                     to="/login"
@@ -407,19 +409,17 @@ export default function Navbar() {
                 </div>
               ) : (
                 <>
-                  <a
-                    href="https://wa.me/919021924968"
+                  <button
                     onClick={() => {
                       setIsOpen(false);
                       handleBookDemoClick();
+                      setIsDemoModalOpen(true);
                     }}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     className="w-full bg-vibrant-teal hover:bg-vibrant-teal/95 text-white py-3 rounded-xl font-bold shadow-xs hover:shadow-md active:scale-95 transition-all text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     {t("bookTrial")}
                     <ArrowRight className="w-4 h-4" />
-                  </a>
+                  </button>
 
                   <Link
                     to="/login"
@@ -434,6 +434,13 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
+
+      {/* Demo Booking Modal */}
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        source="navbar_header_cta"
+      />
     </header>
   );
 }
