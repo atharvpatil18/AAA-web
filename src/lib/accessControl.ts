@@ -15,7 +15,8 @@ export const SYSTEM_ROOT_ADMINS = [
 
 export const DEFAULT_ADMIN_EMAILS = SYSTEM_ROOT_ADMINS;
 
-export const CLOUD_SYNC_URL = "https://jsonblob.com/api/jsonBlob/019f9065-eead-71b5-8f27-38e3c8ebc1f4";
+// Secure backend synchronization endpoint (configured via environment variable)
+export const CLOUD_SYNC_URL = ((import.meta as any).env?.VITE_ACCESS_SYNC_API_URL as string) || "";
 
 const DEFAULT_INITIAL_RECORDS: ApprovedEmailRecord[] = [
   ...SYSTEM_ROOT_ADMINS.map((email) => ({
@@ -90,18 +91,15 @@ export function getApprovedRecord(email?: string): ApprovedEmailRecord | null {
 
 /**
  * Checks whether a given user is an admin.
- * Checks the explicitly saved record in localStorage first.
+ * Strictly verifies against root administrator whitelist to prevent client-side privilege escalation.
  */
 export function isUserAdmin(email?: string): boolean {
   if (!email) return false;
   const cleanEmail = email.trim().toLowerCase();
   
-  const record = getApprovedRecord(cleanEmail);
-  if (record) {
-    return !!record.isAdmin;
-  }
-
-  return SYSTEM_ROOT_ADMINS.map((e) => e.toLowerCase()).includes(cleanEmail);
+  // Root administrators are strictly whitelisted to prevent client-side privilege escalation
+  const isRootAdmin = SYSTEM_ROOT_ADMINS.map((e) => e.toLowerCase()).includes(cleanEmail);
+  return isRootAdmin;
 }
 
 export interface AccessCheckResult {
@@ -221,6 +219,10 @@ export function checkUserAccess(
  * Asynchronously pushes current approved records to cloud storage.
  */
 export async function pushApprovedRecordsToCloud(records?: ApprovedEmailRecord[]): Promise<void> {
+  if (!CLOUD_SYNC_URL) {
+    // Secure standalone mode: records remain in protected local storage
+    return;
+  }
   const currentRecords = records || getAllApprovedRecords();
   try {
     await fetch(CLOUD_SYNC_URL, {
@@ -245,6 +247,9 @@ export async function pushApprovedRecordsToCloud(records?: ApprovedEmailRecord[]
  */
 export async function syncApprovedRecordsFromCloud(): Promise<ApprovedEmailRecord[]> {
   const localRecords = getAllApprovedRecords();
+  if (!CLOUD_SYNC_URL) {
+    return localRecords;
+  }
   try {
     const res = await fetch(CLOUD_SYNC_URL);
     if (res.ok) {

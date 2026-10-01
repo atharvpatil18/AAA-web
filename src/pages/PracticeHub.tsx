@@ -598,14 +598,31 @@ export default function PracticeHub() {
               })()}
 
               {accessNotice && (
-                <div className="mb-6 p-3 bg-red-950/90 border border-red-500/60 text-red-200 text-xs rounded-xl flex items-center justify-between shadow-md">
-                  <div className="flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
-                    <span>{accessNotice}</span>
+                <div className="mb-6 p-4 bg-amber-950/90 border-2 border-amber-500/60 text-amber-100 text-xs rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
+                  <div className="flex items-center gap-2.5">
+                    <AlertCircle className="w-5 h-5 text-amber-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-white text-xs">{accessNotice}</p>
+                      <p className="text-[11px] text-amber-300/90 mt-0.5">Want to try questions or unlock full academy practice?</p>
+                    </div>
                   </div>
-                  <button onClick={() => setAccessNotice(null)} className="text-xs underline text-red-300 font-bold">
-                    Dismiss
-                  </button>
+                  <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                    <button
+                      onClick={() => {
+                        setAccessNotice(null);
+                        setIsGuestGatewayOpen(true);
+                      }}
+                      className="px-3 py-1.5 bg-vibrant-orange hover:bg-orange-600 text-white font-bold rounded-lg text-xs shadow-sm transition-colors cursor-pointer"
+                    >
+                      Try Free Sample Drills
+                    </button>
+                    <button
+                      onClick={() => setAccessNotice(null)}
+                      className="px-2 py-1 text-xs text-amber-300 hover:text-white underline font-semibold cursor-pointer"
+                    >
+                      Dismiss
+                    </button>
+                  </div>
                 </div>
               )}
 

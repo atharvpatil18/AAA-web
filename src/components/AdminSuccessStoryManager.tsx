@@ -168,7 +168,7 @@ export default function AdminSuccessStoryManager() {
     }
     setIsAiLoading(true);
     try {
-      const generated = generateAISuccessStory({
+      const generated = await generateAISuccessStory({
         studentName,
         achievementTitle: highlight,
         ageOrGrade: `${ageYears} Years • ${schoolName || "Wakad Pune"}`,

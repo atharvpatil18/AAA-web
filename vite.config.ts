@@ -17,6 +17,9 @@ export default defineConfig(() => {
       rollupOptions: {
         output: {
           manualChunks(id) {
+            if (id.includes('translations')) {
+              return 'locale-translations';
+            }
             if (id.includes('node_modules')) {
               if (id.includes('jspdf') || id.includes('html2canvas') || id.includes('dompurify')) {
                 return 'vendor-pdf';

@@ -17,14 +17,16 @@ import {
   Brain,
   HelpCircle,
   Clock,
-  Users
+  Users,
+  Download
 } from "lucide-react";
 import LeadForm from "../components/LeadForm";
 import { trackProgramView } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
+import { generateBrochurePDF } from "../lib/brochure";
 
 export default function ProgramAbacus() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     trackProgramView("Abacus", "canonical_program_hub");
@@ -287,6 +289,14 @@ export default function ProgramAbacus() {
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 text-[11px] text-amber-900 font-semibold">
                 💡 Batch sizes are strictly kept small (personalized mentor ratio) to ensure Neha Ma'am can observe each child's counting mechanics directly.
               </div>
+
+              <button
+                onClick={() => generateBrochurePDF(language)}
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-vibrant-orange hover:bg-orange-600 text-white font-black text-xs rounded-2xl border-2 border-vibrant-dark shadow-[3px_3px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer uppercase tracking-wider"
+              >
+                <Download className="w-4 h-4" />
+                Download Complete Syllabus PDF & Levels Overview
+              </button>
             </div>
 
           </div>
