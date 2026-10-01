@@ -799,6 +799,21 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
+
+                {/* Serving Neighborhoods & Schools */}
+                <div className="bg-white p-4 rounded-2xl border border-slate-200">
+                  <span className="text-[11px] font-black text-slate-800 uppercase tracking-wider block mb-2">
+                    📍 Conveniently Located For Students From:
+                  </span>
+                  <div className="flex flex-wrap gap-1.5 text-[11px] font-bold text-slate-700">
+                    <span className="bg-orange-50 text-orange-700 px-2.5 py-1 rounded-lg border border-orange-200">Wakad</span>
+                    <span className="bg-amber-50 text-amber-800 px-2.5 py-1 rounded-lg border border-amber-200">Pimple Saudagar</span>
+                    <span className="bg-teal-50 text-teal-700 px-2.5 py-1 rounded-lg border border-teal-200">Rahatani</span>
+                    <span className="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-lg border border-blue-200">Hinjawadi Phases 1-3</span>
+                    <span className="bg-purple-50 text-purple-700 px-2.5 py-1 rounded-lg border border-purple-200">Thergaon / Tathawade</span>
+                    <span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-lg border border-emerald-200">Wisdom World / Park Street Area</span>
+                  </div>
+                </div>
               </div>
 
               <div>
