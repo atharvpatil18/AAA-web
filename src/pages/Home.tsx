@@ -17,7 +17,6 @@ import InteractiveAbacus from "../components/InteractiveAbacus";
 import VedicMathDemo from "../components/VedicMathDemo";
 import MathComparisonDemo from "../components/MathComparisonDemo";
 import { useLanguage } from "../lib/LanguageContext";
-import { generateBrochurePDF } from "../lib/brochure";
 import MathConcernVideoBooth from "../components/MathConcernVideoBooth";
 import { PROGRAMS } from "../data";
 import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2, ChevronDown, ChevronUp, BookOpen, Download } from "lucide-react";
@@ -872,7 +871,11 @@ export default function Home() {
               View Online Manual
             </Link>
             <button
-              onClick={() => generateBrochurePDF(language)}
+              onClick={() => {
+                import("../lib/brochure").then(({ generateBrochurePDF }) => {
+                  generateBrochurePDF(language);
+                });
+              }}
               className="w-full sm:w-auto bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-black px-6 py-3.5 rounded-2xl shadow-lg transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300"
             >
               <Download className="w-4 h-4 animate-bounce" />

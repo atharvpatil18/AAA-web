@@ -23,7 +23,6 @@ import {
 import LeadForm from "../components/LeadForm";
 import { trackProgramView } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
-import { generateBrochurePDF } from "../lib/brochure";
 
 export default function ProgramAbacus() {
   const { language, t } = useLanguage();
@@ -291,7 +290,11 @@ export default function ProgramAbacus() {
               </div>
 
               <button
-                onClick={() => generateBrochurePDF(language)}
+                onClick={() => {
+                  import("../lib/brochure").then(({ generateBrochurePDF }) => {
+                    generateBrochurePDF(language);
+                  });
+                }}
                 className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-vibrant-orange hover:bg-orange-600 text-white font-black text-xs rounded-2xl border-2 border-vibrant-dark shadow-[3px_3px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer uppercase tracking-wider"
               >
                 <Download className="w-4 h-4" />

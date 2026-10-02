@@ -14,6 +14,11 @@ export default defineConfig(() => {
     },
     build: {
       chunkSizeWarningLimit: 600,
+      modulePreload: {
+        resolveDependencies: (filename, deps, { hostType }) => {
+          return deps.filter(dep => !dep.includes('vendor-pdf'));
+        },
+      },
       rollupOptions: {
         output: {
           manualChunks(id) {
@@ -21,8 +26,11 @@ export default defineConfig(() => {
               return 'locale-translations';
             }
             if (id.includes('node_modules')) {
-              if (id.includes('jspdf') || id.includes('html2canvas') || id.includes('dompurify')) {
+              if (id.includes('jspdf') || id.includes('html2canvas')) {
                 return 'vendor-pdf';
+              }
+              if (id.includes('dompurify')) {
+                return 'vendor-purify';
               }
               if (id.includes('motion')) {
                 return 'vendor-motion';

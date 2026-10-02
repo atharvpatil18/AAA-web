@@ -9,7 +9,6 @@ import { Phone, Mail, Clock, Menu, X, ArrowRight, MessageCircle, Globe, ChevronD
 import { trackWhatsAppClick, trackCallClick, trackDemoRequest } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import { Language } from "../lib/translations";
-import { generateBrochurePDF } from "../lib/brochure";
 import { useAuth } from "../lib/AuthContext";
 import DemoBookingModal from "./DemoBookingModal";
 

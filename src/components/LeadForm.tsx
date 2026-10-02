@@ -7,7 +7,6 @@ import React, { useState, useEffect } from "react";
 import { trackEnquiryFormStart, trackEnquiryFormSubmit, trackDemoRequest } from "../lib/analytics";
 import { Sparkles, Gift, Send, Landmark, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
-import { jsPDF } from "jspdf";
 import { validateSanitizedName, sanitizeHtml } from "../lib/securitySanitizer";
 import { dispatchLeadToWebhook } from "../lib/leadWebhook";
 
@@ -74,6 +73,7 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
 
   const generatePDFWorksheet = async () => {
     try {
+      const { jsPDF } = await import("jspdf");
       const doc = new jsPDF({
         orientation: "portrait",
         unit: "mm",
