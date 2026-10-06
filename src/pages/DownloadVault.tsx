@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { 
   FolderLock, 
   Folder, 
@@ -36,7 +36,10 @@ import {
   ArrowRight,
   Edit,
   Pencil,
-  Loader2
+  Loader2,
+  Share2,
+  Copy,
+  Check
 } from "lucide-react";
 import { 
   VaultEvent,
@@ -143,12 +146,14 @@ export default function DownloadVaultPage() {
   const [uploadProgress, setUploadProgress] = useState(0); // 0 to 100%
   const [uploadStatusText, setUploadStatusText] = useState("");
 
-  // Whitelist Form
   const [wlPhone, setWlPhone] = useState("");
   const [wlStudent, setWlStudent] = useState("");
   const [wlParent, setWlParent] = useState("");
   const [wlBatch, setWlBatch] = useState("");
   const [wlFolderId, setWlFolderId] = useState("ALL");
+  const [copiedParentId, setCopiedParentId] = useState<string | null>(null);
+
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     refreshAllData();
@@ -159,7 +164,16 @@ export default function DownloadVaultPage() {
         setIsAdminMode(true);
       }
     }
-  }, []);
+
+    // Auto pre-fill phone input if accessed via personalized link
+    const phoneParam = searchParams.get("phone");
+    if (phoneParam) {
+      const clean = phoneParam.replace(/\D/g, "");
+      if (clean.length === 10) {
+        setPhoneInput(clean);
+      }
+    }
+  }, [searchParams]);
 
   const refreshAllData = () => {
     const evts = getVaultEvents();
@@ -1751,37 +1765,96 @@ export default function DownloadVaultPage() {
                         .map((f) => f.name)
                         .join(", ") || "No Folders Assigned";
 
-                  return (
-                    <div key={u.id} className="p-3 bg-white flex items-center justify-between gap-3">
-                      <div>
-                        <div className="font-bold text-slate-900">
-                          +91 {u.phone} • {u.studentName}
+                    const portalUrl = `https://arnavabacusacademy-web.vercel.app/download?phone=${u.phone}`;
+                    const whatsappMsg = encodeURIComponent(
+                      `Dear ${u.parentName || "Parent"},\nAccess to the exam & worksheet folder for ${u.studentName} has been approved.\n\n📁 Assigned Folder: ${assignedFolderNames}\n🔗 Access Portal: ${portalUrl}\n\nPlease enter your registered mobile number (+91 ${u.phone}) to unlock via OTP.\n\nRegards,\nArnav Abacus Academy`
+                    );
+
+                    return (
+                      <div key={u.id} className="p-3 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50 transition">
+                        <div>
+                          <div className="font-bold text-slate-900 flex items-center gap-2">
+                            <span>+91 {u.phone} • {u.studentName}</span>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                              Approved
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-slate-500 mt-0.5">
+                            Parent: {u.parentName} | Assigned: <span className="font-semibold text-blue-600">{assignedFolderNames}</span>
+                          </div>
                         </div>
-                        <div className="text-[11px] text-slate-500 mt-0.5">
-                          Parent: {u.parentName} | Assigned: <span className="font-semibold text-blue-600">{assignedFolderNames}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                          Approved
-                        </span>
-                        {whitelistedUsers.length > 1 && (
-                          <button
-                            onClick={() => {
-                              if (confirm(`Remove access for +91 ${u.phone}?`)) {
-                                deleteWhitelistedParent(u.id);
-                                refreshAllData();
-                              }
-                            }}
-                            className="text-slate-300 hover:text-red-500 p-1"
-                            title="Remove"
+
+                        <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
+                          {/* Share via WhatsApp Button */}
+                          <a
+                            href={`https://wa.me/91${u.phone}?text=${whatsappMsg}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-lg text-[11px] font-semibold flex items-center gap-1 transition"
+                            title="Send access details directly on WhatsApp"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Share2 className="w-3 h-3 text-emerald-600" />
+                            <span>WhatsApp Link</span>
+                          </a>
+
+                          {/* Copy Portal Link Button */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigator.clipboard.writeText(portalUrl);
+                              setCopiedParentId(u.id);
+                              setTimeout(() => setCopiedParentId(null), 2500);
+                            }}
+                            className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-lg text-[11px] font-semibold flex items-center gap-1 transition"
+                            title="Copy link to clipboard"
+                          >
+                            {copiedParentId === u.id ? (
+                              <>
+                                <Check className="w-3 h-3 text-emerald-600" />
+                                <span className="text-emerald-700 font-bold">Copied!</span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3 h-3 text-slate-500" />
+                                <span>Copy Link</span>
+                              </>
+                            )}
                           </button>
-                        )}
+
+                          {/* Quick Edit (Prefills Form Above) */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setWlPhone(u.phone);
+                              setWlStudent(u.studentName);
+                              setWlParent(u.parentName || "");
+                              setWlFolderId(u.assignedFolderIds[0] || "ALL");
+                            }}
+                            className="p-1.5 text-slate-400 hover:text-blue-600 rounded-lg hover:bg-blue-50 transition"
+                            title="Edit / Reassign Folder"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Remove User */}
+                          {whitelistedUsers.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (confirm(`Remove access for +91 ${u.phone}?`)) {
+                                  deleteWhitelistedParent(u.id);
+                                  refreshAllData();
+                                }
+                              }}
+                              className="p-1.5 text-slate-300 hover:text-red-500 rounded-lg hover:bg-red-50 transition"
+                              title="Remove Permission"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  );
+                    );
                 })}
               </div>
             </div>
