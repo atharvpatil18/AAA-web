@@ -35,7 +35,8 @@ import {
   FolderOpen,
   ArrowRight,
   Edit,
-  Pencil
+  Pencil,
+  Loader2
 } from "lucide-react";
 import { 
   VaultEvent,
@@ -67,6 +68,11 @@ import {
   setActiveParentSession,
   clearParentSession
 } from "../lib/documentVault";
+import { 
+  storeFileInIndexedDB, 
+  getFileUrlFromIndexedDB, 
+  deleteFileFromIndexedDB 
+} from "../lib/vaultStorage";
 import { validateSanitizedPhone } from "../lib/securitySanitizer";
 
 export default function DownloadVaultPage() {
@@ -133,6 +139,9 @@ export default function DownloadVaultPage() {
   const [docInputUrl, setDocInputUrl] = useState("");
   const [docInputFile, setDocInputFile] = useState<File | null>(null);
   const [docInputFiles, setDocInputFiles] = useState<File[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0); // 0 to 100%
+  const [uploadStatusText, setUploadStatusText] = useState("");
 
   // Whitelist Form
   const [wlPhone, setWlPhone] = useState("");
@@ -436,54 +445,87 @@ export default function DownloadVaultPage() {
     e.preventDefault();
     if (!activeFolder) return;
 
-    // Multi-file upload mode
+    // Multi-file upload mode with IndexedDB (No 5MB limit!) & Live Progress
     if (docInputFiles.length > 0) {
-      const readPromises = docInputFiles.map((file, idx) => {
-        return new Promise<void>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (uploadEvt) => {
-            const fileContentUrl = uploadEvt.target?.result as string;
-            const newDoc: VaultDocument = {
-              id: `doc-${Date.now()}-${idx}-${Math.random().toString(36).substring(2, 6)}`,
-              folderId: activeFolder.id,
-              name: file.name,
-              description: docInputDesc.trim() || undefined,
-              fileType: file.name.endsWith(".pdf") ? "pdf" : "doc",
-              fileUrl: fileContentUrl || "#",
-              fileSizeBytes: file.size,
-              uploadedAt: new Date().toISOString().slice(0, 10),
-            };
-            saveVaultDocument(newDoc);
-            resolve();
-          };
-          reader.readAsDataURL(file);
-        });
-      });
+      setIsUploading(true);
+      setUploadProgress(5);
+      setUploadStatusText(`Preparing ${docInputFiles.length} file(s)...`);
 
-      await Promise.all(readPromises);
-      resetDocModal();
+      const totalFiles = docInputFiles.length;
+
+      for (let i = 0; i < totalFiles; i++) {
+        const file = docInputFiles[i];
+        const docId = `doc-${Date.now()}-${i}-${Math.random().toString(36).substring(2, 6)}`;
+        
+        const currentFilePercent = Math.round(((i) / totalFiles) * 100);
+        setUploadProgress(Math.max(5, currentFilePercent));
+        setUploadStatusText(`Uploading file ${i + 1} of ${totalFiles}: "${file.name}"...`);
+
+        try {
+          // Store actual PDF/doc file in IndexedDB (handles 100MB+ with zero localStorage overflow)
+          await storeFileInIndexedDB(docId, file);
+
+          // Get instant Object URL for direct in-memory viewing
+          const blobUrl = URL.createObjectURL(file);
+
+          const newDoc: VaultDocument = {
+            id: docId,
+            folderId: activeFolder.id,
+            name: file.name,
+            description: docInputDesc.trim() || undefined,
+            fileType: file.name.endsWith(".pdf") ? "pdf" : "doc",
+            fileUrl: blobUrl,
+            fileSizeBytes: file.size,
+            uploadedAt: new Date().toISOString().slice(0, 10),
+          };
+          saveVaultDocument(newDoc);
+        } catch (err) {
+          console.error(`Failed uploading ${file.name}`, err);
+        }
+
+        const finishPercent = Math.round(((i + 1) / totalFiles) * 100);
+        setUploadProgress(finishPercent);
+      }
+
+      setUploadStatusText(`All ${totalFiles} files uploaded successfully!`);
+      setTimeout(() => {
+        resetDocModal();
+      }, 500);
       return;
     }
 
-    // Single file upload fallback
+    // Single file upload mode
     if (docInputFile) {
-      const reader = new FileReader();
-      reader.onload = (uploadEvt) => {
-        const fileContentUrl = uploadEvt.target?.result as string;
+      setIsUploading(true);
+      setUploadProgress(30);
+      setUploadStatusText(`Uploading "${docInputFile.name}"...`);
+
+      const docId = `doc-${Date.now()}`;
+      try {
+        await storeFileInIndexedDB(docId, docInputFile);
+        const blobUrl = URL.createObjectURL(docInputFile);
+
+        setUploadProgress(80);
         const newDoc: VaultDocument = {
-          id: `doc-${Date.now()}`,
+          id: docId,
           folderId: activeFolder.id,
           name: docInputName.trim() || docInputFile.name,
           description: docInputDesc.trim() || undefined,
           fileType: "pdf",
-          fileUrl: fileContentUrl || "#",
+          fileUrl: blobUrl,
           fileSizeBytes: docInputFile.size,
           uploadedAt: new Date().toISOString().slice(0, 10),
         };
         saveVaultDocument(newDoc);
+        setUploadProgress(100);
+        setUploadStatusText("Upload complete!");
+      } catch (err) {
+        console.error("Upload error", err);
+      }
+
+      setTimeout(() => {
         resetDocModal();
-      };
-      reader.readAsDataURL(docInputFile);
+      }, 400);
       return;
     }
 
@@ -507,6 +549,9 @@ export default function DownloadVaultPage() {
   };
 
   const resetDocModal = () => {
+    setIsUploading(false);
+    setUploadProgress(0);
+    setUploadStatusText("");
     setDocInputName("");
     setDocInputDesc("");
     setDocInputUrl("");
@@ -1064,15 +1109,39 @@ export default function DownloadVaultPage() {
                                 <span className="text-[10px] text-slate-400">
                                   {doc.uploadedAt}
                                 </span>
-                                <a
-                                  href={doc.fileUrl}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  download={doc.name}
-                                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-xs transition"
+                                <button
+                                  type="button"
+                                  onClick={async () => {
+                                    if (doc.fileUrl && !doc.fileUrl.startsWith("#") && !doc.fileUrl.startsWith("/")) {
+                                      // If already a valid blob URL or http URL, open directly
+                                      const a = document.createElement("a");
+                                      a.href = doc.fileUrl;
+                                      a.download = doc.name;
+                                      a.target = "_blank";
+                                      document.body.appendChild(a);
+                                      a.click();
+                                      document.body.removeChild(a);
+                                      return;
+                                    }
+
+                                    // Resolve from IndexedDB
+                                    const idbUrl = await getFileUrlFromIndexedDB(doc.id);
+                                    if (idbUrl) {
+                                      const a = document.createElement("a");
+                                      a.href = idbUrl;
+                                      a.download = doc.name;
+                                      a.target = "_blank";
+                                      document.body.appendChild(a);
+                                      a.click();
+                                      document.body.removeChild(a);
+                                    } else if (doc.fileUrl) {
+                                      window.open(doc.fileUrl, "_blank");
+                                    }
+                                  }}
+                                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-xs transition cursor-pointer"
                                 >
                                   <Download className="w-3.5 h-3.5" /> Download
-                                </a>
+                                </button>
                               </div>
                             </div>
                           ))}
@@ -1531,19 +1600,47 @@ export default function DownloadVaultPage() {
                 />
               </div>
 
+              {/* Real-time Progress Bar & Status Text */}
+              {isUploading && (
+                <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl space-y-2">
+                  <div className="flex items-center justify-between text-xs font-semibold text-blue-900">
+                    <span className="flex items-center gap-1.5">
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-blue-600" />
+                      {uploadStatusText}
+                    </span>
+                    <span className="font-mono">{uploadProgress}%</span>
+                  </div>
+                  <div className="w-full bg-blue-200/80 rounded-full h-2.5 overflow-hidden">
+                    <div 
+                      className="bg-blue-600 h-2.5 rounded-full transition-all duration-300 ease-out"
+                      style={{ width: `${uploadProgress}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+
               <div className="flex gap-2 pt-2">
                 <button
                   type="button"
+                  disabled={isUploading}
                   onClick={() => setShowDocModal(false)}
-                  className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold"
+                  className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold disabled:opacity-50"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
+                  disabled={isUploading}
+                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold flex items-center justify-center gap-1.5 disabled:opacity-50 cursor-pointer"
                 >
-                  Save & Publish
+                  {isUploading ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      Uploading ({uploadProgress}%)...
+                    </>
+                  ) : (
+                    "Save & Publish"
+                  )}
                 </button>
               </div>
             </form>
