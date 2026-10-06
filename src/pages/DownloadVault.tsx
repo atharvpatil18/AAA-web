@@ -77,6 +77,11 @@ import {
   deleteFileFromIndexedDB 
 } from "../lib/vaultStorage";
 import { validateSanitizedPhone } from "../lib/securitySanitizer";
+import { 
+  sendFirebasePhoneOtp, 
+  verifyFirebasePhoneOtp, 
+  isFirebaseConfigured 
+} from "../lib/firebasePhoneAuth";
 
 export default function DownloadVaultPage() {
   // Session & Authentication
@@ -224,7 +229,7 @@ export default function DownloadVaultPage() {
   }, [selectedSubSectionId, folders]);
 
   // ================= PARENT LOGIN VIA OTP =================
-  const handleRequestOtp = (e: React.FormEvent) => {
+  const handleRequestOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError(null);
 
@@ -245,20 +250,50 @@ export default function DownloadVaultPage() {
       return;
     }
 
-    // Generate 6-digit OTP
+    // 1. If Firebase Phone Auth is configured, send real SMS to parent mobile!
+    if (isFirebaseConfigured()) {
+      try {
+        const res = await sendFirebasePhoneOtp(clean, "firebase-recaptcha-container");
+        if (res.success) {
+          setSimulatedOtp(null); // Real SMS sent; hide on-screen preview
+          setOtpSent(true);
+        } else {
+          setLoginError(res.error || "Failed to deliver SMS OTP. Please check the mobile number.");
+        }
+      } catch (err: any) {
+        setLoginError(err.message || "Failed to send SMS OTP.");
+      } finally {
+        setLoginLoading(false);
+      }
+      return;
+    }
+
+    // 2. Fallback to developer simulation mode if Firebase keys not entered yet
     const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
     setSimulatedOtp(generatedOtp);
     setOtpSent(true);
     setLoginLoading(false);
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError(null);
 
-    if (enteredOtp.trim() !== simulatedOtp && enteredOtp.trim() !== "123456") {
-      setLoginError("Invalid verification code. Please check and try again.");
-      return;
+    // If using real Firebase SMS verification
+    if (isFirebaseConfigured() && !simulatedOtp) {
+      setLoginLoading(true);
+      const res = await verifyFirebasePhoneOtp(enteredOtp);
+      setLoginLoading(false);
+      if (!res.success) {
+        setLoginError(res.error || "Invalid verification code. Please check your SMS.");
+        return;
+      }
+    } else {
+      // Simulation mode check
+      if (enteredOtp.trim() !== simulatedOtp && enteredOtp.trim() !== "123456") {
+        setLoginError("Invalid verification code. Please check and try again.");
+        return;
+      }
     }
 
     const clean = phoneInput.replace(/\D/g, "");
@@ -1208,10 +1243,20 @@ export default function DownloadVaultPage() {
                           <button
                             type="submit"
                             disabled={loginLoading}
-                            className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs transition cursor-pointer"
+                            className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs transition cursor-pointer flex items-center justify-center gap-1.5"
                           >
-                            {loginLoading ? "Verifying..." : "Send Verification OTP"}
+                            {loginLoading ? (
+                              <>
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                <span>Verifying...</span>
+                              </>
+                            ) : (
+                              "Send Verification OTP"
+                            )}
                           </button>
+
+                          {/* Invisible Google Recaptcha DOM container */}
+                          <div id="firebase-recaptcha-container"></div>
 
                           <div className="text-center pt-1">
                             <Link to="/parent-access" className="text-[11px] text-blue-600 hover:underline">
@@ -1222,7 +1267,15 @@ export default function DownloadVaultPage() {
                       ) : (
                         <form onSubmit={handleVerifyOtp} className="max-w-sm mx-auto space-y-3 text-left">
                           <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900">
-                            OTP Code sent to +91 {phoneInput}: <strong>{simulatedOtp}</strong>
+                            {simulatedOtp ? (
+                              <>
+                                OTP Code sent to +91 {phoneInput}: <strong>{simulatedOtp}</strong>
+                              </>
+                            ) : (
+                              <>
+                                📲 6-digit OTP sent via SMS to <strong>+91 {phoneInput}</strong>. Please check your phone messages.
+                              </>
+                            )}
                           </div>
                           <div>
                             <label className="text-[11px] font-bold text-slate-700 block mb-1">
@@ -1241,9 +1294,17 @@ export default function DownloadVaultPage() {
 
                           <button
                             type="submit"
-                            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-xs transition cursor-pointer"
+                            disabled={loginLoading}
+                            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-xs transition cursor-pointer flex items-center justify-center gap-1.5"
                           >
-                            Verify OTP & Unlock
+                            {loginLoading ? (
+                              <>
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                <span>Verifying Code...</span>
+                              </>
+                            ) : (
+                              "Verify OTP & Unlock"
+                            )}
                           </button>
                         </form>
                       )}
