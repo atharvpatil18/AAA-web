@@ -228,15 +228,15 @@ export default function DownloadVaultPage() {
     e.preventDefault();
     setLoginError(null);
 
-    const val = validateSanitizedPhone(phoneInput);
-    if (!val.valid) {
+    const clean = phoneInput.replace(/\D/g, "");
+    if (clean.length !== 10) {
       setLoginError("Please enter a valid 10-digit mobile number.");
       return;
     }
 
     setLoginLoading(true);
 
-    const parent = findApprovedParentByPhone(val.sanitized);
+    const parent = findApprovedParentByPhone(clean);
     if (!parent) {
       setLoginLoading(false);
       setLoginError(
