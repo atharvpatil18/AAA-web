@@ -33,7 +33,9 @@ import {
   Trophy, 
   FileCheck2,
   FolderOpen,
-  ArrowRight
+  ArrowRight,
+  Edit,
+  Pencil
 } from "lucide-react";
 import { 
   VaultEvent,
@@ -105,20 +107,26 @@ export default function DownloadVaultPage() {
   const [showDocModal, setShowDocModal] = useState(false);
   const [showWhitelistModal, setShowWhitelistModal] = useState(false);
 
-  // Modal Inputs
+  // Modal Inputs & Editing IDs
+  const [editingEventId, setEditingEventId] = useState<string | null>(null);
   const [eventInputName, setEventInputName] = useState("");
   const [eventInputDesc, setEventInputDesc] = useState("");
   const [eventInputCategory, setEventInputCategory] = useState<"competition" | "exam" | "academic">("competition");
   const [eventInputDate, setEventInputDate] = useState("");
 
+  const [editingSectionId, setEditingSectionId] = useState<string | null>(null);
   const [sectionInputName, setSectionInputName] = useState("");
   const [sectionInputDesc, setSectionInputDesc] = useState("");
 
+  const [editingSubSectionId, setEditingSubSectionId] = useState<string | null>(null);
   const [subSectionInputName, setSubSectionInputName] = useState("");
   const [subSectionInputDesc, setSubSectionInputDesc] = useState("");
 
+  const [editingFolderId, setEditingFolderId] = useState<string | null>(null);
   const [folderInputName, setFolderInputName] = useState("");
   const [folderInputDesc, setFolderInputDesc] = useState("");
+
+  const [editingDocId, setEditingDocId] = useState<string | null>(null);
 
   const [docInputName, setDocInputName] = useState("");
   const [docInputDesc, setDocInputDesc] = useState("");
@@ -291,78 +299,136 @@ export default function DownloadVaultPage() {
   const handleAddEvent = (e: React.FormEvent) => {
     e.preventDefault();
     if (!eventInputName.trim()) return;
-    const newEvt: VaultEvent = {
-      id: `evt-${Date.now()}`,
-      name: eventInputName.trim(),
-      description: eventInputDesc.trim() || undefined,
-      category: eventInputCategory,
-      eventDate: eventInputDate.trim() || undefined,
-      createdAt: new Date().toISOString().slice(0, 10),
-    };
-    saveVaultEvent(newEvt);
+
+    if (editingEventId) {
+      const existing = events.find((e) => e.id === editingEventId);
+      if (existing) {
+        saveVaultEvent({
+          ...existing,
+          name: eventInputName.trim(),
+          description: eventInputDesc.trim() || undefined,
+          category: eventInputCategory,
+          eventDate: eventInputDate.trim() || undefined,
+        });
+      }
+    } else {
+      const newEvt: VaultEvent = {
+        id: `evt-${Date.now()}`,
+        name: eventInputName.trim(),
+        description: eventInputDesc.trim() || undefined,
+        category: eventInputCategory,
+        eventDate: eventInputDate.trim() || undefined,
+        createdAt: new Date().toISOString().slice(0, 10),
+      };
+      saveVaultEvent(newEvt);
+      setSelectedEventId(newEvt.id);
+    }
+
+    setEditingEventId(null);
     setEventInputName("");
     setEventInputDesc("");
     setEventInputDate("");
     setShowEventModal(false);
     refreshAllData();
-    setSelectedEventId(newEvt.id);
   };
 
   const handleAddSection = (e: React.FormEvent) => {
     e.preventDefault();
     if (!sectionInputName.trim() || !activeEvent) return;
-    const newSec: VaultSection = {
-      id: `sec-${Date.now()}`,
-      eventId: activeEvent.id,
-      name: sectionInputName.trim(),
-      description: sectionInputDesc.trim() || undefined,
-      orderIndex: currentSections.length + 1,
-    };
-    saveVaultSection(newSec);
+
+    if (editingSectionId) {
+      const existing = sections.find((s) => s.id === editingSectionId);
+      if (existing) {
+        saveVaultSection({
+          ...existing,
+          name: sectionInputName.trim(),
+          description: sectionInputDesc.trim() || undefined,
+        });
+      }
+    } else {
+      const newSec: VaultSection = {
+        id: `sec-${Date.now()}`,
+        eventId: activeEvent.id,
+        name: sectionInputName.trim(),
+        description: sectionInputDesc.trim() || undefined,
+        orderIndex: currentSections.length + 1,
+      };
+      saveVaultSection(newSec);
+      setSelectedSectionId(newSec.id);
+    }
+
+    setEditingSectionId(null);
     setSectionInputName("");
     setSectionInputDesc("");
     setShowSectionModal(false);
     refreshAllData();
-    setSelectedSectionId(newSec.id);
   };
 
   const handleAddSubSection = (e: React.FormEvent) => {
     e.preventDefault();
     if (!subSectionInputName.trim() || !activeSection) return;
-    const newSub: VaultSubSection = {
-      id: `sub-${Date.now()}`,
-      sectionId: activeSection.id,
-      eventId: activeSection.eventId,
-      name: subSectionInputName.trim(),
-      description: subSectionInputDesc.trim() || undefined,
-      orderIndex: currentSubSections.length + 1,
-    };
-    saveVaultSubSection(newSub);
+
+    if (editingSubSectionId) {
+      const existing = subSections.find((ss) => ss.id === editingSubSectionId);
+      if (existing) {
+        saveVaultSubSection({
+          ...existing,
+          name: subSectionInputName.trim(),
+          description: subSectionInputDesc.trim() || undefined,
+        });
+      }
+    } else {
+      const newSub: VaultSubSection = {
+        id: `sub-${Date.now()}`,
+        sectionId: activeSection.id,
+        eventId: activeSection.eventId,
+        name: subSectionInputName.trim(),
+        description: subSectionInputDesc.trim() || undefined,
+        orderIndex: currentSubSections.length + 1,
+      };
+      saveVaultSubSection(newSub);
+      setSelectedSubSectionId(newSub.id);
+    }
+
+    setEditingSubSectionId(null);
     setSubSectionInputName("");
     setSubSectionInputDesc("");
     setShowSubSectionModal(false);
     refreshAllData();
-    setSelectedSubSectionId(newSub.id);
   };
 
   const handleAddFolder = (e: React.FormEvent) => {
     e.preventDefault();
     if (!folderInputName.trim() || !activeSubSection || !activeSection || !activeEvent) return;
-    const newFolder: VaultFolder = {
-      id: `fld-${Date.now()}`,
-      subSectionId: activeSubSection.id,
-      sectionId: activeSection.id,
-      eventId: activeEvent.id,
-      name: folderInputName.trim(),
-      description: folderInputDesc.trim() || undefined,
-      createdAt: new Date().toISOString().slice(0, 10),
-    };
-    saveVaultFolder(newFolder);
+
+    if (editingFolderId) {
+      const existing = folders.find((f) => f.id === editingFolderId);
+      if (existing) {
+        saveVaultFolder({
+          ...existing,
+          name: folderInputName.trim(),
+          description: folderInputDesc.trim() || undefined,
+        });
+      }
+    } else {
+      const newFolder: VaultFolder = {
+        id: `fld-${Date.now()}`,
+        subSectionId: activeSubSection.id,
+        sectionId: activeSection.id,
+        eventId: activeEvent.id,
+        name: folderInputName.trim(),
+        description: folderInputDesc.trim() || undefined,
+        createdAt: new Date().toISOString().slice(0, 10),
+      };
+      saveVaultFolder(newFolder);
+      setSelectedFolderId(newFolder.id);
+    }
+
+    setEditingFolderId(null);
     setFolderInputName("");
     setFolderInputDesc("");
     setShowFolderModal(false);
     refreshAllData();
-    setSelectedFolderId(newFolder.id);
   };
 
   const handleAddDoc = (e: React.FormEvent) => {
@@ -572,18 +638,38 @@ export default function DownloadVaultPage() {
                       {evt.eventDate}
                     </span>
                   )}
-                  {isAdminMode && events.length > 1 && (
-                    <span
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (confirm(`Delete Event "${evt.name}"?`)) {
-                          deleteVaultEvent(evt.id);
-                          refreshAllData();
-                        }
-                      }}
-                      className="ml-1 hover:text-red-300"
-                    >
-                      ✕
+                  {isAdminMode && (
+                    <span className="flex items-center gap-1 ml-1.5 pl-1.5 border-l border-white/20">
+                      <span
+                        title="Edit Event"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditingEventId(evt.id);
+                          setEventInputName(evt.name);
+                          setEventInputDesc(evt.description || "");
+                          setEventInputDate(evt.eventDate || "");
+                          setEventInputCategory(evt.category);
+                          setShowEventModal(true);
+                        }}
+                        className="p-0.5 hover:text-amber-300 transition"
+                      >
+                        <Pencil className="w-3 h-3" />
+                      </span>
+                      {events.length > 1 && (
+                        <span
+                          title="Delete Event"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (confirm(`Delete Event "${evt.name}"?`)) {
+                              deleteVaultEvent(evt.id);
+                              refreshAllData();
+                            }
+                          }}
+                          className="p-0.5 hover:text-red-300 transition"
+                        >
+                          ✕
+                        </span>
+                      )}
                     </span>
                   )}
                 </button>
@@ -629,17 +715,33 @@ export default function DownloadVaultPage() {
                       <Layers className="w-3.5 h-3.5" />
                       <span>{sec.name}</span>
                       {isAdminMode && (
-                        <span
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (confirm(`Delete Section "${sec.name}"?`)) {
-                              deleteVaultSection(sec.id);
-                              refreshAllData();
-                            }
-                          }}
-                          className="ml-1 hover:text-red-400"
-                        >
-                          ✕
+                        <span className="flex items-center gap-1 ml-1 pl-1 border-l border-slate-300">
+                          <span
+                            title="Edit Section"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditingSectionId(sec.id);
+                              setSectionInputName(sec.name);
+                              setSectionInputDesc(sec.description || "");
+                              setShowSectionModal(true);
+                            }}
+                            className="p-0.5 hover:text-blue-400 transition"
+                          >
+                            <Pencil className="w-3 h-3" />
+                          </span>
+                          <span
+                            title="Delete Section"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (confirm(`Delete Section "${sec.name}"?`)) {
+                                deleteVaultSection(sec.id);
+                                refreshAllData();
+                              }
+                            }}
+                            className="p-0.5 hover:text-red-400 transition"
+                          >
+                            ✕
+                          </span>
                         </span>
                       )}
                     </button>
@@ -692,17 +794,33 @@ export default function DownloadVaultPage() {
                       >
                         {ss.name}
                         {isAdminMode && (
-                          <span
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (confirm(`Delete Sub-Section "${ss.name}"?`)) {
-                                deleteVaultSubSection(ss.id);
-                                refreshAllData();
-                              }
-                            }}
-                            className="ml-1 text-slate-400 hover:text-red-500"
-                          >
-                            ✕
+                          <span className="flex items-center gap-1 ml-1 pl-1 border-l border-slate-300">
+                            <span
+                              title="Edit Sub-Section"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditingSubSectionId(ss.id);
+                                setSubSectionInputName(ss.name);
+                                setSubSectionInputDesc(ss.description || "");
+                                setShowSubSectionModal(true);
+                              }}
+                              className="p-0.5 hover:text-blue-600 transition"
+                            >
+                              <Pencil className="w-2.5 h-2.5" />
+                            </span>
+                            <span
+                              title="Delete Sub-Section"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (confirm(`Delete Sub-Section "${ss.name}"?`)) {
+                                  deleteVaultSubSection(ss.id);
+                                  refreshAllData();
+                                }
+                              }}
+                              className="p-0.5 text-slate-400 hover:text-red-500 transition"
+                            >
+                              ✕
+                            </span>
                           </span>
                         )}
                       </button>
@@ -775,19 +893,34 @@ export default function DownloadVaultPage() {
                           </div>
 
                           {isAdminMode && (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                if (confirm(`Delete Folder "${fld.name}"?`)) {
-                                  deleteVaultFolder(fld.id);
-                                  refreshAllData();
-                                }
-                              }}
-                              className="text-slate-300 hover:text-red-500 p-1"
-                              title="Delete Folder"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
+                            <div className="flex items-center gap-1 shrink-0">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setEditingFolderId(fld.id);
+                                  setFolderInputName(fld.name);
+                                  setFolderInputDesc(fld.description || "");
+                                  setShowFolderModal(true);
+                                }}
+                                className="text-slate-400 hover:text-blue-600 p-1 transition"
+                                title="Edit Folder"
+                              >
+                                <Pencil className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (confirm(`Delete Folder "${fld.name}"?`)) {
+                                    deleteVaultFolder(fld.id);
+                                    refreshAllData();
+                                  }
+                                }}
+                                className="text-slate-300 hover:text-red-500 p-1 transition"
+                                title="Delete Folder"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
                           )}
                         </div>
                       );
@@ -1010,13 +1143,13 @@ export default function DownloadVaultPage() {
 
       </div>
 
-      {/* ================= MODAL: NEW COMPETITION / EVENT ================= */}
+      {/* ================= MODAL: NEW / EDIT COMPETITION / EVENT ================= */}
       {showEventModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
             <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
               <Trophy className="w-5 h-5 text-amber-500" />
-              Create New Competition / Event / Purpose
+              {editingEventId ? "Edit Competition / Event / Purpose" : "Create New Competition / Event / Purpose"}
             </h3>
             <p className="text-xs text-slate-500 mb-4">
               Top-level category (e.g. "NLC-18Oct2026-IIVA-Abacus").
@@ -1059,7 +1192,10 @@ export default function DownloadVaultPage() {
               <div className="flex gap-2 pt-2">
                 <button
                   type="button"
-                  onClick={() => setShowEventModal(false)}
+                  onClick={() => {
+                    setShowEventModal(false);
+                    setEditingEventId(null);
+                  }}
                   className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold"
                 >
                   Cancel
@@ -1068,7 +1204,7 @@ export default function DownloadVaultPage() {
                   type="submit"
                   className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
                 >
-                  Create Event
+                  {editingEventId ? "Save Changes" : "Create Event"}
                 </button>
               </div>
             </form>
@@ -1076,13 +1212,13 @@ export default function DownloadVaultPage() {
         </div>
       )}
 
-      {/* ================= MODAL: NEW SECTION ================= */}
+      {/* ================= MODAL: NEW / EDIT SECTION ================= */}
       {showSectionModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
             <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
               <Layers className="w-5 h-5 text-blue-600" />
-              Add Section to "{activeEvent?.name}"
+              {editingSectionId ? `Edit Section` : `Add Section to "${activeEvent?.name}"`}
             </h3>
             <p className="text-xs text-slate-500 mb-4">
               e.g. "IIVA Mock Test Papers", "Hall Tickets", "Syllabus".
@@ -1115,7 +1251,10 @@ export default function DownloadVaultPage() {
               <div className="flex gap-2 pt-2">
                 <button
                   type="button"
-                  onClick={() => setShowSectionModal(false)}
+                  onClick={() => {
+                    setShowSectionModal(false);
+                    setEditingSectionId(null);
+                  }}
                   className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold"
                 >
                   Cancel
@@ -1124,7 +1263,7 @@ export default function DownloadVaultPage() {
                   type="submit"
                   className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
                 >
-                  Add Section
+                  {editingSectionId ? "Save Changes" : "Add Section"}
                 </button>
               </div>
             </form>
@@ -1132,13 +1271,13 @@ export default function DownloadVaultPage() {
         </div>
       )}
 
-      {/* ================= MODAL: NEW SUB-SECTION ================= */}
+      {/* ================= MODAL: NEW / EDIT SUB-SECTION ================= */}
       {showSubSectionModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
             <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
               <FolderOpen className="w-5 h-5 text-blue-600" />
-              Add Sub-Section to "{activeSection?.name}"
+              {editingSubSectionId ? `Edit Sub-Section` : `Add Sub-Section to "${activeSection?.name}"`}
             </h3>
             <p className="text-xs text-slate-500 mb-4">
               e.g. "Level 1", "Level 2", "Junior Group", "Senior Group".
@@ -1171,7 +1310,10 @@ export default function DownloadVaultPage() {
               <div className="flex gap-2 pt-2">
                 <button
                   type="button"
-                  onClick={() => setShowSubSectionModal(false)}
+                  onClick={() => {
+                    setShowSubSectionModal(false);
+                    setEditingSubSectionId(null);
+                  }}
                   className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold"
                 >
                   Cancel
@@ -1180,7 +1322,7 @@ export default function DownloadVaultPage() {
                   type="submit"
                   className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
                 >
-                  Add Sub-Section
+                  {editingSubSectionId ? "Save Changes" : "Add Sub-Section"}
                 </button>
               </div>
             </form>
@@ -1188,13 +1330,13 @@ export default function DownloadVaultPage() {
         </div>
       )}
 
-      {/* ================= MODAL: NEW FOLDER ================= */}
+      {/* ================= MODAL: NEW / EDIT FOLDER ================= */}
       {showFolderModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
             <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
               <FolderPlus className="w-5 h-5 text-blue-600" />
-              Create Folder inside "{activeSubSection?.name}"
+              {editingFolderId ? `Edit Folder` : `Create Folder inside "${activeSubSection?.name}"`}
             </h3>
             <p className="text-xs text-slate-500 mb-4">
               This is the folder that you can assign to specific parent mobile numbers.
@@ -1227,7 +1369,10 @@ export default function DownloadVaultPage() {
               <div className="flex gap-2 pt-2">
                 <button
                   type="button"
-                  onClick={() => setShowFolderModal(false)}
+                  onClick={() => {
+                    setShowFolderModal(false);
+                    setEditingFolderId(null);
+                  }}
                   className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold"
                 >
                   Cancel
@@ -1236,7 +1381,7 @@ export default function DownloadVaultPage() {
                   type="submit"
                   className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
                 >
-                  Create Folder
+                  {editingFolderId ? "Save Changes" : "Create Folder"}
                 </button>
               </div>
             </form>
