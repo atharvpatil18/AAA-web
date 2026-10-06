@@ -76,6 +76,7 @@ export default function Navbar() {
   ];
 
   const moreNavLinks = [
+    { name: "Parent Portal Access", path: "/parent-access" },
     { name: t("navMentor"), path: "/mentor" },
     { name: "Teacher & Franchise", path: "/teacher-franchise" },
     { name: "Blog", path: "/blog" },
@@ -93,6 +94,7 @@ export default function Navbar() {
     { name: "↳ School Maths (Class 1-10)", path: "/programs/school-maths" },
     { name: t("navPractice"), path: "/practice" },
     { name: "Worksheets", path: "/worksheets" },
+    { name: "Parent Portal Access", path: "/parent-access" },
     { name: t("navSuccess"), path: "/showcase" },
     { name: "Teacher & Franchise", path: "/teacher-franchise" },
     { name: "Blog", path: "/blog" },
