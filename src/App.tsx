@@ -34,8 +34,6 @@ const Login = React.lazy(() => import("./pages/Login"));
 const Blog = React.lazy(() => import("./pages/Blog"));
 const BlogPostDetail = React.lazy(() => import("./pages/BlogPostDetail"));
 const WorksheetVault = React.lazy(() => import("./pages/WorksheetVault"));
-const DownloadVault = React.lazy(() => import("./pages/DownloadVault"));
-const ParentPortalRegistration = React.lazy(() => import("./pages/ParentPortalRegistration"));
 const TeacherFranchise = React.lazy(() => import("./pages/TeacherFranchise"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
@@ -208,10 +206,6 @@ export default function App() {
                 <Route path="/news-events" element={<NewsEvents />} />
 
                 <Route path="/worksheets" element={<WorksheetVault />} />
-                <Route path="/download" element={<DownloadVault />} />
-                <Route path="/downloads" element={<DownloadVault />} />
-                <Route path="/parent-portal-registration" element={<ParentPortalRegistration />} />
-                <Route path="/parent-access" element={<ParentPortalRegistration />} />
                 <Route path="/teacher-franchise" element={<TeacherFranchise />} />
                 <Route path="/faqs" element={<Faqs />} />
                 <Route path="/brochure" element={<InteractiveBrochure />} />

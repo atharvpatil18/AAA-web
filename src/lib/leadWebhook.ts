@@ -1,7 +1,7 @@
 import { sanitizeForGoogleSheets, containsProfanityOrVulgarity } from "./securitySanitizer";
 
 export interface UnifiedLeadPayload {
-  leadType: "Demo Class" | "Teacher Training" | "Franchise Inquiry" | "Worksheet Download" | "Contact Inquiry" | "Parent Portal Access Request";
+  leadType: "Demo Class" | "Teacher Training" | "Franchise Inquiry" | "Worksheet Download" | "Contact Inquiry";
   parentName: string;
   studentName?: string;
   phone: string;
