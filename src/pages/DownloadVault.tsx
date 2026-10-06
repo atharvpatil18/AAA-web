@@ -23,29 +23,43 @@ import {
   LogOut, 
   User, 
   Trash2, 
-  Eye, 
-  Sparkles, 
-  ExternalLink,
-  Search,
-  Filter,
-  FilePlus,
-  Settings,
-  ChevronRight,
-  RefreshCw,
-  Users
+  Search, 
+  Settings, 
+  ChevronRight, 
+  ChevronDown,
+  Users, 
+  Calendar, 
+  Layers, 
+  Trophy, 
+  FileCheck2,
+  FolderOpen,
+  ArrowRight
 } from "lucide-react";
 import { 
+  VaultEvent,
+  VaultSection,
+  VaultSubSection,
   VaultFolder, 
   VaultDocument, 
   ParentWhitelistedUser,
+  getVaultEvents,
+  saveVaultEvent,
+  deleteVaultEvent,
+  getVaultSections,
+  saveVaultSection,
+  deleteVaultSection,
+  getVaultSubSections,
+  saveVaultSubSection,
+  deleteVaultSubSection,
   getVaultFolders, 
-  getVaultDocuments, 
   saveVaultFolder, 
   deleteVaultFolder, 
+  getVaultDocuments, 
   saveVaultDocument, 
   deleteVaultDocument, 
   getWhitelistedParents,
   saveWhitelistedParent,
+  deleteWhitelistedParent,
   findApprovedParentByPhone,
   getActiveParentSession,
   setActiveParentSession,
@@ -54,13 +68,13 @@ import {
 import { validateSanitizedPhone } from "../lib/securitySanitizer";
 
 export default function DownloadVaultPage() {
-  // Authentication & Session State
+  // Session & Authentication
   const [currentSession, setCurrentSession] = useState<ParentWhitelistedUser | null>(null);
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [adminPin, setAdminPin] = useState("");
   const [showAdminLogin, setShowAdminLogin] = useState(false);
 
-  // OTP Login Modal State
+  // OTP Login modal state
   const [phoneInput, setPhoneInput] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [simulatedOtp, setSimulatedOtp] = useState<string | null>(null);
@@ -68,59 +82,114 @@ export default function DownloadVaultPage() {
   const [loginError, setLoginError] = useState<string | null>(null);
   const [loginLoading, setLoginLoading] = useState(false);
 
-  // Vault Folders & Documents State
+  // Repository Hierarchy Data
+  const [events, setEvents] = useState<VaultEvent[]>([]);
+  const [sections, setSections] = useState<VaultSection[]>([]);
+  const [subSections, setSubSections] = useState<VaultSubSection[]>([]);
   const [folders, setFolders] = useState<VaultFolder[]>([]);
   const [documents, setDocuments] = useState<VaultDocument[]>([]);
-  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
+  const [whitelistedUsers, setWhitelistedUsers] = useState<ParentWhitelistedUser[]>([]);
+
+  // Navigation Selection (Event -> Section -> SubSection -> Folder)
+  const [selectedEventId, setSelectedEventId] = useState<string>("");
+  const [selectedSectionId, setSelectedSectionId] = useState<string>("");
+  const [selectedSubSectionId, setSelectedSubSectionId] = useState<string>("");
+  const [selectedFolderId, setSelectedFolderId] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Admin Management Modal States
-  const [showNewFolderModal, setShowNewFolderModal] = useState(false);
-  const [showNewDocModal, setShowNewDocModal] = useState(false);
+  // Admin Modals
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [showSectionModal, setShowSectionModal] = useState(false);
+  const [showSubSectionModal, setShowSubSectionModal] = useState(false);
+  const [showFolderModal, setShowFolderModal] = useState(false);
+  const [showDocModal, setShowDocModal] = useState(false);
   const [showWhitelistModal, setShowWhitelistModal] = useState(false);
 
-  // New Folder Form
-  const [folderName, setFolderName] = useState("");
-  const [folderDesc, setFolderDesc] = useState("");
-  const [folderProgram, setFolderProgram] = useState<"abacus" | "vedic" | "school" | "general">("abacus");
-  const [folderBatch, setFolderBatch] = useState("");
+  // Modal Inputs
+  const [eventInputName, setEventInputName] = useState("");
+  const [eventInputDesc, setEventInputDesc] = useState("");
+  const [eventInputCategory, setEventInputCategory] = useState<"competition" | "exam" | "academic">("competition");
+  const [eventInputDate, setEventInputDate] = useState("");
 
-  // New Document Form
-  const [docName, setDocName] = useState("");
-  const [docDesc, setDocDesc] = useState("");
-  const [docUrl, setDocUrl] = useState("");
-  const [docFolderTarget, setDocFolderTarget] = useState("");
-  const [docFileObj, setDocFileObj] = useState<File | null>(null);
+  const [sectionInputName, setSectionInputName] = useState("");
+  const [sectionInputDesc, setSectionInputDesc] = useState("");
 
-  // Whitelist Management Form
-  const [whitelistedUsers, setWhitelistedUsers] = useState<ParentWhitelistedUser[]>([]);
-  const [newWhitelistedPhone, setNewWhitelistedPhone] = useState("");
-  const [newWhitelistedStudent, setNewWhitelistedStudent] = useState("");
-  const [newWhitelistedParent, setNewWhitelistedParent] = useState("");
-  const [newWhitelistedBatch, setNewWhitelistedBatch] = useState("");
-  const [newWhitelistedFolderId, setNewWhitelistedFolderId] = useState("ALL");
+  const [subSectionInputName, setSubSectionInputName] = useState("");
+  const [subSectionInputDesc, setSubSectionInputDesc] = useState("");
 
-  // Load Initial Data
+  const [folderInputName, setFolderInputName] = useState("");
+  const [folderInputDesc, setFolderInputDesc] = useState("");
+
+  const [docInputName, setDocInputName] = useState("");
+  const [docInputDesc, setDocInputDesc] = useState("");
+  const [docInputUrl, setDocInputUrl] = useState("");
+  const [docInputFile, setDocInputFile] = useState<File | null>(null);
+
+  // Whitelist Form
+  const [wlPhone, setWlPhone] = useState("");
+  const [wlStudent, setWlStudent] = useState("");
+  const [wlParent, setWlParent] = useState("");
+  const [wlBatch, setWlBatch] = useState("");
+  const [wlFolderId, setWlFolderId] = useState("ALL");
+
   useEffect(() => {
-    refreshData();
-    const existingSession = getActiveParentSession();
-    if (existingSession) {
-      setCurrentSession(existingSession);
-      if (existingSession.id === "parent-admin-1" || existingSession.assignedFolderIds.includes("ALL")) {
+    refreshAllData();
+    const existing = getActiveParentSession();
+    if (existing) {
+      setCurrentSession(existing);
+      if (existing.id === "parent-admin" || existing.assignedFolderIds.includes("ALL")) {
         setIsAdminMode(true);
       }
     }
   }, []);
 
-  const refreshData = () => {
-    const f = getVaultFolders();
-    setFolders(f);
-    setDocuments(getVaultDocuments());
-    setWhitelistedUsers(getWhitelistedParents());
-    if (f.length > 0 && !selectedFolderId) {
-      setSelectedFolderId(f[0].id);
+  const refreshAllData = () => {
+    const evts = getVaultEvents();
+    const secs = getVaultSections();
+    const subs = getVaultSubSections();
+    const flds = getVaultFolders();
+    const docs = getVaultDocuments();
+    const wls = getWhitelistedParents();
+
+    setEvents(evts);
+    setSections(secs);
+    setSubSections(subs);
+    setFolders(flds);
+    setDocuments(docs);
+    setWhitelistedUsers(wls);
+
+    if (evts.length > 0 && !selectedEventId) {
+      setSelectedEventId(evts[0].id);
     }
   };
+
+  // Sync section/sub-section selections when event changes
+  useEffect(() => {
+    if (selectedEventId) {
+      const availableSections = sections.filter((s) => s.eventId === selectedEventId);
+      if (availableSections.length > 0 && (!selectedSectionId || !availableSections.some(s => s.id === selectedSectionId))) {
+        setSelectedSectionId(availableSections[0].id);
+      }
+    }
+  }, [selectedEventId, sections]);
+
+  useEffect(() => {
+    if (selectedSectionId) {
+      const availableSubs = subSections.filter((ss) => ss.sectionId === selectedSectionId);
+      if (availableSubs.length > 0 && (!selectedSubSectionId || !availableSubs.some(ss => ss.id === selectedSubSectionId))) {
+        setSelectedSubSectionId(availableSubs[0].id);
+      }
+    }
+  }, [selectedSectionId, subSections]);
+
+  useEffect(() => {
+    if (selectedSubSectionId) {
+      const availableFolders = folders.filter((f) => f.subSectionId === selectedSubSectionId);
+      if (availableFolders.length > 0 && (!selectedFolderId || !availableFolders.some(f => f.id === selectedFolderId))) {
+        setSelectedFolderId(availableFolders[0].id);
+      }
+    }
+  }, [selectedSubSectionId, folders]);
 
   // ================= PARENT LOGIN VIA OTP =================
   const handleRequestOtp = (e: React.FormEvent) => {
@@ -135,17 +204,16 @@ export default function DownloadVaultPage() {
 
     setLoginLoading(true);
 
-    // Whitelist check: Must be pre-approved by Academy admin
     const parent = findApprovedParentByPhone(val.sanitized);
     if (!parent) {
       setLoginLoading(false);
       setLoginError(
-        "Mobile number not found in approved parent list. Please register on the Parent Access Form or contact the academy office to approve access."
+        "Mobile number not registered or pending approval. Please fill the Parent Access Form or contact the academy."
       );
       return;
     }
 
-    // Generate secure 6-digit OTP
+    // Generate 6-digit OTP
     const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
     setSimulatedOtp(generatedOtp);
     setOtpSent(true);
@@ -166,7 +234,7 @@ export default function DownloadVaultPage() {
     if (parent) {
       setActiveParentSession(parent);
       setCurrentSession(parent);
-      if (parent.id === "parent-admin-1" || parent.assignedFolderIds.includes("ALL")) {
+      if (parent.id === "parent-admin" || parent.assignedFolderIds.includes("ALL")) {
         setIsAdminMode(true);
       }
       setOtpSent(false);
@@ -182,10 +250,9 @@ export default function DownloadVaultPage() {
     setIsAdminMode(false);
   };
 
-  // Quick Admin Unlock (PIN: 2026 or 112233)
   const handleAdminPinSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (adminPin === "2026" || adminPin === "112233" || adminPin === "8446903204") {
+    if (adminPin === "2026" || adminPin === "112233" || adminPin === "9820011223") {
       setIsAdminMode(true);
       setShowAdminLogin(false);
       setAdminPin("");
@@ -194,168 +261,209 @@ export default function DownloadVaultPage() {
     }
   };
 
-  // ================= ADMIN: CREATE FOLDER =================
-  const handleCreateFolder = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!folderName.trim()) return;
-
-    const newFolder: VaultFolder = {
-      id: `folder-${Date.now()}`,
-      name: folderName.trim(),
-      description: folderDesc.trim() || undefined,
-      program: folderProgram,
-      levelOrBatch: folderBatch.trim() || "All",
-      accessTag: `${folderProgram}-${Date.now()}`,
-      colorTheme: folderProgram === "abacus" 
-        ? "from-blue-600 to-cyan-600" 
-        : folderProgram === "vedic" 
-        ? "from-amber-600 to-orange-600" 
-        : "from-emerald-600 to-teal-600",
-      createdAt: new Date().toISOString().slice(0, 10),
-    };
-
-    saveVaultFolder(newFolder);
-    setFolderName("");
-    setFolderDesc("");
-    setFolderBatch("");
-    setShowNewFolderModal(false);
-    refreshData();
-    setSelectedFolderId(newFolder.id);
-  };
-
-  // ================= ADMIN: UPLOAD / ATTACH DOCUMENT =================
-  const handleUploadDoc = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!docName.trim() || !docFolderTarget) {
-      alert("Please enter document title and select a destination folder.");
-      return;
-    }
-
-    let finalFileUrl = docUrl.trim();
-
-    // If local file uploaded, convert to Data URL for instant in-browser storage
-    if (docFileObj) {
-      const reader = new FileReader();
-      reader.onload = (uploadEvent) => {
-        const fileContentUrl = uploadEvent.target?.result as string;
-        const newDoc: VaultDocument = {
-          id: `doc-${Date.now()}`,
-          name: docName.trim(),
-          description: docDesc.trim() || undefined,
-          folderId: docFolderTarget,
-          fileType: "pdf",
-          fileUrl: fileContentUrl || "#",
-          fileSizeBytes: docFileObj.size,
-          uploadedAt: new Date().toISOString().slice(0, 10),
-        };
-        saveVaultDocument(newDoc);
-        resetDocModal();
-      };
-      reader.readAsDataURL(docFileObj);
-      return;
-    }
-
-    if (!finalFileUrl) {
-      finalFileUrl = `https://arnavabacusacademy.com/materials/${encodeURIComponent(docName)}.pdf`;
-    }
-
-    const newDoc: VaultDocument = {
-      id: `doc-${Date.now()}`,
-      name: docName.trim(),
-      description: docDesc.trim() || undefined,
-      folderId: docFolderTarget,
-      fileType: "pdf",
-      fileUrl: finalFileUrl,
-      fileSizeBytes: 280000,
-      uploadedAt: new Date().toISOString().slice(0, 10),
-    };
-
-    saveVaultDocument(newDoc);
-    resetDocModal();
-  };
-
-  const resetDocModal = () => {
-    setDocName("");
-    setDocDesc("");
-    setDocUrl("");
-    setDocFileObj(null);
-    setShowNewDocModal(false);
-    refreshData();
-  };
-
-  // ================= ADMIN: APPROVE / WHITELIST PARENT =================
-  const handleAddWhitelistedParent = (e: React.FormEvent) => {
-    e.preventDefault();
-    const cleanPhone = newWhitelistedPhone.replace(/\D/g, "");
-    if (cleanPhone.length !== 10) {
-      alert("Please enter a valid 10-digit mobile number.");
-      return;
-    }
-
-    const newParent: ParentWhitelistedUser = {
-      id: `parent-${Date.now()}`,
-      studentName: newWhitelistedStudent.trim() || "Student",
-      parentName: newWhitelistedParent.trim() || "Parent",
-      phone: cleanPhone,
-      program: "Enrolled Course",
-      batch: newWhitelistedBatch.trim() || "Batch 1",
-      assignedFolderIds: [newWhitelistedFolderId],
-      status: "approved",
-      approvedAt: new Date().toISOString().slice(0, 10),
-    };
-
-    saveWhitelistedParent(newParent);
-    setNewWhitelistedPhone("");
-    setNewWhitelistedStudent("");
-    setNewWhitelistedParent("");
-    setNewWhitelistedBatch("");
-    refreshData();
-    alert(`Successfully whitelisted +91 ${cleanPhone} for folder access!`);
-  };
-
-  // Filter folders based on Parent Session permissions
-  const accessibleFolders = folders.filter((f) => {
+  // Check if a folder is accessible for the currently logged-in parent
+  const isFolderAccessible = (folderId: string): boolean => {
     if (isAdminMode) return true;
     if (!currentSession) return false;
     if (currentSession.assignedFolderIds.includes("ALL")) return true;
-    return currentSession.assignedFolderIds.includes(f.id);
-  });
+    return currentSession.assignedFolderIds.includes(folderId);
+  };
 
-  const currentFolder = folders.find((f) => f.id === selectedFolderId) || accessibleFolders[0] || null;
+  // Hierarchy Data Filtering
+  const activeEvent = events.find((e) => e.id === selectedEventId) || events[0] || null;
+  const currentSections = sections.filter((s) => s.eventId === (activeEvent?.id || ""));
+  const activeSection = currentSections.find((s) => s.id === selectedSectionId) || currentSections[0] || null;
+  const currentSubSections = subSections.filter((ss) => ss.sectionId === (activeSection?.id || ""));
+  const activeSubSection = currentSubSections.find((ss) => ss.id === selectedSubSectionId) || currentSubSections[0] || null;
+  const currentFolders = folders.filter((f) => f.subSectionId === (activeSubSection?.id || ""));
+  const activeFolder = currentFolders.find((f) => f.id === selectedFolderId) || currentFolders[0] || null;
 
-  // Filter documents in current folder + search query
-  const folderDocs = documents.filter((d) => {
-    if (!currentFolder) return false;
-    const matchFolder = d.folderId === currentFolder.id;
+  const currentFolderDocs = documents.filter((d) => {
+    if (!activeFolder) return false;
+    const matchFolder = d.folderId === activeFolder.id;
     const matchSearch = searchQuery.trim() === "" || 
       d.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
       (d.description && d.description.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchFolder && matchSearch;
   });
 
+  // ================= ADMIN ADD HANDLERS =================
+  const handleAddEvent = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!eventInputName.trim()) return;
+    const newEvt: VaultEvent = {
+      id: `evt-${Date.now()}`,
+      name: eventInputName.trim(),
+      description: eventInputDesc.trim() || undefined,
+      category: eventInputCategory,
+      eventDate: eventInputDate.trim() || undefined,
+      createdAt: new Date().toISOString().slice(0, 10),
+    };
+    saveVaultEvent(newEvt);
+    setEventInputName("");
+    setEventInputDesc("");
+    setEventInputDate("");
+    setShowEventModal(false);
+    refreshAllData();
+    setSelectedEventId(newEvt.id);
+  };
+
+  const handleAddSection = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!sectionInputName.trim() || !activeEvent) return;
+    const newSec: VaultSection = {
+      id: `sec-${Date.now()}`,
+      eventId: activeEvent.id,
+      name: sectionInputName.trim(),
+      description: sectionInputDesc.trim() || undefined,
+      orderIndex: currentSections.length + 1,
+    };
+    saveVaultSection(newSec);
+    setSectionInputName("");
+    setSectionInputDesc("");
+    setShowSectionModal(false);
+    refreshAllData();
+    setSelectedSectionId(newSec.id);
+  };
+
+  const handleAddSubSection = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!subSectionInputName.trim() || !activeSection) return;
+    const newSub: VaultSubSection = {
+      id: `sub-${Date.now()}`,
+      sectionId: activeSection.id,
+      eventId: activeSection.eventId,
+      name: subSectionInputName.trim(),
+      description: subSectionInputDesc.trim() || undefined,
+      orderIndex: currentSubSections.length + 1,
+    };
+    saveVaultSubSection(newSub);
+    setSubSectionInputName("");
+    setSubSectionInputDesc("");
+    setShowSubSectionModal(false);
+    refreshAllData();
+    setSelectedSubSectionId(newSub.id);
+  };
+
+  const handleAddFolder = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!folderInputName.trim() || !activeSubSection || !activeSection || !activeEvent) return;
+    const newFolder: VaultFolder = {
+      id: `fld-${Date.now()}`,
+      subSectionId: activeSubSection.id,
+      sectionId: activeSection.id,
+      eventId: activeEvent.id,
+      name: folderInputName.trim(),
+      description: folderInputDesc.trim() || undefined,
+      createdAt: new Date().toISOString().slice(0, 10),
+    };
+    saveVaultFolder(newFolder);
+    setFolderInputName("");
+    setFolderInputDesc("");
+    setShowFolderModal(false);
+    refreshAllData();
+    setSelectedFolderId(newFolder.id);
+  };
+
+  const handleAddDoc = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!docInputName.trim() || !activeFolder) return;
+
+    if (docInputFile) {
+      const reader = new FileReader();
+      reader.onload = (uploadEvt) => {
+        const fileContentUrl = uploadEvt.target?.result as string;
+        const newDoc: VaultDocument = {
+          id: `doc-${Date.now()}`,
+          folderId: activeFolder.id,
+          name: docInputName.trim(),
+          description: docInputDesc.trim() || undefined,
+          fileType: "pdf",
+          fileUrl: fileContentUrl || "#",
+          fileSizeBytes: docInputFile.size,
+          uploadedAt: new Date().toISOString().slice(0, 10),
+        };
+        saveVaultDocument(newDoc);
+        resetDocModal();
+      };
+      reader.readAsDataURL(docInputFile);
+      return;
+    }
+
+    const newDoc: VaultDocument = {
+      id: `doc-${Date.now()}`,
+      folderId: activeFolder.id,
+      name: docInputName.trim(),
+      description: docInputDesc.trim() || undefined,
+      fileType: "pdf",
+      fileUrl: docInputUrl.trim() || `/sample-docs/mock-paper.pdf`,
+      fileSizeBytes: 250000,
+      uploadedAt: new Date().toISOString().slice(0, 10),
+    };
+    saveVaultDocument(newDoc);
+    resetDocModal();
+  };
+
+  const resetDocModal = () => {
+    setDocInputName("");
+    setDocInputDesc("");
+    setDocInputUrl("");
+    setDocInputFile(null);
+    setShowDocModal(false);
+    refreshAllData();
+  };
+
+  const handleAddWhitelist = (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanPhone = wlPhone.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      alert("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+
+    const newUser: ParentWhitelistedUser = {
+      id: `parent-${Date.now()}`,
+      studentName: wlStudent.trim() || "Student",
+      parentName: wlParent.trim() || "Parent",
+      phone: cleanPhone,
+      program: "Enrolled Course",
+      batch: wlBatch.trim() || "Batch A",
+      assignedFolderIds: [wlFolderId],
+      status: "approved",
+      approvedAt: new Date().toISOString().slice(0, 10),
+    };
+
+    saveWhitelistedParent(newUser);
+    setWlPhone("");
+    setWlStudent("");
+    setWlParent("");
+    setWlBatch("");
+    refreshAllData();
+    alert(`Granted access to +91 ${cleanPhone}!`);
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 pb-16">
+    <div className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       
-      {/* Top Banner / Breadcrumb */}
+      {/* Top Header */}
       <div className="bg-slate-900 text-white border-b border-slate-800 py-6 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-400 mb-1">
               <FolderLock className="w-4 h-4" />
-              Secure Digital Knowledgebase & Exam Downloads
+              Event & Competition Digital Repository
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold">
-              Parent Document & Exam Repository
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              Competition, Exam & Folder Repository
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-2xl">
-              Access child-specific weekly exam evaluations, syllabus folders, and practice worksheets protected by Mobile OTP.
+            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-3xl">
+              Hierarchy: <strong>Competition / Event → Section → Sub-Section → Folder → Documents</strong>. Access to each folder is unlocked strictly via registered Parent Mobile OTP.
             </p>
           </div>
 
-          {/* User Status / Mode Switcher */}
           <div className="flex flex-wrap items-center gap-3">
             {currentSession ? (
-              <div className="flex items-center gap-3 bg-slate-800/80 border border-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm">
+              <div className="flex items-center gap-3 bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl text-xs sm:text-sm">
                 <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">
                   {currentSession.studentName.charAt(0)}
                 </div>
@@ -367,7 +475,7 @@ export default function DownloadVaultPage() {
                     </span>
                   </div>
                   <div className="text-[11px] text-slate-400">
-                    Parent: {currentSession.parentName} (+91 {currentSession.phone})
+                    +91 {currentSession.phone} (Parent: {currentSession.parentName})
                   </div>
                 </div>
                 <button
@@ -384,14 +492,13 @@ export default function DownloadVaultPage() {
                   to="/parent-access"
                   className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold rounded-xl border border-slate-700 transition"
                 >
-                  New Parent? Register Here
+                  Register New Parent
                 </Link>
                 <button
                   onClick={() => setShowAdminLogin(true)}
-                  className="px-3 py-2 bg-slate-800/60 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition flex items-center gap-1.5"
+                  className="px-3 py-2 bg-slate-800/80 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition flex items-center gap-1.5"
                 >
-                  <Settings className="w-3.5 h-3.5" />
-                  Admin
+                  <Settings className="w-3.5 h-3.5" /> Admin
                 </button>
               </div>
             )}
@@ -399,360 +506,501 @@ export default function DownloadVaultPage() {
         </div>
       </div>
 
-      {/* Admin Quick Action Bar (when unlocked) */}
+      {/* Admin Action Bar */}
       {isAdminMode && (
-        <div className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white px-4 py-2.5 shadow-md">
+        <div className="bg-gradient-to-r from-blue-700 via-indigo-700 to-blue-800 text-white px-4 py-2.5 shadow-md">
           <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm">
             <div className="flex items-center gap-2 font-medium">
               <ShieldCheck className="w-4 h-4 text-emerald-300" />
-              <span>Admin Mode Active: You have full control to add folders, upload papers, and whitelist parents.</span>
+              <span>Admin Mode: You can create competitions, sections, sub-sections, folders, and assign parent access.</span>
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setShowNewFolderModal(true)}
-                className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-lg font-semibold flex items-center gap-1 transition"
+                onClick={() => setShowEventModal(true)}
+                className="px-2.5 py-1 bg-white/10 hover:bg-white/20 rounded-lg font-semibold flex items-center gap-1 transition"
               >
-                <FolderPlus className="w-3.5 h-3.5" /> New Folder
-              </button>
-              <button
-                onClick={() => {
-                  if (folders.length === 0) {
-                    alert("Please create a folder first!");
-                    return;
-                  }
-                  setDocFolderTarget(selectedFolderId || folders[0].id);
-                  setShowNewDocModal(true);
-                }}
-                className="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-lg font-semibold flex items-center gap-1 transition"
-              >
-                <Upload className="w-3.5 h-3.5" /> Upload Document
+                <Plus className="w-3.5 h-3.5" /> New Competition / Event
               </button>
               <button
                 onClick={() => setShowWhitelistModal(true)}
                 className="px-3 py-1 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-semibold flex items-center gap-1 shadow-sm transition"
               >
-                <Users className="w-3.5 h-3.5" /> Manage Whitelist ({whitelistedUsers.length})
+                <Users className="w-3.5 h-3.5" /> Assign Parent Folder Access ({whitelistedUsers.length})
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Main Content Area */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8">
-        
-        {/* If Not Authenticated as Parent & Not Admin -> Show OTP Gate View */}
-        {!currentSession && !isAdminMode ? (
-          <div className="max-w-2xl mx-auto my-8">
-            <div className="bg-white rounded-3xl shadow-xl border border-slate-200 p-8 text-center relative overflow-hidden">
-              <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-blue-100">
-                <Lock className="w-8 h-8" />
-              </div>
+      {/* Main Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-6">
 
-              <h2 className="text-2xl font-extrabold text-slate-900">
-                Enter Mobile Number to Unlock Folders
-              </h2>
-              <p className="text-sm text-slate-600 mt-2 max-w-md mx-auto">
-                Assigned folders and exam question banks are accessible strictly via Mobile OTP for enrolled parents.
-              </p>
+        {/* 1. TOP LEVEL: COMPETITION / EVENT TABS */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+          <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-600">
+              <Trophy className="w-4 h-4 text-amber-500" />
+              Step 1: Select Competition / Event / Purpose
+            </div>
+            {isAdminMode && (
+              <button
+                onClick={() => setShowEventModal(true)}
+                className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Event
+              </button>
+            )}
+          </div>
 
-              {loginError && (
-                <div className="mt-6 flex items-start gap-2.5 p-3.5 bg-red-50 text-red-700 text-xs sm:text-sm rounded-xl border border-red-200 text-left">
-                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                  <span>{loginError}</span>
-                </div>
-              )}
-
-              {!otpSent ? (
-                <form onSubmit={handleRequestOtp} className="mt-6 space-y-4 max-w-md mx-auto text-left">
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                      Your Registered Mobile Number
-                    </label>
-                    <div className="relative">
-                      <span className="absolute left-3.5 top-3 text-sm font-semibold text-slate-500">+91</span>
-                      <input
-                        type="tel"
-                        required
-                        maxLength={10}
-                        placeholder="98765 43210"
-                        value={phoneInput}
-                        onChange={(e) => setPhoneInput(e.target.value.replace(/\D/g, ""))}
-                        className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-base font-medium focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition"
-                      />
-                    </div>
-                    <p className="text-[11px] text-slate-500 mt-1">
-                      (Demo Whitelisted: Try <code>9876543210</code> or <code>9820011223</code>)
-                    </p>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={loginLoading}
-                    className="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer text-sm"
-                  >
-                    {loginLoading ? "Checking Whitelist..." : "Send Verification OTP"}
-                  </button>
-
-                  <div className="text-center pt-2">
-                    <Link
-                      to="/parent-access"
-                      className="text-xs text-blue-600 hover:text-blue-800 font-semibold underline"
+          <div className="flex flex-wrap gap-2">
+            {events.map((evt) => {
+              const isSelected = activeEvent?.id === evt.id;
+              return (
+                <button
+                  key={evt.id}
+                  onClick={() => setSelectedEventId(evt.id)}
+                  className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 border cursor-pointer ${
+                    isSelected
+                      ? "bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20"
+                      : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300"
+                  }`}
+                >
+                  <Trophy className={`w-3.5 h-3.5 ${isSelected ? "text-amber-300" : "text-amber-500"}`} />
+                  <span>{evt.name}</span>
+                  {evt.eventDate && (
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${isSelected ? "bg-blue-700 text-blue-100" : "bg-slate-200 text-slate-600"}`}>
+                      {evt.eventDate}
+                    </span>
+                  )}
+                  {isAdminMode && events.length > 1 && (
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (confirm(`Delete Event "${evt.name}"?`)) {
+                          deleteVaultEvent(evt.id);
+                          refreshAllData();
+                        }
+                      }}
+                      className="ml-1 hover:text-red-300"
                     >
-                      Not registered yet? Submit Parent Access Request →
-                    </Link>
-                  </div>
-                </form>
-              ) : (
-                <form onSubmit={handleVerifyOtp} className="mt-6 space-y-4 max-w-md mx-auto text-left">
-                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-blue-900">
-                    OTP sent to <strong>+91 {phoneInput}</strong>.
-                    {simulatedOtp && (
-                      <span className="block mt-1 font-mono font-bold text-blue-700">
-                        OTP Code: {simulatedOtp}
-                      </span>
-                    )}
-                  </div>
+                      ✕
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                      Enter 6-Digit OTP
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      maxLength={6}
-                      placeholder="Enter 6-digit OTP"
-                      value={enteredOtp}
-                      onChange={(e) => setEnteredOtp(e.target.value)}
-                      className="w-full px-4 py-3 text-center tracking-widest text-lg font-mono bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer text-sm"
-                  >
-                    Verify & Unlock Folders
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOtpSent(false);
-                      setSimulatedOtp(null);
-                    }}
-                    className="w-full text-xs text-slate-500 hover:text-slate-800 py-1"
-                  >
-                    Change Phone Number
-                  </button>
-                </form>
+        {/* 2. SECOND LEVEL: SECTIONS */}
+        {activeEvent && (
+          <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+            <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-600">
+                <Layers className="w-4 h-4 text-blue-600" />
+                Step 2: Section in "{activeEvent.name}"
+              </div>
+              {isAdminMode && (
+                <button
+                  onClick={() => setShowSectionModal(true)}
+                  className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1"
+                >
+                  <Plus className="w-3.5 h-3.5" /> Add Section
+                </button>
               )}
             </div>
+
+            {currentSections.length === 0 ? (
+              <div className="text-xs text-slate-400 py-3">No sections created for this event yet. {isAdminMode && "Click 'Add Section' above."}</div>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {currentSections.map((sec) => {
+                  const isSelected = activeSection?.id === sec.id;
+                  return (
+                    <button
+                      key={sec.id}
+                      onClick={() => setSelectedSectionId(sec.id)}
+                      className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition border flex items-center gap-2 cursor-pointer ${
+                        isSelected
+                          ? "bg-slate-900 text-white border-slate-900 shadow-sm"
+                          : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+                      }`}
+                    >
+                      <Layers className="w-3.5 h-3.5" />
+                      <span>{sec.name}</span>
+                      {isAdminMode && (
+                        <span
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (confirm(`Delete Section "${sec.name}"?`)) {
+                              deleteVaultSection(sec.id);
+                              refreshAllData();
+                            }
+                          }}
+                          className="ml-1 hover:text-red-400"
+                        >
+                          ✕
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        ) : (
-          /* ================= FOLDER REPOSITORY EXPLORER ================= */
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        )}
+
+        {/* 3. THIRD & FOURTH LEVEL: SUB-SECTIONS + FOLDERS + DOCUMENTS */}
+        {activeSection && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             
-            {/* Sidebar: Folder Tree */}
-            <div className="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                  <Folder className="w-4 h-4 text-blue-600" />
-                  Your Accessible Folders ({accessibleFolders.length})
-                </h3>
+            {/* Left Column: Sub-Sections & Folders */}
+            <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+              
+              {/* Sub-Section Header */}
+              <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                  <FolderOpen className="w-4 h-4 text-blue-600" />
+                  Sub-Sections & Folders
+                </div>
                 {isAdminMode && (
                   <button
-                    onClick={() => setShowNewFolderModal(true)}
+                    onClick={() => setShowSubSectionModal(true)}
                     className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1"
                   >
-                    <Plus className="w-3.5 h-3.5" /> Add
+                    <Plus className="w-3.5 h-3.5" /> Sub-Section
                   </button>
                 )}
               </div>
 
-              {accessibleFolders.length === 0 ? (
-                <div className="text-center py-6 text-xs text-slate-500">
-                  No folders currently assigned to your profile. Please contact the academy administrator.
-                </div>
+              {/* Sub-Section Tabs */}
+              {currentSubSections.length === 0 ? (
+                <div className="text-xs text-slate-400 py-2">No sub-sections yet. {isAdminMode && "Click '+ Sub-Section' above."}</div>
               ) : (
-                <div className="space-y-2">
-                  {accessibleFolders.map((folder) => {
-                    const isSelected = selectedFolderId === folder.id;
-                    const docCount = documents.filter((d) => d.folderId === folder.id).length;
-
+                <div className="flex flex-wrap gap-1.5">
+                  {currentSubSections.map((ss) => {
+                    const isSelected = activeSubSection?.id === ss.id;
                     return (
-                      <div
-                        key={folder.id}
-                        onClick={() => setSelectedFolderId(folder.id)}
-                        className={`p-3 rounded-xl border text-left cursor-pointer transition-all flex items-start justify-between gap-3 ${
+                      <button
+                        key={ss.id}
+                        onClick={() => setSelectedSubSectionId(ss.id)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition ${
                           isSelected
-                            ? "bg-blue-50/70 border-blue-500 shadow-sm"
-                            : "bg-slate-50/60 border-slate-200 hover:bg-slate-100/60 hover:border-slate-300"
+                            ? "bg-blue-100 text-blue-800 border-blue-300 font-bold"
+                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                         }`}
                       >
-                        <div className="flex items-start gap-2.5">
-                          <Folder className={`w-5 h-5 shrink-0 mt-0.5 ${isSelected ? "text-blue-600 fill-blue-100" : "text-slate-400"}`} />
-                          <div>
-                            <div className={`text-xs font-bold ${isSelected ? "text-blue-900" : "text-slate-800"}`}>
-                              {folder.name}
-                            </div>
-                            {folder.description && (
-                              <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
-                                {folder.description}
-                              </p>
-                            )}
-                            <div className="flex items-center gap-2 mt-1.5 text-[10px] text-slate-400">
-                              <span className="font-semibold text-slate-600 bg-white px-1.5 py-0.5 rounded border border-slate-200">
-                                {folder.levelOrBatch}
-                              </span>
-                              <span>• {docCount} Documents</span>
-                            </div>
-                          </div>
-                        </div>
-
+                        {ss.name}
                         {isAdminMode && (
-                          <button
+                          <span
                             onClick={(e) => {
                               e.stopPropagation();
-                              if (confirm(`Delete folder "${folder.name}" and all its documents?`)) {
-                                deleteVaultFolder(folder.id);
-                                refreshData();
+                              if (confirm(`Delete Sub-Section "${ss.name}"?`)) {
+                                deleteVaultSubSection(ss.id);
+                                refreshAllData();
                               }
                             }}
-                            className="p-1 text-slate-300 hover:text-red-600 transition"
-                            title="Delete Folder"
+                            className="ml-1 text-slate-400 hover:text-red-500"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
+                            ✕
+                          </span>
                         )}
-                      </div>
+                      </button>
                     );
                   })}
                 </div>
               )}
 
-              {/* Security info card */}
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-500 leading-relaxed flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Protected repository. Only verified phone numbers can download exams.</span>
+              {/* Folders List Inside Selected Sub-Section */}
+              <div className="pt-2">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-bold text-slate-700">
+                    Folders in {activeSubSection?.name || "Sub-Section"} ({currentFolders.length})
+                  </span>
+                  {isAdminMode && activeSubSection && (
+                    <button
+                      onClick={() => setShowFolderModal(true)}
+                      className="text-xs text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1"
+                    >
+                      <Plus className="w-3.5 h-3.5" /> New Folder
+                    </button>
+                  )}
+                </div>
+
+                {currentFolders.length === 0 ? (
+                  <div className="text-xs text-slate-400 py-4 text-center border-2 border-dashed border-slate-200 rounded-xl">
+                    No folders inside this sub-section.
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {currentFolders.map((fld) => {
+                      const isSelected = activeFolder?.id === fld.id;
+                      const hasAccess = isFolderAccessible(fld.id);
+                      const docCount = documents.filter((d) => d.folderId === fld.id).length;
+
+                      return (
+                        <div
+                          key={fld.id}
+                          onClick={() => setSelectedFolderId(fld.id)}
+                          className={`p-3 rounded-xl border text-left cursor-pointer transition-all flex items-start justify-between gap-3 ${
+                            isSelected
+                              ? "bg-blue-50/80 border-blue-500 shadow-xs"
+                              : "bg-slate-50 border-slate-200 hover:bg-slate-100"
+                          }`}
+                        >
+                          <div className="flex items-start gap-2.5">
+                            {hasAccess ? (
+                              <Folder className={`w-5 h-5 shrink-0 mt-0.5 ${isSelected ? "text-blue-600 fill-blue-100" : "text-slate-500"}`} />
+                            ) : (
+                              <Lock className="w-5 h-5 shrink-0 mt-0.5 text-amber-600" />
+                            )}
+                            <div>
+                              <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                                {fld.name}
+                                {!hasAccess && (
+                                  <span className="text-[10px] bg-amber-100 text-amber-800 font-medium px-1.5 py-0.2 rounded">
+                                    Locked
+                                  </span>
+                                )}
+                              </div>
+                              {fld.description && (
+                                <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
+                                  {fld.description}
+                                </p>
+                              )}
+                              <span className="text-[10px] text-slate-400 mt-1 block">
+                                {docCount} Documents
+                              </span>
+                            </div>
+                          </div>
+
+                          {isAdminMode && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (confirm(`Delete Folder "${fld.name}"?`)) {
+                                  deleteVaultFolder(fld.id);
+                                  refreshAllData();
+                                }
+                              }}
+                              className="text-slate-300 hover:text-red-500 p-1"
+                              title="Delete Folder"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
+
             </div>
 
-            {/* Main Area: Document List for Selected Folder */}
-            <div className="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-              {currentFolder ? (
+            {/* Right Column: Documents Explorer / OTP Gate */}
+            <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+              {activeFolder ? (
                 <div>
                   {/* Folder Header */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
                     <div>
-                      <div className="text-xs uppercase font-semibold tracking-wider text-blue-600">
-                        {currentFolder.program.toUpperCase()} • {currentFolder.levelOrBatch}
+                      <div className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider">
+                        {activeEvent?.name} › {activeSection?.name} › {activeSubSection?.name}
                       </div>
-                      <h2 className="text-xl font-bold text-slate-900 mt-0.5">
-                        {currentFolder.name}
-                      </h2>
-                      {currentFolder.description && (
-                        <p className="text-xs text-slate-500 mt-1">
-                          {currentFolder.description}
+                      <h3 className="text-xl font-bold text-slate-900 mt-0.5">
+                        {activeFolder.name}
+                      </h3>
+                      {activeFolder.description && (
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          {activeFolder.description}
                         </p>
                       )}
                     </div>
 
                     {isAdminMode && (
                       <button
-                        onClick={() => {
-                          setDocFolderTarget(currentFolder.id);
-                          setShowNewDocModal(true);
-                        }}
-                        className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-sm transition shrink-0"
+                        onClick={() => setShowDocModal(true)}
+                        className="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-xs transition shrink-0"
                       >
-                        <FilePlus className="w-4 h-4" /> Add Document to Folder
+                        <Upload className="w-4 h-4" /> Upload Document
                       </button>
                     )}
                   </div>
 
-                  {/* Search Bar */}
-                  <div className="my-4 relative">
-                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
-                    <input
-                      type="text"
-                      placeholder="Search documents in this folder..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition"
-                    />
-                  </div>
+                  {/* CHECK ACCESS: If Parent Has Access -> Show Docs. If Not -> Show OTP Unlock Prompt */}
+                  {isFolderAccessible(activeFolder.id) ? (
+                    <div className="mt-4">
+                      {/* Search */}
+                      <div className="mb-4 relative">
+                        <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                        <input
+                          type="text"
+                          placeholder="Search documents in this folder..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-500 outline-none"
+                        />
+                      </div>
 
-                  {/* Document Grid */}
-                  {folderDocs.length === 0 ? (
-                    <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-2xl">
-                      <FileText className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-                      <h4 className="text-sm font-bold text-slate-700">No documents found</h4>
-                      <p className="text-xs text-slate-400 mt-1">
-                        {isAdminMode ? "Click 'Add Document' above to upload or link exam materials." : "New worksheets will be uploaded here shortly."}
-                      </p>
+                      {/* Documents Cards */}
+                      {currentFolderDocs.length === 0 ? (
+                        <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-2xl">
+                          <FileText className="w-10 h-10 text-slate-300 mx-auto mb-2" />
+                          <h4 className="text-sm font-bold text-slate-700">No documents in this folder</h4>
+                          <p className="text-xs text-slate-400 mt-1">
+                            {isAdminMode ? "Click 'Upload Document' above to add PDFs or exam links." : "Material will be published here shortly."}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {currentFolderDocs.map((doc) => (
+                            <div
+                              key={doc.id}
+                              className="bg-slate-50/70 border border-slate-200 hover:border-blue-400 hover:bg-white p-4 rounded-xl transition shadow-xs flex flex-col justify-between"
+                            >
+                              <div>
+                                <div className="flex items-start justify-between gap-2">
+                                  <div className="p-2 bg-red-50 text-red-600 rounded-lg shrink-0">
+                                    <FileText className="w-5 h-5" />
+                                  </div>
+                                  {isAdminMode && (
+                                    <button
+                                      onClick={() => {
+                                        if (confirm(`Remove document "${doc.name}"?`)) {
+                                          deleteVaultDocument(doc.id);
+                                          refreshAllData();
+                                        }
+                                      }}
+                                      className="text-slate-300 hover:text-red-500 transition p-1"
+                                      title="Delete Document"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                  )}
+                                </div>
+
+                                <h4 className="text-xs font-bold text-slate-900 mt-2 line-clamp-2">
+                                  {doc.name}
+                                </h4>
+                                {doc.description && (
+                                  <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">
+                                    {doc.description}
+                                  </p>
+                                )}
+                              </div>
+
+                              <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between">
+                                <span className="text-[10px] text-slate-400">
+                                  {doc.uploadedAt}
+                                </span>
+                                <a
+                                  href={doc.fileUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  download={doc.name}
+                                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-xs transition"
+                                >
+                                  <Download className="w-3.5 h-3.5" /> Download
+                                </a>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {folderDocs.map((doc) => (
-                        <div
-                          key={doc.id}
-                          className="bg-slate-50/70 border border-slate-200 hover:border-blue-400 hover:bg-white p-4 rounded-xl transition shadow-sm flex flex-col justify-between"
-                        >
-                          <div>
-                            <div className="flex items-start justify-between gap-2">
-                              <div className="p-2 bg-red-50 text-red-600 rounded-lg shrink-0">
-                                <FileText className="w-5 h-5" />
-                              </div>
-                              {isAdminMode && (
-                                <button
-                                  onClick={() => {
-                                    if (confirm(`Remove document "${doc.name}"?`)) {
-                                      deleteVaultDocument(doc.id);
-                                      refreshData();
-                                    }
-                                  }}
-                                  className="text-slate-300 hover:text-red-600 transition p-1"
-                                  title="Delete Document"
-                                >
-                                  <Trash2 className="w-3.5 h-3.5" />
-                                </button>
-                              )}
-                            </div>
+                    /* FOLDER IS LOCKED -> SHOW MOBILE OTP GATE */
+                    <div className="py-8 px-4 text-center">
+                      <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-amber-200">
+                        <Lock className="w-7 h-7" />
+                      </div>
+                      <h4 className="text-base font-bold text-slate-900">
+                        Folder Access Restricted to Approved Mobile Numbers
+                      </h4>
+                      <p className="text-xs text-slate-600 max-w-md mx-auto mt-1 mb-6">
+                        This specific folder requires authorized access for <strong>{activeFolder.name}</strong>. Enter your registered mobile number to receive a one-time password (OTP).
+                      </p>
 
-                            <h4 className="text-xs font-bold text-slate-900 mt-2 line-clamp-2">
-                              {doc.name}
-                            </h4>
-                            {doc.description && (
-                              <p className="text-[11px] text-slate-500 mt-1 line-clamp-2">
-                                {doc.description}
-                              </p>
-                            )}
-                          </div>
-
-                          <div className="mt-4 pt-3 border-t border-slate-200/80 flex items-center justify-between">
-                            <span className="text-[10px] text-slate-400">
-                              {doc.uploadedAt}
-                            </span>
-                            <a
-                              href={doc.fileUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              download={doc.name}
-                              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-sm transition"
-                            >
-                              <Download className="w-3.5 h-3.5" /> Download
-                            </a>
-                          </div>
+                      {loginError && (
+                        <div className="mb-4 max-w-sm mx-auto flex items-start gap-2 p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200 text-left">
+                          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                          <span>{loginError}</span>
                         </div>
-                      ))}
+                      )}
+
+                      {!otpSent ? (
+                        <form onSubmit={handleRequestOtp} className="max-w-sm mx-auto space-y-3 text-left">
+                          <div>
+                            <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                              Registered Parent Mobile Number
+                            </label>
+                            <div className="relative">
+                              <span className="absolute left-3 top-2.5 text-xs font-semibold text-slate-500">+91</span>
+                              <input
+                                type="tel"
+                                required
+                                maxLength={10}
+                                placeholder="98765 43210"
+                                value={phoneInput}
+                                onChange={(e) => setPhoneInput(e.target.value.replace(/\D/g, ""))}
+                                className="w-full pl-10 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-blue-500 outline-none"
+                              />
+                            </div>
+                            <p className="text-[10px] text-slate-400 mt-1">
+                              (Demo Access: <code>9876543210</code> or <code>9820011223</code>)
+                            </p>
+                          </div>
+
+                          <button
+                            type="submit"
+                            disabled={loginLoading}
+                            className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs transition cursor-pointer"
+                          >
+                            {loginLoading ? "Verifying..." : "Send Verification OTP"}
+                          </button>
+
+                          <div className="text-center pt-1">
+                            <Link to="/parent-access" className="text-[11px] text-blue-600 hover:underline">
+                              Need access? Register here →
+                            </Link>
+                          </div>
+                        </form>
+                      ) : (
+                        <form onSubmit={handleVerifyOtp} className="max-w-sm mx-auto space-y-3 text-left">
+                          <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900">
+                            OTP Code sent to +91 {phoneInput}: <strong>{simulatedOtp}</strong>
+                          </div>
+                          <div>
+                            <label className="text-[11px] font-bold text-slate-700 block mb-1">
+                              Enter 6-Digit OTP
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              maxLength={6}
+                              placeholder="123456"
+                              value={enteredOtp}
+                              onChange={(e) => setEnteredOtp(e.target.value)}
+                              className="w-full px-3 py-2 text-center tracking-widest font-mono text-sm bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+                            />
+                          </div>
+
+                          <button
+                            type="submit"
+                            className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-xs transition cursor-pointer"
+                          >
+                            Verify OTP & Unlock
+                          </button>
+                        </form>
+                      )}
                     </div>
                   )}
+
                 </div>
               ) : (
-                <div className="text-center py-16 text-slate-400 text-sm">
-                  Select a folder from the sidebar to view documents.
+                <div className="text-center py-16 text-slate-400 text-xs">
+                  Please select a folder on the left to view contents.
                 </div>
               )}
             </div>
@@ -762,24 +1010,489 @@ export default function DownloadVaultPage() {
 
       </div>
 
+      {/* ================= MODAL: NEW COMPETITION / EVENT ================= */}
+      {showEventModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-amber-500" />
+              Create New Competition / Event / Purpose
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Top-level category (e.g. "NLC-18Oct2026-IIVA-Abacus").
+            </p>
+
+            <form onSubmit={handleAddEvent} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Competition / Event Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. NLC-18Oct2026-IIVA-Abacus"
+                  value={eventInputName}
+                  onChange={(e) => setEventInputName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Event Date (Optional)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. 18-Oct-2026"
+                  value={eventInputDate}
+                  onChange={(e) => setEventInputDate(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Description</label>
+                <textarea
+                  placeholder="e.g. Mock papers from IIVA for the respective levels"
+                  value={eventInputDesc}
+                  onChange={(e) => setEventInputDesc(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 h-16 resize-none"
+                />
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowEventModal(false)}
+                  className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
+                >
+                  Create Event
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: NEW SECTION ================= */}
+      {showSectionModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <Layers className="w-5 h-5 text-blue-600" />
+              Add Section to "{activeEvent?.name}"
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              e.g. "IIVA Mock Test Papers", "Hall Tickets", "Syllabus".
+            </p>
+
+            <form onSubmit={handleAddSection} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Section Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. IIVA Mock Test Papers"
+                  value={sectionInputName}
+                  onChange={(e) => setSectionInputName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Description (Optional)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Practice papers for each category"
+                  value={sectionInputDesc}
+                  onChange={(e) => setSectionInputDesc(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowSectionModal(false)}
+                  className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
+                >
+                  Add Section
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: NEW SUB-SECTION ================= */}
+      {showSubSectionModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <FolderOpen className="w-5 h-5 text-blue-600" />
+              Add Sub-Section to "{activeSection?.name}"
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              e.g. "Level 1", "Level 2", "Junior Group", "Senior Group".
+            </p>
+
+            <form onSubmit={handleAddSubSection} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Sub-Section Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Level 1 (Junior)"
+                  value={subSectionInputName}
+                  onChange={(e) => setSubSectionInputName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Description (Optional)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Ages 5-7 Single digit direct"
+                  value={subSectionInputDesc}
+                  onChange={(e) => setSubSectionInputDesc(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowSubSectionModal(false)}
+                  className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
+                >
+                  Add Sub-Section
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: NEW FOLDER ================= */}
+      {showFolderModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <FolderPlus className="w-5 h-5 text-blue-600" />
+              Create Folder inside "{activeSubSection?.name}"
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              This is the folder that you can assign to specific parent mobile numbers.
+            </p>
+
+            <form onSubmit={handleAddFolder} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Folder Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Mock Papers - Level 1"
+                  value={folderInputName}
+                  onChange={(e) => setFolderInputName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Description (Optional)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Complete test papers 1 to 5"
+                  value={folderInputDesc}
+                  onChange={(e) => setFolderInputDesc(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowFolderModal(false)}
+                  className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
+                >
+                  Create Folder
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: UPLOAD DOCUMENT ================= */}
+      {showDocModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <h3 className="text-base font-bold text-slate-900 mb-1 flex items-center gap-2">
+              <Upload className="w-5 h-5 text-blue-600" />
+              Upload Document to "{activeFolder?.name}"
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">
+              Add exam papers, answer keys, or notes.
+            </p>
+
+            <form onSubmit={handleAddDoc} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Document Title *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Level 1 Mock Test 01.pdf"
+                  value={docInputName}
+                  onChange={(e) => setDocInputName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Description (Optional)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. 100 questions timed set"
+                  value={docInputDesc}
+                  onChange={(e) => setDocInputDesc(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="border border-slate-200 bg-slate-50 rounded-xl p-3">
+                <label className="font-semibold text-slate-700 block mb-1">Option A: Choose File from Computer</label>
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files[0]) {
+                      setDocInputFile(e.target.files[0]);
+                      if (!docInputName) setDocInputName(e.target.files[0].name);
+                    }
+                  }}
+                  className="text-xs file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:bg-blue-100 file:text-blue-700"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Option B: Or File URL / Google Drive Link</label>
+                <input
+                  type="url"
+                  placeholder="https://drive.google.com/... or direct link"
+                  value={docInputUrl}
+                  onChange={(e) => setDocInputUrl(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowDocModal(false)}
+                  className="flex-1 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
+                >
+                  Save & Publish
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL: ASSIGN PARENT FOLDER ACCESS ================= */}
+      {showWhitelistModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+              <div>
+                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                  <Users className="w-5 h-5 text-emerald-600" />
+                  Assign Parent Folder Access by Mobile Number
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Select which specific folder each parent mobile number is allowed to unlock.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowWhitelistModal(false)}
+                className="text-slate-400 hover:text-slate-600 font-bold text-lg"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Add Whitelist Form */}
+            <form onSubmit={handleAddWhitelist} className="bg-slate-50 border border-slate-200 p-4 rounded-xl mb-5 space-y-3 text-xs">
+              <div className="font-bold text-slate-800">Add / Update Parent Permission</div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">Parent Mobile (10 digits) *</label>
+                  <input
+                    type="tel"
+                    required
+                    maxLength={10}
+                    placeholder="98765 43210"
+                    value={wlPhone}
+                    onChange={(e) => setWlPhone(e.target.value.replace(/\D/g, ""))}
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">Student Full Name</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Aryan Patil"
+                    value={wlStudent}
+                    onChange={(e) => setWlStudent(e.target.value)}
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">Assign Specific Folder Access *</label>
+                  <select
+                    value={wlFolderId}
+                    onChange={(e) => setWlFolderId(e.target.value)}
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 font-semibold"
+                  >
+                    <option value="ALL">★ All Folders (Full Administrator Access)</option>
+                    {folders.map((fld) => {
+                      const ss = subSections.find((s) => s.id === fld.subSectionId);
+                      const sec = sections.find((s) => s.id === fld.sectionId);
+                      return (
+                        <option key={fld.id} value={fld.id}>
+                          📁 {fld.name} ({ss?.name || "Sub"} › {sec?.name || "Sec"})
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">Parent / Guardian Name</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Nitin Patil"
+                    value={wlParent}
+                    onChange={(e) => setWlParent(e.target.value)}
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-xs transition cursor-pointer"
+              >
+                Save & Grant Folder Access
+              </button>
+            </form>
+
+            {/* List of Approved Parents */}
+            <div className="space-y-2">
+              <div className="text-xs font-bold text-slate-700">Configured Parent Permissions ({whitelistedUsers.length})</div>
+              <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden text-xs">
+                {whitelistedUsers.map((u) => {
+                  const assignedFolderNames = u.assignedFolderIds.includes("ALL")
+                    ? "★ ALL Folders"
+                    : folders
+                        .filter((f) => u.assignedFolderIds.includes(f.id))
+                        .map((f) => f.name)
+                        .join(", ") || "No Folders Assigned";
+
+                  return (
+                    <div key={u.id} className="p-3 bg-white flex items-center justify-between gap-3">
+                      <div>
+                        <div className="font-bold text-slate-900">
+                          +91 {u.phone} • {u.studentName}
+                        </div>
+                        <div className="text-[11px] text-slate-500 mt-0.5">
+                          Parent: {u.parentName} | Assigned: <span className="font-semibold text-blue-600">{assignedFolderNames}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                          Approved
+                        </span>
+                        {whitelistedUsers.length > 1 && (
+                          <button
+                            onClick={() => {
+                              if (confirm(`Remove access for +91 ${u.phone}?`)) {
+                                deleteWhitelistedParent(u.id);
+                                refreshAllData();
+                              }
+                            }}
+                            className="text-slate-300 hover:text-red-500 p-1"
+                            title="Remove"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-slate-100 text-right">
+              <button
+                onClick={() => setShowWhitelistModal(false)}
+                className="px-4 py-2 bg-slate-100 text-slate-700 font-semibold rounded-lg text-xs"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ================= MODAL: ADMIN PIN UNLOCK ================= */}
       {showAdminLogin && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 text-center">
             <KeyRound className="w-10 h-10 text-blue-600 mx-auto mb-2" />
-            <h3 className="text-lg font-bold text-slate-900">Academy Admin Access</h3>
+            <h3 className="text-base font-bold text-slate-900">Academy Administrator Unlock</h3>
             <p className="text-xs text-slate-500 mt-1 mb-4">
-              Enter Administrator Passcode to manage folders and parent whitelists.
+              Enter Admin PIN (2026 or 112233) to manage competitions, sections, folders, and parent folder access.
             </p>
 
             <form onSubmit={handleAdminPinSubmit} className="space-y-3">
               <input
                 type="password"
                 required
-                placeholder="Enter Admin PIN"
+                placeholder="Admin PIN"
                 value={adminPin}
                 onChange={(e) => setAdminPin(e.target.value)}
-                className="w-full px-4 py-2.5 text-center font-mono tracking-widest bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-2 text-center font-mono tracking-widest bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
               />
               <div className="flex gap-2">
                 <button
@@ -797,319 +1510,6 @@ export default function DownloadVaultPage() {
                 </button>
               </div>
             </form>
-          </div>
-        </div>
-      )}
-
-      {/* ================= MODAL: CREATE NEW FOLDER ================= */}
-      {showNewFolderModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2 mb-1">
-              <FolderPlus className="w-5 h-5 text-blue-600" />
-              Create New Document Folder
-            </h3>
-            <p className="text-xs text-slate-500 mb-4">
-              Group documents by course level or batch to assign specific access.
-            </p>
-
-            <form onSubmit={handleCreateFolder} className="space-y-3 text-xs">
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">Folder Name *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Abacus Level 3 - Final Exam Practice"
-                  value={folderName}
-                  onChange={(e) => setFolderName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">Description (Optional)</label>
-                <textarea
-                  placeholder="e.g. Weekly tests and formulas for Level 3 students"
-                  value={folderDesc}
-                  onChange={(e) => setFolderDesc(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 h-16 resize-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Program</label>
-                  <select
-                    value={folderProgram}
-                    onChange={(e: any) => setFolderProgram(e.target.value)}
-                    className="w-full px-2 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none"
-                  >
-                    <option value="abacus">Abacus</option>
-                    <option value="vedic">Vedic Maths</option>
-                    <option value="school">School Maths</option>
-                    <option value="general">General</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="font-semibold text-slate-700 block mb-1">Batch / Level Tag</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Level 3 / Batch A"
-                    value={folderBatch}
-                    onChange={(e) => setFolderBatch(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-2 pt-3">
-                <button
-                  type="button"
-                  onClick={() => setShowNewFolderModal(false)}
-                  className="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg font-semibold"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
-                >
-                  Create Folder
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ================= MODAL: UPLOAD / ADD DOCUMENT ================= */}
-      {showNewDocModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2 mb-1">
-              <Upload className="w-5 h-5 text-blue-600" />
-              Add Document to Repository
-            </h3>
-            <p className="text-xs text-slate-500 mb-4">
-              Select a target folder and attach a file or Google Drive / PDF link.
-            </p>
-
-            <form onSubmit={handleUploadDoc} className="space-y-3 text-xs">
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">Target Folder *</label>
-                <select
-                  value={docFolderTarget}
-                  onChange={(e) => setDocFolderTarget(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {folders.map((f) => (
-                    <option key={f.id} value={f.id}>
-                      {f.name} ({f.levelOrBatch})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">Document Title *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Week 4 Exam Question Paper.pdf"
-                  value={docName}
-                  onChange={(e) => setDocName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">Description</label>
-                <input
-                  type="text"
-                  placeholder="e.g. 50 addition questions - 10 minutes limit"
-                  value={docDesc}
-                  onChange={(e) => setDocDesc(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              {/* Upload Local File or Link */}
-              <div className="border border-slate-200 bg-slate-50 rounded-xl p-3">
-                <label className="font-semibold text-slate-700 block mb-1.5">
-                  Option A: Choose File from Computer
-                </label>
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setDocFileObj(e.target.files[0]);
-                      if (!docName) setDocName(e.target.files[0].name);
-                    }
-                  }}
-                  className="text-xs file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
-                />
-              </div>
-
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">
-                  Option B: Or Direct File URL / Google Drive Link
-                </label>
-                <input
-                  type="url"
-                  placeholder="https://drive.google.com/... or direct PDF link"
-                  value={docUrl}
-                  onChange={(e) => setDocUrl(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div className="flex gap-2 pt-3">
-                <button
-                  type="button"
-                  onClick={() => setShowNewDocModal(false)}
-                  className="flex-1 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg font-semibold"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
-                >
-                  Save & Publish
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ================= MODAL: WHITELIST & PARENT PERMISSIONS ================= */}
-      {showWhitelistModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <Users className="w-5 h-5 text-emerald-600" />
-                  Parent Whitelist & Folder Assignment
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Only phone numbers listed here can log in via Mobile OTP and access assigned folders.
-                </p>
-              </div>
-              <button
-                onClick={() => setShowWhitelistModal(false)}
-                className="text-slate-400 hover:text-slate-600 font-bold text-lg"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Quick Add Form */}
-            <form onSubmit={handleAddWhitelistedParent} className="bg-slate-50 border border-slate-200 p-4 rounded-xl mb-5 space-y-3 text-xs">
-              <div className="font-bold text-slate-800">Add / Approve Parent Phone Number</div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">Mobile (10 digits) *</label>
-                  <input
-                    type="tel"
-                    required
-                    maxLength={10}
-                    placeholder="98765 43210"
-                    value={newWhitelistedPhone}
-                    onChange={(e) => setNewWhitelistedPhone(e.target.value.replace(/\D/g, ""))}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500"
-                  />
-                </div>
-                <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">Student Name</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Aryan Patil"
-                    value={newWhitelistedStudent}
-                    onChange={(e) => setNewWhitelistedStudent(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">Assign Folder Access</label>
-                  <select
-                    value={newWhitelistedFolderId}
-                    onChange={(e) => setNewWhitelistedFolderId(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500"
-                  >
-                    <option value="ALL">All Folders (Admin / Full Access)</option>
-                    {folders.map((f) => (
-                      <option key={f.id} value={f.id}>
-                        {f.name} ({f.levelOrBatch})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-[11px] font-semibold text-slate-600 block mb-1">Parent Name</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Nitin Patil"
-                    value={newWhitelistedParent}
-                    onChange={(e) => setNewWhitelistedParent(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500"
-                  />
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg text-xs transition"
-              >
-                Whitelist & Grant Access
-              </button>
-            </form>
-
-            {/* Existing Whitelisted Parents Table */}
-            <div className="space-y-2">
-              <div className="text-xs font-bold text-slate-700">Currently Approved Parents ({whitelistedUsers.length})</div>
-              <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden text-xs">
-                {whitelistedUsers.map((u) => {
-                  const assignedNames = u.assignedFolderIds.includes("ALL")
-                    ? "All Folders"
-                    : folders
-                        .filter((f) => u.assignedFolderIds.includes(f.id))
-                        .map((f) => f.name)
-                        .join(", ") || "No Folders Assigned";
-
-                  return (
-                    <div key={u.id} className="p-3 bg-white flex items-center justify-between gap-3">
-                      <div>
-                        <div className="font-bold text-slate-900">
-                          +91 {u.phone} • {u.studentName}
-                        </div>
-                        <div className="text-[11px] text-slate-500">
-                          Parent: {u.parentName} | Assigned: <span className="font-semibold text-blue-600">{assignedNames}</span>
-                        </div>
-                      </div>
-                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                        Approved
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="mt-4 pt-3 border-t border-slate-100 text-right">
-              <button
-                onClick={() => setShowWhitelistModal(false)}
-                className="px-4 py-2 bg-slate-100 text-slate-700 font-semibold rounded-lg text-xs"
-              >
-                Close
-              </button>
-            </div>
           </div>
         </div>
       )}
