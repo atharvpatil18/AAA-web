@@ -132,6 +132,7 @@ export default function DownloadVaultPage() {
   const [docInputDesc, setDocInputDesc] = useState("");
   const [docInputUrl, setDocInputUrl] = useState("");
   const [docInputFile, setDocInputFile] = useState<File | null>(null);
+  const [docInputFiles, setDocInputFiles] = useState<File[]>([]);
 
   // Whitelist Form
   const [wlPhone, setWlPhone] = useState("");
@@ -431,10 +432,40 @@ export default function DownloadVaultPage() {
     refreshAllData();
   };
 
-  const handleAddDoc = (e: React.FormEvent) => {
+  const handleAddDoc = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!docInputName.trim() || !activeFolder) return;
+    if (!activeFolder) return;
 
+    // Multi-file upload mode
+    if (docInputFiles.length > 0) {
+      const readPromises = docInputFiles.map((file, idx) => {
+        return new Promise<void>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = (uploadEvt) => {
+            const fileContentUrl = uploadEvt.target?.result as string;
+            const newDoc: VaultDocument = {
+              id: `doc-${Date.now()}-${idx}-${Math.random().toString(36).substring(2, 6)}`,
+              folderId: activeFolder.id,
+              name: file.name,
+              description: docInputDesc.trim() || undefined,
+              fileType: file.name.endsWith(".pdf") ? "pdf" : "doc",
+              fileUrl: fileContentUrl || "#",
+              fileSizeBytes: file.size,
+              uploadedAt: new Date().toISOString().slice(0, 10),
+            };
+            saveVaultDocument(newDoc);
+            resolve();
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+
+      await Promise.all(readPromises);
+      resetDocModal();
+      return;
+    }
+
+    // Single file upload fallback
     if (docInputFile) {
       const reader = new FileReader();
       reader.onload = (uploadEvt) => {
@@ -442,7 +473,7 @@ export default function DownloadVaultPage() {
         const newDoc: VaultDocument = {
           id: `doc-${Date.now()}`,
           folderId: activeFolder.id,
-          name: docInputName.trim(),
+          name: docInputName.trim() || docInputFile.name,
           description: docInputDesc.trim() || undefined,
           fileType: "pdf",
           fileUrl: fileContentUrl || "#",
@@ -453,6 +484,11 @@ export default function DownloadVaultPage() {
         resetDocModal();
       };
       reader.readAsDataURL(docInputFile);
+      return;
+    }
+
+    if (!docInputName.trim()) {
+      alert("Please provide a document title or select files to upload.");
       return;
     }
 
@@ -475,6 +511,7 @@ export default function DownloadVaultPage() {
     setDocInputDesc("");
     setDocInputUrl("");
     setDocInputFile(null);
+    setDocInputFiles([]);
     setShowDocModal(false);
     refreshAllData();
   };
@@ -1402,40 +1439,84 @@ export default function DownloadVaultPage() {
             </p>
 
             <form onSubmit={handleAddDoc} className="space-y-3 text-xs">
-              <div>
-                <label className="font-semibold text-slate-700 block mb-1">Document Title *</label>
+              <div className="border border-slate-200 bg-slate-50 rounded-xl p-3">
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="font-semibold text-slate-700 block">
+                    Option A: Choose File(s) from Computer
+                  </label>
+                  <span className="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold">
+                    Multiple Files Allowed
+                  </span>
+                </div>
                 <input
-                  type="text"
-                  required
-                  placeholder="e.g. Level 1 Mock Test 01.pdf"
-                  value={docInputName}
-                  onChange={(e) => setDocInputName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                  type="file"
+                  multiple
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      const fileArray: File[] = Array.from(e.target.files);
+                      setDocInputFiles(fileArray);
+                      if (fileArray.length === 1) {
+                        setDocInputFile(fileArray[0]);
+                        if (!docInputName) setDocInputName(fileArray[0].name);
+                      } else {
+                        setDocInputFile(null);
+                        setDocInputName(`${fileArray.length} files selected`);
+                      }
+                    }
+                  }}
+                  className="text-xs file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:bg-blue-600 file:text-white file:font-semibold hover:file:bg-blue-700 cursor-pointer w-full"
                 />
+
+                {docInputFiles.length > 0 && (
+                  <div className="mt-2.5 p-2 bg-white border border-slate-200 rounded-lg text-[11px] space-y-1">
+                    <div className="font-bold text-slate-800 flex items-center justify-between">
+                      <span>Selected {docInputFiles.length} file(s) to upload:</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDocInputFiles([]);
+                          setDocInputFile(null);
+                          setDocInputName("");
+                        }}
+                        className="text-red-500 hover:underline text-[10px]"
+                      >
+                        Clear
+                      </button>
+                    </div>
+                    <ul className="max-h-24 overflow-y-auto space-y-0.5 text-slate-600 font-mono text-[10px]">
+                      {docInputFiles.map((f, i) => (
+                        <li key={i} className="truncate">
+                          • {f.name} ({(f.size / 1024).toFixed(0)} KB)
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
+
+              {docInputFiles.length <= 1 && (
+                <div>
+                  <label className="font-semibold text-slate-700 block mb-1">
+                    Document Title {docInputFiles.length === 0 && !docInputUrl && "*"}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Level 1 Mock Test 01.pdf"
+                    value={docInputName}
+                    onChange={(e) => setDocInputName(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              )}
 
               <div>
                 <label className="font-semibold text-slate-700 block mb-1">Description (Optional)</label>
                 <input
                   type="text"
-                  placeholder="e.g. 100 questions timed set"
+                  placeholder="e.g. Timed mock papers set"
                   value={docInputDesc}
                   onChange={(e) => setDocInputDesc(e.target.value)}
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-
-              <div className="border border-slate-200 bg-slate-50 rounded-xl p-3">
-                <label className="font-semibold text-slate-700 block mb-1">Option A: Choose File from Computer</label>
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setDocInputFile(e.target.files[0]);
-                      if (!docInputName) setDocInputName(e.target.files[0].name);
-                    }
-                  }}
-                  className="text-xs file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:bg-blue-100 file:text-blue-700"
                 />
               </div>
 
