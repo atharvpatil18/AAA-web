@@ -5,7 +5,7 @@ import { INITIAL_BLOG_POSTS, getLocalizedBlogPost } from "../data/blogData";
 import { useLanguage } from "../lib/LanguageContext";
 
 import { validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
-import { ChevronDown, ChevronUp, ChevronRight, Compass, Sparkles, BookOpen, Layers, CheckCircle2, Eye, EyeOff, LayoutGrid } from "lucide-react";
+import { ChevronDown, ChevronUp, ChevronRight, Compass, Sparkles, BookOpen, Layers, CheckCircle2, Eye, EyeOff, LayoutGrid, Plus, Minus } from "lucide-react";
 
 export default function BlogPostDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -35,13 +35,24 @@ export default function BlogPostDetail() {
   
   // Section Navigation & Interactive Accordion States
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
-  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    "section-0": true, // Executive Brief expanded by default; subsequent sections in glance mode with '+' toggle
+  });
 
-  const toggleSectionCollapse = (secId: string) => {
-    setCollapsedSections(prev => ({
+  const toggleSection = (secId: string) => {
+    setExpandedSections(prev => ({
       ...prev,
       [secId]: !prev[secId]
     }));
+  };
+
+  const handleToggleAllSections = (allSecIds: string[]) => {
+    const areAllExpanded = allSecIds.every(id => !!expandedSections[id]);
+    const nextState: Record<string, boolean> = {};
+    allSecIds.forEach(id => {
+      nextState[id] = !areAllExpanded;
+    });
+    setExpandedSections(nextState);
   };
 
   useEffect(() => {
@@ -315,14 +326,15 @@ export default function BlogPostDetail() {
 
           const scrollToSection = (secId: string) => {
             setActiveSectionId(secId);
-            const el = document.getElementById(secId);
-            if (el) {
-              const yOffset = -100;
-              const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-              window.scrollTo({ top: y, behavior: "smooth" });
-              // Also ensure section is expanded if user was using collapse
-              setCollapsedSections(prev => ({ ...prev, [secId]: false }));
-            }
+            setExpandedSections(prev => ({ ...prev, [secId]: true }));
+            setTimeout(() => {
+              const el = document.getElementById(secId);
+              if (el) {
+                const yOffset = -90;
+                const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({ top: y, behavior: "smooth" });
+              }
+            }, 60);
           };
 
           return (
@@ -392,11 +404,11 @@ export default function BlogPostDetail() {
           );
         })()}
 
-        {/* Article Body with Premium Blog Typography */}
-        <div className="bg-white rounded-3xl p-6 sm:p-12 shadow-sm border border-slate-200 space-y-8">
+        {/* Article Body with Premium Blog Typography and Interactive Quick-Glance Sections */}
+        <div className="bg-white rounded-3xl p-5 sm:p-10 shadow-sm border border-slate-200 space-y-8">
           <div className="article-body text-slate-800 leading-relaxed text-base space-y-6">
-            {/* Standard Readable Paragraph with Inline **Bold**, *Italic*, and [Link](url) Parser defined upfront */}
             {(() => {
+              // Standard Inline Text Formatter: [Text](url), **bold**, *italic*
               const renderFormattedInlineText = (text: string) => {
                 const linkRegex = /(\[[^\]]+\]\([^)]+\))/g;
                 const linkSegments = text.split(linkRegex);
@@ -459,260 +471,664 @@ export default function BlogPostDetail() {
                 });
               };
 
-              // Track H3 section index for anchors and accordion toggles
-              let h3Counter = 0;
-
-              return post.content.split("\n\n").map((block, idx) => {
-                const trimmed = block.trim();
-                if (!trimmed) return null;
-
+              // Render an individual markdown block inside a section or intro
+              const renderBlock = (trimmed: string, key: string | number) => {
                 // H2 Headings
                 if (trimmed.startsWith("## ")) {
                   return (
-                    <h2 key={idx} className="text-2xl sm:text-3xl font-black text-slate-900 pt-8 pb-3 border-b-2 border-amber-300 flex items-center gap-2 scroll-mt-24">
+                    <h2 key={key} className="text-2xl sm:text-3xl font-black text-slate-900 pt-6 pb-2 border-b-2 border-amber-300 flex items-center gap-2">
                       <span className="w-2.5 h-7 bg-vibrant-orange rounded-full inline-block"></span>
                       {trimmed.replace("## ", "")}
                     </h2>
                   );
                 }
 
-              // H3 Headings with Anchor ID & Active Chapter Indicator
-              if (trimmed.startsWith("### ")) {
-                const secId = `section-${h3Counter}`;
-                h3Counter++;
-                const isSelected = activeSectionId === secId;
-
-                return (
-                  <div
-                    key={idx}
-                    id={secId}
-                    className={`scroll-mt-24 pt-6 pb-2 border-b transition-all rounded-2xl px-2 sm:px-3 -mx-2 sm:-mx-3 ${
-                      isSelected
-                        ? "bg-amber-100/50 border-amber-400"
-                        : "border-amber-200/60"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2.5">
-                        <span className={`w-2 h-6 rounded-full inline-block transition-colors ${isSelected ? "bg-amber-500 scale-125" : "bg-vibrant-orange"}`}></span>
-                        {trimmed.replace("### ", "")}
-                      </h3>
-                      <button
-                        onClick={() => {
-                          const el = document.getElementById("story-glance-directory");
-                          if (el) {
-                            el.scrollIntoView({ behavior: "smooth" });
-                          } else {
-                            window.scrollTo({ top: 380, behavior: "smooth" });
-                          }
-                        }}
-                        className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold text-slate-400 hover:text-vibrant-orange px-2.5 py-1 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
-                        title="Back to All Chapters Overview"
-                      >
-                        <Compass className="w-3 h-3" /> Glance
-                      </button>
-                    </div>
-                  </div>
-                );
-              }
-
-              // H4 Headings
-              if (trimmed.startsWith("#### ")) {
-                return (
-                  <h4 key={idx} className="text-lg font-black text-slate-900 pt-4 text-vibrant-orange">
-                    {trimmed.replace("#### ", "")}
-                  </h4>
-                );
-              }
-
-              // Custom Interactive Action Button Callout
-              if (trimmed === "[CLAIM_FREE_DEMO_BUTTON]") {
-                return (
-                  <div key={idx} className="my-8 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl text-center space-y-4">
-                    <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
-                      ✨ Limited Free Assessment Seats Available in Wakad, Pune
-                    </div>
-                    <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
-                      Ready to Unlock Your Child's Full Brain Potential?
-                    </h3>
-                    <p className="text-sm text-amber-100 max-w-xl mx-auto">
-                      Book a 1-on-1 Free Abacus & Vedic Math Skill Assessment Session with Neha Patil & Nitin Patil.
-                    </p>
-                    <div className="pt-2">
-                      <button
-                        onClick={() => navigate("/contact")}
-                        className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm uppercase tracking-wider px-8 py-4 rounded-2xl shadow-2xl hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2 border border-slate-700"
-                      >
-                        🎁 Claim Free Demo & Math Assessment →
-                      </button>
-                    </div>
-                  </div>
-                );
-              }
-
-
-              // Blockquotes / Founder Messages
-              if (trimmed.startsWith("> ")) {
-                const quoteText = trimmed.replace(/^>\s*/gm, "").replace(/[\*\_>"]+/g, "").trim();
-                return (
-                  <div key={idx} className="my-8 bg-gradient-to-br from-amber-50/90 via-orange-50/40 to-amber-50/90 border-2 border-amber-300/80 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-sm">
-                    {/* Decorative Top Left Opening Quote Mark */}
-                    <div className="absolute top-2 left-4 text-5xl text-vibrant-orange/30 font-serif leading-none select-none">“</div>
-                    
-                    <p className="text-base sm:text-lg font-semibold text-slate-800 italic leading-relaxed relative z-10 pt-4 pb-2 px-2 text-center">
-                      “{quoteText}”
-                    </p>
-                    
-                    {/* Symmetrical Bottom Right Closing Quote Mark */}
-                    <div className="absolute bottom-16 right-6 text-5xl text-vibrant-orange/30 font-serif leading-none select-none">”</div>
-                    
-                    {/* Clean Founder Badge with Initials NP instead of sparkle icon */}
-                    <div className="flex items-center justify-center gap-3.5 pt-4 border-t border-amber-200/80 relative z-10">
-                      <div className="w-11 h-11 rounded-2xl bg-slate-900 text-amber-400 font-black flex items-center justify-center text-sm tracking-wider shadow-md shrink-0 border border-slate-700">
-                        NP
-                      </div>
-                      <div className="text-left">
-                        <h4 className="text-sm font-black text-slate-900 tracking-tight">Neha Patil</h4>
-                        <p className="text-xs text-vibrant-orange font-bold">
-                          Founder & Director • Arnav Abacus Academy, Wakad, Pune, India
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-
-
-
-              // Markdown Images: ![alt](url)
-              if (trimmed.startsWith("![") && trimmed.includes("](") && trimmed.endsWith(")")) {
-                const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
-                if (imgMatch) {
-                  const alt = imgMatch[1];
-                  const src = imgMatch[2];
+                // H4 Headings
+                if (trimmed.startsWith("#### ")) {
                   return (
-                    <figure key={idx} className="my-8 rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-lg bg-slate-950">
-                      <img
-                        src={src}
-                        alt={alt}
-                        className="w-full max-h-[520px] object-contain sm:object-cover object-center"
-                        loading="lazy"
-                      />
-                      {alt && (
-                        <figcaption className="p-4 text-center text-xs sm:text-sm font-bold text-slate-700 bg-amber-50/90 border-t border-amber-200/80">
-                          📸 {alt}
-                        </figcaption>
-                      )}
-                    </figure>
+                    <h4 key={key} className="text-lg font-black text-slate-900 pt-3 text-vibrant-orange">
+                      {trimmed.replace("#### ", "")}
+                    </h4>
                   );
                 }
-              }
 
-              // Horizontal Divider
-              if (trimmed === "---") {
-                return <hr key={idx} className="my-8 border-slate-200" />;
-              }
-
-              // Markdown Tables with Rich Typography & Link Parsing
-              if (trimmed.includes("|")) {
-                const rows = trimmed.split("\n").filter(r => !r.includes(":---"));
-                if (rows.length > 0) {
+                // Custom Interactive Action Button Callout
+                if (trimmed === "[CLAIM_FREE_DEMO_BUTTON]") {
                   return (
-                    <div key={idx} className="my-6 overflow-x-auto rounded-3xl border border-amber-200/80 shadow-sm bg-white">
-                      <table className="w-full text-left text-xs sm:text-sm">
-                        {rows.map((row, rIdx) => {
-                          const cols = row.split("|").filter(c => c.trim() !== "");
-                          if (rIdx === 0) {
+                    <div key={key} className="my-6 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl text-center space-y-4">
+                      <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
+                        ✨ Limited Free Assessment Seats Available in Wakad, Pune
+                      </div>
+                      <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                        Ready to Unlock Your Child's Full Brain Potential?
+                      </h3>
+                      <p className="text-sm text-amber-100 max-w-xl mx-auto">
+                        Book a 1-on-1 Free Abacus & Vedic Math Skill Assessment Session with Neha Patil & Nitin Patil.
+                      </p>
+                      <div className="pt-2">
+                        <button
+                          onClick={() => navigate("/contact")}
+                          className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm uppercase tracking-wider px-8 py-4 rounded-2xl shadow-2xl hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2 border border-slate-700"
+                        >
+                          🎁 Claim Free Demo & Math Assessment →
+                        </button>
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Blockquotes / Founder Messages
+                if (trimmed.startsWith("> ")) {
+                  const quoteText = trimmed.replace(/^>\s*/gm, "").replace(/[\*\_>"]+/g, "").trim();
+                  return (
+                    <div key={key} className="my-6 bg-gradient-to-br from-amber-50/90 via-orange-50/40 to-amber-50/90 border-2 border-amber-300/80 rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-sm">
+                      <div className="absolute top-2 left-4 text-5xl text-vibrant-orange/30 font-serif leading-none select-none">“</div>
+                      <p className="text-base sm:text-lg font-semibold text-slate-800 italic leading-relaxed relative z-10 pt-4 pb-2 px-2 text-center">
+                        “{quoteText}”
+                      </p>
+                      <div className="absolute bottom-16 right-6 text-5xl text-vibrant-orange/30 font-serif leading-none select-none">”</div>
+                      <div className="flex items-center justify-center gap-3.5 pt-4 border-t border-amber-200/80 relative z-10">
+                        <div className="w-11 h-11 rounded-2xl bg-slate-900 text-amber-400 font-black flex items-center justify-center text-sm tracking-wider shadow-md shrink-0 border border-slate-700">
+                          NP
+                        </div>
+                        <div className="text-left">
+                          <h4 className="text-sm font-black text-slate-900 tracking-tight">Neha Patil</h4>
+                          <p className="text-xs text-vibrant-orange font-bold">
+                            Founder & Director • Arnav Abacus Academy, Wakad, Pune, India
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Markdown Images: ![alt](url)
+                if (trimmed.startsWith("![") && trimmed.includes("](") && trimmed.endsWith(")")) {
+                  const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+                  if (imgMatch) {
+                    const alt = imgMatch[1];
+                    const src = imgMatch[2];
+                    return (
+                      <figure key={key} className="my-6 rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-lg bg-slate-950">
+                        <img
+                          src={src}
+                          alt={alt}
+                          className="w-full max-h-[520px] object-contain sm:object-cover object-center"
+                          loading="lazy"
+                        />
+                        {alt && (
+                          <figcaption className="p-4 text-center text-xs sm:text-sm font-bold text-slate-700 bg-amber-50/90 border-t border-amber-200/80">
+                            📸 {alt}
+                          </figcaption>
+                        )}
+                      </figure>
+                    );
+                  }
+                }
+
+                // Horizontal Divider
+                if (trimmed === "---") {
+                  return <hr key={key} className="my-6 border-slate-200" />;
+                }
+
+                // Markdown Tables with Rich Typography & Link Parsing
+                if (trimmed.includes("|")) {
+                  const rows = trimmed.split("\n").filter(r => !r.includes(":---"));
+                  if (rows.length > 0) {
+                    return (
+                      <div key={key} className="my-5 overflow-x-auto rounded-3xl border border-amber-200/80 shadow-sm bg-white">
+                        <table className="w-full text-left text-xs sm:text-sm">
+                          {rows.map((row, rIdx) => {
+                            const cols = row.split("|").filter(c => c.trim() !== "");
+                            if (rIdx === 0) {
+                              return (
+                                <thead key={rIdx} className="bg-slate-900 text-amber-300 font-bold uppercase text-[11px] sm:text-xs tracking-wider border-b border-slate-800">
+                                  <tr>
+                                    {cols.map((c, cIdx) => (
+                                      <th key={cIdx} className="p-4 sm:p-5">{c.replace(/\*\*/g, "").trim()}</th>
+                                    ))}
+                                  </tr>
+                                </thead>
+                              );
+                            }
                             return (
-                              <thead key={rIdx} className="bg-slate-900 text-amber-300 font-bold uppercase text-[11px] sm:text-xs tracking-wider border-b border-slate-800">
-                                <tr>
+                              <tbody key={rIdx} className="divide-y divide-slate-100 bg-white">
+                                <tr className="hover:bg-amber-50/40 transition-colors">
                                   {cols.map((c, cIdx) => (
-                                    <th key={cIdx} className="p-4 sm:p-5">{c.replace(/\*\*/g, "").trim()}</th>
+                                    <td key={cIdx} className="p-4 sm:p-5 text-slate-700 font-medium leading-relaxed">
+                                      {renderFormattedInlineText(c.trim())}
+                                    </td>
                                   ))}
                                 </tr>
-                              </thead>
+                              </tbody>
                             );
-                          }
-                          return (
-                            <tbody key={rIdx} className="divide-y divide-slate-100 bg-white">
-                              <tr className="hover:bg-amber-50/40 transition-colors">
-                                {cols.map((c, cIdx) => (
-                                  <td key={cIdx} className="p-4 sm:p-5 text-slate-700 font-medium leading-relaxed">
-                                    {renderFormattedInlineText(c.trim())}
-                                  </td>
-                                ))}
-                              </tr>
-                            </tbody>
-                          );
-                        })}
-                      </table>
+                          })}
+                        </table>
+                      </div>
+                    );
+                  }
+                }
+
+                // Numbered List Items
+                if (/^\d+\.\s/.test(trimmed)) {
+                  const numItems = trimmed.split(/(?=\d+\.\s)/).filter(Boolean);
+                  return (
+                    <div key={key} className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-5">
+                      {numItems.map((item, nIdx) => {
+                        const clean = item.replace(/^\d+\.\s*/, "").replace(/\*\*/g, "").trim();
+                        return (
+                          <div key={nIdx} className="bg-gradient-to-r from-amber-50 to-orange-50/50 p-3.5 rounded-2xl border border-amber-200/70 flex items-center gap-3 shadow-xs">
+                            <span className="w-7 h-7 bg-vibrant-orange text-white font-black text-xs rounded-xl flex items-center justify-center shrink-0 shadow-sm">
+                              {nIdx + 1}
+                            </span>
+                            <span className="text-xs sm:text-sm font-bold text-slate-800">
+                              {clean}
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   );
                 }
+
+                // Bullet List Items with Uniform Typography & Formatting
+                if (trimmed.startsWith("- ")) {
+                  const items = trimmed.split("\n- ");
+                  return (
+                    <ul key={key} className="space-y-3 my-4">
+                      {items.map((item, iIdx) => {
+                        const cleanItem = item.replace(/^- /, "").trim();
+                        const parts = cleanItem.split(/:(.+)/);
+                        return (
+                          <li key={iIdx} className="flex items-start gap-3.5 bg-slate-50/80 hover:bg-amber-50/40 transition-colors p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+                            <span className="w-6 h-6 bg-amber-500/15 text-vibrant-orange border border-amber-300 rounded-xl flex items-center justify-center font-black text-xs shrink-0 mt-0.5 shadow-2xs">
+                              ✓
+                            </span>
+                            <div className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal flex-1">
+                              {parts.length > 1 ? (
+                                <>
+                                  <strong className="text-slate-950 font-bold tracking-tight block sm:inline mr-1">
+                                    {renderFormattedInlineText(parts[0].replace(/\*\*/g, "").trim())}:
+                                  </strong>
+                                  <span>{renderFormattedInlineText(parts[1].trim())}</span>
+                                </>
+                              ) : (
+                                renderFormattedInlineText(cleanItem)
+                              )}
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  );
+                }
+
+                // Standard Paragraph
+                return (
+                  <p key={key} className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
+                    {renderFormattedInlineText(trimmed)}
+                  </p>
+                );
+              };
+
+              // Parse post.content into Intro Blocks and Chapter Sections
+              const blocks = post.content.split("\n\n").map(b => b.trim()).filter(Boolean);
+              const introBlocks: string[] = [];
+              interface SectionData {
+                id: string;
+                rawTitle: string;
+                cleanTitle: string;
+                icon: string;
+                blocks: string[];
+                chapterIndex: number;
+              }
+              const sections: SectionData[] = [];
+              let currentSection: SectionData | null = null;
+              let sCount = 0;
+
+              for (const b of blocks) {
+                if (b.startsWith("### ")) {
+                  if (currentSection) {
+                    sections.push(currentSection);
+                  }
+                  const rawTitle = b.replace("### ", "").trim();
+                  const emojiMatch = rawTitle.match(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic}|\S+)\s+/u);
+                  const icon = emojiMatch ? emojiMatch[1] : `${sCount + 1}`;
+                  const cleanTitle = rawTitle.replace(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic}|\S+)\s+/u, "").trim();
+                  const secId = `section-${sCount}`;
+                  sCount++;
+
+                  currentSection = {
+                    id: secId,
+                    rawTitle,
+                    cleanTitle: cleanTitle || rawTitle,
+                    icon,
+                    blocks: [],
+                    chapterIndex: sCount,
+                  };
+                } else if (currentSection) {
+                  if (b !== "---") {
+                    currentSection.blocks.push(b);
+                  }
+                } else {
+                  if (b !== "---") {
+                    introBlocks.push(b);
+                  }
+                }
               }
 
-              // Numbered List Items (e.g. 1. 2. 3. Cognitive skills)
-              if (/^\d+\.\s/.test(trimmed)) {
-                const numItems = trimmed.split(/(?=\d+\.\s)/).filter(Boolean);
-                return (
-                  <div key={idx} className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
-                    {numItems.map((item, nIdx) => {
-                      const clean = item.replace(/^\d+\.\s*/, "").replace(/\*\*/g, "").trim();
-                      return (
-                        <div key={nIdx} className="bg-gradient-to-r from-amber-50 to-orange-50/50 p-3.5 rounded-2xl border border-amber-200/70 flex items-center gap-3 shadow-xs">
-                          <span className="w-7 h-7 bg-vibrant-orange text-white font-black text-xs rounded-xl flex items-center justify-center shrink-0 shadow-sm">
-                            {nIdx + 1}
-                          </span>
-                          <span className="text-xs sm:text-sm font-bold text-slate-800">
-                            {clean}
-                          </span>
+              if (currentSection) {
+                sections.push(currentSection);
+              }
+
+              // Dynamic & Curated Glance Summaries for each Chapter
+              const getSectionGlance = (sec: SectionData) => {
+                const titleLower = sec.rawTitle.toLowerCase();
+
+                if (titleLower.includes("executive brief")) {
+                  return {
+                    badgeText: "5 Core Highlights",
+                    readTime: "2 min",
+                    highlights: [
+                      { icon: "🎯", label: "Core Philosophy", text: "Zero exam anxiety & calm cognitive confidence over shallow medal races." },
+                      { icon: "💡", label: "AAA Learning Model™", text: "6-stage cognitive cycle converting repetitive drills into deep visual retention." },
+                      { icon: "🧮", label: "56 Personalized Paths", text: "Stage-specific mentoring across 15 developmental tiers from KG-1 to Senior Vedic." },
+                      { icon: "🚀", label: "40% Accuracy Benchmark", text: "40% of AAA champions solve 100 questions with 100% accuracy in <20 mins." },
+                      { icon: "👨‍👩‍👧", label: "Parent Reflection Kit", text: "5 transformative questions moving beyond 'What was your score?'." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("targeted value") || titleLower.includes("who is this for")) {
+                  return {
+                    badgeText: "3 Reader Tracks",
+                    readTime: "1 min",
+                    highlights: [
+                      { icon: "👨‍👩‍👧", label: "For Parents", text: "Practical ways to replace exam panic with calm confidence and home visualization." },
+                      { icon: "🎒", label: "For Students", text: "Owning your own rhythmic pace so peer page-turning never rattles your focus." },
+                      { icon: "🎓", label: "For Educators", text: "Child-centric blueprint for running high-stakes national competitions with dignity." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("redefining success") || titleLower.includes("true mastery")) {
+                  return {
+                    badgeText: "Core Mindset",
+                    readTime: "1.5 min",
+                    highlights: [
+                      { icon: "⏱️", label: "Beyond Speed", text: "Speed without clarity is fragile; true mastery is calm, self-reliant execution." },
+                      { icon: "💡", label: "Breakthrough Moment", text: "When a student pauses with steady breath and knows: 'I can solve this myself.'" },
+                      { icon: "📍", label: "National Stage", text: "AAA Wakad serves as Official Offline Exam Center on Sunday, 18 Oct 2026." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("56 champions") || titleLower.includes("15 distinct")) {
+                  return {
+                    badgeText: "15 Learning Levels",
+                    readTime: "2 min",
+                    highlights: [
+                      { icon: "🧮", label: "Abacus Soroban (KG-1 to SR-3)", text: "Tactile bead mechanics & 2-hand bilateral brain activation." },
+                      { icon: "✨", label: "Vedic Maths (JVM-0 to VM)", text: "16 Sanskrit Sutras, lightning vertical & crosswise mental multiplication." },
+                      { icon: "🌟", label: "56 Individual Stories", text: "Tailored milestones honoring each child's cognitive fingerprint." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("mock-diagnostic") || titleLower.includes("precision over speed")) {
+                  return {
+                    badgeText: "Diagnostic Milestone",
+                    readTime: "1.5 min",
+                    highlights: [
+                      { icon: "📊", label: "The 40% Milestone", text: "Approximately 40% of students completed 100 questions with 100% accuracy in <20 mins." },
+                      { icon: "🔍", label: "Mistakes as Data", text: "Errors are treated as diagnostic clues to calibrate concepts, not failures." },
+                      { icon: "💭", label: "Growth Reflection", text: "'What did this attempt teach you, and what will you try differently next time?'" },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("5 superpowers")) {
+                  return {
+                    badgeText: "5 Lifelong Habits",
+                    readTime: "2 min",
+                    highlights: [
+                      { icon: "🎯", label: "1. Laser Precision", text: "Deliberate calculation and accuracy before rushing to write." },
+                      { icon: "👁️", label: "2. Deep Focus", text: "Sustained concentration locked across 100 consecutive problems." },
+                      { icon: "⏱️", label: "3. Pacing Mastery", text: "Steady rhythm immune to surrounding peer distractions." },
+                      { icon: "💡", label: "4. Autonomous Execution", text: "Self-reliant mental arithmetic without waiting for hints." },
+                      { icon: "🦁", label: "5. Exam Fearlessness", text: "Curiosity and an eager smile over numerical panic." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("learning model") || titleLower.includes("practice into progress")) {
+                  return {
+                    badgeText: "6-Stage Pedagogy",
+                    readTime: "1.5 min",
+                    highlights: [
+                      { icon: "🔁", label: "The Cognitive Cycle", text: "Inspire → Explore → Understand → Practice → Apply → Reflect." },
+                      { icon: "🧠", label: "Whole-Brain Balance", text: "Stimulating both analytical (left) and creative/visual (right) hemispheres." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("mind-over-beads") || titleLower.includes("anzan")) {
+                  return {
+                    badgeText: "Neuroscience of Anzan",
+                    readTime: "1.5 min",
+                    highlights: [
+                      { icon: "🧠", label: "Photographic Soroban", text: "Transitioning from physical beads to an internal mental abacus." },
+                      { icon: "⚡", label: "High-Speed Calculation", text: "Sub-second mental arithmetic via spatial memory & tactile recall." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("diagnostic mock") || titleLower.includes("insights, not labels")) {
+                  return {
+                    badgeText: "Mock Paper Strategy",
+                    readTime: "1.5 min",
+                    highlights: [
+                      { icon: "📈", label: "Error Heatmaps", text: "Pinpointing speed friction points rather than judging test marks." },
+                      { icon: "🛡️", label: "Stress-Free Simulation", text: "Familiarizing exam duration so championship day feels like home practice." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("golden rules")) {
+                  return {
+                    badgeText: "4 Championship Rules",
+                    readTime: "1.5 min",
+                    highlights: [
+                      { icon: "🧘", label: "Rule 1 - The 10-Second Pause", text: "Deep belly breath before flipping the first page." },
+                      { icon: "🔇", label: "Rule 2 - Blindfold Your Ears", text: "Ignore how fast neighbors turn pages; stick to your own rhythm." },
+                      { icon: "🔍", label: "Rule 3 - The Checksum Habit", text: "Quick Vedic digit-sum sanity check on multi-digit problems." },
+                      { icon: "🏆", label: "Rule 4 - Post-Exam Celebration", text: "Celebrate effort and courage immediately after the exam." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("parent reflection kit")) {
+                  return {
+                    badgeText: "Home Conversation Kit",
+                    readTime: "1.5 min",
+                    highlights: [
+                      { icon: "💬", label: "5 Reflective Questions", text: "'Which problem challenged you most?', 'How did your breathing feel?', 'What made you proud?'" },
+                      { icon: "🏡", label: "Intrinsic Motivation", text: "Building self-worth rooted in perseverance rather than exam ranks." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("championship snapshot") || titleLower.includes("examination center")) {
+                  return {
+                    badgeText: "Event Snapshot",
+                    readTime: "1 min",
+                    highlights: [
+                      { icon: "🗓️", label: "Championship Date", text: "Sunday, 18 October 2026." },
+                      { icon: "📍", label: "Official Offline Center", text: "Arnav Abacus Academy, Wakad, Pune, Maharashtra." },
+                      { icon: "🏅", label: "Organisers & Accreditations", text: "Organised by AVAS & powered by IIVA Book of Records (NSDC Approved Partner)." },
+                    ]
+                  };
+                }
+
+                if (titleLower.includes("neha patil") || titleLower.includes("message to our 56")) {
+                  return {
+                    badgeText: "Founder's Address",
+                    readTime: "1.5 min",
+                    highlights: [
+                      { icon: "💌", label: "Letter to 56 Champions", text: "'You have already won by daring to challenge yourself with courage.'" },
+                      { icon: "🎁", label: "Free Math Assessment", text: "Book 1-on-1 Free Abacus & Vedic Math Assessment Session at AAA Wakad." },
+                    ]
+                  };
+                }
+
+                // Dynamic Fallback Generator for other blog posts / arbitrary sections
+                const firstTable = sec.blocks.find(b => b.includes("|"));
+                if (firstTable) {
+                  const rows = firstTable.split("\n").filter(r => !r.includes(":---") && r.includes("|"));
+                  const dataRows = rows.slice(1, 4);
+                  const highlights = dataRows.map((r, i) => {
+                    const cols = r.split("|").filter(c => c.trim());
+                    const label = cols[0]?.replace(/\*\*/g, "").trim() || `Item ${i + 1}`;
+                    const text = cols[1]?.replace(/\*\*/g, "").trim() || cols[0]?.replace(/\*\*/g, "").trim();
+                    return { icon: "📊", label, text };
+                  });
+                  return {
+                    badgeText: "Table Highlights",
+                    readTime: "1 min",
+                    highlights: highlights.length > 0 ? highlights : [{ icon: "📌", label: "Overview", text: "Key analytical comparison and structured guidance inside." }]
+                  };
+                }
+
+                const firstList = sec.blocks.find(b => b.startsWith("- ") || /^\d+\.\s/.test(b));
+                if (firstList) {
+                  const items = (firstList.startsWith("- ") ? firstList.split("\n- ") : firstList.split(/(?=\d+\.\s)/)).slice(0, 3);
+                  return {
+                    badgeText: `${items.length} Key Points`,
+                    readTime: "1 min",
+                    highlights: items.map(it => ({
+                      icon: "✓",
+                      label: "",
+                      text: it.replace(/^- /, "").replace(/^\d+\.\s*/, "").replace(/\*\*/g, "").slice(0, 120)
+                    }))
+                  };
+                }
+
+                const firstPara = sec.blocks[0] || "";
+                return {
+                  badgeText: "Section Overview",
+                  readTime: "1 min",
+                  highlights: [
+                    {
+                      icon: "💡",
+                      label: "Summary",
+                      text: firstPara.replace(/\*\*/g, "").slice(0, 160) + (firstPara.length > 160 ? "..." : "")
+                    }
+                  ]
+                };
+              };
+
+              const allSecIds = sections.map(s => s.id);
+              const areAllExpanded = allSecIds.length > 0 && allSecIds.every(id => !!expandedSections[id]);
+
+              return (
+                <div className="space-y-8">
+                  {/* Any introductory blocks before Chapter 1 */}
+                  {introBlocks.length > 0 && (
+                    <div className="space-y-4 pb-4 border-b border-slate-100">
+                      {introBlocks.map((b, bIdx) => renderBlock(b, `intro-${bIdx}`))}
+                    </div>
+                  )}
+
+                  {/* Master Section Toolbar: Quick Glance vs Expand All */}
+                  {sections.length > 0 && (
+                    <div className="bg-gradient-to-r from-amber-50 via-orange-50/60 to-amber-50 border border-amber-200/90 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+                      <div className="flex items-center gap-3">
+                        <span className="w-9 h-9 rounded-xl bg-vibrant-orange text-white flex items-center justify-center font-black text-sm shadow-sm shrink-0">
+                          <Layers className="w-5 h-5" />
+                        </span>
+                        <div>
+                          <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                            <span>All {sections.length} Chapters In One Glance</span>
+                            <span className="text-[10px] font-bold bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                              Time-Saver Mode
+                            </span>
+                          </h4>
+                          <p className="text-xs text-slate-600 font-medium">
+                            Scan highlights in seconds. Tap <strong>"+"</strong> on any chapter to read its complete details, or open everything below.
+                          </p>
                         </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 self-stretch sm:self-auto justify-end shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleAllSections(allSecIds)}
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white hover:bg-amber-100/60 text-slate-800 hover:text-vibrant-orange font-bold text-xs border border-amber-300 shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+                        >
+                          {areAllExpanded ? (
+                            <>
+                              <Minus className="w-3.5 h-3.5 text-vibrant-orange stroke-[2.5]" />
+                              <span>Collapse All to Glance</span>
+                            </>
+                          ) : (
+                            <>
+                              <Plus className="w-3.5 h-3.5 text-vibrant-orange stroke-[2.5]" />
+                              <span>Expand All Details ({sections.length})</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Interactive Section Cards */}
+                  <div className="space-y-6">
+                    {sections.map((sec) => {
+                      const isExpanded = !!expandedSections[sec.id];
+                      const isSelected = activeSectionId === sec.id;
+                      const glance = getSectionGlance(sec);
+
+                      return (
+                        <section
+                          key={sec.id}
+                          id={sec.id}
+                          className={`scroll-mt-24 transition-all duration-300 rounded-3xl ${
+                            isExpanded
+                              ? `bg-white border-2 ${
+                                  isSelected
+                                    ? "border-amber-500 ring-4 ring-amber-400/25 shadow-xl"
+                                    : "border-amber-300/90 shadow-md"
+                                } p-5 sm:p-8 space-y-6`
+                              : `border hover:border-amber-400/90 ${
+                                  isSelected
+                                    ? "border-amber-500 bg-amber-50/50 ring-2 ring-amber-400/30"
+                                    : "border-slate-200/90 bg-gradient-to-br from-white via-slate-50/70 to-amber-50/30"
+                                } p-4 sm:p-6 shadow-xs hover:shadow-md cursor-pointer`
+                          }`}
+                          onClick={() => {
+                            if (!isExpanded) {
+                              toggleSection(sec.id);
+                            }
+                          }}
+                        >
+                          {/* Chapter Header Bar */}
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                            <div className="space-y-1.5 flex-1 min-w-0">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="text-[10px] sm:text-[11px] font-mono font-black uppercase tracking-wider px-2.5 py-0.5 rounded-lg bg-slate-900 text-amber-400">
+                                  Chapter {sec.chapterIndex}
+                                </span>
+                                <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg">
+                                  ⏱️ {glance.readTime}
+                                </span>
+                                {glance.badgeText && (
+                                  <span className="text-[11px] font-bold text-vibrant-orange bg-orange-50 border border-orange-200/70 px-2.5 py-0.5 rounded-lg">
+                                    {glance.badgeText}
+                                  </span>
+                                )}
+                              </div>
+                              <h3 className="text-lg sm:text-2xl font-black text-slate-900 leading-snug flex items-center gap-2.5">
+                                <span className={`w-2.5 h-6 rounded-full inline-block shrink-0 transition-colors ${isExpanded ? "bg-vibrant-orange" : "bg-amber-400"}`}></span>
+                                <span>{sec.rawTitle}</span>
+                              </h3>
+                            </div>
+
+                            {/* Prominent +/- Interactive Toggle Button */}
+                            <div className="flex items-center gap-2 shrink-0">
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleSection(sec.id);
+                                }}
+                                className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition-all cursor-pointer shadow-xs ${
+                                  isExpanded
+                                    ? "bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300"
+                                    : "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white shadow-amber-500/20 hover:scale-105"
+                                }`}
+                              >
+                                {isExpanded ? (
+                                  <>
+                                    <Minus className="w-4 h-4 stroke-[2.5]" />
+                                    <span>Collapse</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Plus className="w-4 h-4 stroke-[2.5]" />
+                                    <span>View Details</span>
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* When Collapsed: Show Brief Details / Glance Summary */}
+                          {!isExpanded && (
+                            <div className="pt-2 space-y-3">
+                              <div className="bg-amber-50/75 border border-amber-200/70 rounded-2xl p-4 sm:p-5 space-y-2.5">
+                                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-vibrant-orange">
+                                  <Sparkles className="w-3.5 h-3.5" />
+                                  <span>Glance Summary & Key Takeaways</span>
+                                </div>
+                                <ul className="space-y-2">
+                                  {glance.highlights.map((h, hIdx) => (
+                                    <li key={hIdx} className="text-xs sm:text-sm text-slate-700 flex items-start gap-2">
+                                      <span className="text-base leading-none shrink-0 mt-0.5">{h.icon || "•"}</span>
+                                      <div>
+                                        {h.label && (
+                                          <strong className="font-extrabold text-slate-900 mr-1.5">
+                                            {h.label}:
+                                          </strong>
+                                        )}
+                                        <span className="text-slate-700">{h.text}</span>
+                                      </div>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <div className="flex items-center justify-between text-xs text-slate-500 pt-1 px-1 font-semibold">
+                                <span className="text-vibrant-orange flex items-center gap-1 font-bold">
+                                  <Plus className="w-3.5 h-3.5 stroke-[3]" /> Click "+" or tap card to view full details, tables & action guide
+                                </span>
+                                <span className="hidden sm:inline text-slate-400">
+                                  {sec.blocks.length} detailed blocks inside
+                                </span>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* When Expanded: Render Complete Formatted Details */}
+                          {isExpanded && (
+                            <div className="space-y-6 pt-2">
+                              {sec.blocks.map((b, bIdx) => renderBlock(b, `${sec.id}-b-${bIdx}`))}
+
+                              {/* Bottom of Section: Quick Collapse Button */}
+                              <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                                <span className="text-xs text-slate-400 font-medium">
+                                  End of Chapter {sec.chapterIndex}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    toggleSection(sec.id);
+                                  }}
+                                  className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-vibrant-orange hover:bg-slate-100 px-3.5 py-1.5 rounded-xl transition-colors cursor-pointer border border-slate-200"
+                                >
+                                  <Minus className="w-3.5 h-3.5" />
+                                  <span>Collapse to Summary</span>
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </section>
                       );
                     })}
                   </div>
-                );
-              }
-
-              // Bullet List Items with Uniform Typography & Formatting
-              if (trimmed.startsWith("- ")) {
-                const items = trimmed.split("\n- ");
-                return (
-                  <ul key={idx} className="space-y-3 my-5">
-                    {items.map((item, iIdx) => {
-                      const cleanItem = item.replace(/^- /, "").trim();
-                      const parts = cleanItem.split(/:(.+)/);
-                      return (
-                        <li key={iIdx} className="flex items-start gap-3.5 bg-slate-50/80 hover:bg-amber-50/40 transition-colors p-4 rounded-2xl border border-slate-200/80 shadow-xs">
-                          <span className="w-6 h-6 bg-amber-500/15 text-vibrant-orange border border-amber-300 rounded-xl flex items-center justify-center font-black text-xs shrink-0 mt-0.5 shadow-2xs">
-                            ✓
-                          </span>
-                          <div className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal flex-1">
-                            {parts.length > 1 ? (
-                              <>
-                                <strong className="text-slate-950 font-bold tracking-tight block sm:inline mr-1">
-                                  {renderFormattedInlineText(parts[0].replace(/\*\*/g, "").trim())}:
-                                </strong>
-                                <span>{renderFormattedInlineText(parts[1].trim())}</span>
-                              </>
-                            ) : (
-                              renderFormattedInlineText(cleanItem)
-                            )}
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                );
-              }
-
-              // Standard Paragraph
-              return (
-                <p key={idx} className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
-                  {renderFormattedInlineText(trimmed)}
-                </p>
+                </div>
               );
-            });
-          })()}
+            })()}
           </div>
 
 
