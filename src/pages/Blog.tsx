@@ -17,11 +17,11 @@ export default function Blog() {
     const stored = localStorage.getItem("aaa_blog_posts");
     if (stored) {
       try {
-        const parsed = JSON.parse(stored);
-        if (
-          parsed[0]?.id !== "blog-0" ||
-          !parsed[0]?.content.includes("[CLAIM_FREE_DEMO_BUTTON]")
-        ) {
+        const parsed: BlogPost[] = JSON.parse(stored);
+        // Check if all initial posts exist in cache; if new posts added in INITIAL_BLOG_POSTS, refresh
+        const hasAllInitial = INITIAL_BLOG_POSTS.every((initP) => parsed.some((p) => p.id === initP.id));
+        const champUpdated = parsed.find(p => p.id === "blog-4")?.content.includes("Who Is This For");
+        if (!hasAllInitial || !champUpdated || parsed[0]?.id !== "blog-0" || !parsed[0]?.content.includes("[CLAIM_FREE_DEMO_BUTTON]")) {
           localStorage.setItem("aaa_blog_posts", JSON.stringify(INITIAL_BLOG_POSTS));
           setPosts(INITIAL_BLOG_POSTS);
         } else {

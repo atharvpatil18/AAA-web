@@ -78,6 +78,31 @@
   <url>
     <loc>https://arnavabacusacademy-web.vercel.app/blog</loc>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://arnavabacusacademy-web.vercel.app/blog/national-level-abacus-vedic-maths-championship-2026</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://arnavabacusacademy-web.vercel.app/blog/why-arnav-abacus-academy-exists-building-future-ready-children</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://arnavabacusacademy-web.vercel.app/blog/how-abacus-boosts-whole-brain-development</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://arnavabacusacademy-web.vercel.app/blog/5-magical-vedic-maths-tricks-multiply-faster</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://arnavabacusacademy-web.vercel.app/blog/screen-time-vs-brain-gym-mental-math-antidote</loc>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>

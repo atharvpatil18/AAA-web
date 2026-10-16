@@ -35,8 +35,10 @@ export default function BlogPostDetail() {
     let allPosts: BlogPost[] = INITIAL_BLOG_POSTS;
     if (stored) {
       try {
-        const parsed = JSON.parse(stored);
-        if (parsed[0]?.id !== "blog-0" || !parsed[0]?.content.includes("[CLAIM_FREE_DEMO_BUTTON]")) {
+        const parsed: BlogPost[] = JSON.parse(stored);
+        const hasAllInitial = INITIAL_BLOG_POSTS.every((initP) => parsed.some((p) => p.id === initP.id));
+        const champUpdated = parsed.find(p => p.id === "blog-4")?.content.includes("Who Is This For");
+        if (!hasAllInitial || !champUpdated || parsed[0]?.id !== "blog-0" || !parsed[0]?.content.includes("[CLAIM_FREE_DEMO_BUTTON]")) {
           allPosts = INITIAL_BLOG_POSTS;
           localStorage.setItem("aaa_blog_posts", JSON.stringify(INITIAL_BLOG_POSTS));
         } else {
@@ -54,6 +56,14 @@ export default function BlogPostDetail() {
     setPosts(allPosts);
     const found = allPosts.find((p) => p.slug === slug) || allPosts[0];
     setPost(found);
+
+    if (found) {
+      document.title = `${found.title} | Arnav Abacus Academy Pune`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute("content", found.excerpt);
+      }
+    }
 
     // Check if user already voted on poll
     if (found?.poll) {
@@ -260,17 +270,96 @@ export default function BlogPostDetail() {
 
       {/* Main Content Area */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 space-y-10">
-        {/* Cover Image */}
-        <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-white">
-          <img src={post.coverImage} alt={post.title} className="w-full h-80 sm:h-96 object-cover" />
+        {/* Cover Image Banner with Crystal-Clear Aspect Ratio & Sharp Text Legibility */}
+        <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-950 flex flex-col items-center justify-center">
+          <img
+            src={post.coverImage}
+            alt={post.title}
+            className="w-full h-auto object-contain block"
+            loading="eager"
+          />
         </div>
 
         {/* Article Body with Premium Blog Typography */}
         <div className="bg-white rounded-3xl p-6 sm:p-12 shadow-sm border border-slate-200 space-y-8">
           <div className="article-body text-slate-800 leading-relaxed text-base space-y-6">
-            {post.content.split("\n\n").map((block, idx) => {
-              const trimmed = block.trim();
-              if (!trimmed) return null;
+            {/* Standard Readable Paragraph with Inline **Bold**, *Italic*, and [Link](url) Parser defined upfront */}
+            {(() => {
+              const renderFormattedInlineText = (text: string) => {
+                const linkRegex = /(\[[^\]]+\]\([^)]+\))/g;
+                const linkSegments = text.split(linkRegex);
+
+                return linkSegments.map((segment, sIdx) => {
+                  const match = segment.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+                  if (match) {
+                    const linkText = match[1];
+                    const url = match[2];
+                    const isInternal = url.startsWith("/");
+                    if (isInternal) {
+                      return (
+                        <Link
+                          key={sIdx}
+                          to={url}
+                          className="text-vibrant-orange hover:text-amber-700 font-bold underline underline-offset-2 transition-colors inline"
+                        >
+                          {linkText}
+                        </Link>
+                      );
+                    }
+                    return (
+                      <a
+                        key={sIdx}
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-vibrant-orange hover:text-amber-700 font-bold underline underline-offset-2 transition-colors inline"
+                      >
+                        {linkText}
+                      </a>
+                    );
+                  }
+
+                  const boldParts = segment.split(/(\*\*.*?\*\*)/g);
+                  return boldParts.map((bPart, bIdx) => {
+                    if (bPart.startsWith("**") && bPart.endsWith("**")) {
+                      return (
+                        <strong
+                          key={`${sIdx}-${bIdx}`}
+                          className="font-extrabold text-slate-900 bg-amber-100/60 px-1.5 py-0.5 rounded-md border border-amber-200/50"
+                        >
+                          {bPart.slice(2, -2)}
+                        </strong>
+                      );
+                    }
+
+                    const italicParts = bPart.split(/(\*[^*]+?\*)/g);
+                    return italicParts.map((iPart, iIdx) => {
+                      if (iPart.startsWith("*") && iPart.endsWith("*") && iPart.length > 2) {
+                        return (
+                          <em key={`${sIdx}-${bIdx}-${iIdx}`} className="italic text-slate-800">
+                            {iPart.slice(1, -1)}
+                          </em>
+                        );
+                      }
+                      return iPart;
+                    });
+                  });
+                });
+              };
+
+              return post.content.split("\n\n").map((block, idx) => {
+                const trimmed = block.trim();
+                if (!trimmed) return null;
+
+                // H2 Headings
+                if (trimmed.startsWith("## ")) {
+                  return (
+                    <h2 key={idx} className="text-2xl sm:text-3xl font-black text-slate-900 pt-8 pb-3 border-b-2 border-amber-300 flex items-center gap-2">
+                      <span className="w-2.5 h-7 bg-vibrant-orange rounded-full inline-block"></span>
+                      {trimmed.replace("## ", "")}
+                    </h2>
+                  );
+                }
 
               // H3 Headings
               if (trimmed.startsWith("### ")) {
@@ -350,26 +439,50 @@ export default function BlogPostDetail() {
 
 
 
+              // Markdown Images: ![alt](url)
+              if (trimmed.startsWith("![") && trimmed.includes("](") && trimmed.endsWith(")")) {
+                const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+                if (imgMatch) {
+                  const alt = imgMatch[1];
+                  const src = imgMatch[2];
+                  return (
+                    <figure key={idx} className="my-8 rounded-3xl overflow-hidden border-2 border-amber-200/80 shadow-lg bg-slate-950">
+                      <img
+                        src={src}
+                        alt={alt}
+                        className="w-full max-h-[520px] object-contain sm:object-cover object-center"
+                        loading="lazy"
+                      />
+                      {alt && (
+                        <figcaption className="p-4 text-center text-xs sm:text-sm font-bold text-slate-700 bg-amber-50/90 border-t border-amber-200/80">
+                          📸 {alt}
+                        </figcaption>
+                      )}
+                    </figure>
+                  );
+                }
+              }
+
               // Horizontal Divider
               if (trimmed === "---") {
                 return <hr key={idx} className="my-8 border-slate-200" />;
               }
 
-              // Markdown Tables
+              // Markdown Tables with Rich Typography & Link Parsing
               if (trimmed.includes("|")) {
                 const rows = trimmed.split("\n").filter(r => !r.includes(":---"));
                 if (rows.length > 0) {
                   return (
-                    <div key={idx} className="my-6 overflow-x-auto rounded-2xl border border-slate-200 shadow-xs">
+                    <div key={idx} className="my-6 overflow-x-auto rounded-3xl border border-amber-200/80 shadow-sm bg-white">
                       <table className="w-full text-left text-xs sm:text-sm">
                         {rows.map((row, rIdx) => {
                           const cols = row.split("|").filter(c => c.trim() !== "");
                           if (rIdx === 0) {
                             return (
-                              <thead key={rIdx} className="bg-slate-900 text-white font-bold uppercase text-[11px] tracking-wider">
+                              <thead key={rIdx} className="bg-slate-900 text-amber-300 font-bold uppercase text-[11px] sm:text-xs tracking-wider border-b border-slate-800">
                                 <tr>
                                   {cols.map((c, cIdx) => (
-                                    <th key={cIdx} className="p-3.5 sm:p-4">{c.replace(/\*\*/g, "").trim()}</th>
+                                    <th key={cIdx} className="p-4 sm:p-5">{c.replace(/\*\*/g, "").trim()}</th>
                                   ))}
                                 </tr>
                               </thead>
@@ -377,9 +490,11 @@ export default function BlogPostDetail() {
                           }
                           return (
                             <tbody key={rIdx} className="divide-y divide-slate-100 bg-white">
-                              <tr className="hover:bg-slate-50/80 transition-colors">
+                              <tr className="hover:bg-amber-50/40 transition-colors">
                                 {cols.map((c, cIdx) => (
-                                  <td key={cIdx} className="p-3.5 sm:p-4 text-slate-700 font-medium">{c.replace(/\*\*/g, "").trim()}</td>
+                                  <td key={cIdx} className="p-4 sm:p-5 text-slate-700 font-medium leading-relaxed">
+                                    {renderFormattedInlineText(c.trim())}
+                                  </td>
                                 ))}
                               </tr>
                             </tbody>
@@ -413,27 +528,31 @@ export default function BlogPostDetail() {
                 );
               }
 
-              // Bullet List Items
+              // Bullet List Items with Uniform Typography & Formatting
               if (trimmed.startsWith("- ")) {
                 const items = trimmed.split("\n- ");
                 return (
-                  <ul key={idx} className="space-y-2.5 my-4">
+                  <ul key={idx} className="space-y-3 my-5">
                     {items.map((item, iIdx) => {
                       const cleanItem = item.replace(/^- /, "").trim();
-                      const parts = cleanItem.split(":");
+                      const parts = cleanItem.split(/:(.+)/);
                       return (
-                        <li key={iIdx} className="flex items-start gap-3 bg-slate-50/70 p-3 rounded-xl border border-slate-100">
-                          <span className="w-5 h-5 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">✓</span>
-                          <span className="text-sm font-medium text-slate-700 leading-normal">
+                        <li key={iIdx} className="flex items-start gap-3.5 bg-slate-50/80 hover:bg-amber-50/40 transition-colors p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+                          <span className="w-6 h-6 bg-amber-500/15 text-vibrant-orange border border-amber-300 rounded-xl flex items-center justify-center font-black text-xs shrink-0 mt-0.5 shadow-2xs">
+                            ✓
+                          </span>
+                          <div className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal flex-1">
                             {parts.length > 1 ? (
                               <>
-                                <strong className="text-slate-900 font-bold">{parts[0].replace(/\*\*/g, "")}:</strong>
-                                {parts.slice(1).join(":")}
+                                <strong className="text-slate-950 font-bold tracking-tight block sm:inline mr-1">
+                                  {renderFormattedInlineText(parts[0].replace(/\*\*/g, "").trim())}:
+                                </strong>
+                                <span>{renderFormattedInlineText(parts[1].trim())}</span>
                               </>
                             ) : (
-                              cleanItem.replace(/\*\*/g, "")
+                              renderFormattedInlineText(cleanItem)
                             )}
-                          </span>
+                          </div>
                         </li>
                       );
                     })}
@@ -441,28 +560,14 @@ export default function BlogPostDetail() {
                 );
               }
 
-              // Standard Readable Paragraph with Inline **Bold** Parser
-              const renderFormattedInlineText = (text: string) => {
-                const parts = text.split(/(\*\*.*?\*\*)/g);
-                return parts.map((part, pIdx) => {
-                  if (part.startsWith("**") && part.endsWith("**")) {
-                    return (
-                      <strong key={pIdx} className="font-extrabold text-slate-900 bg-amber-100/60 px-1.5 py-0.5 rounded-md border border-amber-200/50">
-                        {part.slice(2, -2)}
-                      </strong>
-                    );
-                  }
-                  return part;
-                });
-              };
-
+              // Standard Paragraph
               return (
                 <p key={idx} className="text-sm sm:text-base text-slate-700 leading-relaxed font-normal">
                   {renderFormattedInlineText(trimmed)}
                 </p>
               );
-
-            })}
+            });
+          })()}
           </div>
 
 
@@ -628,12 +733,26 @@ export default function BlogPostDetail() {
               </button>
             </div>
 
-            <Link
-              to="/practice"
-              className="bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all uppercase tracking-wider"
-            >
-              🚀 Try Practice Hub
-            </Link>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <Link
+                to="/worksheets"
+                className="bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm transition-all uppercase tracking-wider inline-flex items-center gap-1.5 border border-slate-700 hover:scale-105"
+              >
+                <span>📝</span> Explore Worksheets
+              </Link>
+              <Link
+                to="/showcase"
+                className="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm transition-all uppercase tracking-wider inline-flex items-center gap-1.5 hover:scale-105"
+              >
+                <span>🏆</span> Our Success
+              </Link>
+              <Link
+                to="/practice"
+                className="bg-vibrant-orange hover:bg-orange-600 text-white font-black text-xs px-5 py-2.5 rounded-xl shadow-md transition-all uppercase tracking-wider inline-flex items-center gap-1.5 hover:scale-105"
+              >
+                <span>🚀</span> Try Practice Hub
+              </Link>
+            </div>
           </div>
         </div>
 
