@@ -29,6 +29,7 @@ export default function BlogPostDetail() {
   // Quick Mental Math Mini Game state inside the post
   const [userMathAns, setUserMathAns] = useState("");
   const [mathSolved, setMathSolved] = useState<boolean | null>(null);
+  const [copiedLink, setCopiedLink] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("aaa_blog_posts");
@@ -715,31 +716,69 @@ export default function BlogPostDetail() {
               <span className="text-xs font-bold text-slate-500">Share Story:</span>
               {(() => {
                 const liveBaseUrl = "https://arnavabacusacademy-web.vercel.app";
-                const shareUrl = window.location.hostname === "localhost" || window.location.hostname.startsWith("192.168.") || window.location.hostname.startsWith("127.0.")
-                  ? `${liveBaseUrl}/blog/${post.slug}`
-                  : window.location.href;
+                const shareUrl = `${liveBaseUrl}/blog/${post.slug}`;
+                const shareText = `${post.title}\n\nRead the official story at:\n${shareUrl}`;
+
+                const handleCopy = async () => {
+                  let success = false;
+                  if (navigator.clipboard && window.isSecureContext) {
+                    try {
+                      await navigator.clipboard.writeText(shareUrl);
+                      success = true;
+                    } catch {
+                      success = false;
+                    }
+                  }
+
+                  if (!success) {
+                    // Fallback using textarea execCommand
+                    try {
+                      const textArea = document.createElement("textarea");
+                      textArea.value = shareUrl;
+                      textArea.style.position = "fixed";
+                      textArea.style.left = "-999999px";
+                      textArea.style.top = "-999999px";
+                      document.body.appendChild(textArea);
+                      textArea.focus();
+                      textArea.select();
+                      success = document.execCommand("copy");
+                      document.body.removeChild(textArea);
+                    } catch {
+                      success = false;
+                    }
+                  }
+
+                  if (success) {
+                    setCopiedLink(true);
+                    setTimeout(() => setCopiedLink(false), 3000);
+                  } else {
+                    prompt("Copy the article link below:", shareUrl);
+                  }
+                };
 
                 return (
-                  <>
+                  <div className="flex items-center gap-2">
                     <a
-                      href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " - " + shareUrl)}`}
+                      href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
                       target="_blank"
-                      rel="noreferrer"
-                      className="w-9 h-9 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm shadow-sm transition-all"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-2 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-xl text-xs font-black shadow-sm transition-all cursor-pointer"
                       title="Share on WhatsApp"
                     >
-                      💬
+                      <span className="text-sm">💬</span> WhatsApp
                     </a>
                     <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(shareUrl);
-                        alert("Article link copied! You can now share it with other parents:\n" + shareUrl);
-                      }}
-                      className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                      onClick={handleCopy}
+                      className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer border ${
+                        copiedLink
+                          ? "bg-emerald-600 text-white border-emerald-600 shadow-sm"
+                          : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200"
+                      }`}
                     >
-                      🔗 Copy Link
+                      <span>{copiedLink ? "✓" : "🔗"}</span>
+                      {copiedLink ? "Link Copied!" : "Copy Link"}
                     </button>
-                  </>
+                  </div>
                 );
               })()}
             </div>
