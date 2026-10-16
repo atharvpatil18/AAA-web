@@ -5,6 +5,7 @@ import { INITIAL_BLOG_POSTS, getLocalizedBlogPost } from "../data/blogData";
 import { useLanguage } from "../lib/LanguageContext";
 
 import { validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
+import { ChevronDown, ChevronUp, ChevronRight, Compass, Sparkles, BookOpen, Layers, CheckCircle2, Eye, EyeOff, LayoutGrid } from "lucide-react";
 
 export default function BlogPostDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -31,6 +32,17 @@ export default function BlogPostDetail() {
   const [userMathAns, setUserMathAns] = useState("");
   const [mathSolved, setMathSolved] = useState<boolean | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
+  
+  // Section Navigation & Interactive Accordion States
+  const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
+  const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({});
+
+  const toggleSectionCollapse = (secId: string) => {
+    setCollapsedSections(prev => ({
+      ...prev,
+      [secId]: !prev[secId]
+    }));
+  };
 
   useEffect(() => {
     let allPosts: BlogPost[] = INITIAL_BLOG_POSTS;
@@ -283,6 +295,103 @@ export default function BlogPostDetail() {
           />
         </div>
 
+        {/* Interactive "At-A-Glance" Directory: View all blog sections instantly without scrolling */}
+        {(() => {
+          // Extract section titles from content
+          const sections: { id: string; title: string; icon: string }[] = [];
+          const headingMatches = post.content.match(/^###?\s+(.+)$/gm) || [];
+          
+          headingMatches.forEach((h, i) => {
+            const rawTitle = h.replace(/^###?\s+/, "").trim();
+            // Extract leading emoji if any
+            const emojiMatch = rawTitle.match(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic}|\S+)\s+/u);
+            const icon = emojiMatch ? emojiMatch[1] : `${i + 1}`;
+            const cleanTitle = rawTitle.replace(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic}|\S+)\s+/u, "").trim();
+            const secId = `section-${i}`;
+            sections.push({ id: secId, title: cleanTitle || rawTitle, icon });
+          });
+
+          if (sections.length === 0) return null;
+
+          const scrollToSection = (secId: string) => {
+            setActiveSectionId(secId);
+            const el = document.getElementById(secId);
+            if (el) {
+              const yOffset = -100;
+              const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+              window.scrollTo({ top: y, behavior: "smooth" });
+              // Also ensure section is expanded if user was using collapse
+              setCollapsedSections(prev => ({ ...prev, [secId]: false }));
+            }
+          };
+
+          return (
+            <div id="story-glance-directory" className="bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 border-2 border-amber-400/40 shadow-2xl rounded-3xl p-5 sm:p-8 text-white space-y-6 scroll-mt-24">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                <div className="space-y-1">
+                  <div className="inline-flex items-center gap-2 bg-amber-400/15 text-amber-300 border border-amber-400/30 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider">
+                    <Compass className="w-3.5 h-3.5 text-amber-400 animate-spin-slow" />
+                    Story At A Glance • Instant Navigation
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-black text-white flex items-center gap-2">
+                    <span>Explore All {sections.length} Chapters</span>
+                  </h3>
+                  <p className="text-xs text-slate-300 font-medium">
+                    Tap any topic below to jump directly to its details—no need to scroll through the full article!
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-[11px] font-mono text-amber-300/80 bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700">
+                    ⏱️ {formatNumber(post.readTime)}
+                  </span>
+                </div>
+              </div>
+
+              {/* Grid of Section Pills */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3">
+                {sections.map((sec, idx) => {
+                  const isActive = activeSectionId === sec.id;
+                  return (
+                    <button
+                      key={sec.id}
+                      onClick={() => scrollToSection(sec.id)}
+                      className={`text-left p-3 sm:p-3.5 rounded-2xl border transition-all flex items-start gap-3 group cursor-pointer ${
+                        isActive
+                          ? "bg-amber-400 text-slate-950 border-amber-300 shadow-lg shadow-amber-400/20 scale-[1.02]"
+                          : "bg-slate-800/80 hover:bg-slate-800 text-slate-200 border-slate-700/80 hover:border-amber-400/60 hover:text-white"
+                      }`}
+                    >
+                      <span className={`w-7 h-7 rounded-xl flex items-center justify-center font-black text-xs shrink-0 shadow-sm transition-transform group-hover:scale-110 ${
+                        isActive ? "bg-slate-950 text-amber-400" : "bg-slate-900 text-amber-400 border border-slate-700"
+                      }`}>
+                        {sec.icon}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-1">
+                          <span className={`text-[10px] font-bold uppercase tracking-wider font-mono ${isActive ? "text-slate-800" : "text-amber-400/90"}`}>
+                            Chapter {idx + 1}
+                          </span>
+                          <ChevronRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 ${isActive ? "text-slate-950" : "text-slate-400"}`} />
+                        </div>
+                        <h4 className={`text-xs font-bold leading-snug line-clamp-2 mt-0.5 ${isActive ? "text-slate-950 font-black" : "text-white"}`}>
+                          {sec.title}
+                        </h4>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="pt-2 text-center border-t border-slate-800/80">
+                <p className="text-[11px] text-slate-400">
+                  💡 <strong>Tip:</strong> Each section heading below also includes an expand/collapse toggle so you can view only what you want!
+                </p>
+              </div>
+            </div>
+          );
+        })()}
+
         {/* Article Body with Premium Blog Typography */}
         <div className="bg-white rounded-3xl p-6 sm:p-12 shadow-sm border border-slate-200 space-y-8">
           <div className="article-body text-slate-800 leading-relaxed text-base space-y-6">
@@ -350,6 +459,9 @@ export default function BlogPostDetail() {
                 });
               };
 
+              // Track H3 section index for anchors and accordion toggles
+              let h3Counter = 0;
+
               return post.content.split("\n\n").map((block, idx) => {
                 const trimmed = block.trim();
                 if (!trimmed) return null;
@@ -357,20 +469,50 @@ export default function BlogPostDetail() {
                 // H2 Headings
                 if (trimmed.startsWith("## ")) {
                   return (
-                    <h2 key={idx} className="text-2xl sm:text-3xl font-black text-slate-900 pt-8 pb-3 border-b-2 border-amber-300 flex items-center gap-2">
+                    <h2 key={idx} className="text-2xl sm:text-3xl font-black text-slate-900 pt-8 pb-3 border-b-2 border-amber-300 flex items-center gap-2 scroll-mt-24">
                       <span className="w-2.5 h-7 bg-vibrant-orange rounded-full inline-block"></span>
                       {trimmed.replace("## ", "")}
                     </h2>
                   );
                 }
 
-              // H3 Headings
+              // H3 Headings with Anchor ID & Active Chapter Indicator
               if (trimmed.startsWith("### ")) {
+                const secId = `section-${h3Counter}`;
+                h3Counter++;
+                const isSelected = activeSectionId === secId;
+
                 return (
-                  <h3 key={idx} className="text-xl sm:text-2xl font-black text-slate-900 pt-6 pb-2 border-b border-amber-200/60 flex items-center gap-2">
-                    <span className="w-2 h-6 bg-vibrant-orange rounded-full inline-block"></span>
-                    {trimmed.replace("### ", "")}
-                  </h3>
+                  <div
+                    key={idx}
+                    id={secId}
+                    className={`scroll-mt-24 pt-6 pb-2 border-b transition-all rounded-2xl px-2 sm:px-3 -mx-2 sm:-mx-3 ${
+                      isSelected
+                        ? "bg-amber-100/50 border-amber-400"
+                        : "border-amber-200/60"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center gap-2.5">
+                        <span className={`w-2 h-6 rounded-full inline-block transition-colors ${isSelected ? "bg-amber-500 scale-125" : "bg-vibrant-orange"}`}></span>
+                        {trimmed.replace("### ", "")}
+                      </h3>
+                      <button
+                        onClick={() => {
+                          const el = document.getElementById("story-glance-directory");
+                          if (el) {
+                            el.scrollIntoView({ behavior: "smooth" });
+                          } else {
+                            window.scrollTo({ top: 380, behavior: "smooth" });
+                          }
+                        }}
+                        className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold text-slate-400 hover:text-vibrant-orange px-2.5 py-1 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
+                        title="Back to All Chapters Overview"
+                      >
+                        <Compass className="w-3 h-3" /> Glance
+                      </button>
+                    </div>
+                  </div>
                 );
               }
 
