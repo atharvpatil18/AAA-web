@@ -713,24 +713,35 @@ export default function BlogPostDetail() {
           <div className="pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-slate-500">Share Story:</span>
-              <a
-                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " - " + window.location.href)}`}
-                target="_blank"
-                rel="noreferrer"
-                className="w-9 h-9 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm shadow-sm transition-all"
-                title="Share on WhatsApp"
-              >
-                💬
-              </a>
-              <button
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  alert("Article link copied to clipboard!");
-                }}
-                className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
-              >
-                🔗 Copy Link
-              </button>
+              {(() => {
+                const liveBaseUrl = "https://arnavabacusacademy-web.vercel.app";
+                const shareUrl = window.location.hostname === "localhost" || window.location.hostname.startsWith("192.168.") || window.location.hostname.startsWith("127.0.")
+                  ? `${liveBaseUrl}/blog/${post.slug}`
+                  : window.location.href;
+
+                return (
+                  <>
+                    <a
+                      href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " - " + shareUrl)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-9 h-9 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center text-sm shadow-sm transition-all"
+                      title="Share on WhatsApp"
+                    >
+                      💬
+                    </a>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(shareUrl);
+                        alert("Article link copied! You can now share it with other parents:\n" + shareUrl);
+                      }}
+                      className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                    >
+                      🔗 Copy Link
+                    </button>
+                  </>
+                );
+              })()}
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5">
