@@ -33,11 +33,9 @@ export default function BlogPostDetail() {
   const [mathSolved, setMathSolved] = useState<boolean | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
   
-  // Section Navigation & Interactive Accordion States
+  // Section Navigation & Interactive Accordion States (All chapters start in Glance Summary mode as requested)
   const [activeSectionId, setActiveSectionId] = useState<string | null>(null);
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-    "section-0": true, // Executive Brief expanded by default; subsequent sections in glance mode with '+' toggle
-  });
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
   const toggleSection = (secId: string) => {
     setExpandedSections(prev => ({
@@ -283,11 +281,26 @@ export default function BlogPostDetail() {
 
           {/* Author info */}
           <div className="flex items-center gap-4 pt-4 border-t border-slate-800">
-            <div className="w-12 h-12 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl shadow-inner">
-              {post.author.avatar}
-            </div>
+            {post.author.name.includes("Neha Patil") ? (
+              <img
+                src="/neha_patil_director.jpg"
+                alt="Neha Patil - Director & Founder"
+                className="w-13 h-13 rounded-full object-cover border-2 border-amber-400 shadow-md bg-white shrink-0 ring-2 ring-amber-400/40"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl shadow-inner">
+                {post.author.avatar}
+              </div>
+            )}
             <div>
-              <h3 className="text-sm font-bold text-white">{post.author.name}</h3>
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <span>{post.author.name}</span>
+                {post.author.name.includes("Neha Patil") && (
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">
+                    O+ Certified
+                  </span>
+                )}
+              </h3>
               <p className="text-xs text-slate-400">{t("blogAuthorRole")}</p>
             </div>
           </div>
@@ -527,14 +540,24 @@ export default function BlogPostDetail() {
                         “{quoteText}”
                       </p>
                       <div className="absolute bottom-16 right-6 text-5xl text-vibrant-orange/30 font-serif leading-none select-none">”</div>
-                      <div className="flex items-center justify-center gap-3.5 pt-4 border-t border-amber-200/80 relative z-10">
-                        <div className="w-11 h-11 rounded-2xl bg-slate-900 text-amber-400 font-black flex items-center justify-center text-sm tracking-wider shadow-md shrink-0 border border-slate-700">
-                          NP
-                        </div>
-                        <div className="text-left">
-                          <h4 className="text-sm font-black text-slate-900 tracking-tight">Neha Patil</h4>
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 pt-4 border-t border-amber-200/80 relative z-10 text-center sm:text-left">
+                        <img
+                          src="/neha_patil_director.jpg"
+                          alt="Neha Patil - Founder & Director, Certified Professional (O+ Grade)"
+                          className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-amber-400 shadow-md shrink-0 bg-white ring-2 ring-amber-300/60"
+                        />
+                        <div>
+                          <h4 className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center justify-center sm:justify-start gap-2">
+                            <span>Neha Patil</span>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+                              O+ Grade Certified
+                            </span>
+                          </h4>
                           <p className="text-xs text-vibrant-orange font-bold">
                             Founder & Director • Arnav Abacus Academy, Wakad, Pune, India
+                          </p>
+                          <p className="text-[11px] text-slate-500 font-medium">
+                            Certified Professional in Abacus, Vedic & Mental Math (IIVA)
                           </p>
                         </div>
                       </div>
@@ -874,6 +897,7 @@ export default function BlogPostDetail() {
                   return {
                     badgeText: "Founder's Address",
                     readTime: "1.5 min",
+                    hasDirectorPhoto: true,
                     highlights: [
                       { icon: "💌", label: "Letter to 56 Champions", text: "'You have already won by daring to challenge yourself with courage.'" },
                       { icon: "🎁", label: "Free Math Assessment", text: "Book 1-on-1 Free Abacus & Vedic Math Assessment Session at AAA Wakad." },
@@ -954,7 +978,7 @@ export default function BlogPostDetail() {
                             </span>
                           </h4>
                           <p className="text-xs text-slate-600 font-medium">
-                            Scan highlights in seconds. Tap <strong>"+"</strong> on any chapter to read its complete details, or open everything below.
+                            Scan highlights in seconds. Tap <strong>"✨ Deep Dive"</strong> on any chapter to read its complete details, or unfold everything below.
                           </p>
                         </div>
                       </div>
@@ -968,12 +992,12 @@ export default function BlogPostDetail() {
                           {areAllExpanded ? (
                             <>
                               <Minus className="w-3.5 h-3.5 text-vibrant-orange stroke-[2.5]" />
-                              <span>Collapse All to Glance</span>
+                              <span>Fold All to Glance View</span>
                             </>
                           ) : (
                             <>
-                              <Plus className="w-3.5 h-3.5 text-vibrant-orange stroke-[2.5]" />
-                              <span>Expand All Details ({sections.length})</span>
+                              <Sparkles className="w-3.5 h-3.5 text-vibrant-orange stroke-[2.5]" />
+                              <span>✨ Unfold All Deep Dives ({sections.length})</span>
                             </>
                           )}
                         </button>
@@ -1033,7 +1057,7 @@ export default function BlogPostDetail() {
                               </h3>
                             </div>
 
-                            {/* Prominent +/- Interactive Toggle Button */}
+                            {/* Prominent Innovative Toggle Button */}
                             <div className="flex items-center gap-2 shrink-0">
                               <button
                                 type="button"
@@ -1050,12 +1074,12 @@ export default function BlogPostDetail() {
                                 {isExpanded ? (
                                   <>
                                     <Minus className="w-4 h-4 stroke-[2.5]" />
-                                    <span>Collapse</span>
+                                    <span>Fold Chapter</span>
                                   </>
                                 ) : (
                                   <>
-                                    <Plus className="w-4 h-4 stroke-[2.5]" />
-                                    <span>View Details</span>
+                                    <Sparkles className="w-4 h-4 stroke-[2.5]" />
+                                    <span>✨ Deep Dive</span>
                                   </>
                                 )}
                               </button>
@@ -1066,6 +1090,24 @@ export default function BlogPostDetail() {
                           {!isExpanded && (
                             <div className="pt-2 space-y-3">
                               <div className="bg-amber-50/75 border border-amber-200/70 rounded-2xl p-4 sm:p-5 space-y-2.5">
+                                {glance.hasDirectorPhoto && (
+                                  <div className="flex items-center gap-3 pb-2.5 mb-1 border-b border-amber-200/80">
+                                    <img
+                                      src="/neha_patil_director.jpg"
+                                      alt="Neha Patil - Founder & Director"
+                                      className="w-12 h-12 rounded-full object-cover border-2 border-amber-400 shadow-sm shrink-0 bg-white ring-2 ring-amber-300/70"
+                                    />
+                                    <div>
+                                      <h5 className="text-xs sm:text-sm font-black text-slate-900 flex items-center gap-1.5">
+                                        <span>Neha Patil's Direct Message</span>
+                                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-200/80 text-amber-900">
+                                          O+ Certified
+                                        </span>
+                                      </h5>
+                                      <p className="text-[11px] text-vibrant-orange font-bold">Founder & Director • Arnav Abacus Academy</p>
+                                    </div>
+                                  </div>
+                                )}
                                 <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-vibrant-orange">
                                   <Sparkles className="w-3.5 h-3.5" />
                                   <span>Glance Summary & Key Takeaways</span>
@@ -1088,11 +1130,12 @@ export default function BlogPostDetail() {
                               </div>
 
                               <div className="flex items-center justify-between text-xs text-slate-500 pt-1 px-1 font-semibold">
-                                <span className="text-vibrant-orange flex items-center gap-1 font-bold">
-                                  <Plus className="w-3.5 h-3.5 stroke-[3]" /> Click "+" or tap card to view full details, tables & action guide
+                                <span className="text-vibrant-orange flex items-center gap-1.5 font-bold">
+                                  <Sparkles className="w-3.5 h-3.5 text-vibrant-orange shrink-0" />
+                                  Tap card or click "✨ Deep Dive" to unlock full guides, formulas & action steps
                                 </span>
-                                <span className="hidden sm:inline text-slate-400">
-                                  {sec.blocks.length} detailed blocks inside
+                                <span className="hidden sm:inline text-slate-400 font-mono text-[11px]">
+                                  {sec.blocks.length} detailed blocks
                                 </span>
                               </div>
                             </div>
@@ -1116,8 +1159,8 @@ export default function BlogPostDetail() {
                                   }}
                                   className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-vibrant-orange hover:bg-slate-100 px-3.5 py-1.5 rounded-xl transition-colors cursor-pointer border border-slate-200"
                                 >
-                                  <Minus className="w-3.5 h-3.5" />
-                                  <span>Collapse to Summary</span>
+                                  <ChevronUp className="w-3.5 h-3.5" />
+                                  <span>Back to Glance View</span>
                                 </button>
                               </div>
                             </div>
