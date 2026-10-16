@@ -11,10 +11,11 @@ export default function BlogPostDetail() {
   const navigate = useNavigate();
   const { language, t, formatNumber } = useLanguage();
 
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [post, setPost] = useState<BlogPost | null>(null);
+  // Synchronously initialize with direct match from INITIAL_BLOG_POSTS so first render never fails
+  const initialFound = INITIAL_BLOG_POSTS.find((p) => p.slug === slug) || INITIAL_BLOG_POSTS[0];
+  const [posts, setPosts] = useState<BlogPost[]>(INITIAL_BLOG_POSTS);
+  const [post, setPost] = useState<BlogPost | null>(initialFound);
   const [scrollProgress, setScrollProgress] = useState<number>(0);
-
 
   // Interactive Poll state
   const [votedOptionId, setVotedOptionId] = useState<string | null>(null);
@@ -32,30 +33,31 @@ export default function BlogPostDetail() {
   const [copiedLink, setCopiedLink] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("aaa_blog_posts");
     let allPosts: BlogPost[] = INITIAL_BLOG_POSTS;
-    if (stored) {
-      try {
+    try {
+      const stored = localStorage.getItem("aaa_blog_posts");
+      if (stored) {
         const parsed: BlogPost[] = JSON.parse(stored);
         const hasAllInitial = INITIAL_BLOG_POSTS.every((initP) => parsed.some((p) => p.id === initP.id));
         const champUpdated = parsed.find(p => p.id === "blog-4")?.content.includes("Who Is This For");
-        if (!hasAllInitial || !champUpdated || parsed[0]?.id !== "blog-0" || !parsed[0]?.content.includes("[CLAIM_FREE_DEMO_BUTTON]")) {
-          allPosts = INITIAL_BLOG_POSTS;
-          localStorage.setItem("aaa_blog_posts", JSON.stringify(INITIAL_BLOG_POSTS));
+        if (hasAllInitial && champUpdated && parsed[0]?.id === "blog-0" && parsed[0]?.content.includes("[CLAIM_FREE_DEMO_BUTTON]")) {
+          // Merge user comments from localStorage into allPosts
+          allPosts = INITIAL_BLOG_POSTS.map(initP => {
+            const cached = parsed.find(cp => cp.id === initP.id);
+            return cached ? { ...initP, reactions: cached.reactions || initP.reactions, comments: cached.comments || initP.comments } : initP;
+          });
         } else {
-          allPosts = parsed;
+          localStorage.setItem("aaa_blog_posts", JSON.stringify(INITIAL_BLOG_POSTS));
         }
-      } catch (e) {
-        allPosts = INITIAL_BLOG_POSTS;
+      } else {
+        localStorage.setItem("aaa_blog_posts", JSON.stringify(INITIAL_BLOG_POSTS));
       }
-    } else {
-      localStorage.setItem("aaa_blog_posts", JSON.stringify(INITIAL_BLOG_POSTS));
+    } catch {
+      allPosts = INITIAL_BLOG_POSTS;
     }
 
-
-
     setPosts(allPosts);
-    const found = allPosts.find((p) => p.slug === slug) || allPosts[0];
+    const found = allPosts.find((p) => p.slug === slug) || INITIAL_BLOG_POSTS.find((p) => p.slug === slug) || allPosts[0];
     setPost(found);
 
     if (found) {
