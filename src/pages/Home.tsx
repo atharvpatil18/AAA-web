@@ -19,7 +19,8 @@ import MathComparisonDemo from "../components/MathComparisonDemo";
 import { useLanguage } from "../lib/LanguageContext";
 import MathConcernVideoBooth from "../components/MathConcernVideoBooth";
 import { PROGRAMS } from "../data";
-import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2, ChevronDown, ChevronUp, BookOpen, Download } from "lucide-react";
+import { INITIAL_BLOG_POSTS } from "../data/blogData";
+import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2, ChevronDown, ChevronUp, BookOpen, Download, Clock } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
 
 export default function Home() {
@@ -596,6 +597,83 @@ export default function Home() {
         </div>
       </section>
       )}
+
+      {/* 6.5. Featured Parent Guides & Blog Insights */}
+      <section id="featured-parent-guides" className="py-20 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFF8EE] border-t-4 border-vibrant-dark">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div className="space-y-3 max-w-2xl">
+              <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+                💡 AAA Knowledge Hub
+              </span>
+              <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
+                Featured Parenting Guides &amp; Math Insights
+              </h2>
+              <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
+                Explore expert articles by Neha Patil on overcoming math anxiety, speed calculation secrets, and cognitive child brain development.
+              </p>
+            </div>
+            <div>
+              <Link
+                to="/blog"
+                className="inline-flex items-center gap-2 bg-vibrant-dark hover:bg-vibrant-dark/95 text-white font-black text-xs uppercase tracking-wider px-6 py-3.5 rounded-2xl shadow-md transition-all active:scale-95 shrink-0"
+              >
+                <span>Explore All Articles</span>
+                <ArrowRight className="w-4 h-4 text-vibrant-orange" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Blog Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {INITIAL_BLOG_POSTS.slice(0, 3).map((post) => (
+              <Link
+                key={post.id}
+                to={`/blog/${post.slug}`}
+                className="group flex flex-col bg-white border-2 border-slate-200 hover:border-vibrant-orange rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
+              >
+                <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
+                  <img
+                    src={post.coverImage}
+                    alt={post.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute top-3 left-3 bg-vibrant-dark/90 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-xs">
+                    {post.category}
+                  </div>
+                </div>
+
+                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2 text-[11px] font-bold text-gray-400">
+                      <Clock className="w-3.5 h-3.5 text-vibrant-orange" />
+                      <span>{post.readTime}</span>
+                      <span>•</span>
+                      <span>By {post.author.name}</span>
+                    </div>
+                    <h3 className="font-display font-black text-base md:text-lg text-vibrant-dark group-hover:text-vibrant-orange transition-colors line-clamp-2 leading-snug">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-500 text-xs font-medium line-clamp-3 leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-black text-vibrant-orange">
+                    <span className="group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                      Read Full Guide <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                    <span className="text-[10px] text-gray-400 font-bold">
+                      {post.publishedAt}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* 7. Wakad Center Address & Google Map Contact Block */}
       {(parentFocus === "all" || parentFocus === "details") && (

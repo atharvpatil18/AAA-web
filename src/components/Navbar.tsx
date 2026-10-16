@@ -70,6 +70,7 @@ export default function Navbar() {
   const primaryNavLinks = [
     { name: t("navHome"), path: "/" },
     { name: t("navPrograms"), path: "/programs", hasDropdown: true },
+    { name: t("navBlog"), path: "/blog" },
     { name: t("navPractice"), path: "/practice" },
     { name: "Worksheets", path: "/worksheets" },
     { name: t("navSuccess"), path: "/showcase" },
@@ -78,7 +79,6 @@ export default function Navbar() {
   const moreNavLinks = [
     { name: t("navMentor"), path: "/mentor" },
     { name: "Teacher & Franchise", path: "/teacher-franchise" },
-    { name: "Blog", path: "/blog" },
     { name: t("navNews"), path: "/news" },
     { name: t("navBrochure"), path: "/brochure" },
     { name: t("navFaqs"), path: "/faqs" },

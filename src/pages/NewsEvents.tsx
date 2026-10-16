@@ -325,14 +325,14 @@ export default function NewsEvents() {
                             <div className="mt-4 p-4 bg-[#FFF9E6] border-2 border-vibrant-dark rounded-2xl space-y-2.5">
                               <div className="font-black text-xs md:text-sm text-vibrant-dark flex items-center gap-2">
                                 <Sparkles className="w-4 h-4 text-vibrant-orange" />
-                                Register for Mental Math Power Sessions (Oct 10-11, 2026)
+                                Register for Mental Math Power Sessions (Nov 10-11, 2026)
                               </div>
                               <p className="text-[11px] md:text-xs text-gray-600 font-medium">
                                 Option to register through WhatsApp contact (+91 9021924968) or Email (nehaatharv@gmail.com) as per Arnav Abacus Academy records:
                               </p>
                               <div className="flex flex-col sm:flex-row gap-3 pt-1">
                                 <a
-                                  href={`https://wa.me/919021924968?text=${encodeURIComponent("Hello Arnav Abacus Academy, I would like to register my child for the Mental Math Power Sessions & Excellence Challenge (Oct 10-11, 2026).")}`}
+                                  href={`https://wa.me/919021924968?text=${encodeURIComponent("Hello Arnav Abacus Academy, I would like to register my child for the Mental Math Power Sessions & Excellence Challenge (Nov 10-11, 2026).")}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-black text-xs px-4 py-2.5 rounded-xl border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:opacity-95 transition-all"
@@ -341,7 +341,7 @@ export default function NewsEvents() {
                                   {t("registerViaWhatsApp")}
                                 </a>
                                 <a
-                                  href={`mailto:nehaatharv@gmail.com?subject=${encodeURIComponent("Mental Math Power Sessions Registration - Oct 2026")}&body=${encodeURIComponent("Hello Arnav Abacus Academy team,\n\nI would like to register my child for the Mental Math Power Sessions & Excellence Challenge on October 10-11, 2026.\n\nStudent Name:\nParent Contact / Email (as per academy records):\nGrade/Level:")}`}
+                                  href={`mailto:nehaatharv@gmail.com?subject=${encodeURIComponent("Mental Math Power Sessions Registration - Nov 2026")}&body=${encodeURIComponent("Hello Arnav Abacus Academy team,\n\nI would like to register my child for the Mental Math Power Sessions & Excellence Challenge on November 10-11, 2026.\n\nStudent Name:\nParent Contact / Email (as per academy records):\nGrade/Level:")}`}
                                   className="inline-flex items-center justify-center gap-2 bg-vibrant-teal text-vibrant-dark font-black text-xs px-4 py-2.5 rounded-xl border-2 border-vibrant-dark shadow-[2px_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:opacity-95 transition-all"
                                 >
                                   <Mail className="w-4 h-4" />

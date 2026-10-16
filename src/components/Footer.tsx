@@ -86,17 +86,17 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/programs" className="hover:text-orange-500 transition-colors">
+                <Link to="/programs/abacus" className="hover:text-orange-500 transition-colors">
                   {language === "hi" ? "एबाकस गणित कोर्स (वय 4-14)" : language === "mr" ? "ॲबॅकस गणित कोर्स (वय ४-१४)" : "Abacus Math Course (Ages 4-14)"}
                 </Link>
               </li>
               <li>
-                <Link to="/programs" className="hover:text-orange-500 transition-colors">
+                <Link to="/programs/vedic-maths" className="hover:text-orange-500 transition-colors">
                   {language === "hi" ? "वैदिक गणित (उम्र 10+)" : language === "mr" ? "वैदिक गणित (वय १०+)" : "Vedic Mathematics (Ages 10+)"}
                 </Link>
               </li>
               <li>
-                <Link to="/programs" className="hover:text-orange-500 transition-colors">
+                <Link to="/programs/school-maths" className="hover:text-orange-500 transition-colors">
                   {language === "hi" ? "स्कूल गणित (कक्षा 1-10)" : language === "mr" ? "शालेय गणित (इयत्ता १ ली ते १० वी)" : "School Maths (Class 1-10 CBSE/ICSE)"}
                 </Link>
               </li>
