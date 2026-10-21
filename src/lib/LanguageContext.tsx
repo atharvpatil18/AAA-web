@@ -4,7 +4,7 @@
  */
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { Language, translations, TranslationKey } from "./translations";
+import { Language, TranslationKey, en } from "./translations";
 
 interface LanguageContextProps {
   language: Language;
@@ -23,19 +23,60 @@ export const formatNumber = (num: number | string, lang: Language): string => {
   return str.replace(/[0-9]/g, (digit) => devanagariDigits[parseInt(digit, 10)]);
 };
 
+// In-memory cache for loaded language dictionaries. English is bundled by default.
+const translationsCache: Record<Language, Partial<Record<TranslationKey, string>>> = {
+  en: en,
+  hi: {},
+  mr: {},
+};
+
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Try to load language from localStorage or default to English
   const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem("aaa_lang");
-    if (saved === "hi" || saved === "mr" || saved === "en") {
-      return saved as Language;
+    try {
+      const saved = localStorage.getItem("aaa_lang");
+      if (saved === "hi" || saved === "mr" || saved === "en") {
+        return saved as Language;
+      }
+    } catch {
+      // Fallback
     }
     return "en";
   });
 
+  const [, setVersion] = useState(0);
+
+  useEffect(() => {
+    if (language === "hi" && Object.keys(translationsCache.hi).length === 0) {
+      import("./locales/hi").then((mod) => {
+        translationsCache.hi = mod.default || mod.hi;
+        setVersion((v) => v + 1);
+      });
+    } else if (language === "mr" && Object.keys(translationsCache.mr).length === 0) {
+      import("./locales/mr").then((mod) => {
+        translationsCache.mr = mod.default || mod.mr;
+        setVersion((v) => v + 1);
+      });
+    }
+  }, [language]);
+
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem("aaa_lang", lang);
+    try {
+      localStorage.setItem("aaa_lang", lang);
+    } catch {
+      // Fallback
+    }
+    if (lang === "hi" && Object.keys(translationsCache.hi).length === 0) {
+      import("./locales/hi").then((mod) => {
+        translationsCache.hi = mod.default || mod.hi;
+        setVersion((v) => v + 1);
+      });
+    } else if (lang === "mr" && Object.keys(translationsCache.mr).length === 0) {
+      import("./locales/mr").then((mod) => {
+        translationsCache.mr = mod.default || mod.mr;
+        setVersion((v) => v + 1);
+      });
+    }
   };
 
   const formatNumberWrapped = (num: number | string): string => {
@@ -43,8 +84,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const t = (key: TranslationKey): string => {
-    const translationSet = translations[language] || translations["en"];
-    const text = translationSet[key] || translations["en"][key] || String(key);
+    const activeDict = translationsCache[language];
+    const text = (activeDict && activeDict[key]) || translationsCache.en[key] || String(key);
     return formatNumber(text, language);
   };
 

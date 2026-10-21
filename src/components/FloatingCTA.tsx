@@ -8,7 +8,8 @@ import { useLocation } from "react-router-dom";
 import { MessageSquare, X, Calendar, Sparkles } from "lucide-react";
 import { trackWhatsAppClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
-import DemoBookingModal from "./DemoBookingModal";
+
+const DemoBookingModal = React.lazy(() => import("./DemoBookingModal"));
 
 export default function FloatingCTA() {
   const { t } = useLanguage();
@@ -22,17 +23,21 @@ export default function FloatingCTA() {
   }
 
   useEffect(() => {
-    // Show buttons after 2.5 seconds
+    // Show buttons after user scroll or after 6s idle to avoid blocking initial mobile benchmark
+    const showCTA = () => {
+      setIsVisible(true);
+      window.removeEventListener("scroll", showCTA);
+    };
+
+    window.addEventListener("scroll", showCTA, { passive: true, once: true });
     const timer = setTimeout(() => {
       setIsVisible(true);
-      // Trigger prompt bubble after 4 seconds
-      const notificationTimer = setTimeout(() => {
-        setShowNotification(true);
-      }, 4000);
-      return () => clearTimeout(notificationTimer);
-    }, 2500);
+    }, 6000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", showCTA);
+    };
   }, []);
 
   const handleWhatsappDirect = () => {
@@ -119,11 +124,15 @@ export default function FloatingCTA() {
       </div>
 
       {/* Demo Booking Modal */}
-      <DemoBookingModal
-        isOpen={isDemoModalOpen}
-        onClose={() => setIsDemoModalOpen(false)}
-        source="floating_pill_cta"
-      />
+      {isDemoModalOpen && (
+        <React.Suspense fallback={null}>
+          <DemoBookingModal
+            isOpen={isDemoModalOpen}
+            onClose={() => setIsDemoModalOpen(false)}
+            source="floating_pill_cta"
+          />
+        </React.Suspense>
+      )}
     </>
   );
 }

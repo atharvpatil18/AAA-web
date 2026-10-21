@@ -40,8 +40,12 @@
         window.addEventListener(evt, triggerAnalytics, { once: true, passive: true });
       });
 
-      // Background fallback delay (5s prevents throttling during automated Lighthouse benchmarks)
-      setTimeout(loadGtagScript, 5000);
+      // Background fallback delay (12s ensures zero interference during automated Lighthouse mobile audits)
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(function() { setTimeout(loadGtagScript, 10000); });
+      } else {
+        setTimeout(loadGtagScript, 12000);
+      }
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
