@@ -314,25 +314,25 @@ export default function ProgramVedicMaths() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">⚡</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Faster Exam Checks</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Faster Exam Checks</h3>
             <p className="text-xs text-slate-600 font-medium">Students save valuable minutes by completing routine calculations mentally rather than writing full grids.</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">🎯</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Self-Verification Habits</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Self-Verification Habits</h3>
             <p className="text-xs text-slate-600 font-medium">Beejank checks provide students with independent habits to verify answers before turning in exam sheets.</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">📝</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Cleaner Rough Work</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Cleaner Rough Work</h3>
             <p className="text-xs text-slate-600 font-medium">Minimizing sprawling margin scribbles prevents careless transcription and misread digit errors.</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">🧘</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Exam Composure</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Exam Composure</h3>
             <p className="text-xs text-slate-600 font-medium">Knowing how to handle heavy multi-digit calculations relieves time pressure and test day anxiety.</p>
           </div>
         </div>

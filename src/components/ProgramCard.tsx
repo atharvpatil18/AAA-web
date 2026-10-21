@@ -107,7 +107,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
         <div className="absolute top-4 right-4 w-12 h-12 rounded-full overflow-hidden border border-slate-200 shadow-sm bg-white group-hover:scale-105 transition-transform duration-300 shrink-0 z-20">
           <img 
             src={program.id === "abacus" ? "/abacus_stream_students.png" : program.id === "vedic-math" ? "/vedic_stream_students.png" : "/school_stream_students.png"} 
-            alt="Academy Students" 
+            alt={`${program.title} Students at Arnav Abacus Academy`} 
             loading="lazy"
             decoding="async"
             width={48}

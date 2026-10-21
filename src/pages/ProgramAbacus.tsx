@@ -323,25 +323,25 @@ export default function ProgramAbacus() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">🧠</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Stronger Number Sense</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Stronger Number Sense</h3>
             <p className="text-xs text-slate-600 font-medium">Children visualize numbers as concrete quantities rather than abstract, intimidating symbols.</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">🖐️</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Less Finger Counting</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Less Finger Counting</h3>
             <p className="text-xs text-slate-600 font-medium">Internal mental beads replace reliance on physical fingers for basic single and double digit sums.</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">⏱️</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Sustained Focus Habits</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Sustained Focus Habits</h3>
             <p className="text-xs text-slate-600 font-medium">Timed speed exercises train children to sit attentively and maintain focus through academic tasks.</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">✨</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Calm Math Confidence</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Calm Math Confidence</h3>
             <p className="text-xs text-slate-600 font-medium">Celebrating small daily milestones builds academic self-esteem and reduces school test anxiety.</p>
           </div>
         </div>

@@ -314,25 +314,25 @@ export default function ProgramSchoolMaths() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">📖</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Clear Conceptual Logic</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Clear Conceptual Logic</h3>
             <p className="text-xs text-slate-600 font-medium">Students understand why formulas work rather than attempting to memorize patterns blindly.</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">✍️</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Step-Mark Discipline</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Step-Mark Discipline</h3>
             <p className="text-xs text-slate-600 font-medium">Writing out organized solutions prevents avoidable mark deductions on subjective exam sheets.</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">🏆</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Competitive Preparedness</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Competitive Preparedness</h3>
             <p className="text-xs text-slate-600 font-medium">Familiarity with non-routine problem formats builds confidence for IPM and Olympiad competitions.</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">😊</span>
-            <h4 className="font-bold text-sm text-vibrant-dark">Reduced Homework Tears</h4>
+            <h3 className="font-bold text-sm text-vibrant-dark">Reduced Homework Tears</h3>
             <p className="text-xs text-slate-600 font-medium">Independent comprehension relieves daily academic frustration and restores parental peace of mind.</p>
           </div>
         </div>
