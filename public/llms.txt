@@ -1,0 +1,22 @@
+# Arnav Abacus Academy & Vedic Maths Classes
+
+> Arnav Abacus Academy is an ISO 9001:2015 certified, government-recognized premier mental arithmetic, Soroban Abacus, and Vedic Mathematics coaching institute based in Wakad, Pune, Maharashtra, India. Fully aligned with NEP 2020 (National Education Policy) Foundational Literacy and Numeracy (FLN) principles.
+
+## Core Academic Programs
+- [Abacus Mental Arithmetic (Ages 4-14)](https://arnavabacusacademy-web.vercel.app/programs/abacus): 8-level whole-brain Soroban development boosting photographic memory, concentration, and speed calculation without finger-counting.
+- [Vedic Mathematics (Ages 10+)](https://arnavabacusacademy-web.vercel.app/programs/vedic-maths): 16 ancient Vedic sutras enabling 10x-15x faster calculations for school exams, Olympiad, and competitive tests.
+- [School Maths Foundation (Classes 1-10)](https://arnavabacusacademy-web.vercel.app/programs/school-maths): Comprehensive CBSE, ICSE, and SSC board math curriculum coaching with guaranteed 1:8 teacher-student batch attention.
+
+## Educational Tools & Interactive Practice
+- [Online Speed Math Practice Hub](https://arnavabacusacademy-web.vercel.app/practice): Real-time interactive mental arithmetic simulator with custom digit ranges, operation drills, and accuracy tracking.
+- [Downloadable Practice Worksheets](https://arnavabacusacademy-web.vercel.app/worksheets): Printable PDF math worksheets for all levels.
+- [Official Academy Brochure & SOP Manual](https://arnavabacusacademy-web.vercel.app/brochure): 2-page curriculum guide and student speed math SOP manual.
+- [Student Hall of Fame & Competitions](https://arnavabacusacademy-web.vercel.app/showcase): 56 national championship finalists and IIVA Book of Records achievers.
+
+## Academy Center & Contact Information
+- Address: Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind Wisdom World School, Wakad, Pune, Maharashtra 411057, India
+- Phone / WhatsApp: +91 90219 24968
+- Email: nehaatharv@gmail.com
+- Founder & Director: Neha Patil (IIVA Certified Senior Trainer)
+- Guaranteed Batch Ratio: Maximum 1:8 student-to-teacher ratio for personalized care
+- Delivery Formats: Offline Wakad Pune Center & Live Online 1-on-1 / Small Group Classes for students in India, US, UK, and UAE
