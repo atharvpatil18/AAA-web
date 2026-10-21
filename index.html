@@ -44,13 +44,6 @@
       interactionEvents.forEach(function(evt) {
         window.addEventListener(evt, triggerAnalytics, { once: true, passive: true });
       });
-
-      // Background fallback delay (12s ensures zero interference during automated Lighthouse mobile audits)
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(function() { setTimeout(loadGtagScript, 10000); });
-      } else {
-        setTimeout(loadGtagScript, 12000);
-      }
     </script>
     
     <title>Arnav Abacus Academy &amp; Vedic Maths Classes - Wakad, Pune, India</title>
@@ -217,50 +210,7 @@
     </script>
   </head>
   <body>
-    <div id="root">
-      <!-- Critical Above-The-Fold Pre-Render for Sub-Second Mobile FCP & LCP -->
-      <div id="initial-pre-render" style="min-height:100vh;background-color:#FFFAF5;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;">
-        <!-- Top alert bar -->
-        <div style="background-color:#0f172a;color:#f1f5f9;padding:6px 16px;font-size:11px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1e293b;">
-          <div style="max-width:1280px;margin:0 auto;width:100%;display:flex;justify-content:space-between;align-items:center;">
-            <span>📍 Wakad Brain Center • Open Every Day</span>
-            <span>📞 +91 90219 24968</span>
-          </div>
-        </div>
-        <!-- Navbar -->
-        <nav style="background:#ffffff;border-bottom:1px solid #f1f5f9;padding:12px 16px;box-shadow:0 1px 2px rgba(0,0,0,0.05);">
-          <div style="max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;">
-            <div style="display:flex;align-items:center;gap:12px;">
-              <img src="/logo.png" alt="Arnav Abacus Academy" width="44" height="44" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:1px solid #e2e8f0;" fetchpriority="high" />
-              <div>
-                <span style="font-weight:900;color:#1A2E35;font-size:18px;display:block;line-height:1;">ARNAV ABACUS</span>
-                <span style="font-size:10px;color:#c2410c;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-top:2px;">Vedic Maths Academy</span>
-              </div>
-            </div>
-            <a href="https://wa.me/919021924968" style="background:#00BFA5;color:#ffffff;padding:8px 18px;border-radius:9999px;font-weight:700;font-size:12px;text-decoration:none;">Book Free Assessment</a>
-          </div>
-        </nav>
-        <!-- Hero Section -->
-        <section style="max-width:1280px;margin:0 auto;padding:32px 16px 64px 16px;">
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
-            <span style="background:rgba(255,99,33,0.1);color:#FF6321;padding:6px 14px;border-radius:9999px;font-size:11px;font-weight:700;">⚡ ALIGNED WITH NEP 2020 • SKILL INDIA & NSDC PARTNER</span>
-            <span style="background:rgba(0,191,165,0.1);color:#00BFA5;padding:6px 14px;border-radius:9999px;font-size:11px;font-weight:700;">🎯 GUARANTEED 1:8 BATCH RATIO — PERSONALIZED CARE</span>
-          </div>
-          <h1 style="font-size:clamp(32px, 6vw, 64px);font-weight:900;color:#1A2E35;line-height:1.1;letter-spacing:-0.02em;margin:0 0 16px 0;">
-            Turn Math <span style="color:#FF6321;">Fear</span> Into Math <span style="color:#00BFA5;">Fun !</span>
-          </h1>
-          <p style="color:#FF6321;font-weight:700;font-size:18px;margin:0 0 12px 0;">
-            Does your child make silly mistakes? Let's zero them down!
-          </p>
-          <p style="color:#475569;font-size:15px;line-height:1.6;max-width:680px;margin:0 0 24px 0;">
-            Empower your child with Foundational Numeracy, lightning-fast mental math, and visual confidence to eliminate silly mistakes without exam stress in alignment with NEP 2020 principles.
-          </p>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;">
-            <a href="https://wa.me/919021924968" style="background:#FF6321;color:#ffffff;padding:14px 28px;border-radius:9999px;font-weight:700;font-size:14px;text-decoration:none;">Book a Free Assessment Class →</a>
-          </div>
-        </section>
-      </div>
-    </div>
+    <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
