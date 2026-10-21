@@ -9,9 +9,11 @@ import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import { Link } from "react-router-dom";
+import DemoBookingModal from "./DemoBookingModal";
 
 export default function Hero() {
   const { t } = useLanguage();
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const punchlines = [
     t("heroPunchline1"),
     t("heroPunchline2"),
@@ -28,6 +30,7 @@ export default function Hero() {
 
   const handleCtaClick = () => {
     trackDemoClick("hero_primary_cta");
+    setIsDemoModalOpen(true);
   };
 
   const handleGameScroll = () => {
@@ -149,16 +152,14 @@ export default function Hero() {
               transition={{ duration: 0.4, delay: 0.45 }}
               className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-3"
             >
-              <a
-                href="https://wa.me/919021924968"
+              <button
+                type="button"
                 onClick={handleCtaClick}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="w-full sm:w-auto bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold text-sm px-8 py-4 rounded-full shadow-sm hover:shadow-md active:scale-97 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
               >
                 {t("heroCta")}
                 <ArrowRight className="w-4 h-4 text-orange-100" />
-              </a>
+              </button>
 
               <button
                 onClick={handleGameScroll}
@@ -238,6 +239,13 @@ export default function Hero() {
 
         </div>
       </div>
+
+      {/* Demo Booking Modal */}
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        source="hero_primary_cta"
+      />
     </section>
   );
 }

@@ -132,6 +132,7 @@ export default function Navbar() {
             <div className="flex items-center gap-3">
               <a 
                 href="mailto:nehaatharv@gmail.com" 
+                aria-label="Email Academy at nehaatharv@gmail.com"
                 className="flex items-center gap-1 hover:text-orange-400 transition-colors"
                 title="Email nehaatharv@gmail.com"
               >
@@ -141,6 +142,7 @@ export default function Navbar() {
               <a 
                 href="https://wa.me/919021924968" 
                 onClick={() => trackWhatsAppClick("navbar_top_bar", "direct_chat")}
+                aria-label="Chat with Academy on WhatsApp"
                 className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -156,6 +158,7 @@ export default function Navbar() {
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value as Language)}
+                aria-label="Select website language"
                 className="bg-transparent border-none text-[10px] font-black focus:outline-none cursor-pointer text-slate-200 py-0.5"
               >
                 <option value="en" className="bg-slate-900 text-slate-200">English</option>
@@ -193,7 +196,7 @@ export default function Navbar() {
               <span className="font-display font-black text-vibrant-dark text-sm md:text-lg tracking-tight block group-hover:text-vibrant-orange transition-colors leading-none">
                 ARNAV ABACUS
               </span>
-              <span className="text-[9px] md:text-[10px] text-vibrant-orange font-bold uppercase tracking-widest block mt-0.5 leading-none">
+              <span className="text-[9px] md:text-[10px] text-orange-700 font-bold uppercase tracking-widest block mt-0.5 leading-none">
                 Vedic Maths Academy
               </span>
             </div>
@@ -212,7 +215,7 @@ export default function Navbar() {
                         onClick={() => setProgramMenuOpen(!programMenuOpen)}
                         className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer relative ${
                           isAnyProgramActive
-                            ? "text-vibrant-orange after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-vibrant-orange after:rounded-full"
+                            ? "text-orange-700 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
                             : "text-slate-700 hover:text-vibrant-orange"
                         }`}
                         aria-expanded={programMenuOpen}
@@ -232,7 +235,7 @@ export default function Navbar() {
                                 onClick={() => setProgramMenuOpen(false)}
                                 className={`block px-4 py-2 text-xs font-bold transition-colors ${
                                   isPActive
-                                    ? "bg-amber-50 text-vibrant-orange"
+                                    ? "bg-amber-50 text-orange-700"
                                     : "text-slate-700 hover:bg-slate-50 hover:text-vibrant-orange"
                                 }`}
                               >
@@ -253,7 +256,7 @@ export default function Navbar() {
                       to={link.path}
                       className={`text-xs font-bold tracking-tight transition-colors duration-150 py-1.5 whitespace-nowrap relative ${
                         isActive
-                          ? "text-vibrant-orange after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-vibrant-orange after:rounded-full"
+                          ? "text-orange-700 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
                           : "text-slate-700 hover:text-vibrant-orange"
                       }`}
                     >
@@ -270,7 +273,7 @@ export default function Navbar() {
                   onClick={() => setMoreMenuOpen(!moreMenuOpen)}
                   className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer ${
                     moreNavLinks.some((l) => l.path === currentPath)
-                      ? "text-vibrant-orange"
+                      ? "text-orange-700"
                       : "text-slate-700 hover:text-vibrant-orange"
                   }`}
                   aria-expanded={moreMenuOpen}

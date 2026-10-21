@@ -59,6 +59,7 @@ export default function Footer() {
                 href="https://www.facebook.com/groups/1031935784445726/?ref=share&mibextid=NSMWBT" 
                 target="_blank" 
                 rel="noreferrer" 
+                aria-label="Visit Arnav Abacus Academy Facebook Group"
                 className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-orange-500 hover:border-orange-500 flex items-center justify-center transition"
               >
                 <Facebook className="w-4 h-4" />
@@ -67,6 +68,7 @@ export default function Footer() {
                 href="https://www.instagram.com/lakshmi_narayan_1303?igsh=cDlwM2ZxNWltYXFr" 
                 target="_blank" 
                 rel="noreferrer" 
+                aria-label="Visit Arnav Abacus Academy on Instagram"
                 className="w-8 h-8 rounded-full bg-slate-900 border border-slate-800 text-slate-400 hover:text-orange-500 hover:border-orange-500 flex items-center justify-center transition"
               >
                 <Instagram className="w-4 h-4" />

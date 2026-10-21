@@ -1041,9 +1041,9 @@ export default function Home() {
                 </span>
                 <span className="text-[10px] text-amber-300 font-bold">Wakad, Pune</span>
               </div>
-              <h4 className="text-xs font-black text-white leading-tight truncate">
+              <p className="text-xs font-black text-white leading-tight truncate">
                 National Championship 2026
-              </h4>
+              </p>
               <p className="text-[11px] text-slate-300 font-medium leading-snug line-clamp-2 mt-0.5">
                 56 AAA students competing under AVAS & IIVA Book of Records. Read the complete story!
               </p>

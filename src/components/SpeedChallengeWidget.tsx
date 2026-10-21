@@ -17,8 +17,10 @@ import {
   Sparkles, 
   AlertCircle,
   ThumbsUp, 
-  Heart 
+  Heart,
+  Calendar
 } from "lucide-react";
+import DemoBookingModal from "./DemoBookingModal";
 
 type QuizStep = "AGE" | "PLAY" | "RESULT";
 
@@ -32,6 +34,7 @@ export default function SpeedChallengeWidget() {
   const [step, setStep] = useState<QuizStep>("AGE");
   const [ageInput, setAgeInput] = useState<string>("8");
   const [errorText, setErrorText] = useState("");
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   
   const [questions, setQuestions] = useState<Question[]>([]);
   const [questionIndex, setQuestionIndex] = useState<number>(0);
@@ -250,11 +253,13 @@ export default function SpeedChallengeWidget() {
 
             <form onSubmit={handleStartGame} className="space-y-4 pt-1">
               <div>
-                <label className="block text-[10px] font-black text-[#89B5BC] uppercase tracking-wider mb-2 ml-1">
+                <label htmlFor="quiz-age-input" className="block text-[10px] font-black text-[#89B5BC] uppercase tracking-wider mb-2 ml-1">
                   {t("quizAgePrompt")}
                 </label>
                 <div className="flex gap-2.5">
                   <input
+                    id="quiz-age-input"
+                    aria-label={t("quizAgePrompt") || "Enter Child Age"}
                     type="number"
                     min="4"
                     max="16"
@@ -340,6 +345,8 @@ export default function SpeedChallengeWidget() {
             <form onSubmit={handleAnswerSubmit} className="space-y-3">
               <div className="flex gap-2.5">
                 <input
+                  id="quiz-answer-input"
+                  aria-label={t("quizTypeAnswer") || "Enter Math Answer"}
                   type="number"
                   required
                   autoFocus
@@ -406,20 +413,38 @@ export default function SpeedChallengeWidget() {
             )}
 
             {/* Direct CRM CTA WhatsApp Button */}
-            <div className="bg-[#0D1A1E] p-5 rounded-3xl border-2 border-dashed border-vibrant-teal/30 space-y-3 shadow-md">
+            <div className="bg-[#0D1A1E] p-5 rounded-3xl border-2 border-dashed border-vibrant-teal/30 space-y-3.5 shadow-md text-center">
               <p className="text-[10px] text-vibrant-gold font-black tracking-widest uppercase mb-1">
                 {t("quizExclusiveOffer")}
               </p>
-              <h5 className="font-display text-sm font-black text-white">
+              <h5 className="font-display text-sm md:text-base font-black text-white">
                 {t("quizBookConsult")}
               </h5>
-              <button
-                onClick={initiateDemoBooking}
-                className="w-full bg-vibrant-orange text-white font-black py-4 rounded-2xl text-xs md:text-sm shadow-[0_4px_0_0_#B33A00] active:translate-y-1 active:shadow-none hover:brightness-105 duration-100 transition-all flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <MessageSquare className="w-4 h-4 shrink-0" />
-                {t("quizSecureSlot")}
-              </button>
+              <p className="text-xs text-[#A2C4C9] leading-relaxed max-w-md mx-auto">
+                {language === "hi" 
+                  ? "क्या आप बच्चे के लिए 1-on-1 डायग्नोस्टिक ब्रेन व मैथ्स असेसमेंट चाहते हैं? हमारे वाकड सेंटर या ऑनलाइन पर फ्री ट्रायल बुक करें।" 
+                  : language === "mr"
+                  ? "आपल्या पाल्यासाठी 1-on-1 डायग्नोस्टिक गणित व मेंदू चाचणी हवी आहे का? आमच्या वाकड सेंटर किंवा ऑनलाईनवर मोफत ट्रायल बुक करा."
+                  : "Want a complete 1-on-1 diagnostic brain & math assessment? Book your free offline trial at our Wakad center or online."}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
+                <button
+                  type="button"
+                  onClick={initiateDemoBooking}
+                  className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3.5 px-4 rounded-2xl text-xs md:text-sm shadow-md active:translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <MessageSquare className="w-4 h-4 shrink-0" />
+                  <span>{t("quizSecureSlot")}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsDemoModalOpen(true)}
+                  className="flex-1 bg-vibrant-orange hover:bg-vibrant-orange/90 text-white font-black py-3.5 px-4 rounded-2xl text-xs md:text-sm shadow-md active:translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Calendar className="w-4 h-4 shrink-0" />
+                  <span>{t("bookFreeDemo")}</span>
+                </button>
+              </div>
             </div>
 
             {/* Try again */}
@@ -432,6 +457,13 @@ export default function SpeedChallengeWidget() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Demo Booking Modal */}
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        source="quiz_result_bridge"
+      />
     </div>
   );
 }

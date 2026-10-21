@@ -1,19 +1,43 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M2EL9MYSRL"></script>
+    <!-- Preconnect Google Fonts & Tag Manager for instant network handshake -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+    <!-- Google tag (gtag.js) - Canonical Property G-M2EL9MYSRL (Non-blocking async load) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      // Track to both registered GA4 properties so neither property is missed
       gtag('config', 'G-M2EL9MYSRL');
-      gtag('config', 'G-VC40JH2BX3');
+
+      // Load analytics script non-blockingly without delaying FCP/LCP
+      function loadGtagScript() {
+        if (window._gtagScriptLoaded) return;
+        window._gtagScriptLoaded = true;
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-M2EL9MYSRL';
+        document.head.appendChild(script);
+      }
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadGtagScript, { timeout: 2500 });
+      } else {
+        window.addEventListener('load', function() {
+          setTimeout(loadGtagScript, 1200);
+        });
+      }
+      ['click', 'touchstart', 'scroll', 'keydown'].forEach(function(evt) {
+        window.addEventListener(evt, loadGtagScript, { once: true, passive: true });
+      });
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="preload" as="image" href="/logo.png" fetchpriority="high" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <title>Arnav Abacus Academy &amp; Vedic Maths Classes - Wakad, Pune, India</title>

@@ -728,10 +728,12 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
 
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
             <div className="sm:col-span-1">
-              <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+              <label htmlFor="lead-salutation" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
                 {t("formSalutation")}
               </label>
               <select
+                id="lead-salutation"
+                aria-label={t("formSalutation") || "Salutation"}
                 value={salutation}
                 onChange={(e) => setSalutation(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
@@ -743,10 +745,11 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
             </div>
 
             <div className="sm:col-span-3">
-              <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+              <label htmlFor="lead-parent-name" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
                 {t("formParentName")}
               </label>
               <input
+                id="lead-parent-name"
                 type="text"
                 required
                 placeholder={t("formNamePlaceholder")}
@@ -758,10 +761,11 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+            <label htmlFor="lead-student-name" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
               {t("formStudentName")}
             </label>
             <input
+              id="lead-student-name"
               type="text"
               required
               placeholder={language === "hi" ? "जैसे: आयुष शर्मा" : language === "mr" ? "उदा. आयुष शर्मा" : "e.g. Ayush Sharma"}
@@ -773,10 +777,12 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+              <label htmlFor="lead-child-age" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
                 {t("formAgeBracket")}
               </label>
               <select
+                id="lead-child-age"
+                aria-label={t("formAgeBracket") || "Child Age Bracket"}
                 value={childAge}
                 onChange={(e) => setChildAge(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
@@ -789,10 +795,12 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+              <label htmlFor="lead-program" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
                 {t("formProgramTopic")}
               </label>
               <select
+                id="lead-program"
+                aria-label={t("formProgramTopic") || "Program Topic"}
                 value={program}
                 onChange={(e) => setProgram(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
@@ -811,10 +819,12 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+              <label htmlFor="lead-class-mode" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
                 {t("formClassMode")}
               </label>
               <select
+                id="lead-class-mode"
+                aria-label={t("formClassMode") || "Class Mode"}
                 value={classMode}
                 onChange={(e) => setClassMode(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
@@ -825,10 +835,12 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
             </div>
 
             <div>
-              <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+              <label htmlFor="lead-curriculum" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
                 {t("formCurriculum")}
               </label>
               <select
+                id="lead-curriculum"
+                aria-label={t("formCurriculum") || "School Curriculum"}
                 value={schoolCurriculum}
                 onChange={(e) => setSchoolCurriculum(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
@@ -846,10 +858,12 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
           {classMode === "online" && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-fade-in">
               <div>
-                <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+                <label htmlFor="lead-country-code" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
                   {t("formCountryCode")}
                 </label>
                 <select
+                  id="lead-country-code"
+                  aria-label={t("formCountryCode") || "Country Code"}
                   value={countryCode}
                   onChange={(e) => setCountryCode(e.target.value)}
                   className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
@@ -866,10 +880,12 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+                <label htmlFor="lead-time-zone" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
                   {t("formTimeZone")}
                 </label>
                 <select
+                  id="lead-time-zone"
+                  aria-label={t("formTimeZone") || "Time Zone"}
                   value={timeZone}
                   onChange={(e) => setTimeZone(e.target.value)}
                   className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-[11px] text-gray-800 transition cursor-pointer shadow-sm"

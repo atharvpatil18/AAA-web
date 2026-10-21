@@ -93,6 +93,7 @@ export default function DemoBookingModal({
     <div
       role="dialog"
       aria-modal="true"
+      aria-labelledby="modal-title"
       className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-fade-in"
       onClick={handleResetAndClose}
     >
@@ -115,7 +116,7 @@ export default function DemoBookingModal({
             <span>Complimentary Assessment</span>
           </div>
 
-          <h3 className="text-xl md:text-2xl font-black leading-tight text-white">
+          <h3 id="modal-title" className="text-xl md:text-2xl font-black leading-tight text-white">
             Book a Free Demo Class
           </h3>
           <p className="text-xs md:text-sm text-orange-50 mt-1">
@@ -153,12 +154,13 @@ export default function DemoBookingModal({
 
               {/* Parent Name */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                <label htmlFor="modal-parent-name" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                   Parent / Guardian Name *
                 </label>
                 <div className="relative">
                   <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
+                    id="modal-parent-name"
                     type="text"
                     required
                     value={parentName}
@@ -171,7 +173,7 @@ export default function DemoBookingModal({
 
               {/* WhatsApp Mobile Number */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                <label htmlFor="modal-phone" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                   WhatsApp Contact Number *
                 </label>
                 <div className="relative flex">
@@ -179,6 +181,7 @@ export default function DemoBookingModal({
                     +91
                   </span>
                   <input
+                    id="modal-phone"
                     type="tel"
                     required
                     maxLength={10}
@@ -193,10 +196,12 @@ export default function DemoBookingModal({
               {/* Child's Age Group & Preferred Program (2 columns) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label htmlFor="modal-child-age" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Child's Age Group
                   </label>
                   <select
+                    id="modal-child-age"
+                    aria-label="Child's Age Group"
                     value={childAge}
                     onChange={(e) => setChildAge(e.target.value)}
                     className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-vibrant-orange font-medium text-slate-900 cursor-pointer"
@@ -209,10 +214,12 @@ export default function DemoBookingModal({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label htmlFor="modal-program" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Course Interested
                   </label>
                   <select
+                    id="modal-program"
+                    aria-label="Course Interested"
                     value={program}
                     onChange={(e) => setProgram(e.target.value)}
                     className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-vibrant-orange font-medium text-slate-900 cursor-pointer"

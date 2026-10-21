@@ -108,6 +108,10 @@ export default function ProgramCard({ program }: ProgramCardProps) {
           <img 
             src={program.id === "abacus" ? "/abacus_stream_students.png" : program.id === "vedic-math" ? "/vedic_stream_students.png" : "/school_stream_students.png"} 
             alt="Academy Students" 
+            loading="lazy"
+            decoding="async"
+            width={48}
+            height={48}
             className="w-full h-full object-cover"
           />
         </div>
