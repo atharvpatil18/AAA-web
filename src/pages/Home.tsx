@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "motion/react";
 import Hero from "../components/Hero";
 import TrustBar from "../components/TrustBar";
 import ProgramCard from "../components/ProgramCard";
@@ -21,7 +22,7 @@ const MathConcernVideoBooth = React.lazy(() => import("../components/MathConcern
 
 import { useLanguage } from "../lib/LanguageContext";
 import { PROGRAMS } from "../data";
-import { FEATURED_BLOG_PREVIEWS } from "../data/blogPreviews";
+import { INITIAL_BLOG_POSTS } from "../data/blogData";
 import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2, ChevronDown, ChevronUp, BookOpen, Download, Clock, X, Trophy } from "lucide-react";
 import { trackDemoClick } from "../lib/analytics";
 
@@ -37,22 +38,16 @@ export default function Home() {
   const [showOnlineDetails, setShowOnlineDetails] = useState(false);
   const [parentFocus, setParentFocus] = useState<"all" | "fear" | "speed" | "details">("all");
   const [showBlogToast, setShowBlogToast] = useState(false);
-  const [loadMap, setLoadMap] = useState(false);
 
   useEffect(() => {
     try {
       const dismissed = localStorage.getItem("aaa_championship_toast_dismissed");
-      if (dismissed) return;
-
-      const handleScroll = () => {
-        if (window.scrollY > 400) {
+      if (!dismissed) {
+        const timer = setTimeout(() => {
           setShowBlogToast(true);
-          window.removeEventListener("scroll", handleScroll);
-        }
-      };
-
-      window.addEventListener("scroll", handleScroll, { passive: true });
-      return () => window.removeEventListener("scroll", handleScroll);
+        }, 2200);
+        return () => clearTimeout(timer);
+      }
     } catch {
       // LocalStorage access error fallback
     }
@@ -676,7 +671,7 @@ export default function Home() {
 
           {/* Blog Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {FEATURED_BLOG_PREVIEWS.map((post) => (
+            {INITIAL_BLOG_POSTS.slice(0, 3).map((post) => (
               <Link
                 key={post.id}
                 to={`/blog/${post.slug}`}
@@ -955,49 +950,17 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Column Right: Map Iframe wrapper (On-demand interactive load) */}
-            <div className="lg:col-span-7 h-[350px] md:h-[450px] bg-slate-100 rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] relative group">
-              {loadMap ? (
-                <iframe 
-                  src="https://maps.google.com/maps?q=18.5975866,73.7810869&z=17&output=embed" 
-                  className="w-full h-full border-0" 
-                  allowFullScreen={true}
-                  loading="lazy" 
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Arnav Abacus Academy Center Location"
-                />
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-slate-50 to-orange-50/40 relative">
-                  <div className="w-16 h-16 rounded-2xl bg-vibrant-orange/10 border-2 border-vibrant-orange flex items-center justify-center text-vibrant-orange mb-4 shadow-sm">
-                    <MapPin className="w-8 h-8 text-vibrant-orange animate-bounce" />
-                  </div>
-                  <h4 className="font-display font-black text-slate-900 text-lg sm:text-xl mb-1">
-                    Wakad Pune Center • Offline Academy
-                  </h4>
-                  <p className="text-xs text-slate-600 max-w-md mb-5 leading-relaxed font-medium">
-                    Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind Wisdom World School, Wakad, Pune 411057
-                  </p>
-                  <div className="flex flex-wrap items-center justify-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => setLoadMap(true)}
-                      className="bg-vibrant-dark hover:bg-slate-800 text-white font-black text-xs px-5 py-2.5 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer inline-flex items-center gap-2"
-                    >
-                      <MapPin className="w-3.5 h-3.5 text-vibrant-orange" />
-                      Load Interactive Google Map
-                    </button>
-                    <a
-                      href="https://maps.app.goo.gl/A7QVndN4donCTM4P9"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-white hover:bg-slate-50 text-slate-800 border-2 border-slate-300 font-bold text-xs px-4 py-2 rounded-xl transition-all inline-flex items-center gap-1.5"
-                    >
-                      Open in Maps App <ArrowRight className="w-3.5 h-3.5 text-vibrant-orange" />
-                    </a>
-                  </div>
-                </div>
-              )}
-              <div className="absolute bottom-4 left-4 bg-vibrant-dark text-white text-[10px] font-black px-3.5 py-1.5 rounded-full backdrop-blur-sm tracking-widest uppercase shadow-md border border-slate-700/50 pointer-events-none">
+            {/* Column Right: Map Iframe wrapper */}
+            <div className="lg:col-span-7 h-[350px] md:h-[450px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] relative group">
+              <iframe 
+                src="https://maps.google.com/maps?q=18.5975866,73.7810869&z=17&output=embed" 
+                className="w-full h-full border-0" 
+                allowFullScreen={true}
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Arnav Abacus Academy Center Location"
+              />
+              <div className="absolute bottom-4 left-4 bg-vibrant-dark text-white text-[10px] font-black px-3.5 py-1.5 rounded-full backdrop-blur-sm tracking-widest uppercase shadow-md border border-slate-700/50">
                 {t("homeOppCreativeCameo")}
               </div>
             </div>
@@ -1075,49 +1038,55 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Floating Championship Blog Announcement Toast */}
-      {showBlogToast && (
-        <div
-          className="fixed bottom-6 right-4 sm:right-6 z-50 max-w-sm sm:max-w-md bg-slate-900/95 backdrop-blur-md text-white p-3.5 sm:p-4 rounded-2xl shadow-2xl border-2 border-amber-400/50 shadow-amber-500/10 flex items-start sm:items-center gap-3.5 group hover:border-amber-400 transition-all animate-fade-in"
-          role="alert"
-        >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shrink-0 shadow-md text-slate-950 font-black">
-            <Trophy className="w-5 h-5 text-slate-950 animate-pulse" />
-          </div>
-
-          <div className="flex-1 min-w-0 pr-1">
-            <div className="flex items-center gap-1.5 mb-0.5">
-              <span className="text-[9px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded font-mono">
-                Official Exam Center
-              </span>
-              <span className="text-[10px] text-amber-300 font-bold">Wakad, Pune</span>
-            </div>
-            <p className="text-xs font-black text-white leading-tight truncate">
-              National Championship 2026
-            </p>
-            <p className="text-[11px] text-slate-300 font-medium leading-snug line-clamp-2 mt-0.5">
-              56 AAA students competing under AVAS & IIVA Book of Records. Read the complete story!
-            </p>
-            <div className="mt-2 flex items-center gap-2">
-              <Link
-                to="/blog/national-level-abacus-vedic-maths-championship-2026"
-                onClick={() => trackDemoClick("home_championship_toast_read")}
-                className="inline-flex items-center gap-1 text-[11px] font-black text-amber-400 hover:text-amber-300 transition-colors uppercase tracking-wider underline underline-offset-2"
-              >
-                Read Story <ArrowRight className="w-3 h-3" />
-              </Link>
-            </div>
-          </div>
-
-          <button
-            onClick={handleDismissToast}
-            aria-label="Dismiss notification"
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors shrink-0 cursor-pointer"
+      {/* Floating Championship Blog Announcement Toast (Option A) */}
+      <AnimatePresence>
+        {showBlogToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.92 }}
+            transition={{ type: "spring", stiffness: 350, damping: 25 }}
+            className="fixed bottom-6 right-4 sm:right-6 z-50 max-w-sm sm:max-w-md bg-slate-900/95 backdrop-blur-md text-white p-3.5 sm:p-4 rounded-2xl shadow-2xl border-2 border-amber-400/50 shadow-amber-500/10 flex items-start sm:items-center gap-3.5 group hover:border-amber-400 transition-all"
+            role="alert"
           >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-      )}
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shrink-0 shadow-md text-slate-950 font-black">
+              <Trophy className="w-5 h-5 text-slate-950 animate-pulse" />
+            </div>
+
+            <div className="flex-1 min-w-0 pr-1">
+              <div className="flex items-center gap-1.5 mb-0.5">
+                <span className="text-[9px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded font-mono">
+                  Official Exam Center
+                </span>
+                <span className="text-[10px] text-amber-300 font-bold">Wakad, Pune</span>
+              </div>
+              <p className="text-xs font-black text-white leading-tight truncate">
+                National Championship 2026
+              </p>
+              <p className="text-[11px] text-slate-300 font-medium leading-snug line-clamp-2 mt-0.5">
+                56 AAA students competing under AVAS & IIVA Book of Records. Read the complete story!
+              </p>
+              <div className="mt-2 flex items-center gap-2">
+                <Link
+                  to="/blog/national-level-abacus-vedic-maths-championship-2026"
+                  onClick={() => trackDemoClick("home_championship_toast_read")}
+                  className="inline-flex items-center gap-1 text-[11px] font-black text-amber-400 hover:text-amber-300 transition-colors uppercase tracking-wider underline underline-offset-2"
+                >
+                  Read Story <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            </div>
+
+            <button
+              onClick={handleDismissToast}
+              aria-label="Dismiss notification"
+              className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors shrink-0 cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

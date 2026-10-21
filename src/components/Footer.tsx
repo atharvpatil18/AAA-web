@@ -45,7 +45,7 @@ export default function Footer() {
                 <span className="font-display font-black text-white text-sm tracking-tight block leading-tight">
                   Arnav Abacus Academy
                 </span>
-                <span className="text-[9px] text-slate-300 font-semibold tracking-wider uppercase block leading-none">
+                <span className="text-[9px] text-slate-500 font-medium tracking-wider uppercase block leading-none">
                   &amp; {language === "hi" ? "वैदिक गणित क्लासेस" : language === "mr" ? "वैदिक गणित क्लासेस" : "Vedic Maths Classes"}
                 </span>
               </div>
@@ -167,7 +167,7 @@ export default function Footer() {
             <span className="flex items-center gap-1 text-slate-400">
               {language === "hi" ? "संस्थापक और मेंटर: " : language === "mr" ? "संस्थापक आणि मार्गदर्शक: " : "Founder &amp; Mentor: "} <strong className="text-slate-200">Neha Patil</strong> (IIVA Certified)
             </span>
-            <span className="text-slate-400">|</span>
+            <span className="text-slate-600">|</span>
             <span className="flex items-center gap-1.5 text-slate-400">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> {language === "hi" ? "सरकारी मान्यता प्राप्त" : language === "mr" ? "शासकीय मान्यता प्राप्त" : "Government Recognized"}
             </span>

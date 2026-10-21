@@ -9,9 +9,5 @@ Disallow: /#/practice/session
 Disallow: /#/practice/results
 Disallow: /#/login
 
-# LLM & Agentic Browsing discovery
-Allow: /llms.txt
-Allow: /.well-known/ard.json
-
 # Canonical Sitemap
 Sitemap: https://arnavabacusacademy-web.vercel.app/sitemap.xml

@@ -5,11 +5,11 @@
 
 import React, { useState, useEffect } from "react";
 import { Sparkles, Calendar, ArrowRight, ShieldCheck, MapPin, Trophy, Star } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import { Link } from "react-router-dom";
-
-const DemoBookingModal = React.lazy(() => import("./DemoBookingModal"));
+import DemoBookingModal from "./DemoBookingModal";
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -76,12 +76,18 @@ export default function Hero() {
 
             {/* Dynamic Rotating Subtitle punchline */}
             <div className="min-h-[48px] flex items-center justify-center lg:justify-start">
-              <p
-                key={punchlineIndex}
-                className="text-vibrant-orange font-display font-bold text-base md:text-lg lg:text-xl max-w-2xl leading-normal text-center lg:text-left transition-opacity duration-300"
-              >
-                {punchlines[punchlineIndex]}
-              </p>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={punchlineIndex}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-vibrant-orange font-display font-bold text-base md:text-lg lg:text-xl max-w-2xl leading-normal text-center lg:text-left"
+                >
+                  {punchlines[punchlineIndex]}
+                </motion.p>
+              </AnimatePresence>
             </div>
 
             {/* Subtitle description (LCP Element - Unblocked immediate render) */}
@@ -205,15 +211,11 @@ export default function Hero() {
       </div>
 
       {/* Demo Booking Modal */}
-      {isDemoModalOpen && (
-        <React.Suspense fallback={null}>
-          <DemoBookingModal
-            isOpen={isDemoModalOpen}
-            onClose={() => setIsDemoModalOpen(false)}
-            source="hero_primary_cta"
-          />
-        </React.Suspense>
-      )}
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        source="hero_primary_cta"
+      />
     </section>
   );
 }

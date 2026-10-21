@@ -10,8 +10,7 @@ import { trackWhatsAppClick, trackCallClick, trackDemoRequest } from "../lib/ana
 import { useLanguage } from "../lib/LanguageContext";
 import { Language } from "../lib/translations";
 import { useAuth } from "../lib/AuthContext";
-
-const DemoBookingModal = React.lazy(() => import("./DemoBookingModal"));
+import DemoBookingModal from "./DemoBookingModal";
 
 export default function Navbar() {
   const { language, setLanguage, t } = useLanguage();
@@ -381,7 +380,7 @@ export default function Navbar() {
                       className={`block px-3 py-2 rounded-lg text-sm font-bold transition-colors ${
                         isActive
                           ? "bg-vibrant-orange/10 text-vibrant-orange"
-                          : "text-slate-700 hover:bg-white hover:text-vibrant-orange"
+                          : "text-gray-655 hover:bg-white hover:text-vibrant-orange"
                       }`}
                     >
                       {link.name}
@@ -442,15 +441,11 @@ export default function Navbar() {
       </nav>
 
       {/* Demo Booking Modal */}
-      {isDemoModalOpen && (
-        <React.Suspense fallback={null}>
-          <DemoBookingModal
-            isOpen={isDemoModalOpen}
-            onClose={() => setIsDemoModalOpen(false)}
-            source="navbar_header_cta"
-          />
-        </React.Suspense>
-      )}
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        source="navbar_header_cta"
+      />
     </header>
   );
 }

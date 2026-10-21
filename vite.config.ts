@@ -16,26 +16,14 @@ export default defineConfig(() => {
       chunkSizeWarningLimit: 600,
       modulePreload: {
         resolveDependencies: (filename, deps, { hostType }) => {
-          return deps.filter(dep => 
-            !dep.includes('vendor-pdf') && 
-            !dep.includes('vendor-purify') &&
-            !dep.includes('vendor-motion') &&
-            !dep.includes('locale-hi') &&
-            !dep.includes('locale-mr')
-          );
+          return deps.filter(dep => !dep.includes('vendor-pdf') && !dep.includes('vendor-purify'));
         },
       },
       rollupOptions: {
         output: {
           manualChunks(id) {
-            if (id.includes('locales/hi')) {
-              return 'locale-hi';
-            }
-            if (id.includes('locales/mr')) {
-              return 'locale-mr';
-            }
-            if (id.includes('locales/en') || id.includes('translations')) {
-              return 'locale-en';
+            if (id.includes('translations')) {
+              return 'locale-translations';
             }
             if (id.includes('node_modules')) {
               if (id.includes('jspdf') || id.includes('html2canvas')) {
