@@ -57,37 +57,22 @@ export default function Hero() {
             
             {/* Top Badges */}
             <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-                className="inline-flex items-center gap-2 bg-vibrant-orange/10 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange"
-              >
+              <div className="inline-flex items-center gap-2 bg-vibrant-orange/10 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange">
                 <Sparkles className="w-4 h-4 text-vibrant-orange animate-spin-slow" />
                 <span>{t("heroBadge")}</span>
-              </motion.div>
+              </div>
  
-              <motion.div 
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.05 }}
-                className="inline-flex items-center gap-2 bg-vibrant-teal/10 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-teal"
-              >
+              <div className="inline-flex items-center gap-2 bg-vibrant-teal/10 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-teal">
                 <ShieldCheck className="w-4 h-4 text-vibrant-teal" />
                 <span>{t("heroRatioBadge")}</span>
-              </motion.div>
+              </div>
             </div>
  
             {/* Main Headline */}
-            <motion.h1 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.15 }}
-              className="font-display font-black text-3xl xs:text-4xl sm:text-6xl lg:text-7xl text-vibrant-dark tracking-tight leading-[1.1] mb-6 sm:mb-10"
-            >
+            <h1 className="font-display font-black text-3xl xs:text-4xl sm:text-6xl lg:text-7xl text-vibrant-dark tracking-tight leading-[1.1] mb-6 sm:mb-10">
               {t("heroTitleStart")}<span className="text-vibrant-orange">{t("heroTitleFear")}</span>{" "} <br />
               {t("heroTitleInto")}<span className="text-vibrant-teal">{t("heroTitleFun")}</span>{" "}
-            </motion.h1>
+            </h1>
 
             {/* Dynamic Rotating Subtitle punchline */}
             <div className="min-h-[48px] flex items-center justify-center lg:justify-start">
@@ -105,23 +90,13 @@ export default function Hero() {
               </AnimatePresence>
             </div>
 
-            {/* Subtitle description */}
-            <motion.p 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.25 }}
-              className="text-slate-650 text-sm md:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 pr-0 lg:pr-12"
-            >
+            {/* Subtitle description (LCP Element - Unblocked immediate render) */}
+            <p className="text-slate-650 text-sm md:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 pr-0 lg:pr-12">
               {t("heroSubtitle")}
-            </motion.p>
+            </p>
 
             {/* Quick Trust Indicators Card from palette specification */}
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.35 }}
-              className="grid grid-cols-4 gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm shadow-slate-100/50"
-            >
+            <div className="grid grid-cols-4 gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm shadow-slate-100/50">
               <div className="text-center">
                 <p className="text-2xl font-black text-vibrant-orange">{t("trustTrained").split(" ")[0]}</p>
                 <p className="text-[10px] font-bold uppercase text-slate-400">{t("trustTrained").split(" ").slice(1).join(" ")}</p>
@@ -143,15 +118,10 @@ export default function Hero() {
                 <p className="text-2xl font-black text-amber-500">{t("trustRating").split(" ")[0]}</p>
                 <p className="text-[10px] font-bold uppercase text-slate-400 underline decoration-amber-500">{t("trustRating").split(" ").slice(1).join(" ")}</p>
               </a>
-            </motion.div>
+            </div>
 
             {/* Play Button Row */}
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.45 }}
-              className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-3"
-            >
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-3">
               <button
                 type="button"
                 onClick={handleCtaClick}
@@ -167,7 +137,7 @@ export default function Hero() {
               >
                 {t("heroBtnQuiz")}
               </button>
-            </motion.div>
+            </div>
 
           </div>
 

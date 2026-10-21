@@ -182,6 +182,9 @@ export default function Navbar() {
                     src="/logo.png" 
                     alt="Arnav Abacus Academy" 
                     className="w-full h-full object-cover" 
+                    width={44}
+                    height={44}
+                    fetchPriority="high"
                     referrerPolicy="no-referrer"
                     onError={() => setLogoFailed(true)}
                   />

@@ -43,6 +43,10 @@ export default function TeacherProfile() {
                   src="/teacher-profile.jpg" 
                   alt={language === "hi" ? "नेहा पाटिल - मास्टर ट्रेनर" : language === "mr" ? "नेहा पाटील - मास्टर ट्रेनर" : "Neha Patil - Master Trainer"} 
                   className="w-full h-full rounded-[26px] object-cover" 
+                  loading="lazy"
+                  decoding="async"
+                  width={224}
+                  height={224}
                   referrerPolicy="no-referrer"
                   onError={() => setImgFailed(true)}
                 />
