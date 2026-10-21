@@ -9,15 +9,18 @@ import { motion, AnimatePresence } from "motion/react";
 import Hero from "../components/Hero";
 import TrustBar from "../components/TrustBar";
 import ProgramCard from "../components/ProgramCard";
-import SpeedChallengeWidget from "../components/SpeedChallengeWidget";
-import TeacherProfile from "../components/TeacherProfile";
-import TestimonialCarousel from "../components/TestimonialCarousel";
-import LeadForm from "../components/LeadForm";
-import InteractiveAbacus from "../components/InteractiveAbacus";
-import VedicMathDemo from "../components/VedicMathDemo";
-import MathComparisonDemo from "../components/MathComparisonDemo";
+
+// Lazy load heavy below-the-fold components to minimize mobile initial bundle execution time (TBT)
+const SpeedChallengeWidget = React.lazy(() => import("../components/SpeedChallengeWidget"));
+const TeacherProfile = React.lazy(() => import("../components/TeacherProfile"));
+const TestimonialCarousel = React.lazy(() => import("../components/TestimonialCarousel"));
+const LeadForm = React.lazy(() => import("../components/LeadForm"));
+const InteractiveAbacus = React.lazy(() => import("../components/InteractiveAbacus"));
+const VedicMathDemo = React.lazy(() => import("../components/VedicMathDemo"));
+const MathComparisonDemo = React.lazy(() => import("../components/MathComparisonDemo"));
+const MathConcernVideoBooth = React.lazy(() => import("../components/MathConcernVideoBooth"));
+
 import { useLanguage } from "../lib/LanguageContext";
-import MathConcernVideoBooth from "../components/MathConcernVideoBooth";
 import { PROGRAMS } from "../data";
 import { INITIAL_BLOG_POSTS } from "../data/blogData";
 import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2, ChevronDown, ChevronUp, BookOpen, Download, Clock, X, Trophy } from "lucide-react";
@@ -150,7 +153,9 @@ export default function Home() {
 
       {/* 2.2. Interactive Parent Consultation Booth */}
       {(parentFocus === "all" || parentFocus === "fear") && (
-        <MathConcernVideoBooth />
+        <React.Suspense fallback={<div className="min-h-[100px]" />}>
+          <MathConcernVideoBooth />
+        </React.Suspense>
       )}
 
       {/* 3. Core Programs Showcase */}
@@ -238,7 +243,9 @@ export default function Home() {
 
           {showAbacus && (
             <div className="w-full transition-all duration-300">
-              <InteractiveAbacus />
+              <React.Suspense fallback={<div className="h-64 bg-slate-100 rounded-3xl animate-pulse" />}>
+                <InteractiveAbacus />
+              </React.Suspense>
             </div>
           )}
         </div>
@@ -272,7 +279,9 @@ export default function Home() {
 
           {showVedic && (
             <div className="w-full transition-all duration-300">
-              <VedicMathDemo />
+              <React.Suspense fallback={<div className="h-64 bg-slate-100 rounded-3xl animate-pulse" />}>
+                <VedicMathDemo />
+              </React.Suspense>
             </div>
           )}
         </div>
@@ -284,7 +293,9 @@ export default function Home() {
         <>
           <section id="math-synergy-comparison" className="py-20 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-4 border-vibrant-dark">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <MathComparisonDemo />
+          <React.Suspense fallback={<div className="h-64 bg-slate-100 rounded-3xl animate-pulse" />}>
+            <MathComparisonDemo />
+          </React.Suspense>
         </div>
       </section>
 
@@ -567,14 +578,18 @@ export default function Home() {
               {/* Game Element */}
               {showQuiz && (
                 <div className="w-full transition-all duration-300">
-                  <SpeedChallengeWidget />
+                  <React.Suspense fallback={<div className="h-64 bg-slate-900/10 rounded-3xl animate-pulse" />}>
+                    <SpeedChallengeWidget />
+                  </React.Suspense>
                 </div>
               )}
             </div>
 
             {/* Right Hand: Lead Generation Form */}
             <div className="lg:col-span-6">
-              <LeadForm sourceCampaign="Home Page Split Form" />
+              <React.Suspense fallback={<div className="h-96 bg-white border border-slate-100 rounded-3xl animate-pulse" />}>
+                <LeadForm sourceCampaign="Home Page Split Form" />
+              </React.Suspense>
             </div>
 
           </div>
@@ -598,7 +613,9 @@ export default function Home() {
             </p>
           </div>
 
-          <TeacherProfile />
+          <React.Suspense fallback={<div className="h-64 bg-slate-50 rounded-3xl animate-pulse" />}>
+            <TeacherProfile />
+          </React.Suspense>
         </div>
       </section>
       )}
@@ -619,7 +636,9 @@ export default function Home() {
             </p>
           </div>
 
-          <TestimonialCarousel />
+          <React.Suspense fallback={<div className="h-64 bg-slate-50 rounded-3xl animate-pulse" />}>
+            <TestimonialCarousel />
+          </React.Suspense>
         </div>
       </section>
       )}

@@ -16,7 +16,7 @@ export default defineConfig(() => {
       chunkSizeWarningLimit: 600,
       modulePreload: {
         resolveDependencies: (filename, deps, { hostType }) => {
-          return deps.filter(dep => !dep.includes('vendor-pdf'));
+          return deps.filter(dep => !dep.includes('vendor-pdf') && !dep.includes('vendor-purify'));
         },
       },
       rollupOptions: {
