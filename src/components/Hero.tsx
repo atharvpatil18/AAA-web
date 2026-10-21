@@ -99,15 +99,15 @@ export default function Hero() {
             <div className="grid grid-cols-4 gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm shadow-slate-100/50">
               <div className="text-center">
                 <p className="text-2xl font-black text-vibrant-orange">{t("trustTrained").split(" ")[0]}</p>
-                <p className="text-[10px] font-bold uppercase text-slate-400">{t("trustTrained").split(" ").slice(1).join(" ")}</p>
+                <p className="text-[10px] font-extrabold uppercase text-slate-600">{t("trustTrained").split(" ").slice(1).join(" ")}</p>
               </div>
               <div className="text-center border-l border-slate-100">
                 <p className="text-2xl font-black text-vibrant-dark">{t("trustExp").split(" ")[0]}</p>
-                <p className="text-[10px] font-bold uppercase text-slate-400">{t("trustExp").split(" ").slice(1).join(" ")}</p>
+                <p className="text-[10px] font-extrabold uppercase text-slate-600">{t("trustExp").split(" ").slice(1).join(" ")}</p>
               </div>
               <div className="text-center border-l border-slate-100">
                 <p className="text-2xl font-black text-vibrant-teal">{t("trustAwards").split(" ")[0]}</p>
-                <p className="text-[10px] font-bold uppercase text-slate-400">{t("trustAwards").split(" ").slice(1).join(" ")}</p>
+                <p className="text-[10px] font-extrabold uppercase text-slate-600">{t("trustAwards").split(" ").slice(1).join(" ")}</p>
               </div>
               <a 
                 href="https://share.google/fFcUhDGoBJ5M27dX5" 
@@ -115,8 +115,8 @@ export default function Hero() {
                 rel="noopener noreferrer" 
                 className="text-center border-l border-slate-100 hover:scale-102 transition-transform block"
               >
-                <p className="text-2xl font-black text-amber-500">{t("trustRating").split(" ")[0]}</p>
-                <p className="text-[10px] font-bold uppercase text-slate-400 underline decoration-amber-500">{t("trustRating").split(" ").slice(1).join(" ")}</p>
+                <p className="text-2xl font-black text-amber-600">{t("trustRating").split(" ")[0]}</p>
+                <p className="text-[10px] font-extrabold uppercase text-slate-600 underline decoration-amber-600">{t("trustRating").split(" ").slice(1).join(" ")}</p>
               </a>
             </div>
 
@@ -154,7 +154,7 @@ export default function Hero() {
 
               {/* Highlight statistics metrics */}
               <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                <span className="text-xs text-gray-400 font-bold tracking-widest uppercase">
+                <span className="text-xs text-slate-600 font-extrabold tracking-widest uppercase">
                   {t("heroEnrollmentStatus")}
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-emerald-600 font-bold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
@@ -177,11 +177,11 @@ export default function Hero() {
               <div className="grid grid-cols-2 gap-3 pb-2">
                 <div className="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
                   <span className="block font-black text-vibrant-orange text-sm md:text-base">{t("heroStatSpeed")}</span>
-                  <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">{t("heroStatSpeedLabel")}</span>
+                  <span className="block text-[10px] text-slate-600 font-extrabold uppercase tracking-wider">{t("heroStatSpeedLabel")}</span>
                 </div>
                 <div className="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
                   <span className="block font-black text-vibrant-teal text-sm md:text-base">{t("heroStatAge")}</span>
-                  <span className="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">{t("heroStatAgeLabel")}</span>
+                  <span className="block text-[10px] text-slate-600 font-extrabold uppercase tracking-wider">{t("heroStatAgeLabel")}</span>
                 </div>
               </div>
 

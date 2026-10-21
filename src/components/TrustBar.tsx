@@ -139,7 +139,7 @@ export default function TrustBar() {
               <span className="font-extrabold text-vibrant-dark text-xs md:text-sm mt-1 uppercase tracking-wider block">
                 {stat.label}
               </span>
-              <span className="text-[10px] md:text-xs text-gray-500 mt-0.5 leading-none block">
+              <span className="text-[10px] md:text-xs text-slate-600 font-medium mt-0.5 leading-none block">
                 {stat.subtext}
               </span>
             </div>

@@ -164,12 +164,12 @@ export default function Footer() {
             <p>{language === "hi" ? `© ${currentYear} अर्णव एबाकस एकेडमी और वैदिक गणित क्लासेस। सर्वाधिकार सुरक्षित।` : language === "mr" ? `© ${currentYear} अर्णव ॲबॅकस अकॅडमी आणि वैदिक गणित क्लासेस. सर्व हक्क सुरक्षित.` : `© ${currentYear} Arnav Abacus Academy and Vedic Maths Classes. All Rights Reserved.`}</p>
           </div>
           <div className="flex items-center gap-1.5 text-[11px]">
-            <span className="flex items-center gap-1 text-slate-500">
-              {language === "hi" ? "संस्थापक और मेंटर: " : language === "mr" ? "संस्थापक आणि मार्गदर्शक: " : "Founder &amp; Mentor: "} <strong className="text-slate-300">Neha Patil</strong> (IIVA Certified)
+            <span className="flex items-center gap-1 text-slate-400">
+              {language === "hi" ? "संस्थापक और मेंटर: " : language === "mr" ? "संस्थापक आणि मार्गदर्शक: " : "Founder &amp; Mentor: "} <strong className="text-slate-200">Neha Patil</strong> (IIVA Certified)
             </span>
-            <span className="text-slate-700">|</span>
-            <span className="flex items-center gap-1.5 text-slate-500">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> {language === "hi" ? "सरकारी मान्यता प्राप्त" : language === "mr" ? "शासकीय मान्यता प्राप्त" : "Government Recognized"}
+            <span className="text-slate-600">|</span>
+            <span className="flex items-center gap-1.5 text-slate-400">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> {language === "hi" ? "सरकारी मान्यता प्राप्त" : language === "mr" ? "शासकीय मान्यता प्राप्त" : "Government Recognized"}
             </span>
           </div>
         </div>

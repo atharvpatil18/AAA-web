@@ -70,7 +70,7 @@ export default function FloatingCTA() {
                 </span>
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               </div>
-              <span className="block text-[11px] text-slate-500 mt-1 leading-snug">
+              <span className="block text-[11px] text-slate-600 font-medium mt-1 leading-snug">
                 Book a 1-on-1 assessment for your child at our Wakad center or online.
               </span>
               <span className="inline-flex items-center gap-1 text-[11px] font-bold text-orange-600 mt-1.5 hover:underline">
@@ -82,7 +82,7 @@ export default function FloatingCTA() {
                 e.stopPropagation();
                 setShowNotification(false);
               }}
-              className="text-gray-400 hover:text-gray-600 p-0.5"
+              className="text-gray-500 hover:text-gray-700 p-0.5 cursor-pointer"
               aria-label="Close message"
             >
               <X className="w-3.5 h-3.5" />

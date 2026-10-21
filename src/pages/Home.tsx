@@ -691,7 +691,7 @@ export default function Home() {
 
                 <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-[11px] font-bold text-gray-400">
+                    <div className="flex items-center gap-2 text-[11px] font-bold text-slate-600">
                       <Clock className="w-3.5 h-3.5 text-vibrant-orange" />
                       <span>{post.readTime}</span>
                       <span>•</span>
@@ -700,7 +700,7 @@ export default function Home() {
                     <h3 className="font-display font-black text-base md:text-lg text-vibrant-dark group-hover:text-vibrant-orange transition-colors line-clamp-2 leading-snug">
                       {post.title}
                     </h3>
-                    <p className="text-gray-500 text-xs font-medium line-clamp-3 leading-relaxed">
+                    <p className="text-gray-600 text-xs font-medium line-clamp-3 leading-relaxed">
                       {post.excerpt}
                     </p>
                   </div>
@@ -709,7 +709,7 @@ export default function Home() {
                     <span className="group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                       Read Full Guide <ArrowRight className="w-3.5 h-3.5" />
                     </span>
-                    <span className="text-[10px] text-gray-400 font-bold">
+                    <span className="text-[10px] text-slate-600 font-bold">
                       {post.publishedAt}
                     </span>
                   </div>
@@ -905,7 +905,7 @@ export default function Home() {
                 <div className="flex items-center gap-3 bg-vibrant-cream p-4.5 py-3.5 rounded-2xl border-2 border-vibrant-dark">
                   <Phone className="w-5 h-5 text-vibrant-teal shrink-0" />
                   <div>
-                    <span className="text-xs text-gray-400 font-bold block">{t("homeCallSupport")}</span>
+                    <span className="text-xs text-slate-600 font-bold block">{t("homeCallSupport")}</span>
                     <a href="tel:+919021924968" onClick={handleMapCtaClick} className="font-black text-vibrant-dark hover:text-vibrant-orange block text-sm">
                       +91 90219 24968
                     </a>
@@ -915,7 +915,7 @@ export default function Home() {
                 <div className="flex items-center gap-3 bg-vibrant-cream p-4.5 py-3.5 rounded-2xl border-2 border-vibrant-dark">
                   <Mail className="w-5 h-5 text-vibrant-orange shrink-0" />
                   <div>
-                    <span className="text-xs text-gray-400 font-bold block">{t("homeEmailInquiries")}</span>
+                    <span className="text-xs text-slate-600 font-bold block">{t("homeEmailInquiries")}</span>
                     <a href="mailto:nehaatharv@gmail.com" className="font-black text-vibrant-dark hover:text-vibrant-orange block text-sm">
                       nehaatharv@gmail.com
                     </a>
