@@ -4,11 +4,12 @@
  *
  * Arnav Abacus Academy — Unified Analytics & Measurement Foundation
  * Strictly Child-Safe & Zero-PII: Never passes names, phones, emails, or personal identifiers.
+ * Canonical GA4 Measurement ID: G-M2EL9MYSRL
  */
 
 import { pushGtmEvent } from "./gtm";
 
-// Rate limiting & deduplication cache (e.g. prevent spamming click events within 1.5s)
+// Rate limiting & deduplication cache (e.g. prevent spamming click events within 1.2s)
 const recentEvents = new Map<string, number>();
 
 function shouldThrottle(key: string, limitMs = 1200): boolean {
@@ -34,27 +35,34 @@ export const trackPageView = (pagePath: string, pageTitle?: string) => {
 
 /**
  * Track Program Views (Generic and Program-specific)
+ * Emits both canonical 'programme_view' and 'program_view' for complete backward compatibility.
  */
 export const trackProgramView = (programName: string, source: string = "direct") => {
   const normalized = programName.toLowerCase();
   
-  // 1. Core program view event
+  // Canonical event as required by Section 10
+  pushGtmEvent("programme_view", {
+    programme_name: programName,
+    view_source: source,
+  });
+
+  // Backward-compatible alias
   pushGtmEvent("program_view", {
     program_name: programName,
     view_source: source,
   });
 
-  // 2. Program-specific triggers
+  // Program-specific triggers
   if (normalized.includes("abacus")) {
     pushGtmEvent("abacus_program_view", { source });
   } else if (normalized.includes("vedic")) {
     pushGtmEvent("vedic_math_program_view", { source });
+  } else if (normalized.includes("mental")) {
+    pushGtmEvent("mental_math_program_view", { source });
   } else if (normalized.includes("school")) {
     pushGtmEvent("school_math_program_view", { source });
-  } else if (normalized.includes("ipm")) {
-    pushGtmEvent("ipm_program_view", { source });
-  } else if (normalized.includes("olympiad")) {
-    pushGtmEvent("olympiad_program_view", { source });
+  } else if (normalized.includes("ipm") || normalized.includes("olympiad")) {
+    pushGtmEvent("ipm_olympiad_program_view", { source });
   }
 };
 
@@ -66,21 +74,29 @@ export const trackWhatsAppClick = (source: string, destinationIntent?: string) =
 
   pushGtmEvent("whatsapp_click", {
     click_source: source,
-    destination_intent: destinationIntent || "general_inquiry",
+    destination_intent: destinationIntent || "parent_counselling_inquiry",
   });
 };
 
 /**
  * Secondary Conversion: Phone Call Clicks
+ * Emits canonical 'phone_click' and legacy 'call_click'.
  */
 export const trackCallClick = (source: string) => {
   if (shouldThrottle(`call_${source}`)) return;
+
+  pushGtmEvent("phone_click", {
+    click_source: source,
+    channel: "tel_link",
+  });
 
   pushGtmEvent("call_click", {
     click_source: source,
     channel: "tel_link",
   });
 };
+
+export const trackPhoneClick = trackCallClick;
 
 /**
  * Map / Center Location Clicks
@@ -97,6 +113,8 @@ export const trackLocationClick = (source: string) => {
 export const trackGoogleMapsClick = (source: string) => {
   if (shouldThrottle(`maps_${source}`)) return;
 
+  trackLocationClick(source);
+
   pushGtmEvent("google_maps_click", {
     click_source: source,
     destination: "Google Maps Wakad Center",
@@ -105,17 +123,44 @@ export const trackGoogleMapsClick = (source: string) => {
 
 /**
  * Form Intent Tracking (Engagement)
+ * Emits canonical 'form_start' and 'enquiry_form_start'.
  */
 export const trackEnquiryFormStart = (formName: string = "lead_form") => {
   if (shouldThrottle(`form_start_${formName}`, 5000)) return;
+
+  pushGtmEvent("form_start", {
+    form_name: formName,
+  });
 
   pushGtmEvent("enquiry_form_start", {
     form_name: formName,
   });
 };
 
+export const trackFormStart = trackEnquiryFormStart;
+
 /**
- * Primary Conversion: Enquiry Form Submit
+ * Primary Conversion: Parent Counselling Booking
+ * STRICTLY ZERO-PII: No child or parent names, numbers, or emails are included.
+ */
+export const trackCounsellingBook = (params: {
+  source: string;
+  program?: string;
+  childAgeGroup?: string;
+  deliveryMode?: string;
+}) => {
+  if (shouldThrottle(`counselling_book_${params.source}`, 1500)) return;
+
+  pushGtmEvent("counselling_book", {
+    booking_source: params.source,
+    programme_category: params.program || "Abacus & Mental Math",
+    child_age_bracket: params.childAgeGroup || "unspecified",
+    learning_mode: params.deliveryMode || "offline_wakad",
+  });
+};
+
+/**
+ * Primary Conversion: Form Submit
  * STRICTLY ZERO-PII: No child or parent names, numbers, or emails are included.
  */
 export const trackEnquiryFormSubmit = (params: {
@@ -125,6 +170,14 @@ export const trackEnquiryFormSubmit = (params: {
   sourceCampaign?: string;
   audienceType?: "parent" | "teacher" | "franchise" | "general";
 }) => {
+  pushGtmEvent("form_submit", {
+    program_category: params.program,
+    age_group: params.childAgeGroup,
+    learning_mode: params.classMode || "offline",
+    campaign_source: params.sourceCampaign || "organic_website",
+    audience_type: params.audienceType || "parent",
+  });
+
   pushGtmEvent("enquiry_form_submit", {
     program_category: params.program,
     age_group: params.childAgeGroup,
@@ -132,7 +185,16 @@ export const trackEnquiryFormSubmit = (params: {
     campaign_source: params.sourceCampaign || "organic_website",
     audience_type: params.audienceType || "parent",
   });
+
+  trackCounsellingBook({
+    source: params.sourceCampaign || "enquiry_form",
+    program: params.program,
+    childAgeGroup: params.childAgeGroup,
+    deliveryMode: params.classMode,
+  });
 };
+
+export const trackFormSubmit = trackEnquiryFormSubmit;
 
 /**
  * Primary Conversion: Demo Request
@@ -141,6 +203,7 @@ export const trackDemoRequest = (params: {
   source: string;
   program?: string;
   deliveryMode?: string;
+  childAgeGroup?: string;
 }) => {
   if (shouldThrottle(`demo_req_${params.source}`, 1500)) return;
 
@@ -148,6 +211,13 @@ export const trackDemoRequest = (params: {
     request_source: params.source,
     program_name: params.program || "Abacus",
     delivery_mode: params.deliveryMode || "offline_wakad",
+  });
+
+  trackCounsellingBook({
+    source: params.source,
+    program: params.program,
+    deliveryMode: params.deliveryMode,
+    childAgeGroup: params.childAgeGroup,
   });
 };
 
@@ -187,19 +257,14 @@ export const trackLeadFormSubmission = (
     classMode: extra?.classMode,
     sourceCampaign: extra?.sourceCampaign,
   });
-  trackDemoRequest({
-    source: extra?.sourceCampaign || "lead_form",
-    program,
-    deliveryMode: extra?.classMode || "offline",
-  });
 };
 
 export const trackDemoClick = (source: string, extraData: Record<string, any> = {}) => {
   if (source.includes("whatsapp")) {
     trackWhatsAppClick(source, extraData.programName);
-  } else if (source.includes("call") || source.includes("tel")) {
+  } else if (source.includes("call") || source.includes("tel") || source.includes("phone")) {
     trackCallClick(source);
-  } else if (source.includes("map")) {
+  } else if (source.includes("map") || source.includes("location") || source.includes("nav")) {
     trackGoogleMapsClick(source);
   } else {
     trackDemoRequest({

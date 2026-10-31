@@ -5,7 +5,7 @@
 
 import React, { useState } from "react";
 import { X, Sparkles, Send, CheckCircle2, Phone, Calendar, User, BookOpen, ShieldCheck } from "lucide-react";
-import { trackDemoRequest, trackWhatsAppClick } from "../lib/analytics";
+import { trackDemoRequest, trackWhatsAppClick, trackCounsellingBook } from "../lib/analytics";
 import { validateSanitizedName } from "../lib/securitySanitizer";
 import { useLanguage } from "../lib/LanguageContext";
 
@@ -19,7 +19,7 @@ interface DemoBookingModalProps {
 export default function DemoBookingModal({
   isOpen,
   onClose,
-  defaultProgram = "Abacus Mental Arithmetic",
+  defaultProgram = "Abacus Mathematics (Ages 4.5–9)",
   source = "modal_popup",
 }: DemoBookingModalProps) {
   const { language, t } = useLanguage();
@@ -53,26 +53,34 @@ export default function DemoBookingModal({
 
     setIsSubmitting(true);
 
-    // Track analytics demo request event (zero PII)
+    // Track analytics demo request & counselling booking events (Strictly zero PII)
+    trackCounsellingBook({
+      source,
+      program,
+      childAgeGroup: childAge,
+      deliveryMode,
+    });
+
     trackDemoRequest({
       source,
       program,
       deliveryMode,
+      childAgeGroup: childAge,
     });
 
     // Prepare friendly WhatsApp pre-filled message
     const modeText = deliveryMode === "offline" ? "Offline (Wakad Pune Center)" : "Online Live Class";
     const waText = encodeURIComponent(
-      `Hello Arnav Abacus Academy!\n\nI want to book a Free Demo / Assessment Class.\n` +
+      `Hello Arnav Abacus Academy!\n\nI want to book a Parent Counselling & Assessment Session for my child.\n` +
       `• Parent Name: ${cleanParentName}\n` +
       `• Contact: ${cleanPhone}\n` +
       `• Child's Age Group: ${childAge} years\n` +
       `• Program Interested: ${program}\n` +
       `• Preferred Mode: ${modeText}\n\n` +
-      `Looking forward to scheduling the trial session!`
+      `Looking forward to scheduling the counselling session!`
     );
 
-    trackWhatsAppClick("demo_modal_submit", "book_free_trial");
+    trackWhatsAppClick("counselling_modal_submit", "book_parent_counselling");
 
     // Open WhatsApp directly
     window.open(`https://wa.me/919021924968?text=${waText}`, "_blank");
@@ -102,25 +110,25 @@ export default function DemoBookingModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Header Badge */}
-        <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-teal-500 p-6 text-white relative">
+        <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 text-white relative border-b border-amber-500/30">
           <button
             onClick={handleResetAndClose}
-            className="absolute top-4 right-4 bg-white/20 hover:bg-white/30 text-white rounded-full p-1.5 transition-colors cursor-pointer"
+            className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white rounded-full p-1.5 transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
           </button>
           
-          <div className="inline-flex items-center gap-1.5 bg-white/20 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-yellow-200" />
-            <span>Complimentary Assessment</span>
+          <div className="inline-flex items-center gap-1.5 bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span>Personalised Academic Mentorship</span>
           </div>
 
           <h3 id="modal-title" className="text-xl md:text-2xl font-black leading-tight text-white">
-            Book a Free Demo Class
+            Book Parent Counselling Session
           </h3>
-          <p className="text-xs md:text-sm text-orange-50 mt-1">
-            Experience our proven mental math coaching at Wakad Center or Live Online.
+          <p className="text-xs md:text-sm text-slate-300 mt-1">
+            Connect directly with Neha Patil & academic mentors at Wakad Center or Live Online.
           </p>
         </div>
 
@@ -132,10 +140,10 @@ export default function DemoBookingModal({
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <h4 className="text-xl font-black text-slate-900 mb-2">
-                Booking Request Sent!
+                Counselling Request Sent!
               </h4>
               <p className="text-sm text-slate-600 mb-6 max-w-sm mx-auto leading-relaxed">
-                Thank you! WhatsApp has opened with your request details. Our head mentor will confirm your slot shortly.
+                Thank you! WhatsApp has opened with your request details. Director Neha Patil and our academic team will confirm your slot shortly.
               </p>
               <button
                 onClick={handleResetAndClose}
@@ -165,8 +173,8 @@ export default function DemoBookingModal({
                     required
                     value={parentName}
                     onChange={(e) => setParentName(e.target.value)}
-                    placeholder="e.g. Nitin Patil"
-                    className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-vibrant-orange focus:ring-2 focus:ring-orange-100 transition-all font-medium text-slate-900"
+                    placeholder="e.g. Sangeeta Sharma"
+                    className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all font-medium text-slate-900"
                   />
                 </div>
               </div>
@@ -188,7 +196,7 @@ export default function DemoBookingModal({
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ""))}
                     placeholder="9876543210"
-                    className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-r-xl focus:bg-white focus:outline-none focus:border-vibrant-orange focus:ring-2 focus:ring-orange-100 transition-all font-medium text-slate-900"
+                    className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-r-xl focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all font-medium text-slate-900"
                   />
                 </div>
               </div>
@@ -197,37 +205,41 @@ export default function DemoBookingModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
                   <label htmlFor="modal-child-age" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Child's Age Group
+                    Child's Age / Grade
                   </label>
                   <select
                     id="modal-child-age"
                     aria-label="Child's Age Group"
                     value={childAge}
                     onChange={(e) => setChildAge(e.target.value)}
-                    className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-vibrant-orange font-medium text-slate-900 cursor-pointer"
+                    className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-orange-500 font-medium text-slate-900 cursor-pointer"
                   >
-                    <option value="4-6">4 - 6 yrs (Junior Foundation)</option>
-                    <option value="7-9">7 - 9 yrs (Ideal Abacus Age)</option>
-                    <option value="10-12">10 - 12 yrs (Vedic / Speed Math)</option>
-                    <option value="13+">13+ yrs (High School / Olympiad)</option>
+                    <option value="4.5-6">4.5 - 6 yrs (Junior Abacus)</option>
+                    <option value="7-9">7 - 9 yrs (Foundation Abacus)</option>
+                    <option value="9-11">9 - 11 yrs (Vedic / Mental Math)</option>
+                    <option value="12-14">12 - 14 yrs (Advanced Speed Math)</option>
+                    <option value="Grade 2-5">Grade 2 - 5 (IPM & Olympiad)</option>
+                    <option value="Grade 6-10">Grade 6 - 10 (School Board & Olympiad)</option>
                   </select>
                 </div>
 
                 <div>
                   <label htmlFor="modal-program" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Course Interested
+                    Programme Interested
                   </label>
                   <select
                     id="modal-program"
-                    aria-label="Course Interested"
+                    aria-label="Programme Interested"
                     value={program}
                     onChange={(e) => setProgram(e.target.value)}
-                    className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-vibrant-orange font-medium text-slate-900 cursor-pointer"
+                    className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-orange-500 font-medium text-slate-900 cursor-pointer"
                   >
-                    <option value="Abacus Mental Arithmetic">Abacus Mental Arithmetic</option>
-                    <option value="Vedic Mathematics (Speed Math)">Vedic Mathematics</option>
-                    <option value="School Maths Foundation">School Maths Foundation</option>
-                    <option value="Teacher Training / Franchise">Teacher Training / Franchise</option>
+                    <option value="Abacus Mathematics (Ages 4.5–9)">Abacus Mathematics (Ages 4.5–9)</option>
+                    <option value="Vedic Mathematics (Ages 9–14)">Vedic Mathematics (Ages 9–14)</option>
+                    <option value="Mental Mathematics (Speed & Recall)">Mental Mathematics</option>
+                    <option value="School Mathematics (Grades 5–10)">School Mathematics (Grades 5–10)</option>
+                    <option value="IPM & Olympiad Mathematics (Grades 2–9)">IPM &amp; Olympiad Mathematics</option>
+                    <option value="Teacher Training & Franchise">Teacher Training &amp; Franchise</option>
                   </select>
                 </div>
               </div>
@@ -267,15 +279,15 @@ export default function DemoBookingModal({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-sm py-3.5 px-6 rounded-2xl shadow-lg hover:shadow-xl active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full mt-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm py-3.5 px-6 rounded-2xl shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Book Free Demo on WhatsApp</span>
+                <span>Book Counselling via WhatsApp</span>
                 <Send className="w-4 h-4" />
               </button>
 
               <div className="flex items-center justify-center gap-2 text-[11px] text-slate-500 pt-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Zero spam guarantee. 100% free with no obligation.</span>
+                <span>Zero spam guarantee. 1:8 batch ratio. No obligation.</span>
               </div>
             </form>
           )}

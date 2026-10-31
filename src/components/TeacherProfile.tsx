@@ -4,134 +4,136 @@
  */
 
 import React from "react";
-import { Award, Heart, CheckCircle2, Star, ShieldCheck, Mail, Phone, MapPin } from "lucide-react";
-import { trackDemoClick } from "../lib/analytics";
+import { Award, Heart, CheckCircle2, Star, ShieldCheck, Mail, Phone, MapPin, GraduationCap, Sparkles } from "lucide-react";
+import { trackWhatsAppClick, trackCounsellingBook } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function TeacherProfile() {
   const { language, t } = useLanguage();
   const [imgFailed, setImgFailed] = React.useState(false);
+
   const handleConsultClick = () => {
-    trackDemoClick("teacher_profile_consult");
+    trackCounsellingBook({
+      source: "teacher_profile_consult",
+      program: "Founder Consultation",
+      deliveryMode: "offline_and_online",
+    });
+    trackWhatsAppClick("teacher_profile_consult", "founder_mentorship");
   };
 
-  const certifications = [
-    t("teacherCert1"),
-    t("teacherCert5"),
-    t("teacherCert2"),
-    t("teacherCert3"),
-    t("teacherCert4")
+  const verifiedCredentials = [
+    "Certified Professional in Abacus & Vedic Mathematics from IIVA, Delhi",
+    "Master of Computer Applications (MCA)",
+    "Certified Professional Mentor & Child Cognitive Coach",
+    "Skill India / NSDC-Authorised Training Partner Credentials",
+    "Lead Trainer of 56 National Championship 2026 Participants"
   ];
 
   return (
     <div 
       id="teacher-profile-card" 
-      className="bg-white border-4 border-vibrant-dark rounded-[40px] p-6 md:p-8 lg:p-12 shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] max-w-5xl mx-auto overflow-hidden relative"
+      className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 lg:p-12 shadow-xl max-w-5xl mx-auto overflow-hidden relative"
     >
-      {/* Visual background badges */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-radial from-orange-100/40 to-transparent rounded-full -mr-24 -mt-24 pointer-events-none" />
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
         
-        {/* Profile Details Photo / Avatar Illustration Column */}
+        {/* Photo Column */}
         <div className="lg:col-span-5 flex flex-col items-center">
           <div className="relative">
-            {/* Visual avatar wrapper */}
-            <div className="w-48 h-48 md:w-56 md:h-56 rounded-[32px] bg-vibrant-orange p-1 shadow-md relative overflow-hidden border-2 border-vibrant-dark flex items-center justify-center">
+            {/* Avatar wrapper */}
+            <div className="w-52 h-52 md:w-60 md:h-60 rounded-3xl bg-slate-900 p-1 shadow-lg relative overflow-hidden border-2 border-slate-200 flex items-center justify-center">
               {!imgFailed ? (
                 <img 
                   src="/teacher-profile.jpg" 
-                  alt={language === "hi" ? "नेहा पाटिल - मास्टर ट्रेनर" : language === "mr" ? "नेहा पाटील - मास्टर ट्रेनर" : "Neha Patil - Master Trainer"} 
-                  className="w-full h-full rounded-[26px] object-cover" 
+                  alt="Neha Patil - Founder & Academic Director, Arnav Abacus Academy Wakad Pune" 
+                  className="w-full h-full rounded-2xl object-cover" 
                   loading="lazy"
                   decoding="async"
-                  width={224}
-                  height={224}
-                  referrerPolicy="no-referrer"
+                  width={240}
+                  height={240}
                   onError={() => setImgFailed(true)}
                 />
               ) : (
-                <div className="w-full h-full rounded-[26px] bg-white flex flex-col items-center justify-center p-4 text-center">
-                  <span className="font-display font-black text-6xl md:text-7xl text-vibrant-orange">
-                    NP
-                  </span>
-                  <span className="text-vibrant-dark font-black text-lg md:text-xl tracking-tight mt-2 block">
-                    Neha Patil
-                  </span>
-                  <span className="text-[10px] text-vibrant-teal font-black tracking-widest uppercase block mt-1">
-                    {language === "hi" ? "IIVA प्रमाणित मेंटर" : language === "mr" ? "IIVA प्रमाणित मार्गदर्शक" : "IIVA CERTIFIED MENTOR"}
+                <div className="w-full h-full rounded-2xl bg-slate-900 flex flex-col items-center justify-center p-4 text-center text-white">
+                  <span className="font-display font-black text-6xl text-amber-400">NP</span>
+                  <span className="font-bold text-lg mt-2 block">Neha Patil</span>
+                  <span className="text-[10px] text-teal-300 font-bold uppercase tracking-wider block mt-1">
+                    IIVA Certified Mentor
                   </span>
                 </div>
               )}
             </div>
 
             {/* Float badge */}
-            <div className="absolute -bottom-3 -right-3 bg-vibrant-dark text-white p-3 rounded-2xl shadow-xl flex items-center gap-1.5 border-2 border-vibrant-dark">
-              <Star className="w-4 h-4 text-vibrant-gold fill-current animate-pulse" />
+            <div className="absolute -bottom-3 -right-3 bg-slate-900 text-white p-2.5 sm:p-3 rounded-2xl shadow-xl flex items-center gap-2 border border-slate-700">
+              <Star className="w-4 h-4 text-amber-400 fill-current animate-pulse" />
               <div>
-                <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{t("teacherTopRated")}</span>
-                <span className="block text-xs font-black text-white leading-none mt-0.5">{t("teacherPune")}</span>
+                <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Top-Rated Mentor</span>
+                <span className="block text-xs font-black text-white leading-none mt-0.5">Wakad, Pune</span>
               </div>
             </div>
           </div>
 
-          <div className="mt-8 text-center sm:text-left bg-vibrant-cream border-2 border-vibrant-dark p-4 rounded-2xl max-w-xs shadow-sm">
-            <span className="block text-[11px] font-black text-vibrant-orange uppercase tracking-widest text-center mb-1.5">
-              {language === "hi" ? "अकादमी पार्टनर्स" : language === "mr" ? "अकॅडमी पार्टनर्स" : "Academy Partners"}
+          <div className="mt-8 text-center bg-slate-50 border border-slate-200/80 p-4 rounded-2xl max-w-xs shadow-xs">
+            <span className="block text-[11px] font-black text-orange-600 uppercase tracking-widest text-center mb-1">
+              Personalised Teaching Guarantee
             </span>
-            <p className="text-xs text-gray-500 font-medium leading-relaxed text-center">
-              {t("teacherCoMentored")}
+            <p className="text-xs text-slate-600 font-medium leading-relaxed text-center">
+              "Every micro-batch is limited to 8 students so each child receives direct, diagnostic feedback every session."
             </p>
           </div>
         </div>
 
         {/* Text Details Column */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="space-y-2">
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider">
-              <Award className="w-4 h-4" /> {language === "hi" ? "संस्थापक और शैक्षणिक निदेशक" : language === "mr" ? "संस्थापक आणि शैक्षणिक संचालिका" : "Founder & Academic Director"}
+          <div className="space-y-2 text-center lg:text-left">
+            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+              <Award className="w-4 h-4 text-orange-600" />
+              Founder &amp; Academic Director
             </span>
-            <h3 className="font-display font-black text-3xl md:text-4xl text-vibrant-dark tracking-tight leading-tight">
-              {language === "hi" ? "नेहा पाटिल से मिलें" : language === "mr" ? "नेहा पाटील यांना भेटा" : "Meet Neha Patil"}
+            <h3 className="font-display font-black text-3xl md:text-4xl text-slate-900 tracking-tight leading-tight">
+              Meet Neha Patil
             </h3>
-            <p className="font-display font-bold text-sm md:text-base text-gray-500 italic">
-              "{t("mentorBioQuote")}"
+            <p className="font-display font-semibold text-sm md:text-base text-slate-600 italic">
+              "Mathematics is the medium; developing confident, independent and thoughtful learners is the mission."
             </p>
           </div>
 
-          <div className="text-gray-650 text-xs md:text-sm leading-relaxed space-y-4 font-medium">
+          <div className="text-slate-600 text-xs md:text-sm leading-relaxed space-y-3 font-medium">
             <p>
-              {t("mentorBioP1")}
+              Neha Patil is an MCA and an IIVA Delhi-certified Master Trainer in Soroban Abacus and Vedic Mathematics. With a child-first pedagogy, she focuses on moving children away from mechanical memorization toward photographic visualization, number agility, and logical independence.
             </p>
             <p>
-              {t("mentorBioP2")}
+              Under her leadership, Arnav Abacus Academy has nurtured state and national champions, including 56 participants across 15 levels in the 15th National Level Championship 2026.
             </p>
           </div>
 
-          {/* Checklist with bullet points */}
-          <div className="space-y-2.5">
-            {certifications.map((cert, idx) => (
-              <div key={idx} className="flex items-center gap-3 text-xs md:text-sm text-vibrant-dark font-black">
-                <CheckCircle2 className="w-5 h-5 text-vibrant-teal shrink-0" />
+          {/* Verified Credentials Checklist */}
+          <div className="space-y-2 pt-1">
+            <span className="text-[11px] font-black uppercase tracking-wider text-slate-800 block">
+              Verified Professional Credentials:
+            </span>
+            {verifiedCredentials.map((cert, idx) => (
+              <div key={idx} className="flex items-start gap-2.5 text-xs text-slate-700 font-semibold">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                 <span>{cert}</span>
               </div>
             ))}
           </div>
 
           {/* Action Row */}
-          <div className="pt-4 flex flex-col sm:flex-row items-center gap-4">
+          <div className="pt-3 flex flex-col sm:flex-row items-center gap-4">
             <a
-              href="https://wa.me/919021924968"
+              href="https://wa.me/919021924968?text=Hello%20Neha%20Ma'am!%20I%20would%20like%20to%20book%20a%20Parent%20Counselling%20Session%20for%20my%20child."
               onClick={handleConsultClick}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-vibrant-teal text-white font-black text-xs md:text-sm px-6 py-4 rounded-xl flex items-center justify-center gap-2 shadow-[0_4px_0_0_#00897B] active:translate-y-1 active:shadow-none hover:brightness-105 transition-all cursor-pointer shrink-0"
+              className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm px-7 py-3.5 rounded-full flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0"
             >
-              {t("teacherConsultNeha")}
+              <span>Consult Director Neha Patil</span>
             </a>
-            <div className="text-gray-400 text-xs font-semibold flex items-center gap-1 text-center font-sans">
-              <ShieldCheck className="w-4 h-4 text-vibrant-teal shrink-0" />
-              {t("teacherFreeCheck")}
+            <div className="text-slate-500 text-xs font-semibold flex items-center gap-1.5 text-center">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Free initial diagnostic assessment at Wakad Center or Online</span>
             </div>
           </div>
         </div>

@@ -38,13 +38,13 @@ export default function FloatingCTA() {
   const handleWhatsappDirect = () => {
     trackWhatsAppClick("floating_whatsapp_bubble", "parent_direct_chat");
     const message = encodeURIComponent(
-      "Hello! I visited your website and would like to know more about Abacus and Vedic Maths classes for my child at Wakad Center / Online."
+      "Hello Arnav Abacus Academy! I would like to inquire about Parent Counselling & Assessment for Abacus, Vedic Math and Olympiad batches."
     );
     window.open(`https://wa.me/919021924968?text=${message}`, "_blank");
   };
 
   const handleOpenDemoModal = () => {
-    trackWhatsAppClick("floating_book_demo_pill", "open_demo_modal");
+    trackWhatsAppClick("floating_book_counselling_pill", "open_counselling_modal");
     setShowNotification(false);
     setIsDemoModalOpen(true);
   };
@@ -66,15 +66,15 @@ export default function FloatingCTA() {
             <div className="flex-1">
               <div className="flex items-center gap-1.5">
                 <span className="block text-xs font-black text-slate-900 leading-tight">
-                  Free Demo Class Available!
+                  Parent Counselling &amp; Assessment
                 </span>
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               </div>
               <span className="block text-[11px] text-slate-600 font-medium mt-1 leading-snug">
-                Book a 1-on-1 assessment for your child at our Wakad center or online.
+                Personalised guidance on Abacus, Vedic Math &amp; Olympiad prep for your child.
               </span>
               <span className="inline-flex items-center gap-1 text-[11px] font-bold text-orange-600 mt-1.5 hover:underline">
-                Book in 30 seconds &rarr;
+                Book Counselling &rarr;
               </span>
             </div>
             <button
@@ -96,10 +96,10 @@ export default function FloatingCTA() {
           <button
             onClick={handleOpenDemoModal}
             className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-xs py-2.5 px-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-2 cursor-pointer border border-white/20"
-            aria-label="Book Free Demo Class"
+            aria-label="Book Parent Counselling Session"
           >
             <Calendar className="w-3.5 h-3.5" />
-            <span>Book Free Demo</span>
+            <span>Book Counselling</span>
           </button>
 
           {/* WhatsApp Action Button */}
@@ -112,13 +112,13 @@ export default function FloatingCTA() {
 
             {/* Hover tooltip for desktop users */}
             <span className="absolute right-14 bg-slate-900 text-white font-bold text-xs py-1.5 px-3 rounded-xl opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all origin-right pointer-events-none whitespace-nowrap shadow-lg">
-              Chat on WhatsApp (+91 90219 24968)
+              WhatsApp (+91 90219 24968)
             </span>
           </button>
         </div>
       </div>
 
-      {/* Demo Booking Modal */}
+      {/* Demo / Counselling Booking Modal */}
       <DemoBookingModal
         isOpen={isDemoModalOpen}
         onClose={() => setIsDemoModalOpen(false)}

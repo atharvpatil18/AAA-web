@@ -27,7 +27,7 @@ const ROUTE_META_MAP: Record<string, RouteMeta> = {
   },
   "/programs": {
     title: "Abacus, Vedic Maths & School Math Programs | Arnav Abacus Academy Pune",
-    description: "Explore specialized child brain development programs: Soroban Abacus (Ages 4-14), High-Speed Vedic Maths (Ages 10+), and School Math syllabus synergy.",
+    description: "Explore specialized child brain development programs: Soroban Abacus (Ages 4-14), High-Speed Vedic Maths (Ages 10+), Mental Math & Olympiad preparation.",
     canonicalPath: "/programs",
   },
   "/programs/abacus": {
@@ -46,6 +46,18 @@ const ROUTE_META_MAP: Record<string, RouteMeta> = {
     title: "School Maths Coaching & IPM Olympiad Prep in Wakad | AAA",
     description: "Board-aligned mathematics coaching for Class 1-10 in Wakad, Pune. Strengthen CBSE/ICSE foundations and excel in Olympiad & IPM exams. Inquire today.",
     canonicalPath: "/programs/school-maths",
+    schemaType: "Course",
+  },
+  "/programs/mental-maths": {
+    title: "Mental Mathematics Classes in Wakad, Pune | Arnav Abacus Academy",
+    description: "High-agility mental arithmetic, lightning numerical recall, and cognitive visualization coaching for students in Wakad, Pune. Book a free diagnostic.",
+    canonicalPath: "/programs/mental-maths",
+    schemaType: "Course",
+  },
+  "/programs/ipm-olympiad": {
+    title: "IPM & Maths Olympiad Coaching in Wakad, Pune | Arnav Abacus Academy",
+    description: "Elite competitive mathematics, logical reasoning, and Olympiad examination coaching for Grades 2 to 9 in Wakad, Pune with Neha Patil.",
+    canonicalPath: "/programs/ipm-olympiad",
     schemaType: "Course",
   },
   "/parent-guides/abacus-vs-vedic-maths": {

@@ -16,6 +16,8 @@ const Programs = React.lazy(() => import("./pages/Programs"));
 const ProgramAbacus = React.lazy(() => import("./pages/ProgramAbacus"));
 const ProgramVedicMaths = React.lazy(() => import("./pages/ProgramVedicMaths"));
 const ProgramSchoolMaths = React.lazy(() => import("./pages/ProgramSchoolMaths"));
+const ProgramMentalMaths = React.lazy(() => import("./pages/ProgramMentalMaths"));
+const ProgramIpmOlympiad = React.lazy(() => import("./pages/ProgramIpmOlympiad"));
 const GuideAbacusVsVedicMaths = React.lazy(() => import("./pages/GuideAbacusVsVedicMaths"));
 const GuideDoesAbacusConfuseSchoolMath = React.lazy(() => import("./pages/GuideDoesAbacusConfuseSchoolMath"));
 const GuideWhyChildrenUseFingerCounting = React.lazy(() => import("./pages/GuideWhyChildrenUseFingerCounting"));
@@ -185,6 +187,8 @@ export default function App() {
                 <Route path="/programs/abacus" element={<ProgramAbacus />} />
                 <Route path="/programs/vedic-maths" element={<ProgramVedicMaths />} />
                 <Route path="/programs/school-maths" element={<ProgramSchoolMaths />} />
+                <Route path="/programs/mental-maths" element={<ProgramMentalMaths />} />
+                <Route path="/programs/ipm-olympiad" element={<ProgramIpmOlympiad />} />
                 <Route path="/parent-guides/abacus-vs-vedic-maths" element={<GuideAbacusVsVedicMaths />} />
                 <Route path="/parent-guides/does-abacus-confuse-school-math" element={<GuideDoesAbacusConfuseSchoolMath />} />
                 <Route path="/parent-guides/why-children-use-finger-counting" element={<GuideWhyChildrenUseFingerCounting />} />
@@ -230,5 +234,3 @@ export default function App() {
   </ErrorBoundary>
   );
 }
-
-
