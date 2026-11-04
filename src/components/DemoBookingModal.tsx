@@ -4,10 +4,12 @@
  */
 
 import React, { useState } from "react";
-import { X, Sparkles, Send, CheckCircle2, Phone, Calendar, User, BookOpen, ShieldCheck } from "lucide-react";
+import { X, Sparkles, Send, CheckCircle2, Phone, Calendar, User, BookOpen, ShieldCheck, AlertCircle } from "lucide-react";
 import { trackDemoRequest, trackWhatsAppClick, trackCounsellingBook } from "../lib/analytics";
 import { validateSanitizedName } from "../lib/securitySanitizer";
 import { useLanguage } from "../lib/LanguageContext";
+import { processDiscoveryIntake, sanitizeStringInput } from "../lib/intakeGatewayEngine";
+import { DiscoveryIntakePayload } from "../types/gateway";
 
 interface DemoBookingModalProps {
   isOpen: boolean;
@@ -30,6 +32,8 @@ export default function DemoBookingModal({
   const [deliveryMode, setDeliveryMode] = useState<"offline" | "online">("offline");
   const [serviceConsent, setServiceConsent] = useState(true);
   const [marketingConsent, setMarketingConsent] = useState(false);
+  const [botHoneypot, setBotHoneypot] = useState("");
+  const [assignedUID, setAssignedUID] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -59,6 +63,55 @@ export default function DemoBookingModal({
 
     setIsSubmitting(true);
 
+    // Map course for gateway engine
+    let mappedCourse = program.toLowerCase();
+    if (mappedCourse.includes("abacus")) mappedCourse = "abacus";
+    else if (mappedCourse.includes("vedic")) mappedCourse = "vedic";
+    else if (mappedCourse.includes("mental")) mappedCourse = "mental-math";
+    else if (mappedCourse.includes("school")) mappedCourse = "school-math";
+    else if (mappedCourse.includes("olympiad") || mappedCourse.includes("ipm")) mappedCourse = "olympiad";
+    else mappedCourse = "abacus";
+
+    // Map age for gateway engine
+    let mappedAge = childAge;
+    if (!["4.5-6", "7-9", "10-14"].includes(mappedAge)) {
+      if (mappedAge.includes("10") || mappedAge.includes("11") || mappedAge.includes("12") || mappedAge.includes("13") || mappedAge.includes("14") || mappedAge.includes("Grade 6")) {
+        mappedAge = "10-14";
+      } else if (mappedAge.includes("7") || mappedAge.includes("8") || mappedAge.includes("9") || mappedAge.includes("Grade 2") || mappedAge.includes("Grade 3") || mappedAge.includes("Grade 4") || mappedAge.includes("Grade 5")) {
+        mappedAge = "7-9";
+      } else {
+        mappedAge = "4.5-6";
+      }
+    }
+
+    const payload: DiscoveryIntakePayload = {
+      parentName: cleanParentName,
+      parentPhone: cleanPhone,
+      childAgeBracket: mappedAge,
+      courseInterest: mappedCourse,
+      serviceConsent,
+      marketingConsent,
+      parentGuardianConfirmed: true,
+      website_url_hp: botHoneypot,
+      idempotencyKey: `MODAL-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`,
+    };
+
+    const gatewayResponse = processDiscoveryIntake(payload);
+
+    if (gatewayResponse.statusCode === 429) {
+      setIsSubmitting(false);
+      setErrorMsg(`Rate limit exceeded. Please wait ${gatewayResponse.retryAfterSeconds || 900} seconds before retrying.`);
+      return;
+    }
+
+    if (!gatewayResponse.success && gatewayResponse.statusCode !== 200) {
+      setIsSubmitting(false);
+      setErrorMsg(gatewayResponse.error || "Submission failed. Please check your inputs.");
+      return;
+    }
+
+    setAssignedUID(gatewayResponse.leadUID || null);
+
     // Track analytics demo request & counselling booking events (Strictly zero PII)
     trackCounsellingBook({
       source,
@@ -78,6 +131,7 @@ export default function DemoBookingModal({
     const modeText = deliveryMode === "offline" ? "Offline (Wakad Pune Center)" : "Online Live Class";
     const waText = encodeURIComponent(
       `Hello Arnav Abacus Academy!\n\nI want to book a Personalised Learning Discovery Session for my child.\n` +
+      `• Lead Ref: ${gatewayResponse.leadUID || "Pending"}\n` +
       `• Parent Name: ${cleanParentName}\n` +
       `• Contact: ${cleanPhone}\n` +
       `• Child's Age Group: ${childAge} years\n` +
@@ -100,6 +154,8 @@ export default function DemoBookingModal({
     setErrorMsg("");
     setParentName("");
     setPhone("");
+    setAssignedUID(null);
+    setBotHoneypot("");
     onClose();
   };
 
@@ -148,6 +204,11 @@ export default function DemoBookingModal({
               <h4 className="text-xl font-black text-slate-900 mb-2">
                 Discovery Session Request Sent!
               </h4>
+              {assignedUID && (
+                <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono text-xs font-bold px-3 py-1 rounded-full mb-3">
+                  Booking Ref: {assignedUID}
+                </div>
+              )}
               <p className="text-sm text-slate-600 mb-6 max-w-sm mx-auto leading-relaxed">
                 Thank you! WhatsApp has opened with your request details. Founder Neha Patil and our academic team will confirm your Discovery Session slot shortly.
               </p>
@@ -160,6 +221,18 @@ export default function DemoBookingModal({
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Invisible Honeypot Trap for spam bots */}
+              <input
+                type="text"
+                name="website_url_hp"
+                value={botHoneypot}
+                onChange={(e) => setBotHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
+
               {errorMsg && (
                 <div className="bg-red-50 border border-red-200 text-red-700 text-xs px-3.5 py-2.5 rounded-xl font-medium">
                   {errorMsg}

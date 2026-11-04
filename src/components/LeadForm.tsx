@@ -5,10 +5,12 @@
 
 import React, { useState, useEffect } from "react";
 import { trackEnquiryFormStart, trackEnquiryFormSubmit, trackDemoRequest } from "../lib/analytics";
-import { Sparkles, Gift, Send, Landmark, MapPin, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Sparkles, Gift, Send, Landmark, MapPin, ArrowRight, CheckCircle2, ShieldCheck, Phone } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
 import { validateSanitizedName, sanitizeHtml } from "../lib/securitySanitizer";
 import { dispatchLeadToWebhook } from "../lib/leadWebhook";
+import { processDiscoveryIntake } from "../lib/intakeGatewayEngine";
+import { DiscoveryIntakePayload } from "../types/gateway";
 
 interface LeadFormProps {
   sourceCampaign?: string;
@@ -20,8 +22,12 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
   const [salutation, setSalutation] = useState("Mr.");
   const [parentName, setParentName] = useState("");
   const [studentName, setStudentName] = useState("");
+  const [phone, setPhone] = useState("");
   const [childAge, setChildAge] = useState("7-9");
   const [program, setProgram] = useState(defaultProgram);
+  const [serviceConsent, setServiceConsent] = useState(true);
+  const [marketingConsent, setMarketingConsent] = useState(false);
+  const [assignedUID, setAssignedUID] = useState<string | null>(null);
   const [botHoneypot, setBotHoneypot] = useState(""); // Invisible bot trap
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [redirectSuccess, setRedirectSuccess] = useState(false);
@@ -515,6 +521,51 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       return;
     }
 
+    if (phone.trim()) {
+      const cleanDigits = phone.replace(/\D/g, "");
+      if (cleanDigits.length < 10) {
+        setValidationError("Please enter a valid 10-digit mobile number.");
+        return;
+      }
+    }
+    if (!serviceConsent) {
+      setValidationError("Please provide consent for service communication to schedule the session.");
+      return;
+    }
+
+    // Map course and age bracket for gateway engine
+    let mappedCourse = program.toLowerCase();
+    if (mappedCourse.includes("abacus")) mappedCourse = "abacus";
+    else if (mappedCourse.includes("vedic")) mappedCourse = "vedic";
+    else if (mappedCourse.includes("mental")) mappedCourse = "mental-math";
+    else if (mappedCourse.includes("school")) mappedCourse = "school-math";
+    else if (mappedCourse.includes("olympiad") || mappedCourse.includes("ipm")) mappedCourse = "olympiad";
+    else mappedCourse = "abacus";
+
+    let mappedAge = childAge;
+    if (mappedAge.includes("10") || mappedAge.includes("12") || mappedAge.includes("13") || mappedAge.includes("14")) mappedAge = "10-14";
+    else if (mappedAge.includes("7") || mappedAge.includes("8") || mappedAge.includes("9")) mappedAge = "7-9";
+    else mappedAge = "4.5-6";
+
+    const gatewayPayload: DiscoveryIntakePayload = {
+      parentName: `${salutation} ${parentName}`.trim(),
+      parentPhone: phone.replace(/\D/g, "") || "9822011223",
+      childAgeBracket: mappedAge,
+      courseInterest: mappedCourse,
+      serviceConsent,
+      marketingConsent,
+      parentGuardianConfirmed: true,
+      website_url_hp: botHoneypot,
+      idempotencyKey: `LEAD-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`,
+    };
+
+    const gatewayRes = processDiscoveryIntake(gatewayPayload);
+    if (gatewayRes.statusCode === 429) {
+      setValidationError(`Rate limit reached. Please wait ${gatewayRes.retryAfterSeconds || 900} seconds before retrying.`);
+      return;
+    }
+    setAssignedUID(gatewayRes.leadUID || null);
+
     setIsSubmitting(true);
     
     // Log conversion events: Primary Conversions
@@ -540,7 +591,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     if (competitiveFocus) parentExpectations.push("Olympiad/Competitive focus");
     const expStr = parentExpectations.length > 0 ? `\nHabits/Expectations: ${parentExpectations.join(", ")}` : "";
 
-    let textMessage = `Hello, I'm interested in a Personalised Learning Discovery Session at Arnav Abacus Academy!
+    let textMessage = `Hello, I'm interested in a Personalised Learning Discovery Session at Arnav Abacus Academy!${assignedUID ? `\nDiscovery Ref: ${assignedUID}` : ''}
 Parent Name: ${salutation} ${parentName}
 Student Name: ${studentName}
 Child's Age: ${childAge}
@@ -647,6 +698,11 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
         <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-6 border border-emerald-100 text-emerald-500 animate-bounce">
           <CheckCircle2 className="w-10 h-10" />
         </div>
+        {assignedUID && (
+          <div className="inline-block bg-emerald-100 border border-emerald-300 text-emerald-900 font-mono text-xs font-bold px-4 py-1.5 rounded-full mb-3">
+            Discovery Reference: {assignedUID}
+          </div>
+        )}
         <h3 className="font-display font-bold text-2xl text-emerald-950 mb-2">
           {t("formSuccessTitle").replace("{name}", parentName)}
         </h3>
@@ -773,6 +829,27 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
               onChange={(e) => setStudentName(e.target.value)}
               className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 placeholder-gray-400 transition shadow-sm"
             />
+          </div>
+
+          <div>
+            <label htmlFor="lead-phone" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+              {language === "hi" ? "व्हाट्सएप मोबाइल नंबर *" : language === "mr" ? "व्हॉट्सॲप मोबाईल नंबर *" : "WhatsApp Mobile Number *"}
+            </label>
+            <div className="relative flex">
+              <span className="inline-flex items-center px-3.5 text-xs font-bold bg-gray-200 rounded-l-2xl text-gray-700">
+                +91
+              </span>
+              <input
+                id="lead-phone"
+                type="tel"
+                required
+                maxLength={10}
+                placeholder="9876543210"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+                className="w-full px-4 py-3 rounded-r-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 placeholder-gray-400 transition shadow-sm font-medium"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -956,6 +1033,42 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
                 </label>
               </div>
             )}
+          </div>
+
+          <div className="space-y-2 pt-2 pb-1 border-t border-gray-100 text-left">
+            <label className="flex items-start gap-2.5 cursor-pointer text-xs text-gray-700">
+              <input
+                type="checkbox"
+                required
+                checked={serviceConsent}
+                onChange={(e) => setServiceConsent(e.target.checked)}
+                className="mt-0.5 rounded border-gray-300 text-vibrant-orange focus:ring-vibrant-orange"
+              />
+              <span>
+                <strong>{language === "hi" ? "आवश्यक:" : language === "mr" ? "आवश्यक:" : "Required:"}</strong>{" "}
+                {language === "hi"
+                  ? "मैं अर्णव एबाकस एकेडमी से व्हाट्सएप / एसएमएस द्वारा डिस्कवरी सत्र समय निर्धारण संदेश प्राप्त करने की सहमति देता/देती हूँ।"
+                  : language === "mr"
+                  ? "मी अर्णव ॲबॅकस अकॅडमीकडून व्हॉट्सॲप / एसएमएस द्वारे डिस्कव्हरी सत्राचे वेळापत्रक संदेश प्राप्त करण्यास संमती देतो/देते."
+                  : "I consent to receiving Discovery Session scheduling messages via WhatsApp / SMS from Arnav Abacus Academy."}
+              </span>
+            </label>
+
+            <label className="flex items-start gap-2.5 cursor-pointer text-xs text-gray-500">
+              <input
+                type="checkbox"
+                checked={marketingConsent}
+                onChange={(e) => setMarketingConsent(e.target.checked)}
+                className="mt-0.5 rounded border-gray-300 text-vibrant-orange focus:ring-vibrant-orange"
+              />
+              <span>
+                {language === "hi"
+                  ? "वैकल्पिक: मैं सामयिक गणितीय अंतर्दृष्टि और अकादमी घोषणाएं प्राप्त करने के लिए सहमत हूँ।"
+                  : language === "mr"
+                  ? "पर्यायी: मी प्रासंगिक गणितीय माहिती आणि अकॅडमीच्या घोषणा प्राप्त करण्यास सहमत आहे."
+                  : "Optional: I agree to receive occasional mathematical insights and academy announcements."}
+              </span>
+            </label>
           </div>
 
           <button
