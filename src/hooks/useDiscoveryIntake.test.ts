@@ -12,6 +12,7 @@
 import {
   processDiscoveryIntake,
   sanitizeStringInput,
+  formatCellForCsvExport,
   validateIndianMobile,
   generateWhatsAppFallbackUrl,
   GatewayRateLimiter,
@@ -28,12 +29,17 @@ console.log('=== AAA WS-16 PUBLIC FORM GATEWAY WIRING TEST SUITE ===');
 console.log('Governing Specification: AAA-S3-PLAN-WS16-01');
 console.log('Target Determination: MGT-DET-S4-S3-PLAN-01\n');
 
-// TC-INTAKE-01: Client pre-sanitization of formula injection
-console.log('Running TC-INTAKE-01: Formula Injection Client Sanitization...');
+// TC-INTAKE-01: Context-aware formula injection neutralization (AUD-06 & AAA-WS16-POL-CSV-01)
+console.log('Running TC-INTAKE-01: Context-Aware Formula Neutralization (CSV Export Guard)...');
 const formulaName = '=cmd|/C calc!A0';
 const sanitizedFormula = sanitizeStringInput(formulaName);
-assert(sanitizedFormula.startsWith("'="), 'Must prepend apostrophe to neutralize formula injection');
-console.log('✅ TC-INTAKE-01 Passed: Leading formula characters (=, +, -, @) safely escaped.');
+// Verbatim storage preserved without premature quote corruption
+assert(sanitizedFormula === '=cmd|/C calc!A0', 'Canonical input preserved in database storage without mutation');
+
+// Export transformer neutralizes formula trigger for spreadsheet applications
+const exportedFormula = formatCellForCsvExport(formulaName);
+assert(exportedFormula.startsWith("\"'="), 'Must prepend apostrophe to neutralize formula injection in CSV export');
+console.log('✅ TC-INTAKE-01 Passed: Canonical input preserved; CSV export transformer safely neutralizes formula trigger.');
 
 // TC-INTAKE-02: Mobile normalizer strips +91 and formatting
 console.log('Running TC-INTAKE-02: Mobile Normalization (+91 and Formatting)...');

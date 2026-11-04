@@ -39,8 +39,8 @@ export const VALID_AGE_BRACKETS: ChildAgeBracket[] = [
 ];
 
 /**
- * Anti-Formula Injection & XSS Sanitizer
- * Strips HTML tags and neutralizes CSV/Excel formula characters (=, +, -, @, \t, \r)
+ * Anti-XSS Sanitizer
+ * Strips dangerous HTML tags and script content without mutating formula characters in canonical storage.
  */
 export function sanitizeStringInput(value: string | undefined | null): string {
   if (!value) return '';
@@ -53,13 +53,22 @@ export function sanitizeStringInput(value: string | undefined | null): string {
   // Strip remaining HTML tags
   sanitized = sanitized.replace(/<[^>]*>/g, '').trim();
 
-  // Guard against CSV/Excel formula injection for admin spreadsheet exports
-  const formulaChars = ['=', '+', '-', '@', '\t', '\r'];
-  if (formulaChars.some((char) => sanitized.startsWith(char))) {
-    sanitized = "'" + sanitized;
-  }
-
   return sanitized;
+}
+
+/**
+ * Context-Aware CSV/Excel Formula Injection Neutralizer (CWE-1236)
+ * Applied STRICTLY during spreadsheet export generation, NEVER to database records or UI state.
+ */
+export function formatCellForCsvExport(value: unknown): string {
+  if (value === null || value === undefined) return '""';
+  const stringVal = String(value);
+  const isFormulaTrigger = /^[=+\-@\t\r|]/.test(stringVal);
+  let safeString = stringVal;
+  if (isFormulaTrigger) {
+    safeString = `'${stringVal}`;
+  }
+  return `"${safeString.replace(/"/g, '""')}"`;
 }
 
 /**
@@ -198,13 +207,22 @@ export const rateLimiterInstance = new GatewayRateLimiter();
 export const idempotencyStoreInstance = new GatewayIdempotencyStore();
 export const duplicateThrottlerInstance = new DuplicateSubmissionThrottler();
 
+let simulatedSequenceCounter = 1;
+
 /**
- * Generates deterministic Lead UID in AAA-LEAD-YYYY-XXXX format
+ * Generates authoritative Lead Reference in AAA-LEAD-YYYY-[00001] format
+ */
+export function generateSequentialLeadReference(currentTimeMs: number = Date.now()): string {
+  const year = new Date(currentTimeMs).getFullYear();
+  const seqPadded = String(simulatedSequenceCounter++).padStart(5, '0');
+  return `AAA-LEAD-${year}-${seqPadded}`;
+}
+
+/**
+ * Generates legacy deterministic Lead UID in AAA-LEAD-YYYY-XXXX format (deprecated alias)
  */
 export function generateLeadUID(currentTimeMs: number = Date.now()): string {
-  const year = new Date(currentTimeMs).getFullYear();
-  const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-  return `AAA-LEAD-${year}-${randomSuffix}`;
+  return generateSequentialLeadReference(currentTimeMs);
 }
 
 /**
@@ -319,6 +337,7 @@ export function processDiscoveryIntake(
       statusCode: 200,
       success: true,
       leadUID: existingUID,
+      leadReference: existingUID,
       isDuplicateThrottled: true,
       message: 'Duplicate discovery request received within 180 seconds. Existing booking retained.',
       sanitizedPayload: {
@@ -335,8 +354,8 @@ export function processDiscoveryIntake(
     return duplicateResponse;
   }
 
-  // 9. Generate New Lead UID
-  const newLeadUID = generateLeadUID(now);
+  // 9. Generate New Lead UID & Authoritative Sequential Lead Reference
+  const newLeadUID = generateSequentialLeadReference(now);
 
   // Record duplicate suppression window
   duplicateThrottlerInstance.record(normalizedPhone, payload.courseInterest, newLeadUID, now);
@@ -345,6 +364,7 @@ export function processDiscoveryIntake(
     statusCode: 200,
     success: true,
     leadUID: newLeadUID,
+    leadReference: newLeadUID,
     isDuplicateThrottled: false,
     message: 'Discovery session booked successfully.',
     sanitizedPayload: {

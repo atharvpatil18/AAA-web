@@ -46,6 +46,8 @@ export interface DiscoveryIntakePayload {
 export interface GatewayResponse {
   statusCode: number;
   success: boolean;
+  id?: string;
+  leadReference?: string;
   leadUID?: string;
   sanitizedPayload?: Partial<DiscoveryIntakePayload>;
   message: string;

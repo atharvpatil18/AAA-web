@@ -211,8 +211,11 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
         }
       }
 
-      // Generate client-side idempotency key
-      const idempotencyKey = `INTAKE-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      // Generate client-side idempotency key (UUIDv4 standard)
+      const idempotencyKey =
+        typeof crypto !== 'undefined' && crypto.randomUUID
+          ? crypto.randomUUID()
+          : `INTAKE-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
 
       const payload: DiscoveryIntakePayload = {
         parentName: sanitizedName,
@@ -230,12 +233,57 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
       setStatus('SUBMITTING');
 
       try {
-        const response = processDiscoveryIntake(payload);
+        let response: GatewayResponse | null = null;
+
+        // Attempt server-side gateway endpoint if running in browser environment
+        if (typeof window !== 'undefined' && typeof window.fetch === 'function') {
+          try {
+            const serverRes = await fetch('/api/discovery-intake', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Idempotency-Key': idempotencyKey,
+              },
+              body: JSON.stringify(payload),
+            });
+
+            // If server endpoint exists and returns JSON
+            if (serverRes.status !== 404) {
+              const serverData = await serverRes.json();
+              response = {
+                statusCode: serverRes.status,
+                success: serverRes.ok,
+                leadUID: serverData.leadReference || serverData.leadUID,
+                leadReference: serverData.leadReference,
+                id: serverData.id,
+                message: serverData.message || (serverRes.ok ? 'Success' : 'Error'),
+                error: serverData.error,
+                retryAfterSeconds: serverData.retryAfterSeconds,
+                isBotDropped: serverData.isBotDropped,
+                sanitizedPayload: {
+                  parentName: sanitizedName,
+                  parentPhone: phoneVal.normalized!,
+                  childAgeBracket: mappedAge,
+                  courseInterest: mappedCourse,
+                },
+              };
+            }
+          } catch {
+            // Server endpoint unreachable (offline/local preview); fall back to local engine
+            response = null;
+          }
+        }
+
+        // Fallback to client-side simulated engine if server was unreachable or 404
+        if (!response) {
+          response = processDiscoveryIntake(payload);
+        }
+
         setGatewayResponse(response);
 
-        if (response.statusCode === 200 && response.success) {
+        if ((response.statusCode === 200 || response.statusCode === 201) && response.success) {
           setStatus('SUCCESS');
-          setLeadUID(response.leadUID || null);
+          setLeadUID(response.leadReference || response.leadUID || null);
           onSuccess?.(response);
           return response;
         } else if (response.statusCode === 429) {

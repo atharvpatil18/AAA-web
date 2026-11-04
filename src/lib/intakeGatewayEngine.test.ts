@@ -12,6 +12,7 @@
 import {
   processDiscoveryIntake,
   sanitizeStringInput,
+  formatCellForCsvExport,
   validateIndianMobile,
   GatewayRateLimiter,
   generateWhatsAppFallbackUrl,
@@ -65,22 +66,33 @@ const invalidMobileLeadingZero = validateIndianMobile('0982201122');
 assert(invalidMobileLeadingZero.isValid === false, 'Leading 0 phone must fail validation');
 console.log('✅ TC-WS15-02 Passed: Strict Indian 10-digit mobile validation enforced.');
 
-// TC-WS15-03: Anti-Formula Injection guard
-console.log('Running TC-WS15-03: Anti-Formula Injection Sanitization...');
-const formulaInput = '=SUM(A1:A10)';
-const sanitizedFormula = sanitizeStringInput(formulaInput);
-assert(sanitizedFormula === "'=SUM(A1:A10)", 'Formula must be escaped with prepended single quote');
+// TC-WS15-03: Context-aware formula injection neutralization (AUD-06 & AAA-WS16-POL-CSV-01)
+console.log('Running TC-WS15-03: Context-Aware Formula Neutralization (CSV Export Guard)...');
+const rawInput = '=SUM(A1:A10)';
+const sanitizedRaw = sanitizeStringInput(rawInput);
+// Canonical input preserved verbatim in storage
+assert(sanitizedRaw === '=SUM(A1:A10)', 'Canonical input preserved in database storage without mutation');
+
+// Export transformer neutralizes formula trigger for spreadsheet applications
+const exportedFormula = formatCellForCsvExport(rawInput);
+assert(exportedFormula === "\"'=SUM(A1:A10)\"", 'Formula trigger must be neutralized with single quote in CSV export');
+
+const cmdExport = formatCellForCsvExport("+cmd|' /C calc'!A0");
+assert(cmdExport.startsWith("\"'+cmd"), 'Must escape +cmd injection in CSV export');
+
+const normalExport = formatCellForCsvExport("Vikram Joshi");
+assert(normalExport === "\"Vikram Joshi\"", 'Normal string exported without artificial quote');
 
 const cmdPayload: DiscoveryIntakePayload = {
   ...basePayload,
-  parentName: "+cmd|' /C calc'!A0",
+  parentName: "+Dr. Vikram Patil",
   parentPhone: '9890123456',
   clientIp: '10.0.0.1',
 };
 const res03 = processDiscoveryIntake(cmdPayload, { rateLimiter: testLimiter });
-assert(res03.statusCode === 200, 'Request succeeds with sanitized input');
-assert(res03.sanitizedPayload?.parentName?.startsWith("'+cmd"), 'Must escape +cmd injection');
-console.log('✅ TC-WS15-03 Passed: Formula characters (=, +, -, @) safely escaped for spreadsheet exports.');
+assert(res03.statusCode === 200, 'Request succeeds with verbatim input');
+assert(res03.sanitizedPayload?.parentName === '+Dr. Vikram Patil', 'Parent name stored verbatim');
+console.log('✅ TC-WS15-03 Passed: Canonical data stored verbatim; formula neutralization enforced at export.');
 
 // TC-WS15-04: HTML/Script XSS tag stripping
 console.log('Running TC-WS15-04: XSS Tag Sanitization...');
