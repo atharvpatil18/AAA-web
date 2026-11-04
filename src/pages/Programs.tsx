@@ -36,7 +36,7 @@ export default function Programs() {
             Mathematics &amp; Brain Development Programmes
           </h1>
           <p className="text-slate-300 text-xs md:text-sm font-medium max-w-2xl mx-auto leading-relaxed">
-            Age-appropriate, research-backed curricula taught in micro-batches (1:8 ratio) by certified mentors in Wakad, Pune.
+            Age-appropriate, research-backed curricula taught in small batches (maximum 5 students per batch) by certified mentors in Wakad, Pune.
           </p>
 
           {/* Canonical Sub-Program Quick Links */}
@@ -197,7 +197,7 @@ export default function Programs() {
               Unsure Which Programme Your Child Needs?
             </h2>
             <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-semibold">
-              Every child has a unique learning pace. Schedule a one-on-one diagnostic counselling session with Founder Neha Patil at our Wakad Center or Live Online to identify your child's exact readiness.
+              Every child has a unique learning pace. Schedule a one-on-one Personalised Learning Discovery Session with Founder Neha Patil at our Wakad Center or Live Online to explore your child's exact readiness in small batches (maximum 5 students per batch).
             </p>
 
             <div className="flex items-center gap-3 pt-2">
@@ -206,7 +206,7 @@ export default function Programs() {
               </div>
               <div>
                 <cite className="not-italic font-black text-slate-900 text-sm leading-none block">
-                  Neha Patil (MCA, IIVA Certified)
+                  Neha Patil (MCA, Certified Trainer of Abacus & Vedic Mathematics)
                 </cite>
                 <span className="text-xs text-slate-500 font-medium block mt-1 leading-none">
                   Founder &amp; Academic Director, Arnav Abacus Academy
@@ -219,13 +219,13 @@ export default function Programs() {
                 onClick={handleConsult}
                 className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs md:text-sm px-7 py-3.5 rounded-full inline-flex items-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
               >
-                <span>Book Counselling on WhatsApp</span>
+                <span>Book a Discovery Session</span>
               </button>
             </div>
           </div>
 
           <div className="lg:col-span-6 bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-xl">
-            <h3 className="font-black text-lg text-slate-900 mb-2">Request Parent Counselling</h3>
+            <h3 className="font-black text-lg text-slate-900 mb-2">Book a Personalised Discovery Session</h3>
             <p className="text-xs text-slate-500 mb-6 font-medium">We'll review your child's current grade and recommend the best learning track.</p>
             <LeadForm sourceCampaign="Programs Overview Layout" />
           </div>

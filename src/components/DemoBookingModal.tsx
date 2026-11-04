@@ -19,7 +19,7 @@ interface DemoBookingModalProps {
 export default function DemoBookingModal({
   isOpen,
   onClose,
-  defaultProgram = "Abacus Mathematics (Ages 4.5–9)",
+  defaultProgram = "Personalised Learning Discovery Session",
   source = "modal_popup",
 }: DemoBookingModalProps) {
   const { language, t } = useLanguage();
@@ -28,6 +28,8 @@ export default function DemoBookingModal({
   const [childAge, setChildAge] = useState("7-9");
   const [program, setProgram] = useState(defaultProgram);
   const [deliveryMode, setDeliveryMode] = useState<"offline" | "online">("offline");
+  const [serviceConsent, setServiceConsent] = useState(true);
+  const [marketingConsent, setMarketingConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -48,6 +50,10 @@ export default function DemoBookingModal({
     const cleanPhone = phone.replace(/[^0-9]/g, "");
     if (cleanPhone.length < 10) {
       setErrorMsg("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+    if (!serviceConsent) {
+      setErrorMsg("Please provide consent for service communication to schedule the session.");
       return;
     }
 
@@ -71,16 +77,16 @@ export default function DemoBookingModal({
     // Prepare friendly WhatsApp pre-filled message
     const modeText = deliveryMode === "offline" ? "Offline (Wakad Pune Center)" : "Online Live Class";
     const waText = encodeURIComponent(
-      `Hello Arnav Abacus Academy!\n\nI want to book a Parent Counselling & Assessment Session for my child.\n` +
+      `Hello Arnav Abacus Academy!\n\nI want to book a Personalised Learning Discovery Session for my child.\n` +
       `• Parent Name: ${cleanParentName}\n` +
       `• Contact: ${cleanPhone}\n` +
       `• Child's Age Group: ${childAge} years\n` +
-      `• Program Interested: ${program}\n` +
+      `• Focus / Programme: ${program}\n` +
       `• Preferred Mode: ${modeText}\n\n` +
-      `Looking forward to scheduling the counselling session!`
+      `Looking forward to scheduling the discovery exploration session!`
     );
 
-    trackWhatsAppClick("counselling_modal_submit", "book_parent_counselling");
+    trackWhatsAppClick("discovery_modal_submit", "book_discovery_session");
 
     // Open WhatsApp directly
     window.open(`https://wa.me/919021924968?text=${waText}`, "_blank");
@@ -121,14 +127,14 @@ export default function DemoBookingModal({
           
           <div className="inline-flex items-center gap-1.5 bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span>Personalised Academic Mentorship</span>
+            <span>Personalised Learning Discovery Session</span>
           </div>
 
           <h3 id="modal-title" className="text-xl md:text-2xl font-black leading-tight text-white">
-            Book Parent Counselling Session
+            Book a Personalised Discovery Session
           </h3>
           <p className="text-xs md:text-sm text-slate-300 mt-1">
-            Connect directly with Neha Patil & academic mentors at Wakad Center or Live Online.
+            An educator-led diagnostic exploration with Founder Neha Patil at our Wakad Center or Live Online.
           </p>
         </div>
 
@@ -140,10 +146,10 @@ export default function DemoBookingModal({
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <h4 className="text-xl font-black text-slate-900 mb-2">
-                Counselling Request Sent!
+                Discovery Session Request Sent!
               </h4>
               <p className="text-sm text-slate-600 mb-6 max-w-sm mx-auto leading-relaxed">
-                Thank you! WhatsApp has opened with your request details. Director Neha Patil and our academic team will confirm your slot shortly.
+                Thank you! WhatsApp has opened with your request details. Founder Neha Patil and our academic team will confirm your Discovery Session slot shortly.
               </p>
               <button
                 onClick={handleResetAndClose}
@@ -275,19 +281,58 @@ export default function DemoBookingModal({
                 </div>
               </div>
 
+              {/* Educational Exploration Callout */}
+              <div className="bg-amber-50/70 border border-amber-200/70 rounded-xl p-3 text-[11.5px] text-slate-700 leading-snug">
+                <strong className="text-slate-900 block font-bold mb-0.5">What happens in a Discovery Session?</strong>
+                An encouraging 1-on-1 session where we explore your child's number sense, bead visualization aptitude, and focus to recommend the ideal learning track. Low-pressure and educational—never an exam.
+              </div>
+
+              {/* Unbundled Dual Consent Protocol & Scheduling Notice */}
+              <div className="space-y-2 pt-1 border-t border-slate-100">
+                <label className="flex items-start gap-2 cursor-pointer text-[11px] text-slate-700">
+                  <input
+                    type="checkbox"
+                    checked={serviceConsent}
+                    onChange={(e) => setServiceConsent(e.target.checked)}
+                    className="mt-0.5 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
+                    required
+                  />
+                  <span>
+                    <strong>Required:</strong> I consent to receiving Discovery Session scheduling messages via WhatsApp / SMS from Arnav Abacus Academy.
+                  </span>
+                </label>
+
+                <label className="flex items-start gap-2 cursor-pointer text-[11px] text-slate-500">
+                  <input
+                    type="checkbox"
+                    checked={marketingConsent}
+                    onChange={(e) => setMarketingConsent(e.target.checked)}
+                    className="mt-0.5 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
+                  />
+                  <span>
+                    Optional: I agree to receive occasional mathematical insights and academy announcements.
+                  </span>
+                </label>
+              </div>
+
+              {/* Scheduling Confirmation Notice */}
+              <p className="text-[10.5px] text-slate-500 leading-relaxed italic bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
+                * Submission represents a Discovery Session scheduling request, not an automatically confirmed appointment. Founder Neha Patil personally confirms each slot based on batch availability.
+              </p>
+
               {/* Submit CTA */}
               <button
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full mt-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm py-3.5 px-6 rounded-2xl shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Book Counselling via WhatsApp</span>
+                <span>Confirm Discovery Session on WhatsApp</span>
                 <Send className="w-4 h-4" />
               </button>
 
               <div className="flex items-center justify-center gap-2 text-[11px] text-slate-500 pt-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Zero spam guarantee. 1:8 batch ratio. No obligation.</span>
+                <span>Zero spam policy. Small batches (maximum 5 students). No obligation.</span>
               </div>
             </form>
           )}

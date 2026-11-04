@@ -18,10 +18,12 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [programMenuOpen, setProgramMenuOpen] = useState(false);
+  const [guideMenuOpen, setGuideMenuOpen] = useState(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const programMenuRef = useRef<HTMLDivElement>(null);
+  const guideMenuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -31,6 +33,10 @@ export default function Navbar() {
       }
       if (programMenuRef.current && !programMenuRef.current.contains(event.target as Node)) {
         setProgramMenuOpen(false);
+    setGuideMenuOpen(false);
+      }
+      if (guideMenuRef.current && !guideMenuRef.current.contains(event.target as Node)) {
+        setGuideMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -48,10 +54,10 @@ export default function Navbar() {
   }
 
   const handleBookDemoClick = () => {
-    trackWhatsAppClick("navbar_header_cta", "book_parent_counselling");
+    trackWhatsAppClick("navbar_header_cta", "book_discovery_session");
     trackCounsellingBook({
       source: "navbar_header",
-      program: "General Inquiry",
+      program: "Personalised Learning Discovery Session",
       deliveryMode: "offline_and_online",
     });
   };
@@ -69,13 +75,22 @@ export default function Navbar() {
     { name: "IPM & Olympiad Prep (Grades 2–9)", path: "/programs/ipm-olympiad" },
   ];
 
+    const parentGuideNavLinks = [
+    { name: "Parent Guides Hub Overview", path: "/parent-guides" },
+    { name: "Abacus vs Vedic Maths", path: "/parent-guides/abacus-vs-vedic-maths" },
+    { name: "Does Abacus Confuse School Maths?", path: "/parent-guides/does-abacus-confuse-school-math" },
+    { name: "Stopping Finger Counting", path: "/parent-guides/why-children-use-finger-counting" },
+    { name: "Why Kids Make Silly Mistakes", path: "/parent-guides/why-smart-children-make-silly-math-mistakes" },
+    { name: "Ideal Age to Start Abacus", path: "/parent-guides/ideal-age-to-start-abacus" },
+  ];
   const primaryNavLinks = [
     { name: t("navHome"), path: "/" },
     { name: "Programmes", path: "/programs", hasDropdown: true },
+    { name: "Parent Guides", path: "/parent-guides", hasGuideDropdown: true },
     { name: "Achievements", path: "/showcase" },
     { name: "Practice Hub", path: "/practice" },
     { name: "Worksheets", path: "/worksheets" },
-    { name: "Parent Guides", path: "/blog" },
+    { name: "Blog", path: "/blog" },
   ];
 
   const moreNavLinks = [
@@ -98,7 +113,13 @@ export default function Navbar() {
     { name: "Student Hall of Fame & Results", path: "/showcase" },
     { name: "Practice Hub", path: "/practice" },
     { name: "Free Worksheets", path: "/worksheets" },
-    { name: "Parent Guides & Insights", path: "/blog" },
+    { name: "Parent Guides Hub", path: "/parent-guides" },
+    { name: "↳ Abacus vs Vedic Maths", path: "/parent-guides/abacus-vs-vedic-maths" },
+    { name: "↳ Does Abacus Confuse School Maths?", path: "/parent-guides/does-abacus-confuse-school-math" },
+    { name: "↳ Transitioning from Finger Counting", path: "/parent-guides/why-children-use-finger-counting" },
+    { name: "↳ Overcoming Silly Calculation Mistakes", path: "/parent-guides/why-smart-children-make-silly-math-mistakes" },
+    { name: "↳ Ideal Age to Start Abacus", path: "/parent-guides/ideal-age-to-start-abacus" },
+    { name: "Blog & Educational Articles", path: "/blog" },
     { name: "Meet Neha Patil (Founder)", path: "/mentor" },
     { name: "Teacher Training & Franchise", path: "/teacher-franchise" },
     { name: "FAQs", path: "/faqs" },
@@ -116,7 +137,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4 text-slate-300 shrink-0">
             <span className="flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span>Wakad Center, Pune • Micro-Batch 1:8 Guarantee</span>
+              <span>Wakad Center, Pune • Small Batches (Max 5 Students)</span>
             </span>
             <span className="hidden lg:inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -204,6 +225,49 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             <ul className="flex items-center gap-3 xl:gap-5">
               {primaryNavLinks.map((link) => {
+                if ((link as any).hasGuideDropdown) {
+                  const isAnyGuideActive = currentPath === "/parent-guides" || currentPath.startsWith("/parent-guides/");
+                  return (
+                    <li key={link.name} className="relative" ref={guideMenuRef}>
+                      <button
+                        type="button"
+                        onClick={() => setGuideMenuOpen(!guideMenuOpen)}
+                        className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer relative ${
+                          isAnyGuideActive
+                            ? "text-orange-600 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
+                            : "text-slate-700 hover:text-orange-600"
+                        }`}
+                        aria-expanded={guideMenuOpen}
+                      >
+                        <span>{link.name}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${guideMenuOpen ? "rotate-180" : ""}`} />
+                      </button>
+
+                      {guideMenuOpen && (
+                        <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-fade-in">
+                          {parentGuideNavLinks.map((gLink) => {
+                            const isGActive = currentPath === gLink.path;
+                            return (
+                              <Link
+                                key={gLink.name}
+                                to={gLink.path}
+                                onClick={() => setGuideMenuOpen(false)}
+                                className={`block px-4 py-2.5 text-xs font-bold transition-colors ${
+                                  isGActive
+                                    ? "bg-orange-50 text-orange-600"
+                                    : "text-slate-700 hover:bg-slate-50 hover:text-orange-600"
+                                }`}
+                              >
+                                {gLink.name}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </li>
+                  );
+                }
+
                 if (link.hasDropdown) {
                   const isAnyProgramActive = currentPath === "/programs" || currentPath.startsWith("/programs/");
                   return (
@@ -313,7 +377,7 @@ export default function Navbar() {
                 }}
                 className="bg-orange-600 hover:bg-orange-700 text-white px-4 xl:px-5 py-2.5 rounded-full font-bold text-xs xl:text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
               >
-                <span>Book Counselling</span>
+                <span>Discovery Session</span>
                 <ArrowRight className="w-3.5 h-3.5 shrink-0" />
               </button>
 

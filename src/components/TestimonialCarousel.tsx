@@ -178,7 +178,7 @@ export default function TestimonialCarousel() {
                 <Star key={i} className="w-5 h-5 text-vibrant-gold fill-current" />
               ))}
               <span className="text-xs text-vibrant-dark font-black uppercase tracking-wider ml-2">
-                {language === "hi" ? "सत्यापित गूगल समीक्षा" : language === "mr" ? "अधिकृत गुगल रिव्ह्यू" : "VERIFIED GOOGLE REVIEW"}
+                {language === "hi" ? "अभिभावक समीक्षा एवं गूगल रेटिंग" : language === "mr" ? "पालक अभिप्राय आणि गुगल रेटिंग" : "PARENT FEEDBACK & GOOGLE REVIEWS"}
               </span>
             </div>
 

@@ -439,7 +439,7 @@ export const generateQuizWorksheetPDF = async (
 
     doc.setFontSize(8.5);
     doc.setTextColor(242, 100, 25);
-    doc.text("NEP 2020 COGNITIVE SKILLS | IIVA CERTIFIED TRAINING CENTER", 32, 19.5);
+    doc.text("NEP 2020-ALIGNED APPROACH | IIVA CERTIFIED TRAINER", 32, 19.5);
 
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(8.5);
@@ -481,7 +481,7 @@ export const generateQuizWorksheetPDF = async (
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(7.2);
     doc.setTextColor(240, 240, 240);
-    doc.text("Founder & Master Trainer\nIIVA Certified International\nAbacus & Vedic Math\n(200+ Students Mentored)", 151, hookY + 14);
+    doc.text("Founder & Certified Trainer\nIIVA Certified International\nAbacus & Vedic Math\n(200+ Students Mentored)", 151, hookY + 14);
 
     drawBrochureSeparator(67);
 
@@ -581,7 +581,7 @@ export const generateQuizWorksheetPDF = async (
     doc.text("Commercial Franchises", 142, tableY + 4.5);
 
     const tableRows = [
-      ["Classroom Student Ratio", "Max 1:8 ratio for personalized mentor care", "Crowded batches of 1:15 to 1:25 kids"],
+      ["Classroom Student Ratio", "Small batches (max 5 students) for personalized mentor care", "Crowded batches of 1:15 to 1:25 kids"],
       ["Syllabus Coordination", "Linked to school CBSE/ICSE curriculum directly", "Abstract homework drills in isolation"],
       ["Batch Flexibility", "Micro-batches matched to custom time zones", "Rigid slots with no option to reschedule"]
     ];
@@ -625,7 +625,7 @@ export const generateQuizWorksheetPDF = async (
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(8);
     doc.setTextColor(210, 210, 210);
-    doc.text("• Book a Free 1-on-1 Math Diagnostic Session with Master Trainer Neha Patil.", 18, ctaY + 12);
+    doc.text("• Book a Free 1-on-1 Math Diagnostic Session with Certified Trainer Neha Patil.", 18, ctaY + 12);
     doc.text("• Physical Hub: Adv. Balaji Sagar Bungalow, Opp Creative Cameo, Wakad, Pune.", 18, ctaY + 17.5);
 
     doc.setFont("Helvetica", "bold");

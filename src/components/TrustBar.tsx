@@ -43,7 +43,7 @@ export default function TrustBar() {
       label: "Batch Student Ratio",
       target: 8,
       suffix: ":1",
-      subtext: "Guaranteed Micro-Batch Care",
+      subtext: "Small Batches (Max 5 Students)",
       icon: Calendar,
       iconColor: "text-teal-600 bg-teal-50 border-teal-200",
     },

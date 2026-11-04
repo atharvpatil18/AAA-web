@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   CheckCircle, 
@@ -19,9 +19,11 @@ import {
   GraduationCap,
   MessageSquare
 } from "lucide-react";
-import { trackPageView } from "../lib/analytics";
+import { trackPageView, trackDemoClick } from "../lib/analytics";
+import DemoBookingModal from "../components/DemoBookingModal";
 
 export default function GuideDoesAbacusConfuseSchoolMath() {
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   useEffect(() => {
     trackPageView(
       "/parent-guides/does-abacus-confuse-school-math", 
@@ -57,7 +59,7 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
         "@type": "ListItem",
         "position": 2,
         "name": "Parent Guides",
-        "item": "https://arnavabacusacademy-web.vercel.app/blog"
+        "item": "https://arnavabacusacademy-web.vercel.app/parent-guides"
       },
       {
         "@type": "ListItem",
@@ -85,7 +87,7 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
         <div className="max-w-4xl mx-auto flex items-center gap-1.5 flex-wrap">
           <Link to="/" className="hover:text-vibrant-orange transition-colors">Home</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <Link to="/programs" className="hover:text-vibrant-orange transition-colors">Programs</Link>
+          <Link to="/parent-guides" className="hover:text-vibrant-orange transition-colors">Parent Guides</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
           <span className="text-vibrant-dark font-bold">Does Abacus Confuse School Maths?</span>
         </div>
@@ -563,7 +565,7 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
           {/* Action CTA */}
           <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-xs text-slate-500 font-medium">
-              <strong>Center Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune.
+              <strong>Center Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
             </div>
             <Link
               to="/contact"
@@ -573,8 +575,13 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
             </Link>
           </div>
         </section>
-
       </article>
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        defaultProgram="School Math Harmony Discovery"
+        source="parent_guide_guidedoesabacusconfuseschoolmath"
+      />
     </div>
   );
 }

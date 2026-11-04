@@ -109,7 +109,7 @@ export default function Home() {
       step: "04",
       title: "Practice",
       tagline: "Micro-Batch Deliberate Drills",
-      desc: "Daily 10–15 minute focused practice in micro-batches (1:8 ratio) with immediate corrective feedback from mentors.",
+      desc: "Daily 10–15 minute focused practice in small batches (maximum 5 students per batch) with immediate corrective feedback from mentors.",
       icon: Target,
       color: "bg-blue-100 text-blue-800",
     },
@@ -195,7 +195,7 @@ export default function Home() {
     },
     {
       q: "What makes Arnav Abacus Academy different from commercial chain franchises?",
-      a: "Commercial franchises often rely on large batches (15–25 students) and part-time instructors with high turnover. AAA is founded and directed personally by Neha Patil (MCA, IIVA Certified), strictly maintaining an intimate 1:8 micro-batch ratio. Every child receives customized pacing, error diagnostics, and direct mentor care."
+      a: "Commercial franchises often rely on large batches (15–25 students) and part-time instructors with high turnover. AAA is founded and directed personally by Neha Patil (MCA, IIVA Certified), strictly maintaining small batches with a maximum of five students per batch. Every child receives customized pacing, error diagnostics, and direct mentor care."
     },
     {
       q: "How much daily practice is expected from the child at home?",
@@ -239,7 +239,7 @@ export default function Home() {
               Recognised Excellence in Mathematical Child Development
             </h3>
             <p className="text-xs text-slate-300 max-w-xl font-medium">
-              IIVA Delhi Certified • Skill India &amp; NSDC Authorised Training Partner Credentials • Serving Wakad, Pimple Saudagar &amp; Hinjawadi.
+              Certified Trainer in Abacus &amp; Vedic Mathematics • Small Batches • Serving Wakad &amp; Pune.
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
@@ -272,7 +272,7 @@ export default function Home() {
             Our Structured Mathematics Programmes
           </h2>
           <p className="text-slate-600 text-xs md:text-sm font-semibold">
-            Every programme is calibrated to child development stages and taught in personalized 1:8 micro-batches.
+            Every programme is calibrated to child development stages and taught in personalised small batches with a maximum of five students per batch.
           </p>
         </div>
 
@@ -429,6 +429,95 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
+          SECTION 5B: PARENT GUIDES & PRACTICAL LEARNING INSIGHTS
+          Featured Parent Guides to address common child math dilemmas
+          ========================================================================= */}
+      <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8 border-t border-slate-200/80">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="space-y-3 max-w-2xl">
+            <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+              Practical Insights for Parents
+            </span>
+            <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
+              Evidence-Based Answers to Common Math Dilemmas
+            </h2>
+            <p className="text-slate-600 text-xs md:text-sm font-semibold">
+              Before choosing a programme, explore how children learn calculation, why finger counting occurs, and how sensory bead arithmetic connects with school exams.
+            </p>
+          </div>
+          <Link
+            to="/parent-guides"
+            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-orange-600 text-white font-bold text-xs px-5 py-3 rounded-full transition-all shadow-sm shrink-0 self-start md:self-auto"
+          >
+            <span>Explore All 5 Parent Guides</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link
+            to="/parent-guides/abacus-vs-vedic-maths"
+            className="bg-white border border-slate-200 hover:border-orange-500 rounded-3xl p-6 shadow-xs hover:shadow-lg transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-2.5 py-1 rounded-full uppercase">
+                Ages 4.5–14
+              </span>
+              <h3 className="font-display font-black text-lg text-slate-900 group-hover:text-orange-600 transition-colors leading-snug">
+                Abacus vs Vedic Maths: What's the Difference?
+              </h3>
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                Learn why tactile bead visualization is best for ages 4.5–9, while Vedic Sutras empower older students with high-speed exam calculation.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-bold text-orange-600 pt-4 group-hover:translate-x-1 transition-transform">
+              Read Guide &rarr;
+            </span>
+          </Link>
+
+          <Link
+            to="/parent-guides/why-children-use-finger-counting"
+            className="bg-white border border-slate-200 hover:border-teal-500 rounded-3xl p-6 shadow-xs hover:shadow-lg transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full uppercase">
+                Early Numeracy
+              </span>
+              <h3 className="font-display font-black text-lg text-slate-900 group-hover:text-teal-700 transition-colors leading-snug">
+                Why Children Count on Fingers & How to Transition
+              </h3>
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                Why finger counting is natural, why scolding backfires, and how the Soroban abacus bridges physical fingers into mental images.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-bold text-teal-700 pt-4 group-hover:translate-x-1 transition-transform">
+              Read Guide &rarr;
+            </span>
+          </Link>
+
+          <Link
+            to="/parent-guides/why-smart-children-make-silly-math-mistakes"
+            className="bg-white border border-slate-200 hover:border-amber-500 rounded-3xl p-6 shadow-xs hover:shadow-lg transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full uppercase">
+                Accuracy & Focus
+              </span>
+              <h3 className="font-display font-black text-lg text-slate-900 group-hover:text-amber-800 transition-colors leading-snug">
+                Why Children Make Mistakes Despite Understanding Concepts
+              </h3>
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                Understand procedural slips, working memory overload, and a 4-step parent review routine to build lasting calculation accuracy.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-800 pt-4 group-hover:translate-x-1 transition-transform">
+              Read Guide &rarr;
+            </span>
+          </Link>
+        </div>
+      </section>
+
+      {/* =========================================================================
           SECTION 6: FOUNDER PROFILE
           Introduce Neha Patil, verified credentials, MCA, IIVA, teaching philosophy
           ========================================================================= */}
@@ -550,7 +639,7 @@ export default function Home() {
               Trusted by 65+ Wakad Parents
             </h2>
             <p className="text-slate-600 text-xs md:text-sm font-semibold">
-              Read how personalized mentorship transformed calculation speed, homework discipline, and exam confidence.
+              Read how personalized mentorship transformed calculation speed, homework discipline, and exam confidence. Disclosures under CCPA Coaching Guidelines 2024: Testimonials reflect genuine experiences of enrolled students in paid programs.
             </p>
           </div>
 
@@ -634,7 +723,7 @@ export default function Home() {
               </h2>
 
               <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed font-medium">
-                Connect directly with Founder Neha Patil for an objective, child-centric counselling session. Discover your child's arithmetic readiness and experience our 1:8 micro-batch care.
+                Connect directly with Founder Neha Patil for an encouraging, educator-led Personalised Learning Discovery Session. Discover your child's arithmetic readiness, bead visualization aptitude, and focus in small batches (maximum 5 students per batch).
               </p>
 
               {/* CTAs */}
@@ -644,7 +733,7 @@ export default function Home() {
                   onClick={() => handleOpenCounselling("home_final_conversion_counselling")}
                   className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-8 py-4 rounded-full shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span>Book Parent Counselling</span>
+                  <span>Book a Discovery Session</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
@@ -689,7 +778,7 @@ export default function Home() {
                   Direct Parent Inquiry
                 </span>
                 <h3 className="text-xl font-black text-slate-900 mt-2">
-                  Request a Free Diagnostic Assessment
+                  Book a Personalised Discovery Session
                 </h3>
                 <p className="text-xs text-slate-500 font-medium">
                   We'll review your child's age group and recommend the ideal learning pathway.

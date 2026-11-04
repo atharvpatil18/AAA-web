@@ -203,7 +203,7 @@ export async function generateAchievementCertificatePDF(data: CertificateData) {
     // 11. Digital Signatures (Left & Right)
     const sigY = 166;
 
-    // LEFT: Mrs. Neha Patil (Founder & Master Trainer)
+    // LEFT: Mrs. Neha Patil (Founder & Certified Trainer)
     if (sigNehaBase64) {
       doc.addImage(sigNehaBase64, "PNG", 50, sigY - 14, 30, 12);
     } else {

@@ -109,7 +109,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
             {targetAge}
           </span>
           <span className="text-[11px] font-bold text-slate-500">
-            Micro-Batch 1:8
+            Small Batches (Max 5 Students)
           </span>
         </div>
 
@@ -184,12 +184,12 @@ export default function ProgramCard({ program }: ProgramCardProps) {
               </div>
             </div>
 
-            {/* Micro Batch Guarantee */}
+            {/* Small Batch Standard */}
             <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 mt-6 flex items-start gap-3">
               <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
               <div>
                 <strong className="block text-[11px] md:text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">
-                  1:8 Micro-Batch Guarantee
+                  Small Batches (Max 5 Students)
                 </strong>
                 <p className="text-[10.5px] md:text-xs text-slate-600 font-medium leading-relaxed">
                   Every child receives personalized diagnostic attention and customized practice pacing by certified mentors.

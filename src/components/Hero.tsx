@@ -16,11 +16,11 @@ export default function Hero() {
 
   const handleCtaClick = () => {
     trackCounsellingBook({
-      source: "hero_primary_counselling_cta",
-      program: "General Inquiry",
+      source: "hero_primary_discovery_cta",
+      program: "Personalised Learning Discovery Session",
       deliveryMode: "offline_and_online",
     });
-    trackDemoClick("hero_primary_cta");
+    trackDemoClick("hero_primary_discovery_cta");
     setIsDemoModalOpen(true);
   };
 
@@ -53,8 +53,8 @@ export default function Hero() {
 
             {/* Main Headline */}
             <h1 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight leading-[1.12]">
-              Build Mathematical Confidence. <br className="hidden sm:inline" />
-              <span className="text-orange-600">Unlock Your Child's Potential.</span>
+              Beyond Calculation. <br className="hidden sm:inline" />
+              <span className="text-orange-600">Towards Confident Mathematical Thinking.</span>
             </h1>
 
             {/* Reassuring Supporting Message */}
@@ -65,16 +65,16 @@ export default function Hero() {
             {/* Verified Pillar Checkpoints */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs font-bold text-slate-700 pt-1">
               <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                Guaranteed 1:8 Micro-Batches
+                <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                Small Batches (Max 5 Students)
               </span>
               <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                IIVA Delhi Certified Mentors
+                <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                Certified Trainer Mentorship
               </span>
               <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                Soroban Japanese Method
+                <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                Japanese Soroban Method
               </span>
             </div>
 
@@ -85,7 +85,7 @@ export default function Hero() {
                 onClick={handleCtaClick}
                 className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm sm:text-base px-8 py-4 rounded-full shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Book a Parent Counselling Session</span>
+                <span>Book a Discovery Session</span>
                 <ArrowRight className="w-4 h-4 text-orange-100" />
               </button>
 
@@ -144,11 +144,11 @@ export default function Hero() {
                   <span className="block text-[10px] font-bold text-slate-600 uppercase">National Champions</span>
                 </div>
                 <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  <span className="block font-black text-slate-900 text-lg sm:text-xl">1:8</span>
-                  <span className="block text-[10px] font-bold text-slate-600 uppercase">Teacher Ratio</span>
+                  <span className="block font-black text-slate-900 text-lg sm:text-xl">Max 5</span>
+                  <span className="block text-[10px] font-bold text-slate-600 uppercase">Students Per Batch</span>
                 </div>
                 <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  <span className="block font-black text-emerald-600 text-lg sm:text-xl">100%</span>
+                  <span className="block font-black text-emerald-700 text-lg sm:text-xl">100%</span>
                   <span className="block text-[10px] font-bold text-slate-600 uppercase">Zero-Finger Goal</span>
                 </div>
               </div>
@@ -170,7 +170,7 @@ export default function Hero() {
                     Personally Mentored By
                   </span>
                   <strong className="text-xs sm:text-sm font-black text-slate-900 block truncate">
-                    Neha Patil (MCA, IIVA Certified)
+                    Neha Patil (MCA, Certified Trainer)
                   </strong>
                   <span className="text-[10.5px] text-slate-600 block truncate">
                     Founder &amp; Academic Director • Wakad Center
@@ -190,11 +190,12 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Counselling Booking Modal */}
+      {/* Discovery Booking Modal */}
       <DemoBookingModal
         isOpen={isDemoModalOpen}
         onClose={() => setIsDemoModalOpen(false)}
-        source="hero_primary_counselling_cta"
+        defaultProgram="Personalised Learning Discovery Session"
+        source="hero_primary_discovery_cta"
       />
     </section>
   );

@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import DemoBookingModal from "../components/DemoBookingModal";
 import { Link } from "react-router-dom";
 import { 
   CheckCircle, 
@@ -29,6 +30,7 @@ import { useLanguage } from "../lib/LanguageContext";
 
 export default function ProgramMentalMaths() {
   const { language, t } = useLanguage();
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   useEffect(() => {
     trackProgramView("Mental Mathematics", "canonical_program_hub");
@@ -131,7 +133,7 @@ export default function ProgramMentalMaths() {
                   <Clock className="w-3.5 h-3.5" /> Age Eligibility: 6 to 14 Years
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-emerald-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <Users className="w-3.5 h-3.5" /> Micro-Batch 1:8 Ratio
+                  <Users className="w-3.5 h-3.5" /> Small Batch Ratio (Max 5 Students)
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-sky-300 text-xs px-3 py-1.5 rounded-xl font-bold">
                   <MapPin className="w-3.5 h-3.5" /> Wakad Center &amp; Online
@@ -142,7 +144,7 @@ export default function ProgramMentalMaths() {
               <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 text-xs text-slate-300 flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                 <span>
-                  <strong>Academy Center:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune.
+                  <strong>Academy Center:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
                 </span>
               </div>
             </div>
@@ -154,7 +156,7 @@ export default function ProgramMentalMaths() {
                   Book A Counselling Session
                 </span>
                 <h2 className="text-xl font-black text-slate-900 mt-2">
-                  Complimentary Math Assessment
+                  AAA Personalised Learning Discovery Session
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
                   Meet Director Neha Patil for a personalized mental calculation and number agility diagnostic.
@@ -300,7 +302,7 @@ export default function ProgramMentalMaths() {
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span className="text-xs md:text-sm text-slate-700"><strong>Deliberate Practice:</strong> Micro-batch 1:8 focus ensuring personalized corrective feedback in real time.</span>
+                <span className="text-xs md:text-sm text-slate-700"><strong>Deliberate Practice:</strong> Small batch focus (max 5 students per batch) ensuring personalized corrective feedback in real time.</span>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
@@ -395,7 +397,7 @@ export default function ProgramMentalMaths() {
               How does Mental Math differ from Abacus training?
             </h3>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
-              Abacus uses tactile beads as a concrete visual aid before transitioning to mental beads (Anzan), ideal for children aged 4.5–9. Mental Math teaches direct numerical arithmetic shortcuts, place value decomposition, and complement arithmetic for children aged 6–14 who want direct mathematical agility for school tests.
+              Abacus uses tactile beads as a concrete sensory anchor transitioning to mental beads (Anzan), ideal for foundational ages 4.5–9. Mental Mathematics teaches direct numerical decomposition, complement arithmetic, and split-merge calculation shortcuts. At AAA, Mental Math is offered both as an independent standalone track (Ages 6–14) and as an integrated bridging curriculum between Abacus and Vedic Maths.
             </p>
           </div>
 
@@ -413,7 +415,7 @@ export default function ProgramMentalMaths() {
               What is the student-to-teacher batch size?
             </h3>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
-              Every batch at Arnav Abacus Academy has a strict maximum of 8 students (1:8 ratio). This ensures Mentor Neha Patil provides personalized feedback to each student every single session.
+              Every batch at Arnav Abacus Academy has a strict maximum of five students per batch. This ensures Founder Neha Patil (Certified Trainer of Abacus & Vedic Mathematics) provides personalized feedback to each student every single session.
             </p>
           </div>
         </div>
@@ -444,6 +446,12 @@ export default function ProgramMentalMaths() {
           </div>
         </div>
       </section>
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        defaultProgram="Mental Mathematics (Ages 6–14)"
+        source="program_page_mental_maths"
+      />
     </div>
   );
 }

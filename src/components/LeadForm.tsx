@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { trackEnquiryFormStart, trackEnquiryFormSubmit, trackDemoRequest } from "../lib/analytics";
-import { Sparkles, Gift, Send, Landmark, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Sparkles, Gift, Send, Landmark, MapPin, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
 import { validateSanitizedName, sanitizeHtml } from "../lib/securitySanitizer";
 import { dispatchLeadToWebhook } from "../lib/leadWebhook";
@@ -203,9 +203,9 @@ Founder & Director, Arnav Abacus Academy
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(9.5);
       doc.setTextColor(70, 75, 85);
-      const bioText = `Neha Patil is a highly certified IIVA (Indian Institute of Vedic Maths & Abacus) Master Trainer and Child Psychology specialist. With over 3+ years of direct mentoring excellence, she has coached more than 200+ local students in Wakad, Pune, India, and 10+ international students from the US, UK, and Gulf countries.
+      const bioText = `Neha Patil is a highly certified IIVA (Indian Institute of Vedic Maths & Abacus) Certified Trainer and Child Psychology specialist. With over 3+ years of direct mentoring excellence, she has coached more than 200+ local students in Wakad, Pune, India, and 10+ international students from the US, UK, and Gulf countries.
 
-Arnav Abacus Academy operates in alignment with the National Education Policy (NEP) 2020 and is an active Skill India partner, prioritizing 1:8 maximum student-teacher ratios for dedicated personal growth.`;
+Arnav Abacus Academy operates in alignment with the National Education Policy (NEP) 2020 with IIVA-certified pedagogy, maintaining dedicated micro-batches of a maximum of five students per batch for focused educator attention.`;
 
       const splitBio = doc.splitTextToSize(bioText, 180);
       doc.text(splitBio, 15, 126);
@@ -231,7 +231,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       doc.text("Personalized Growth:", 27, 183);
       doc.setFont("Helvetica", "normal");
       doc.setTextColor(60, 60, 60);
-      doc.text("Guaranteed 1:8 batch ratio for dedicated teacher attention.", 64, 183);
+      doc.text("Dedicated micro-batches (maximum 5 students per batch) for focused teacher attention.", 64, 183);
 
       // Bullet 2
       doc.setFillColor(242, 100, 25);
@@ -261,7 +261,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       doc.setTextColor(255, 255, 255);
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(9.5);
-      doc.text("AUTHORIZED SKILL INDIA PARTNER • NEP 2020 COMPLIANT CURRICULUM", 105, 227.5, { align: "center" });
+      doc.text("NEP 2020-ALIGNED LEARNING APPROACH • CERTIFIED TRAINER", 105, 227.5, { align: "center" });
 
       doc.setFontSize(8);
       doc.setTextColor(150, 150, 150);
@@ -540,7 +540,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     if (competitiveFocus) parentExpectations.push("Olympiad/Competitive focus");
     const expStr = parentExpectations.length > 0 ? `\nHabits/Expectations: ${parentExpectations.join(", ")}` : "";
 
-    let textMessage = `Hello, I'm interested in a Demo Class at Arnav Abacus Academy!
+    let textMessage = `Hello, I'm interested in a Personalised Learning Discovery Session at Arnav Abacus Academy!
 Parent Name: ${salutation} ${parentName}
 Student Name: ${studentName}
 Child's Age: ${childAge}
@@ -558,7 +558,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
       if (competitiveFocus) parentExpectationsHi.push("प्रतियोगी परीक्षा");
       const expStrHi = parentExpectationsHi.length > 0 ? `\nआदतें/अपेक्षाएँ: ${parentExpectationsHi.join(", ")}` : "";
 
-      textMessage = `नमस्ते, मैं अर्णव एबाकस एकेडमी में फ्री डेमो क्लास के लिए उत्सुक हूँ!
+      textMessage = `नमस्ते, मैं अर्णव एबाकस एकेडमी में लर्निंग डिस्कवरी सत्र के लिए उत्सुक हूँ!
 अभिभावक का नाम: ${salutation} ${parentName}
 छात्र का नाम: ${studentName}
 बच्चे की उम्र: ${childAge}
@@ -575,7 +575,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
       if (competitiveFocus) parentExpectationsMr.push("स्पर्धा परीक्षा");
       const expStrMr = parentExpectationsMr.length > 0 ? `\nसवयी/अपेक्षा: ${parentExpectationsMr.join(", ")}` : "";
 
-      textMessage = `नमस्कार, मी अर्णव ॲबॅकस अकॅडमीमध्ये मोफत डेमो क्लाससाठी चौकशी करू इच्छितो!
+      textMessage = `नमस्कार, मी अर्णव ॲबॅकस अकॅडमीमध्ये लर्निंग डिस्कव्हरी सत्रासाठी चौकशी करू इच्छितो!
 पालकांचे नाव: ${salutation} ${parentName}
 विद्यार्थ्याचे नाव: ${studentName}
 मुलाचे वय: ${childAge}
@@ -609,7 +609,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
 
     // Dispatch asynchronously to Centralized Google Sheet Webhook
     dispatchLeadToWebhook({
-      leadType: "Demo Class",
+      leadType: "Discovery Session",
       parentName: `${salutation} ${parentName}`.trim(),
       studentName: studentName.trim(),
       phone: "Via WhatsApp",
@@ -988,7 +988,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
         </form>
 
         <p className="text-center text-[10px] font-bold uppercase text-gray-400 mt-4 flex items-center justify-center gap-1.5">
-          <Landmark className="w-3.5 h-3.5 shrink-0 text-gray-300" /> {language === "hi" ? "स्किल इंडिया अधिकृत केंद्र, क्रिएटिव कैमियो के सामने, पार्क स्ट्रीट से पहले, वाकड, पुणे, भारत" : language === "mr" ? "स्किल इंडिया अधिकृत केंद्र, क्रिएटिव्ह कॅमिओच्या समोर, पार्क स्ट्रीटजवळ, वाकड, पुणे, भारत" : "Skill India Authorised Center Opposite Creative Cameo, before Park Street, Wakad, Pune, India"}
+          <MapPin className="w-3.5 h-3.5 shrink-0 text-orange-500" /> {language === "hi" ? "अर्णव एबाकस एकेडमी, क्रिएटिव कैमियो के सामने, वाकड, पुणे 411057" : language === "mr" ? "अर्णव ॲबॅकस अकॅडमी, क्रिएटिव्ह कॅमिओ समोर, वाकड, पुणे ४११०५७" : "Arnav Abacus Academy, Opp. Creative Cameo, Near Park Street, Wakad, Pune 411057"}
         </p>
       </div>
     </div>

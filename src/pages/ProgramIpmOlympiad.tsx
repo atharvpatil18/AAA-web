@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import DemoBookingModal from "../components/DemoBookingModal";
 import { Link } from "react-router-dom";
 import { 
   CheckCircle, 
@@ -28,6 +29,7 @@ import { useLanguage } from "../lib/LanguageContext";
 
 export default function ProgramIpmOlympiad() {
   const { language, t } = useLanguage();
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   useEffect(() => {
     trackProgramView("IPM & Olympiad Mathematics", "canonical_program_hub");
@@ -46,7 +48,7 @@ export default function ProgramIpmOlympiad() {
     "educationalCredentialAwarded": "Competitive Mathematics Certificate of Excellence",
     "audience": {
       "@type": "Audience",
-      "audienceType": "Students in Grades 2 to 9 preparing for IPM, SOF IMO, SilverZone, and National Talent Searches"
+      "audienceType": "Students in Grades 2 to 9 preparing for IPM, SOF IMO, and Maharashtra State Scholarship Math Exams"
     }
   };
 
@@ -130,7 +132,7 @@ export default function ProgramIpmOlympiad() {
                   <Clock className="w-3.5 h-3.5" /> Target Grades: 2 to 9
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-emerald-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <Users className="w-3.5 h-3.5" /> Micro-Batch 1:8 Pacing
+                  <Users className="w-3.5 h-3.5" /> Small Batch Pacing (Max 5 Students)
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-sky-300 text-xs px-3 py-1.5 rounded-xl font-bold">
                   <MapPin className="w-3.5 h-3.5" /> Wakad Center &amp; Online
@@ -141,7 +143,7 @@ export default function ProgramIpmOlympiad() {
               <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 text-xs text-slate-300 flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                 <span>
-                  <strong>Academy Center:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune.
+                  <strong>Academy Center:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
                 </span>
               </div>
             </div>
@@ -153,7 +155,7 @@ export default function ProgramIpmOlympiad() {
                   Book A Counselling Session
                 </span>
                 <h2 className="text-xl font-black text-slate-900 mt-2">
-                  Complimentary Olympiad Diagnostic
+                  AAA Personalised Learning Discovery Session
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
                   Assess your child's logical reasoning aptitude, pattern recognition, and competitive problem-solving level.
@@ -185,7 +187,7 @@ export default function ProgramIpmOlympiad() {
             <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-black text-sm">
               Gr 2–4
             </div>
-            <h3 className="font-display font-black text-base text-slate-900">Junior Competitive Foundation</h3>
+            <h3 className="font-display font-black text-base text-slate-900">Junior Personalised Learning</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
               Early exposure to pattern puzzles, spatial logic, and multi-step word problems. Nurtures curiosity and eliminates examination anxiety early on.
             </p>
@@ -208,9 +210,9 @@ export default function ProgramIpmOlympiad() {
             <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-black text-sm">
               Gr 8–9
             </div>
-            <h3 className="font-display font-black text-base text-slate-900">Advanced Talent Searches &amp; NMTC</h3>
+            <h3 className="font-display font-black text-base text-slate-900">Scholarship Math Exams &amp; Talent Searches</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              Rigorous preparation in Number Theory, Combinatorics, Geometry proofs, and Algebraic manipulation for state scholarship and National Mathematics Talent Contests.
+              Focused preparation in Number Sense, Logical Reasoning, Word Problems, and Speed Evaluation for Maharashtra State Scholarship Examinations (5th &amp; 8th) and competitive talent searches.
             </p>
           </div>
         </div>
@@ -292,7 +294,7 @@ export default function ProgramIpmOlympiad() {
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span className="text-xs md:text-sm text-slate-700"><strong>Micro-Batch Focus (1:8):</strong> Every child explains their reasoning aloud, building logical clarity and self-belief.</span>
+                <span className="text-xs md:text-sm text-slate-700"><strong>Small Batch Focus (Max 5 Students):</strong> Every child explains their reasoning aloud, building logical clarity and self-belief.</span>
               </div>
             </div>
           </div>
@@ -431,6 +433,12 @@ export default function ProgramIpmOlympiad() {
           </div>
         </div>
       </section>
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        defaultProgram="IPM & Olympiad Mathematics (Grades 2–9)"
+        source="program_page_ipm_olympiad"
+      />
     </div>
   );
 }

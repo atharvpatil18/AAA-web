@@ -61,7 +61,7 @@ export const PROGRAMS: Program[] = [
       "Strengthens working memory and auditory calculation reflexes",
       "Completely eliminates silly arithmetic slips under test conditions",
       "Builds intuitive estimation and percentage calculation agility",
-      "Guarantees micro-batch 1:8 attention for personalized pacing"
+      "Dedicated micro-batches (maximum 5 students per batch) for personalized educator pacing"
     ],
     curriculum: [
       "Number Sense & Base-10 Complements",
@@ -83,7 +83,7 @@ export const PROGRAMS: Program[] = [
       "Ensures neat step-by-step presentation aligned with board rubrics",
       "Weekly mock-test evaluations and transparent parent progress reviews",
       "Targeted remedial mentorship to resolve individual learning gaps",
-      "Small 1:8 batch size guarantees personalized attention"
+      "Dedicated micro-batches (maximum 5 students per batch) provide focused educator attention"
     ],
     curriculum: [
       "Board-Aligned Algebra & Linear Equations",
@@ -105,7 +105,7 @@ export const PROGRAMS: Program[] = [
       "Past 10-year question paper analysis and Olympiad pattern exposure",
       "Option elimination strategies and timed sprint management",
       "Proven student achievement record at state and national competitions",
-      "Micro-batch 1:8 coaching ensuring active articulation of reasoning"
+      "Dedicated micro-batches (maximum 5 students per batch) ensuring active articulation of reasoning"
     ],
     curriculum: [
       "Non-Routine Word Problem Decomposition",
@@ -126,7 +126,7 @@ export const CAMPAIGNS: Record<string, Campaign> = {
     features: [
       "Fun & Interactive Learning style",
       "No More finger counting stress",
-      "Boost score confidence in 30 days",
+      "Build foundational number sense and math confidence",
       "Personalized 1-on-1 feedback attention"
     ],
     ctaText: "Book Parent Counselling Session",

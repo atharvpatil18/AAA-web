@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import DemoBookingModal from "../components/DemoBookingModal";
 import { Link } from "react-router-dom";
 import { 
   CheckCircle, 
@@ -21,11 +22,12 @@ import {
   Download
 } from "lucide-react";
 import LeadForm from "../components/LeadForm";
-import { trackProgramView } from "../lib/analytics";
+import { trackProgramView, trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function ProgramAbacus() {
   const { language, t } = useLanguage();
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   useEffect(() => {
     trackProgramView("Abacus", "canonical_program_hub");
@@ -126,11 +128,25 @@ export default function ProgramAbacus() {
                 </span>
               </div>
 
+              <div className="pt-3 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackDemoClick("abacus_hero_discovery_cta");
+                    setIsDemoModalOpen(true);
+                  }}
+                  className="bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase px-6 py-3.5 rounded-full shadow-md transition-all inline-flex items-center gap-2 cursor-pointer"
+                >
+                  <span>Book a Discovery Session</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
               {/* Academy Location Snippet */}
               <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 text-xs text-slate-300 flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-vibrant-orange shrink-0 mt-0.5" />
                 <span>
-                  <strong>Classroom Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune.
+                  <strong>Classroom Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
                 </span>
               </div>
             </div>
@@ -139,13 +155,13 @@ export default function ProgramAbacus() {
             <div className="lg:col-span-5 bg-white text-slate-900 rounded-3xl p-6 md:p-8 shadow-2xl border-4 border-vibrant-dark">
               <div className="mb-4">
                 <span className="text-[10px] font-black text-vibrant-orange bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                  Book A Trial Session
+                  Personalised Learning
                 </span>
                 <h2 className="text-xl font-black text-vibrant-dark mt-2">
-                  Complimentary Center Evaluation
+                  AAA Personalised Learning Discovery Session
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
-                  Meet Mentor Neha Patil for a personalized counting and visualization readiness assessment.
+                  Meet Founder Neha Patil for an encouraging, educator-led exploration of number sense, bead visualization aptitude, and focus (strictly non-clinical).
                 </p>
               </div>
               <LeadForm sourceCampaign="programs_abacus_page" defaultProgram="Abacus" />
@@ -396,7 +412,7 @@ export default function ProgramAbacus() {
                 Are the trainers certified?
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed pl-6">
-                Yes. Classes are conducted under the leadership of Founder Neha Patil, who is a certified Master Trainer through IIVA (Indian Institute of Vedic Maths & Abacus).
+                Yes. Classes are conducted under the leadership of Founder Neha Patil, who is a Certified Trainer of Abacus & Vedic Mathematics (MCA, Authorised Skill Centre in Abacus Reg. CI2023/100000455).
               </p>
             </div>
           </div>
@@ -420,10 +436,10 @@ export default function ProgramAbacus() {
 
             <div className="flex flex-wrap gap-4 pt-2 text-xs font-bold text-slate-700">
               <span className="flex items-center gap-1.5">
-                <Award className="w-4 h-4 text-vibrant-gold" /> IIVA Certified Mentors
+                <Award className="w-4 h-4 text-vibrant-gold" /> Certified Trainer Mentorship
               </span>
               <span className="flex items-center gap-1.5">
-                <Users className="w-4 h-4 text-vibrant-teal" /> 1:8 Small Batch Ratio
+                <Users className="w-4 h-4 text-vibrant-teal" /> Small Batches (Max 5 Students)
               </span>
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" /> Screen-Free Offline Classroom
@@ -479,6 +495,12 @@ export default function ProgramAbacus() {
           </div>
         </div>
       </section>
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        defaultProgram="Abacus Mathematics (Ages 4.5–9)"
+        source="program_page_abacus"
+      />
     </div>
   );
 }

@@ -22,10 +22,10 @@ export default function TeacherProfile() {
   };
 
   const verifiedCredentials = [
-    "Certified Professional in Abacus & Vedic Mathematics from IIVA, Delhi",
+    "Certified Trainer of Abacus (AVAS / Reg. CI2023/100000455)",
+    "Certified Trainer of Vedic Maths (AVAS / Reg. CI2023/100000403)",
+    "Authorised Owner of Skill Centre in Abacus — Wakad Center",
     "Master of Computer Applications (MCA)",
-    "Certified Professional Mentor & Child Cognitive Coach",
-    "Skill India / NSDC-Authorised Training Partner Credentials",
     "Lead Trainer of 56 National Championship 2026 Participants"
   ];
 
@@ -75,10 +75,10 @@ export default function TeacherProfile() {
 
           <div className="mt-8 text-center bg-slate-50 border border-slate-200/80 p-4 rounded-2xl max-w-xs shadow-xs">
             <span className="block text-[11px] font-black text-orange-600 uppercase tracking-widest text-center mb-1">
-              Personalised Teaching Guarantee
+              Focused Micro-Batch Standard
             </span>
             <p className="text-xs text-slate-600 font-medium leading-relaxed text-center">
-              "Every micro-batch is limited to 8 students so each child receives direct, diagnostic feedback every session."
+              "Every micro-batch is strictly limited to maximum 5 students so each child receives direct, diagnostic feedback every session."
             </p>
           </div>
         </div>
@@ -100,7 +100,7 @@ export default function TeacherProfile() {
 
           <div className="text-slate-600 text-xs md:text-sm leading-relaxed space-y-3 font-medium">
             <p>
-              Neha Patil is an MCA and an IIVA Delhi-certified Master Trainer in Soroban Abacus and Vedic Mathematics. With a child-first pedagogy, she focuses on moving children away from mechanical memorization toward photographic visualization, number agility, and logical independence.
+              Neha Patil is an MCA and an IIVA Delhi-certified Trainer in Soroban Abacus and Vedic Mathematics. With a child-first pedagogy, she focuses on moving children away from mechanical memorization toward photographic visualization, number agility, and logical independence.
             </p>
             <p>
               Under her leadership, Arnav Abacus Academy has nurtured state and national champions, including 56 participants across 15 levels in the 15th National Level Championship 2026.
@@ -114,7 +114,7 @@ export default function TeacherProfile() {
             </span>
             {verifiedCredentials.map((cert, idx) => (
               <div key={idx} className="flex items-start gap-2.5 text-xs text-slate-700 font-semibold">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                 <span>{cert}</span>
               </div>
             ))}
@@ -132,7 +132,7 @@ export default function TeacherProfile() {
               <span>Consult Director Neha Patil</span>
             </a>
             <div className="text-slate-500 text-xs font-semibold flex items-center gap-1.5 text-center">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
               <span>Free initial diagnostic assessment at Wakad Center or Online</span>
             </div>
           </div>
