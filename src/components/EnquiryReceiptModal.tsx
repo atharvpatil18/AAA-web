@@ -41,6 +41,17 @@ export default function EnquiryReceiptModal({
   deliveryMode = 'offline',
   onDownloadWorkbook,
 }: EnquiryReceiptModalProps) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const childName = studentName?.trim() || 'your child';
@@ -64,16 +75,21 @@ export default function EnquiryReceiptModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="enquiry-receipt-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-sm overflow-y-auto animate-fade-in"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
     >
-      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden my-8">
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden my-6 sm:my-8">
         {/* Header Ribbon */}
-        <div className="bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 p-6 text-white text-center relative">
+        <div className="bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 p-5 sm:p-6 text-white text-center relative">
           <button
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+            className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 min-w-[44px] min-h-[44px] rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -88,7 +104,7 @@ export default function EnquiryReceiptModal({
 
           <h3
             id="enquiry-receipt-title"
-            className="font-display font-bold text-xl md:text-2xl text-white tracking-tight"
+            className="font-display font-bold text-xl md:text-2xl text-white tracking-tight pr-8 sm:pr-0"
           >
             Inquiry Registered with Admissions
           </h3>
@@ -98,9 +114,9 @@ export default function EnquiryReceiptModal({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 md:p-8 space-y-6 max-h-[75vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 md:p-8 space-y-6 max-h-[75vh] overflow-y-auto">
           {/* Scheduling Status Notice */}
-          <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-4.5 flex items-start gap-3.5">
+          <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-4 sm:p-4.5 flex items-start gap-3 sm:gap-3.5">
             <Clock className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
             <div className="text-left text-xs text-emerald-950 leading-relaxed">
               <span className="font-bold block text-sm mb-0.5 text-emerald-900">
@@ -117,7 +133,7 @@ export default function EnquiryReceiptModal({
               href={whatsappFastTrackUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-5 rounded-2xl text-xs md:text-sm shadow-md transition-all group"
+              className="flex-1 min-h-[44px] inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-5 rounded-2xl text-xs md:text-sm shadow-md transition-all group"
             >
               <Phone className="w-4 h-4 shrink-0 group-hover:scale-110 transition-transform" />
               <span>Fast-Track Scheduling on WhatsApp</span>
@@ -128,7 +144,7 @@ export default function EnquiryReceiptModal({
               <button
                 type="button"
                 onClick={onDownloadWorkbook}
-                className="inline-flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3.5 px-5 rounded-2xl text-xs md:text-sm border border-slate-200 transition-colors"
+                className="min-h-[44px] inline-flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3.5 px-5 rounded-2xl text-xs md:text-sm border border-slate-200 transition-colors cursor-pointer"
               >
                 <FileDown className="w-4 h-4 text-slate-600" />
                 <span>Download Diagnostic Workbook (PDF)</span>
@@ -140,7 +156,7 @@ export default function EnquiryReceiptModal({
           <ParentPreparationCard studentName={studentName} programName={programName} />
 
           {/* Trust & DPDP Privacy Footnote */}
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+          <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[11px] text-slate-500">
             <span className="inline-flex items-center gap-1.5 font-medium">
               <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
               DPDP Act 2023 Statutory Privacy Protection
@@ -150,11 +166,11 @@ export default function EnquiryReceiptModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="bg-slate-50 px-6 py-4 border-t border-slate-200/80 flex items-center justify-end">
+        <div className="bg-slate-50 px-5 sm:px-6 py-3.5 sm:py-4 border-t border-slate-200/80 flex items-center justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="px-6 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition-colors"
+            className="min-h-[44px] px-6 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition-colors cursor-pointer"
           >
             Close & Continue Browsing
           </button>

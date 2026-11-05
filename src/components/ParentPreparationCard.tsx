@@ -59,7 +59,7 @@ export default function ParentPreparationCard({
   ];
 
   return (
-    <div className={`bg-slate-50 border border-slate-200 rounded-2xl p-5 text-left ${className}`}>
+    <div className={`bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 text-left ${className}`}>
       <div className="flex items-center gap-2 mb-3.5">
         <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
         <h4 className="font-display font-bold text-sm text-slate-900 tracking-tight">

@@ -54,6 +54,17 @@ export default function AppointmentConfirmedModal({
 }: AppointmentConfirmedModalProps) {
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !appointment) return null;
 
   const {
@@ -123,16 +134,21 @@ export default function AppointmentConfirmedModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="appointment-confirmed-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm overflow-y-auto animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/75 backdrop-blur-sm overflow-y-auto animate-fade-in"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
     >
-      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden my-8">
+      <div className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden my-6 sm:my-8">
         {/* Header Ribbon */}
-        <div className="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 p-6 text-white text-center relative">
+        <div className="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 p-5 sm:p-6 text-white text-center relative">
           <button
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-white"
+            className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 min-w-[44px] min-h-[44px] rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors focus:outline-none focus:ring-2 focus:ring-white cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -147,7 +163,7 @@ export default function AppointmentConfirmedModal({
 
           <h3
             id="appointment-confirmed-title"
-            className="font-display font-bold text-xl md:text-2xl text-white tracking-tight"
+            className="font-display font-bold text-xl md:text-2xl text-white tracking-tight pr-8 sm:pr-0"
           >
             Discovery Session Confirmed!
           </h3>
@@ -157,9 +173,9 @@ export default function AppointmentConfirmedModal({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 md:p-8 space-y-6 max-h-[75vh] overflow-y-auto">
+        <div className="p-4 sm:p-6 md:p-8 space-y-6 max-h-[75vh] overflow-y-auto">
           {/* Appointment Schedule Card */}
-          <div className="bg-emerald-50/70 border border-emerald-200/90 rounded-2xl p-5 text-left">
+          <div className="bg-emerald-50/70 border border-emerald-200/90 rounded-2xl p-4 sm:p-5 text-left">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-emerald-200/80">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
@@ -243,7 +259,7 @@ export default function AppointmentConfirmedModal({
             <button
               type="button"
               onClick={handleDownloadCalendar}
-              className={`flex-1 inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl text-xs md:text-sm font-bold shadow-md transition-all ${
+              className={`flex-1 min-h-[44px] inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl text-xs md:text-sm font-bold shadow-md transition-all cursor-pointer ${
                 downloadSuccess
                   ? 'bg-teal-700 text-white'
                   : 'bg-emerald-600 hover:bg-emerald-700 text-white'
@@ -263,7 +279,7 @@ export default function AppointmentConfirmedModal({
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3.5 px-5 rounded-2xl text-xs md:text-sm border border-slate-200 transition-colors"
+              className="min-h-[44px] inline-flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3.5 px-5 rounded-2xl text-xs md:text-sm border border-slate-200 transition-colors"
             >
               <Phone className="w-4 h-4 text-emerald-600" />
               <span>Contact Neha Patil</span>
@@ -284,11 +300,11 @@ export default function AppointmentConfirmedModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="bg-slate-50 px-6 py-4 border-t border-slate-200/80 flex items-center justify-end">
+        <div className="bg-slate-50 px-5 sm:px-6 py-3.5 sm:py-4 border-t border-slate-200/80 flex items-center justify-end">
           <button
             type="button"
             onClick={onClose}
-            className="px-6 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition-colors"
+            className="min-h-[44px] px-6 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold transition-colors cursor-pointer"
           >
             Done
           </button>

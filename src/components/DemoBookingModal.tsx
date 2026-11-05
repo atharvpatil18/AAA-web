@@ -57,6 +57,17 @@ export default function DemoBookingModal({
     onClose();
   };
 
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleResetAndClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
   if (showReceiptModal) {
     return (
       <EnquiryReceiptModal
@@ -167,18 +178,22 @@ export default function DemoBookingModal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-fade-in"
-      onClick={handleResetAndClose}
+      className="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-fade-in"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          handleResetAndClose();
+        }
+      }}
     >
       <div
-        className="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 relative my-8"
+        className="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 relative my-6 sm:my-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Header Badge */}
-        <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 text-white relative border-b border-amber-500/30">
+        <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-5 sm:p-6 text-white relative border-b border-amber-500/30">
           <button
             onClick={handleResetAndClose}
-            className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white rounded-full p-1.5 transition-colors cursor-pointer"
+            className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 min-w-[44px] min-h-[44px] bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -189,7 +204,7 @@ export default function DemoBookingModal({
             <span>Personalised Learning Discovery Session</span>
           </div>
 
-          <h3 id="modal-title" className="text-xl md:text-2xl font-black leading-tight text-white">
+          <h3 id="modal-title" className="text-xl md:text-2xl font-black leading-tight text-white pr-10">
             Book a Personalised Discovery Session
           </h3>
           <p className="text-xs md:text-sm text-slate-300 mt-1">
@@ -198,7 +213,7 @@ export default function DemoBookingModal({
         </div>
 
         {/* Content Body */}
-        <div className="p-6 md:p-8">
+        <div className="p-4 sm:p-6 md:p-8">
           {submitted ? (
             <div className="text-center py-6 animate-scale-up">
               <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -351,7 +366,7 @@ export default function DemoBookingModal({
                   <button
                     type="button"
                     onClick={() => setDeliveryMode("offline")}
-                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    className={`min-h-[44px] py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                       deliveryMode === "offline"
                         ? "bg-orange-50 border-orange-500 text-orange-700 ring-2 ring-orange-200"
                         : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
@@ -362,7 +377,7 @@ export default function DemoBookingModal({
                   <button
                     type="button"
                     onClick={() => setDeliveryMode("online")}
-                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                    className={`min-h-[44px] py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
                       deliveryMode === "online"
                         ? "bg-teal-50 border-teal-500 text-teal-700 ring-2 ring-teal-200"
                         : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
@@ -416,7 +431,7 @@ export default function DemoBookingModal({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm py-3.5 px-6 rounded-2xl shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full mt-2 min-h-[48px] bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm py-3.5 px-6 rounded-2xl shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Confirm Discovery Session on WhatsApp</span>
                 <Send className="w-4 h-4" />
