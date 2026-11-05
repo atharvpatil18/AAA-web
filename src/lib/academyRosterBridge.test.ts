@@ -268,8 +268,34 @@ console.log("\nRunning TC-SYNC-06: AcademyOS Permission Hydration...");
   assert(record.permissions[0].course === "abacus", "Course permission mapped to abacus.");
   assert(record.permissions[0].levels.includes("JR-0") && record.permissions[0].levels.includes("JR-1"), "Levels assigned correctly.");
   assert(record.permissions[0].accessMode === "both", "Access mode set to both (quiz + learn).");
+  assert(record.students?.length === 1, "Students array initialized with 1 profile.");
+  assert(record.students?.[0].studentUid === "AAA-STD-2026-0005", "Student UID preserved in students array.");
 
-  console.log("✅ TC-SYNC-06 Passed: ApprovedEmailRecord hydrated conforming to accessControl.ts schema.");
+  // Verify Sibling Multi-Student Hydration (QA-ROS-01)
+  const siblingProfile: EnrolledStudentProfile = {
+    studentUid: "AAA-STD-2026-0006",
+    leadReference: "AAA-LEAD-2026-00043",
+    displayName: "Ananya M.",
+    parentEmail: "rohan.parent@example.com",
+    emergencyPhone: "9823012345",
+    assignedBatchId: "AAA-BATCH-2026-VED-WAKAD-01",
+    enrolledCourse: "vedic",
+    assignedLevels: ["JVM-1"],
+    accessMode: "both",
+    enrollmentDate: "2026-11-05T12:30:00.000Z",
+    status: "ACTIVE",
+    retentionExempt: true
+  };
+
+  const updatedRecord = hydrateApprovedRecord(siblingProfile, record);
+  assert(updatedRecord.email === "rohan.parent@example.com", "Email preserved.");
+  assert(updatedRecord.students?.length === 2, "Both siblings must exist in students array.");
+  assert(updatedRecord.students?.[0].studentName === "Rohan M.", "Sibling 1 name preserved.");
+  assert(updatedRecord.students?.[1].studentName === "Ananya M.", "Sibling 2 name preserved.");
+  assert(updatedRecord.studentName === "Rohan M. & Ananya M.", "Composite display name created.");
+  assert(updatedRecord.permissions.length === 2, "Permissions for both abacus and vedic retained.");
+
+  console.log("✅ TC-SYNC-06 Passed: ApprovedEmailRecord hydrated conforming to accessControl.ts schema with multi-student sibling support (QA-ROS-01).");
 }
 
 // -------------------------------------------------------------

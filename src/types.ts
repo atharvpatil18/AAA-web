@@ -49,9 +49,17 @@ export interface LevelPermission {
   accessMode: AccessFeatureMode; // "quiz" | "learn" | "both"
 }
 
+export interface EnrolledSiblingSummary {
+  studentUid: string;
+  studentName: string;
+  assignedLevels?: string[];
+  enrolledAt?: string;
+}
+
 export interface ApprovedEmailRecord {
   email: string;
   studentName?: string;
+  students?: EnrolledSiblingSummary[];
   isAdmin?: boolean;
   permissions: LevelPermission[];
   createdAt?: string;

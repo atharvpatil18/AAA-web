@@ -18,7 +18,7 @@ import {
   LeadActorRole,
   MicroBatchRecord
 } from "../types/crm";
-import { ApprovedEmailRecord, LevelPermission } from "../types";
+import { ApprovedEmailRecord, LevelPermission, EnrolledSiblingSummary } from "../types";
 import { formatCellForCsvExport } from "./intakeGatewayEngine";
 
 export const MAX_BATCH_CAPACITY = 5 as const;
@@ -114,27 +114,75 @@ export function mapToAcademyOsCourse(
 }
 
 /**
- * Hydrates an ApprovedEmailRecord for AcademyOS accessControl.ts.
+ * Hydrates or merges an ApprovedEmailRecord for AcademyOS accessControl.ts.
+ * Supports multi-student sibling accounts under a single parent email without data collision.
  */
-export function hydrateApprovedRecord(profile: EnrolledStudentProfile): ApprovedEmailRecord {
+export function hydrateApprovedRecord(
+  profile: EnrolledStudentProfile,
+  existingRecord?: ApprovedEmailRecord | null
+): ApprovedEmailRecord {
   let mappedCourse: "abacus" | "vedic" | "mental" | "all" = "abacus";
   if (profile.enrolledCourse === "abacus") mappedCourse = "abacus";
   else if (profile.enrolledCourse === "vedic") mappedCourse = "vedic";
   else if (profile.enrolledCourse === "mental") mappedCourse = "mental";
   else mappedCourse = "all";
 
-  const permission: LevelPermission = {
+  const newPermission: LevelPermission = {
     course: mappedCourse,
     levels: profile.assignedLevels.length > 0 ? profile.assignedLevels : ["ALL"],
     accessMode: profile.accessMode
   };
 
+  const currentSiblingSummary: EnrolledSiblingSummary = {
+    studentUid: profile.studentUid,
+    studentName: profile.displayName,
+    assignedLevels: profile.assignedLevels,
+    enrolledAt: profile.enrollmentDate
+  };
+
+  const existingStudents = existingRecord?.students ? [...existingRecord.students] : [];
+  const existingIdx = existingStudents.findIndex((s) => s.studentUid === profile.studentUid);
+
+  let mergedStudents: EnrolledSiblingSummary[];
+  if (existingIdx >= 0) {
+    mergedStudents = [...existingStudents];
+    mergedStudents[existingIdx] = currentSiblingSummary;
+  } else {
+    // If existing record has an older single studentName not yet in students array, preserve both
+    if (existingStudents.length === 0 && existingRecord?.studentName && existingRecord.studentName !== profile.displayName) {
+      mergedStudents = [
+        { studentUid: "AAA-STD-LEGACY", studentName: existingRecord.studentName },
+        currentSiblingSummary
+      ];
+    } else {
+      mergedStudents = [...existingStudents, currentSiblingSummary];
+    }
+  }
+
+  // Merge permissions across courses cleanly
+  const existingPermissions = existingRecord?.permissions ? [...existingRecord.permissions] : [];
+  const coursePermIdx = existingPermissions.findIndex((p) => p.course === mappedCourse);
+  if (coursePermIdx >= 0) {
+    const combinedLevels = Array.from(new Set([...existingPermissions[coursePermIdx].levels, ...newPermission.levels]));
+    existingPermissions[coursePermIdx] = {
+      ...existingPermissions[coursePermIdx],
+      levels: combinedLevels,
+      accessMode: newPermission.accessMode === "both" || existingPermissions[coursePermIdx].accessMode === "both" ? "both" : newPermission.accessMode
+    };
+  } else {
+    existingPermissions.push(newPermission);
+  }
+
+  // Display name formatting: "Aarav & Ananya" if multiple siblings
+  const compositeDisplayName = mergedStudents.map((s) => s.studentName).join(" & ");
+
   return {
     email: profile.parentEmail.toLowerCase().trim(),
-    studentName: profile.displayName,
-    isAdmin: false,
-    permissions: [permission],
-    createdAt: profile.enrollmentDate
+    studentName: compositeDisplayName,
+    students: mergedStudents,
+    isAdmin: existingRecord?.isAdmin || false,
+    permissions: existingPermissions,
+    createdAt: existingRecord?.createdAt || profile.enrollmentDate
   };
 }
 
@@ -153,6 +201,7 @@ export function enrollLeadToRoster(params: {
   actorName: string;
   academicYear?: number;
   nowIso?: string;
+  existingApprovedRecord?: ApprovedEmailRecord | null;
 }): {
   studentProfile: EnrolledStudentProfile;
   updatedBatch: MicroBatchRoster;
@@ -169,7 +218,8 @@ export function enrollLeadToRoster(params: {
     actorRole,
     actorName,
     academicYear = 2026,
-    nowIso = new Date().toISOString()
+    nowIso = new Date().toISOString(),
+    existingApprovedRecord
   } = params;
 
   // 1. Role Boundary Guard
@@ -246,8 +296,8 @@ export function enrollLeadToRoster(params: {
     ]
   };
 
-  // 8. Hydrate AcademyOS Access Record
-  const approvedEmailRecord = hydrateApprovedRecord(studentProfile);
+  // 8. Hydrate AcademyOS Access Record (Preserving Sibling Accounts)
+  const approvedEmailRecord = hydrateApprovedRecord(studentProfile, existingApprovedRecord);
 
   return {
     studentProfile,
