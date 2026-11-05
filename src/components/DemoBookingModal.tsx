@@ -9,6 +9,8 @@ import { trackDemoRequest, trackWhatsAppClick, trackCounsellingBook } from "../l
 import { validateSanitizedName } from "../lib/securitySanitizer";
 import { useLanguage } from "../lib/LanguageContext";
 import { sanitizeStringInput } from "../lib/intakeGatewayEngine";
+import { useDiscoveryIntake } from "../hooks/useDiscoveryIntake";
+import EnquiryReceiptModal from "./EnquiryReceiptModal";
 import { DiscoveryIntakePayload } from "../types/gateway";
 
 interface DemoBookingModalProps {
@@ -37,6 +39,36 @@ export default function DemoBookingModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [showReceiptModal, setShowReceiptModal] = useState(false);
+  const {
+    handleSubmit: submitIntake,
+    isSubmitting: hookSubmitting,
+    status: intakeStatus,
+  } = useDiscoveryIntake();
+
+  const handleResetAndClose = () => {
+    setShowReceiptModal(false);
+    setSubmitted(false);
+    setErrorMsg("");
+    setParentName("");
+    setPhone("");
+    setAssignedUID(null);
+    setBotHoneypot("");
+    onClose();
+  };
+
+  if (showReceiptModal) {
+    return (
+      <EnquiryReceiptModal
+        isOpen={true}
+        onClose={handleResetAndClose}
+        leadReference={assignedUID || "AAA-LEAD-PENDING"}
+        parentName={parentName}
+        programName={program}
+        deliveryMode={deliveryMode}
+      />
+    );
+  }
 
   if (!isOpen) return null;
 
@@ -88,11 +120,8 @@ export default function DemoBookingModal({
       }
     }
 
-    const idempotencyKey = typeof crypto !== 'undefined' && crypto.randomUUID
-      ? crypto.randomUUID()
-      : `MODAL-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
-
-    const payload: DiscoveryIntakePayload = {
+    // Canonical Hook Dispatch (OBS-01 Hook Unification)
+    const intakeResult = await submitIntake(e, {
       parentName: cleanParentName,
       parentPhone: cleanPhone,
       parentEmail: null,
@@ -102,52 +131,17 @@ export default function DemoBookingModal({
       marketingConsent,
       parentGuardianConfirmed: true,
       website_url_hp: botHoneypot,
-      idempotencyKey,
-    };
+    });
 
-    let serverRes: Response;
-    let serverData: any;
-
-    try {
-      serverRes = await fetch("/api/discovery-intake", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Idempotency-Key": idempotencyKey,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (serverRes.status === 404) {
-        throw new Error("GATEWAY_ENDPOINT_404");
-      }
-
-      serverData = await serverRes.json();
-    } catch (networkErr: any) {
+    if (!intakeResult || !intakeResult.success) {
       setIsSubmitting(false);
-      const is404 = networkErr?.message === "GATEWAY_ENDPOINT_404";
-      setErrorMsg(
-        is404
-          ? "The online admissions gateway is offline in this environment. Your session request was NOT saved online. You can book directly with Neha Patil on WhatsApp."
-          : "Network offline or server unreachable. Your request could NOT be registered online. You can connect directly with Neha Patil on WhatsApp."
-      );
+      setErrorMsg(intakeResult?.error || "Submission could not be completed. Please check your network connection or connect directly with Neha Patil on WhatsApp.");
       return;
     }
 
-    if (serverRes.status === 429) {
-      setIsSubmitting(false);
-      setErrorMsg(`Rate limit exceeded. Please wait ${serverData?.retryAfterSeconds || 900} seconds before retrying.`);
-      return;
-    }
-
-    if (!serverRes.ok || (!serverData?.success && serverRes.status !== 200 && serverRes.status !== 201)) {
-      setIsSubmitting(false);
-      setErrorMsg(serverData?.error || "Submission failed. Please check your inputs.");
-      return;
-    }
-
-    const allocatedRef = serverData.leadReference || serverData.leadUID || null;
+    const allocatedRef = intakeResult.leadReference || intakeResult.leadUID || null;
     setAssignedUID(allocatedRef);
+    setIsSubmitting(false);
 
     // Track analytics demo request & counselling booking events (Strictly zero PII)
     trackCounsellingBook({
@@ -164,36 +158,8 @@ export default function DemoBookingModal({
       childAgeGroup: childAge,
     });
 
-    // Prepare friendly WhatsApp pre-filled message
-    const modeText = deliveryMode === "offline" ? "Offline (Wakad Pune Center)" : "Online Live Class";
-    const waText = encodeURIComponent(
-      `Hello Arnav Abacus Academy!\n\nI want to book a Personalised Learning Discovery Session for my child.\n` +
-      `• Lead Ref: ${allocatedRef || "Pending"}\n` +
-      `• Parent Name: ${cleanParentName}\n` +
-      `• Contact: ${cleanPhone}\n` +
-      `• Child's Age Group: ${childAge} years\n` +
-      `• Focus / Programme: ${program}\n` +
-      `• Preferred Mode: ${modeText}\n\n` +
-      `Looking forward to scheduling the discovery exploration session!`
-    );
-
-    trackWhatsAppClick("discovery_modal_submit", "book_discovery_session");
-
-    // Open WhatsApp directly
-    window.open(`https://wa.me/919021924968?text=${waText}`, "_blank");
-
-    setIsSubmitting(false);
-    setSubmitted(true);
-  };
-
-  const handleResetAndClose = () => {
-    setSubmitted(false);
-    setErrorMsg("");
-    setParentName("");
-    setPhone("");
-    setAssignedUID(null);
-    setBotHoneypot("");
-    onClose();
+    // Mount EnquiryReceiptModal (OBS-02)
+    setShowReceiptModal(true);
   };
 
   return (

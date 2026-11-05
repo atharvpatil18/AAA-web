@@ -10,6 +10,8 @@ import { useLanguage } from "../lib/LanguageContext";
 import { validateSanitizedName, sanitizeHtml } from "../lib/securitySanitizer";
 import { dispatchLeadToWebhook } from "../lib/leadWebhook";
 import { DiscoveryIntakePayload } from "../types/gateway";
+import { useDiscoveryIntake } from "../hooks/useDiscoveryIntake";
+import EnquiryReceiptModal from "./EnquiryReceiptModal";
 
 interface LeadFormProps {
   sourceCampaign?: string;
@@ -31,6 +33,14 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [redirectSuccess, setRedirectSuccess] = useState(false);
   const [validationError, setValidationError] = useState("");
+  const [showReceiptModal, setShowReceiptModal] = useState(false);
+  const {
+    handleSubmit: submitIntake,
+    isSubmitting: hookSubmitting,
+    status: intakeStatus,
+    errorMessage: intakeErrorMessage,
+    leadUID: intakeLeadUID,
+  } = useDiscoveryIntake();
 
   // International Demo Customizations
   const [countryCode, setCountryCode] = useState("+91");
@@ -547,11 +557,11 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     else mappedAge = "4.5-6";
 
     const cleanPhoneDigits = phone.replace(/\D/g, "") || "9822011223";
-    const idempotencyKey = typeof crypto !== 'undefined' && crypto.randomUUID
-      ? crypto.randomUUID()
-      : `LEAD-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-    const gatewayPayload: DiscoveryIntakePayload = {
+    setIsSubmitting(true);
+
+    // Canonical Hook Dispatch (OBS-01 Hook Unification)
+    const intakeResult = await submitIntake(e, {
       parentName: `${salutation} ${parentName}`.trim(),
       parentPhone: cleanPhoneDigits,
       parentEmail: null,
@@ -561,54 +571,19 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       marketingConsent,
       parentGuardianConfirmed: true,
       website_url_hp: botHoneypot,
-      idempotencyKey,
-    };
+    });
 
-    setIsSubmitting(true);
-
-    let serverRes: Response;
-    let serverData: any;
-
-    try {
-      serverRes = await fetch("/api/discovery-intake", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Idempotency-Key": idempotencyKey,
-        },
-        body: JSON.stringify(gatewayPayload),
-      });
-
-      if (serverRes.status === 404) {
-        throw new Error("GATEWAY_ENDPOINT_404");
-      }
-
-      serverData = await serverRes.json();
-    } catch (networkErr: any) {
+    if (!intakeResult || !intakeResult.success) {
       setIsSubmitting(false);
-      const is404 = networkErr?.message === "GATEWAY_ENDPOINT_404";
-      const offlineMsg = is404
-        ? "The online admissions gateway is offline in this environment. Your inquiry was NOT registered online. Please connect directly with Neha Patil on WhatsApp."
-        : "Network offline or server unreachable. Your inquiry could NOT be submitted online. Please retry or click below to connect directly with Neha Patil on WhatsApp.";
-      setValidationError(offlineMsg);
+      const err = intakeResult?.error || "Inquiry could not be registered. Please check your network connection or connect directly with Neha Patil on WhatsApp.";
+      setValidationError(err);
       return;
     }
 
-    if (serverRes.status === 429) {
-      setIsSubmitting(false);
-      setValidationError(`Rate limit reached. Please wait ${serverData?.retryAfterSeconds || 900} seconds before retrying.`);
-      return;
-    }
-
-    if (!serverRes.ok || (!serverData?.success && serverRes.status !== 200 && serverRes.status !== 201)) {
-      setIsSubmitting(false);
-      setValidationError(serverData?.error || "Inquiry could not be registered. Please check your inputs.");
-      return;
-    }
-
-    const assignedRef = serverData.leadReference || serverData.leadUID || null;
+    const assignedRef = intakeResult.leadReference || intakeResult.leadUID || null;
     setAssignedUID(assignedRef);
-    
+    setIsSubmitting(false);
+
     // Log conversion events: Primary Conversions (Strictly Zero PII)
     trackEnquiryFormSubmit({
       program,
@@ -632,53 +607,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     if (competitiveFocus) parentExpectations.push("Olympiad/Competitive focus");
     const expStr = parentExpectations.length > 0 ? `\nHabits/Expectations: ${parentExpectations.join(", ")}` : "";
 
-    let textMessage = `Hello, I'm interested in a Personalised Learning Discovery Session at Arnav Abacus Academy!${assignedRef ? `\nDiscovery Ref: ${assignedRef}` : ''}
-Parent Name: ${salutation} ${parentName}
-Student Name: ${studentName}
-Child's Age: ${childAge}
-Program: ${program}
-Country Code: ${countryCode}
-Mode: ${classMode === "online" ? "Online Video Class (Zoom/Meet)" : "Offline (Wakad Pune Center)"}
-Time Zone: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
-Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
-
-    if (language === "hi") {
-      let parentExpectationsHi = [];
-      if (countsOnFingers) parentExpectationsHi.push("उँगलियों पर गिनना");
-      if (carelessMistakes) parentExpectationsHi.push("असावधान गलतियाँ");
-      if (mathAnxiety) parentExpectationsHi.push("गणित से डर");
-      if (competitiveFocus) parentExpectationsHi.push("प्रतियोगी परीक्षा");
-      const expStrHi = parentExpectationsHi.length > 0 ? `\nआदतें/अपेक्षाएँ: ${parentExpectationsHi.join(", ")}` : "";
-
-      textMessage = `नमस्ते, मैं अर्णव एबाकस एकेडमी में लर्निंग डिस्कवरी सत्र के लिए उत्सुक हूँ!${assignedRef ? `\nरेफरेंस: ${assignedRef}` : ''}
-अभिभावक का नाम: ${salutation} ${parentName}
-छात्र का नाम: ${studentName}
-बच्चे की उम्र: ${childAge}
-कोर्स विषय: ${program}
-कंट्री कोड: ${countryCode}
-क्लास का प्रकार: ${classMode === "online" ? "ऑनलाइन वीडियो क्लास (Zoom/Meet)" : "ऑफलाइन (वाकड पुणे सेंटर)"}
-टाइम ज़ोन: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
-स्कूल बोर्ड: ${schoolCurriculum}${expStrHi}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
-    } else if (language === "mr") {
-      let parentExpectationsMr = [];
-      if (countsOnFingers) parentExpectationsMr.push("बोटांवर मोजणे");
-      if (carelessMistakes) parentExpectationsMr.push("अनावधानाने चुका");
-      if (mathAnxiety) parentExpectationsMr.push("गणिताची भीती");
-      if (competitiveFocus) parentExpectationsMr.push("स्पर्धा परीक्षा");
-      const expStrMr = parentExpectationsMr.length > 0 ? `\nसवयी/अपेक्षा: ${parentExpectationsMr.join(", ")}` : "";
-
-      textMessage = `नमस्कार, मी अर्णव ॲबॅकस अकॅडमीमध्ये लर्निंग डिस्कव्हरी सत्रासाठी चौकशी करू इच्छितो!${assignedRef ? `\nनोंदणी क्रमांक: ${assignedRef}` : ''}
-पालकांचे नाव: ${salutation} ${parentName}
-विद्यार्थ्याचे नाव: ${studentName}
-मुलाचे वय: ${childAge}
-कोर्स प्रकार: ${program}
-कंट्री कोड: ${countryCode}
-डेमोचा प्रकार: ${classMode === "online" ? "ऑनलाइन व्हिडिओ क्लास (Zoom/Meet)" : "ऑफलाइन (वाकड पुणे सेंटर)"}
-टाइम झोन: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
-अभ्यासक्रम: ${schoolCurriculum}${expStrMr}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
-    }
-
-    // Persist lead safely so it is never lost even if WhatsApp is closed or cancelled
+    // Persist lead safely so it is never lost
     try {
       const existingLeads = JSON.parse(localStorage.getItem("aaa_leads_history") || "[]");
       existingLeads.unshift({
@@ -716,19 +645,8 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
       honeypot: botHoneypot,
     });
 
-    const encodedText = encodeURIComponent(textMessage);
-    const whatsappUrl = `https://wa.me/919021924968?text=${encodedText}`;
-
-    // Display confirmation and open WhatsApp safely in a new tab
-    setTimeout(() => {
-      setRedirectSuccess(true);
-      setIsSubmitting(false);
-      try {
-        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-      } catch (err) {
-        console.warn("Popup blocked or failed:", err);
-      }
-    }, 600);
+    // Mount EnquiryReceiptModal upon HTTP 201 (OBS-02 Modal Mounting)
+    setShowReceiptModal(true);
   };
 
   if (redirectSuccess) {
@@ -1162,6 +1080,17 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
           <MapPin className="w-3.5 h-3.5 shrink-0 text-orange-500" /> {language === "hi" ? "अर्णव एबाकस एकेडमी, क्रिएटिव कैमियो के सामने, वाकड, पुणे 411057" : language === "mr" ? "अर्णव ॲबॅकस अकॅडमी, क्रिएटिव्ह कॅमिओ समोर, वाकड, पुणे ४११०५७" : "Arnav Abacus Academy, Opp. Creative Cameo, Near Park Street, Wakad, Pune 411057"}
         </p>
       </div>
+      {/* Tier 1 Enquiry Receipt Modal (OBS-02) */}
+      <EnquiryReceiptModal
+        isOpen={showReceiptModal}
+        onClose={() => setShowReceiptModal(false)}
+        leadReference={assignedUID || "AAA-LEAD-PENDING"}
+        parentName={parentName}
+        studentName={studentName}
+        programName={program}
+        deliveryMode={classMode as "offline" | "online"}
+        onDownloadWorkbook={generatePDFWorksheet}
+      />
     </div>
   );
 }

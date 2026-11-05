@@ -66,7 +66,10 @@ export interface UseDiscoveryIntakeReturn {
   gatewayResponse: GatewayResponse | null;
 
   // Actions
-  handleSubmit: (e?: React.FormEvent) => Promise<GatewayResponse | null>;
+  handleSubmit: (
+    e?: React.FormEvent,
+    customValues?: Partial<DiscoveryIntakePayload>
+  ) => Promise<GatewayResponse | null>;
   resetForm: () => void;
   whatsappFallbackUrl: string;
 }
@@ -133,7 +136,10 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
   }, [defaultAgeBracket, defaultCourse]);
 
   const handleSubmit = useCallback(
-    async (e?: React.FormEvent): Promise<GatewayResponse | null> => {
+    async (
+      e?: React.FormEvent,
+      customValues?: Partial<DiscoveryIntakePayload>
+    ): Promise<GatewayResponse | null> => {
       if (e && typeof e.preventDefault === 'function') {
         e.preventDefault();
       }
@@ -141,8 +147,34 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
       setErrorMessage(null);
       setStatus('VALIDATING');
 
+      const rawParentName = customValues?.parentName ?? parentName;
+      const rawParentPhone = customValues?.parentPhone ?? parentPhone;
+      const rawParentEmail = customValues?.parentEmail ?? parentEmail;
+      const rawAgeBracket = customValues?.childAgeBracket ?? childAgeBracket;
+      const rawCourseInterest = customValues?.courseInterest ?? courseInterest;
+      const rawServiceConsent = customValues?.serviceConsent ?? serviceConsent;
+      const rawMarketingConsent = customValues?.marketingConsent ?? marketingConsent;
+      const rawGuardianConfirmed = customValues?.parentGuardianConfirmed ?? parentGuardianConfirmed;
+      const rawHoneypot = customValues?.website_url_hp ?? honeypotField;
+
+      // 0. Honeypot check (quiet synthetic drop)
+      if (rawHoneypot && rawHoneypot.trim().length > 0) {
+        const synthDrop: GatewayResponse = {
+          statusCode: 200,
+          success: true,
+          leadUID: 'AAA-LEAD-BOT-TRAP',
+          leadReference: 'AAA-LEAD-BOT-TRAP',
+          isBotDropped: true,
+          message: 'Inquiry received.',
+        };
+        setStatus('SERVER_CONFIRMED');
+        setGatewayResponse(synthDrop);
+        onSuccess?.(synthDrop);
+        return synthDrop;
+      }
+
       // 1. Client-Side Sanitization & Validation
-      const sanitizedName = sanitizeStringInput(parentName);
+      const sanitizedName = sanitizeStringInput(rawParentName);
       if (sanitizedName.length < 2) {
         const err = 'Please enter a valid parent name (at least 2 letters).';
         setStatus('SERVER_REJECTED');
@@ -151,7 +183,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
         return null;
       }
 
-      const phoneVal = validateIndianMobile(parentPhone);
+      const phoneVal = validateIndianMobile(rawParentPhone);
       if (!phoneVal.isValid) {
         const err = phoneVal.error || 'Please enter a valid 10-digit Indian mobile number.';
         setStatus('SERVER_REJECTED');
@@ -160,7 +192,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
         return null;
       }
 
-      if (!serviceConsent) {
+      if (!rawServiceConsent) {
         const err = 'Service communication consent is required to coordinate Discovery Session.';
         setStatus('SERVER_REJECTED');
         setErrorMessage(err);
@@ -168,7 +200,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
         return null;
       }
 
-      if (!parentGuardianConfirmed) {
+      if (!rawGuardianConfirmed) {
         const err = 'Parent/guardian authority confirmation is required.';
         setStatus('SERVER_REJECTED');
         setErrorMessage(err);
@@ -177,7 +209,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
       }
 
       // Map friendly course label to backend key if necessary
-      let mappedCourse = courseInterest.toLowerCase();
+      let mappedCourse = String(rawCourseInterest).toLowerCase();
       if (mappedCourse.includes('abacus')) mappedCourse = 'abacus';
       else if (mappedCourse.includes('vedic')) mappedCourse = 'vedic';
       else if (mappedCourse.includes('mental')) mappedCourse = 'mental-math';
@@ -185,7 +217,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
       else if (mappedCourse.includes('olympiad') || mappedCourse.includes('ipm')) mappedCourse = 'olympiad';
 
       // Map age bracket to supported key if necessary
-      let mappedAge = childAgeBracket;
+      let mappedAge = String(rawAgeBracket);
       if (!['4.5-6', '7-9', '10-14'].includes(mappedAge)) {
         if (
           mappedAge.includes('10') ||
@@ -223,13 +255,13 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
       const payload: DiscoveryIntakePayload = {
         parentName: sanitizedName,
         parentPhone: phoneVal.normalized!,
-        parentEmail: parentEmail ? sanitizeStringInput(parentEmail) : null,
+        parentEmail: rawParentEmail ? sanitizeStringInput(rawParentEmail) : null,
         childAgeBracket: mappedAge,
         courseInterest: mappedCourse,
-        serviceConsent,
-        marketingConsent,
-        parentGuardianConfirmed,
-        website_url_hp: honeypotField,
+        serviceConsent: rawServiceConsent,
+        marketingConsent: rawMarketingConsent,
+        parentGuardianConfirmed: rawGuardianConfirmed,
+        website_url_hp: rawHoneypot,
         idempotencyKey,
       };
 

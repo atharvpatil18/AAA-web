@@ -35,7 +35,7 @@ export default function ParentPreparationCard({
     {
       icon: Pencil,
       title: 'What to Bring',
-      description: 'Just a regular sharpened pencil and eraser. Tactile Soroban abacus tools, Vedic math templates, and diagnostic sheets are provided at the center.',
+      description: 'Just a regular sharpened pencil and eraser. Tactile Soroban abacus tools, Vedic math templates, and discovery activity sheets are provided at the center.',
       accentBg: 'bg-amber-50',
       accentBorder: 'border-amber-200',
       iconColor: 'text-amber-600',
@@ -50,8 +50,8 @@ export default function ParentPreparationCard({
     },
     {
       icon: Brain,
-      title: '6-Dimension Evaluation',
-      description: `Following the trial, Neha Patil provides personalized feedback on spatial visualization, working memory, finger-counting habits, and recommended placement.`,
+      title: '6-Dimension Learning Observation',
+      description: `Following the exploratory trial, Neha Patil shares personalized observations on sensory number sense, spatial visualization, pattern agility, and optimal batch placement.`,
       accentBg: 'bg-purple-50',
       accentBorder: 'border-purple-200',
       iconColor: 'text-purple-600',

@@ -107,7 +107,7 @@ export default function EnquiryReceiptModal({
                 Discovery Session Scheduling in Progress
               </span>
               Because Neha Patil mentors dedicated micro-batches of a maximum of 5 students per batch, our academic team will review {childName}'s profile and contact you within{' '}
-              <strong className="text-emerald-900 font-bold">4 business hours</strong> to finalize an optimal trial time slot.
+              <strong className="text-emerald-900 font-bold">two operating hours</strong> (Monday–Saturday, 9:30 AM – 7:30 PM) to finalize an optimal trial time slot.
             </div>
           </div>
 

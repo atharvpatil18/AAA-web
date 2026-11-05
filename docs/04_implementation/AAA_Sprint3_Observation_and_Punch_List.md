@@ -23,10 +23,12 @@ All items logged herein are classified as **non-blocking** to the architectural 
 
 | Item # | Component / Route | Type | Management Observation & Requested Change | Logged By | Priority | Target Sprint Stage | Resolution Status |
 | :---: | :--- | :---: | :--- | :---: | :---: | :---: | :---: |
-| **OBS-01** | `LeadForm.tsx`<br/>`DemoBookingModal.tsx` | Architectural Refactor | **Hook Unification:** Refactor public admissions forms to directly consume the canonical `useDiscoveryIntake` hook, unifying inline `fetch` logic. | Lead Architect / Ratified MGT-DET-S4-S3-STEP0-WS17-05 | P1 (Important) | Sprint 3 Consolidation Pass | 🟡 Scheduled |
-| **OBS-02** | `LeadForm.tsx` | UI / Mobile UX | **Offline Alert Styling & Mobile Padding:** Ensure 44px minimum touch targets and clean responsive padding on 320px–375px viewports. | Nitin Patil | P2 (Medium) | Sprint 3 Polish Pass | 🟡 Scheduled |
-| **OBS-03** | `DemoBookingModal.tsx` | Interaction / UX | **Modal Backdrop Dismissal:** Ensure tapping outside modal backdrop smoothly resets and closes without retaining stale validation errors. | Neha Patil | P2 (Medium) | Sprint 3 Polish Pass | 🟡 Scheduled |
-| **OBS-04** | *[Awaiting Input]* | *[Copy / UI / Layout]* | *[To be populated with additional management bullet points]* | Nitin / Neha | P2 (Medium) | Sprint 3 Polish Pass | 🟡 Pending Log |
+| **OBS-01** | `LeadForm.tsx`<br/>`DemoBookingModal.tsx` | Architectural Refactor | **Hook Unification:** Refactor public admissions forms to directly consume the canonical `useDiscoveryIntake` hook, unifying inline `fetch` logic. | Lead Architect / Ratified MGT-DET-S4-S3-INT-AUDIT-06 | P1 (Important) | CAP-INT-01 | 🟢 RESOLVED (Verified with 72/72 tests & Vite Build) |
+| **OBS-02** | `LeadForm.tsx`<br/>`DemoBookingModal.tsx` | UI Integration | **Enquiry Modal Mounting:** Mount `EnquiryReceiptModal.tsx` upon receiving HTTP 201 response in both public forms rather than legacy inline text cards. | Neha Patil & Nitin Patil | P1 (Important) | CAP-INT-01 | 🟢 RESOLVED (Mounted & verified in LeadForm + DemoBookingModal) |
+| **OBS-03** | `EnquiryReceiptModal.tsx` | SLA Commitment | **SLA Copy Alignment:** Restore review commitment from "4 business hours" to approved "two operating hours (Monday–Saturday, 9:30 AM – 7:30 PM)". | Nitin Patil | P1 (Important) | CAP-INT-01 | 🟢 RESOLVED (EnquiryReceiptModal updated to exact 2 operating hours) |
+| **OBS-04** | `ParentPreparationCard.tsx` | Pedagogical Tone | **Option D Pedagogical Alignment:** Remove clinical terms ("diagnostic sheets", "6-Dimension Evaluation", "working memory") and reflect Neha Patil's approved Option D dimensions. | Neha Patil | P2 (Polish) | CAP-INT-01 | 🟢 RESOLVED (Option D 6-Dimension Learning Observation aligned) |
+| **OBS-05** | Modals & Cards | Mobile UX / A11Y | **Mobile Padding & Touch Targets:** Verify 44px minimum touch targets and clean responsive padding on 320px–375px viewports. | Nitin Patil | P2 (Medium) | Sprint 3 Polish Pass | 🟡 Scheduled |
+| **OBS-06** | `DemoBookingModal.tsx` | Interaction / UX | **Modal Backdrop Dismissal:** Ensure tapping outside modal backdrop smoothly resets and closes without retaining stale validation errors. | Neha Patil | P2 (Medium) | Sprint 3 Polish Pass | 🟡 Scheduled |
 
 ---
 
