@@ -41,6 +41,19 @@ export interface DiscoveryIntakePayload {
 }
 
 /**
+ * Authoritative 8-state submission machine under CAP-WS16-01 Gate 1
+ */
+export type DiscoverySubmissionStatus =
+  | 'IDLE'
+  | 'VALIDATING'
+  | 'SUBMITTING'
+  | 'SERVER_CONFIRMED'
+  | 'NETWORK_OFFLINE_ERROR'
+  | 'SERVER_REJECTED'
+  | 'RATE_LIMITED'
+  | 'UNCERTAIN_TIMEOUT';
+
+/**
  * Gateway response structure
  */
 export interface GatewayResponse {
@@ -49,12 +62,14 @@ export interface GatewayResponse {
   id?: string;
   leadReference?: string;
   leadUID?: string;
+  isPersisted?: boolean;
   sanitizedPayload?: Partial<DiscoveryIntakePayload>;
   message: string;
   error?: string;
   retryAfterSeconds?: number;
   isBotDropped?: boolean;
   isDuplicateThrottled?: boolean;
+  createdAt?: string;
 }
 
 /**

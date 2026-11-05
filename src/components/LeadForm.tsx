@@ -5,11 +5,10 @@
 
 import React, { useState, useEffect } from "react";
 import { trackEnquiryFormStart, trackEnquiryFormSubmit, trackDemoRequest } from "../lib/analytics";
-import { Sparkles, Gift, Send, Landmark, MapPin, ArrowRight, CheckCircle2, ShieldCheck, Phone } from "lucide-react";
+import { Sparkles, Gift, Send, Landmark, MapPin, ArrowRight, CheckCircle2, ShieldCheck, Phone, AlertCircle } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
 import { validateSanitizedName, sanitizeHtml } from "../lib/securitySanitizer";
 import { dispatchLeadToWebhook } from "../lib/leadWebhook";
-import { processDiscoveryIntake } from "../lib/intakeGatewayEngine";
 import { DiscoveryIntakePayload } from "../types/gateway";
 
 interface LeadFormProps {
@@ -499,7 +498,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError("");
 
@@ -547,28 +546,70 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     else if (mappedAge.includes("7") || mappedAge.includes("8") || mappedAge.includes("9")) mappedAge = "7-9";
     else mappedAge = "4.5-6";
 
+    const cleanPhoneDigits = phone.replace(/\D/g, "") || "9822011223";
+    const idempotencyKey = typeof crypto !== 'undefined' && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `LEAD-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+
     const gatewayPayload: DiscoveryIntakePayload = {
       parentName: `${salutation} ${parentName}`.trim(),
-      parentPhone: phone.replace(/\D/g, "") || "9822011223",
+      parentPhone: cleanPhoneDigits,
+      parentEmail: null,
       childAgeBracket: mappedAge,
       courseInterest: mappedCourse,
       serviceConsent,
       marketingConsent,
       parentGuardianConfirmed: true,
       website_url_hp: botHoneypot,
-      idempotencyKey: `LEAD-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`,
+      idempotencyKey,
     };
 
-    const gatewayRes = processDiscoveryIntake(gatewayPayload);
-    if (gatewayRes.statusCode === 429) {
-      setValidationError(`Rate limit reached. Please wait ${gatewayRes.retryAfterSeconds || 900} seconds before retrying.`);
+    setIsSubmitting(true);
+
+    let serverRes: Response;
+    let serverData: any;
+
+    try {
+      serverRes = await fetch("/api/discovery-intake", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": idempotencyKey,
+        },
+        body: JSON.stringify(gatewayPayload),
+      });
+
+      if (serverRes.status === 404) {
+        throw new Error("GATEWAY_ENDPOINT_404");
+      }
+
+      serverData = await serverRes.json();
+    } catch (networkErr: any) {
+      setIsSubmitting(false);
+      const is404 = networkErr?.message === "GATEWAY_ENDPOINT_404";
+      const offlineMsg = is404
+        ? "The online admissions gateway is offline in this environment. Your inquiry was NOT registered online. Please connect directly with Neha Patil on WhatsApp."
+        : "Network offline or server unreachable. Your inquiry could NOT be submitted online. Please retry or click below to connect directly with Neha Patil on WhatsApp.";
+      setValidationError(offlineMsg);
       return;
     }
-    setAssignedUID(gatewayRes.leadUID || null);
 
-    setIsSubmitting(true);
+    if (serverRes.status === 429) {
+      setIsSubmitting(false);
+      setValidationError(`Rate limit reached. Please wait ${serverData?.retryAfterSeconds || 900} seconds before retrying.`);
+      return;
+    }
+
+    if (!serverRes.ok || (!serverData?.success && serverRes.status !== 200 && serverRes.status !== 201)) {
+      setIsSubmitting(false);
+      setValidationError(serverData?.error || "Inquiry could not be registered. Please check your inputs.");
+      return;
+    }
+
+    const assignedRef = serverData.leadReference || serverData.leadUID || null;
+    setAssignedUID(assignedRef);
     
-    // Log conversion events: Primary Conversions
+    // Log conversion events: Primary Conversions (Strictly Zero PII)
     trackEnquiryFormSubmit({
       program,
       childAgeGroup: childAge,
@@ -591,7 +632,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     if (competitiveFocus) parentExpectations.push("Olympiad/Competitive focus");
     const expStr = parentExpectations.length > 0 ? `\nHabits/Expectations: ${parentExpectations.join(", ")}` : "";
 
-    let textMessage = `Hello, I'm interested in a Personalised Learning Discovery Session at Arnav Abacus Academy!${assignedUID ? `\nDiscovery Ref: ${assignedUID}` : ''}
+    let textMessage = `Hello, I'm interested in a Personalised Learning Discovery Session at Arnav Abacus Academy!${assignedRef ? `\nDiscovery Ref: ${assignedRef}` : ''}
 Parent Name: ${salutation} ${parentName}
 Student Name: ${studentName}
 Child's Age: ${childAge}
@@ -609,7 +650,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
       if (competitiveFocus) parentExpectationsHi.push("प्रतियोगी परीक्षा");
       const expStrHi = parentExpectationsHi.length > 0 ? `\nआदतें/अपेक्षाएँ: ${parentExpectationsHi.join(", ")}` : "";
 
-      textMessage = `नमस्ते, मैं अर्णव एबाकस एकेडमी में लर्निंग डिस्कवरी सत्र के लिए उत्सुक हूँ!
+      textMessage = `नमस्ते, मैं अर्णव एबाकस एकेडमी में लर्निंग डिस्कवरी सत्र के लिए उत्सुक हूँ!${assignedRef ? `\nरेफरेंस: ${assignedRef}` : ''}
 अभिभावक का नाम: ${salutation} ${parentName}
 छात्र का नाम: ${studentName}
 बच्चे की उम्र: ${childAge}
@@ -626,7 +667,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
       if (competitiveFocus) parentExpectationsMr.push("स्पर्धा परीक्षा");
       const expStrMr = parentExpectationsMr.length > 0 ? `\nसवयी/अपेक्षा: ${parentExpectationsMr.join(", ")}` : "";
 
-      textMessage = `नमस्कार, मी अर्णव ॲबॅकस अकॅडमीमध्ये लर्निंग डिस्कव्हरी सत्रासाठी चौकशी करू इच्छितो!
+      textMessage = `नमस्कार, मी अर्णव ॲबॅकस अकॅडमीमध्ये लर्निंग डिस्कव्हरी सत्रासाठी चौकशी करू इच्छितो!${assignedRef ? `\nनोंदणी क्रमांक: ${assignedRef}` : ''}
 पालकांचे नाव: ${salutation} ${parentName}
 विद्यार्थ्याचे नाव: ${studentName}
 मुलाचे वय: ${childAge}
@@ -642,6 +683,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
       const existingLeads = JSON.parse(localStorage.getItem("aaa_leads_history") || "[]");
       existingLeads.unshift({
         id: `lead_${Date.now()}`,
+        leadReference: assignedRef,
         parentName: `${salutation} ${parentName}`.trim(),
         studentName: studentName.trim(),
         childAge,
@@ -670,7 +712,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
       classMode: classMode === "online" ? "Online Video Class (Zoom/Meet)" : "Offline (Wakad Pune Center)",
       curriculumOrRole: schoolCurriculum,
       campaign: sourceCampaign || "Website Lead Form",
-      notes: expStr.trim(),
+      notes: `${assignedRef ? `[Ref: ${assignedRef}] ` : ""}${expStr}`.trim(),
       honeypot: botHoneypot,
     });
 
@@ -777,8 +819,24 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
           />
 
           {validationError && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-lg text-xs font-medium border border-red-100">
-              {validationError}
+            <div className="bg-amber-50 text-amber-900 p-4 rounded-2xl text-xs font-medium border border-amber-200 flex flex-col gap-2 animate-fade-in">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <span className="leading-relaxed">{validationError}</span>
+              </div>
+              {validationError.includes("WhatsApp") && (
+                <a
+                  href={`https://wa.me/919021924968?text=${encodeURIComponent(
+                    `Hello Neha Patil! I attempted to submit a demo inquiry on the website for my child ${studentName ? `(${studentName})` : ''} for ${program}, but experienced an offline network condition. Please coordinate our diagnostic trial class.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl text-xs shadow-sm transition-all mt-1"
+                >
+                  <Phone className="w-3.5 h-3.5" />
+                  Connect Directly with Neha Patil on WhatsApp
+                </a>
+              )}
             </div>
           )}
 

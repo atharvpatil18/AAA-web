@@ -220,8 +220,84 @@ async function runServerGatewayTests() {
   assert(plusRes.status === 201, 'Request with leading plus in name must be accepted');
   console.log('✅ TC-SRV-10 Passed: Canonical data stored verbatim without premature quote prepending.');
 
+  // TC-SRV-11: Gate 3 Supabase PostgREST Persistence Bridge (Success)
+  console.log('Running TC-SRV-11: Supabase PostgREST Persistence RPC Integration...');
+  const originalFetch = globalThis.fetch;
+  try {
+    globalThis.fetch = async (url: any, init?: any) => {
+      if (String(url).includes('fn_submit_discovery_lead')) {
+        return new Response(
+          JSON.stringify({
+            id: '550e8400-e29b-41d4-a716-446655440000',
+            leadReference: 'AAA-LEAD-2026-00099',
+            createdAt: '2026-11-05T09:30:00.000Z',
+            message: 'Discovery session inquiry registered and permanently persisted.',
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+      return originalFetch(url, init);
+    };
+
+    const mockEnv = {
+      SUPABASE_URL: 'https://mock-mumbai.supabase.co',
+      SUPABASE_SERVICE_ROLE_KEY: 'test-service-key-xyz',
+    };
+    const dbReq = new Request('https://arnavabacus.com/api/discovery-intake', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'CF-Connecting-IP': '203.0.113.88',
+      },
+      body: JSON.stringify({
+        ...basePayload,
+        parentName: 'Ananya Deshpande',
+        parentPhone: '9823077777',
+      }),
+    });
+    const dbRes = await handleDiscoveryIntakeRequest(dbReq, mockEnv);
+    const dbJson = await dbRes.json();
+    assert(dbRes.status === 201, 'Supabase persistence must return HTTP 201 Created');
+    assert(dbJson.leadReference === 'AAA-LEAD-2026-00099', 'Must return Supabase allocated lead reference');
+    assert(dbJson.id === '550e8400-e29b-41d4-a716-446655440000', 'Must return Supabase allocated UUID');
+    console.log('✅ TC-SRV-11 Passed: Supabase PostgREST RPC persists record and returns confirmed 3-tier lead identity.');
+
+    // TC-SRV-12: Gate 3 Supabase Error Propagation Guard
+    console.log('Running TC-SRV-12: Supabase Error Propagation Guard (No False Success)...');
+    globalThis.fetch = async (url: any, init?: any) => {
+      if (String(url).includes('fn_submit_discovery_lead')) {
+        return new Response(
+          JSON.stringify({ message: 'Database connection timeout in ap-south-1' }),
+          { status: 503, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+      return originalFetch(url, init);
+    };
+
+    const errReq = new Request('https://arnavabacus.com/api/discovery-intake', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'CF-Connecting-IP': '203.0.113.89',
+      },
+      body: JSON.stringify({
+        ...basePayload,
+        parentName: 'Sunil Gavaskar',
+        parentPhone: '9823088888',
+      }),
+    });
+    const errRes = await handleDiscoveryIntakeRequest(errReq, mockEnv);
+    const errJson = await errRes.json();
+    assert(errRes.status === 500, 'Database failure must return HTTP 500');
+    assert(errJson.success === false, 'Success must be false upon database persistence failure');
+    assert(errJson.error === 'Database persistence failed. Ingestion aborted.', 'Error message must clearly state persistence failure');
+    console.log('✅ TC-SRV-12 Passed: Database error properly rejected with HTTP 500; zero false success.');
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+
   console.log('\n================================================================');
-  console.log('🎉 ALL 10/10 SERVER GATEWAY ACCEPTANCE TESTS PASSED SUCCESSFULLY');
+  console.log('🎉 ALL 12/12 SERVER GATEWAY ACCEPTANCE TESTS PASSED SUCCESSFULLY');
   console.log('================================================================');
 }
 

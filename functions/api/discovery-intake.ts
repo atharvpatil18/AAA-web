@@ -116,10 +116,29 @@ export function extractClientIp(request: Request): string {
 }
 
 /**
+ * Zero-PII SHA-256 hash for IP & audit logging (CERT-In Directions 2022 compliance)
+ */
+export async function hashSha256(value: string): Promise<string> {
+  if (typeof crypto !== 'undefined' && crypto.subtle && typeof TextEncoder !== 'undefined') {
+    const msgBuffer = new TextEncoder().encode(value);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
+  let hash = 0;
+  for (let i = 0; i < value.length; i++) {
+    hash = ((hash << 5) - hash) + value.charCodeAt(i);
+    hash |= 0;
+  }
+  return 'hash_' + Math.abs(hash).toString(16);
+}
+
+/**
  * Core Gateway Request Handler
  */
 export async function handleDiscoveryIntakeRequest(
   request: Request,
+  env?: Record<string, any>,
   currentTimeMs: number = Date.now()
 ): Promise<Response> {
   const headers = new Headers({
@@ -273,18 +292,99 @@ export async function handleDiscoveryIntakeRequest(
     );
   }
 
-  // 8. Allocate 3-Tier Lead Identity
+  // 8. Allocate 3-Tier Lead Identity & Persist
   // Tier 1: System UUID
   const systemUUID =
     typeof crypto !== 'undefined' && crypto.randomUUID
       ? crypto.randomUUID()
       : `uuid-${now}-${Math.floor(Math.random() * 1000000)}`;
 
-  // Tier 2: Authoritative Sequential Lead Reference (AAA-LEAD-YYYY-[00001])
   const currentYear = new Date(now).getFullYear();
+  const createdAtIso = new Date(now).toISOString();
+
+  // If Supabase environment credentials are provided, persist to Supabase PostgreSQL Mumbai (ap-south-1)
+  const supabaseUrl = env?.SUPABASE_URL;
+  const serviceKey = env?.SUPABASE_SERVICE_ROLE_KEY || env?.SUPABASE_ANON_KEY;
+
+  if (supabaseUrl && serviceKey) {
+    try {
+      const clientIpHashed = await hashSha256(clientIp);
+      const rpcRes = await fetch(`${supabaseUrl}/rest/v1/rpc/fn_submit_discovery_lead`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: serviceKey,
+          Authorization: `Bearer ${serviceKey}`,
+          Prefer: 'return=representation',
+        },
+        body: JSON.stringify({
+          p_idempotency_key: idempotencyKey || systemUUID,
+          p_parent_name: parentNameClean,
+          p_mobile_number: phoneValidation.normalized,
+          p_email: payload.parentEmail || null,
+          p_child_age_bracket: payload.childAgeBracket,
+          p_course_interest: payload.courseInterest,
+          p_service_consent: payload.serviceConsent,
+          p_marketing_consent: payload.marketingConsent || false,
+          p_guardian_confirmed: payload.parentGuardianConfirmed,
+          p_client_ip_hash: clientIpHashed,
+        }),
+      });
+
+      if (!rpcRes.ok) {
+        const errJson = await rpcRes.json().catch(() => ({ message: 'PostgREST RPC execution failed' }));
+        return new Response(
+          JSON.stringify({
+            statusCode: 500,
+            success: false,
+            error: 'Database persistence failed. Ingestion aborted.',
+            details: errJson?.message,
+            message: 'Internal Server Error',
+          }),
+          { status: 500, headers }
+        );
+      }
+
+      const persistenceResult = (await rpcRes.json()) as any;
+      const responseBody: ServerGatewayResponse = {
+        statusCode: 201,
+        success: true,
+        id: persistenceResult.id || systemUUID,
+        leadReference: persistenceResult.leadReference,
+        leadUID: persistenceResult.leadReference,
+        createdAt: persistenceResult.createdAt || createdAtIso,
+        isDuplicate: persistenceResult.isDuplicate || false,
+        message: persistenceResult.message || 'Discovery session inquiry registered and permanently persisted.',
+      };
+
+      if (idempotencyKey) {
+        idempotencyCache.set(idempotencyKey, {
+          response: responseBody,
+          expiresAtMs: now + IDEMPOTENCY_TTL_MS,
+        });
+      }
+
+      return new Response(JSON.stringify(responseBody), {
+        status: 201,
+        headers,
+      });
+    } catch (dbErr: any) {
+      return new Response(
+        JSON.stringify({
+          statusCode: 500,
+          success: false,
+          error: 'Database persistence unreachable. Ingestion aborted.',
+          message: 'Internal Server Error',
+        }),
+        { status: 500, headers }
+      );
+    }
+  }
+
+  // Fallback for test harness & local development (in-memory atomic sequence)
+  // Tier 2: Authoritative Sequential Lead Reference (AAA-LEAD-YYYY-[00001])
   const seqPadded = String(leadSequenceCounter++).padStart(5, '0');
   const leadReference = `AAA-LEAD-${currentYear}-${seqPadded}`;
-  const createdAtIso = new Date(now).toISOString();
 
   // Tier 3: Client Idempotency Key (tracked in cache)
   const responseBody: ServerGatewayResponse = {
@@ -314,6 +414,6 @@ export async function handleDiscoveryIntakeRequest(
 /**
  * Cloudflare Pages Function standard entrypoint
  */
-export async function onRequestPost(context: { request: Request }): Promise<Response> {
-  return handleDiscoveryIntakeRequest(context.request);
+export async function onRequestPost(context: { request: Request; env?: Record<string, any> }): Promise<Response> {
+  return handleDiscoveryIntakeRequest(context.request, context.env);
 }

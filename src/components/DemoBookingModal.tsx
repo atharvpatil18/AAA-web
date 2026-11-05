@@ -8,7 +8,7 @@ import { X, Sparkles, Send, CheckCircle2, Phone, Calendar, User, BookOpen, Shiel
 import { trackDemoRequest, trackWhatsAppClick, trackCounsellingBook } from "../lib/analytics";
 import { validateSanitizedName } from "../lib/securitySanitizer";
 import { useLanguage } from "../lib/LanguageContext";
-import { processDiscoveryIntake, sanitizeStringInput } from "../lib/intakeGatewayEngine";
+import { sanitizeStringInput } from "../lib/intakeGatewayEngine";
 import { DiscoveryIntakePayload } from "../types/gateway";
 
 interface DemoBookingModalProps {
@@ -40,7 +40,7 @@ export default function DemoBookingModal({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
 
@@ -58,6 +58,10 @@ export default function DemoBookingModal({
     }
     if (!serviceConsent) {
       setErrorMsg("Please provide consent for service communication to schedule the session.");
+      return;
+    }
+
+    if (botHoneypot.trim()) {
       return;
     }
 
@@ -84,33 +88,66 @@ export default function DemoBookingModal({
       }
     }
 
+    const idempotencyKey = typeof crypto !== 'undefined' && crypto.randomUUID
+      ? crypto.randomUUID()
+      : `MODAL-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+
     const payload: DiscoveryIntakePayload = {
       parentName: cleanParentName,
       parentPhone: cleanPhone,
+      parentEmail: null,
       childAgeBracket: mappedAge,
       courseInterest: mappedCourse,
       serviceConsent,
       marketingConsent,
       parentGuardianConfirmed: true,
       website_url_hp: botHoneypot,
-      idempotencyKey: `MODAL-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`,
+      idempotencyKey,
     };
 
-    const gatewayResponse = processDiscoveryIntake(payload);
+    let serverRes: Response;
+    let serverData: any;
 
-    if (gatewayResponse.statusCode === 429) {
+    try {
+      serverRes = await fetch("/api/discovery-intake", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Idempotency-Key": idempotencyKey,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (serverRes.status === 404) {
+        throw new Error("GATEWAY_ENDPOINT_404");
+      }
+
+      serverData = await serverRes.json();
+    } catch (networkErr: any) {
       setIsSubmitting(false);
-      setErrorMsg(`Rate limit exceeded. Please wait ${gatewayResponse.retryAfterSeconds || 900} seconds before retrying.`);
+      const is404 = networkErr?.message === "GATEWAY_ENDPOINT_404";
+      setErrorMsg(
+        is404
+          ? "The online admissions gateway is offline in this environment. Your session request was NOT saved online. You can book directly with Neha Patil on WhatsApp."
+          : "Network offline or server unreachable. Your request could NOT be registered online. You can connect directly with Neha Patil on WhatsApp."
+      );
       return;
     }
 
-    if (!gatewayResponse.success && gatewayResponse.statusCode !== 200) {
+    if (serverRes.status === 429) {
       setIsSubmitting(false);
-      setErrorMsg(gatewayResponse.error || "Submission failed. Please check your inputs.");
+      setErrorMsg(`Rate limit exceeded. Please wait ${serverData?.retryAfterSeconds || 900} seconds before retrying.`);
       return;
     }
 
-    setAssignedUID(gatewayResponse.leadUID || null);
+    if (!serverRes.ok || (!serverData?.success && serverRes.status !== 200 && serverRes.status !== 201)) {
+      setIsSubmitting(false);
+      setErrorMsg(serverData?.error || "Submission failed. Please check your inputs.");
+      return;
+    }
+
+    const allocatedRef = serverData.leadReference || serverData.leadUID || null;
+    setAssignedUID(allocatedRef);
 
     // Track analytics demo request & counselling booking events (Strictly zero PII)
     trackCounsellingBook({
@@ -131,7 +168,7 @@ export default function DemoBookingModal({
     const modeText = deliveryMode === "offline" ? "Offline (Wakad Pune Center)" : "Online Live Class";
     const waText = encodeURIComponent(
       `Hello Arnav Abacus Academy!\n\nI want to book a Personalised Learning Discovery Session for my child.\n` +
-      `• Lead Ref: ${gatewayResponse.leadUID || "Pending"}\n` +
+      `• Lead Ref: ${allocatedRef || "Pending"}\n` +
       `• Parent Name: ${cleanParentName}\n` +
       `• Contact: ${cleanPhone}\n` +
       `• Child's Age Group: ${childAge} years\n` +
@@ -234,8 +271,24 @@ export default function DemoBookingModal({
               />
 
               {errorMsg && (
-                <div className="bg-red-50 border border-red-200 text-red-700 text-xs px-3.5 py-2.5 rounded-xl font-medium">
-                  {errorMsg}
+                <div className="bg-amber-50 border border-amber-200 text-amber-900 text-xs p-3.5 rounded-xl font-medium flex flex-col gap-2">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                    <span className="leading-relaxed">{errorMsg}</span>
+                  </div>
+                  {errorMsg.includes("WhatsApp") && (
+                    <a
+                      href={`https://wa.me/919021924968?text=${encodeURIComponent(
+                        `Hello Neha Patil! I attempted to book a trial class for ${program} on the academy website, but encountered an offline network issue. Please coordinate our discovery session.`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3.5 rounded-lg text-xs transition-colors shadow-sm"
+                    >
+                      <Phone className="w-3.5 h-3.5" />
+                      Connect on WhatsApp
+                    </a>
+                  )}
                 </div>
               )}
 

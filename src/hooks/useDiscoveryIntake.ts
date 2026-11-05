@@ -15,20 +15,15 @@ import {
   GatewayResponse,
   CourseInterest,
   ChildAgeBracket,
+  DiscoverySubmissionStatus,
 } from '../types/gateway';
 import {
-  processDiscoveryIntake,
   generateWhatsAppFallbackUrl,
   sanitizeStringInput,
   validateIndianMobile,
 } from '../lib/intakeGatewayEngine';
 
-export type SubmissionStatus =
-  | 'IDLE'
-  | 'SUBMITTING'
-  | 'SUCCESS'
-  | 'ERROR'
-  | 'RATE_LIMITED';
+export type { DiscoverySubmissionStatus };
 
 export interface UseDiscoveryIntakeOptions {
   defaultCourse?: CourseInterest | string;
@@ -60,9 +55,10 @@ export interface UseDiscoveryIntakeReturn {
   setHoneypotField: (val: string) => void;
 
   // Status & Telemetry
-  status: SubmissionStatus;
+  status: DiscoverySubmissionStatus;
   isSubmitting: boolean;
   isSuccess: boolean;
+  isOfflineError: boolean;
   isRateLimited: boolean;
   errorMessage: string | null;
   retryCountdown: number;
@@ -93,11 +89,13 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
   const [parentGuardianConfirmed, setParentGuardianConfirmed] = useState(true);
   const [honeypotField, setHoneypotField] = useState('');
 
-  const [status, setStatus] = useState<SubmissionStatus>('IDLE');
+  // Truthful 8-state submission machine
+  const [status, setStatus] = useState<DiscoverySubmissionStatus>('IDLE');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [retryCountdown, setRetryCountdown] = useState<number>(0);
   const [leadUID, setLeadUID] = useState<string | null>(null);
   const [gatewayResponse, setGatewayResponse] = useState<GatewayResponse | null>(null);
+  const [activeIdempotencyKey, setActiveIdempotencyKey] = useState<string | null>(null);
 
   // Live countdown timer for rate limiting
   useEffect(() => {
@@ -131,6 +129,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
     setErrorMessage(null);
     setLeadUID(null);
     setGatewayResponse(null);
+    setActiveIdempotencyKey(null);
   }, [defaultAgeBracket, defaultCourse]);
 
   const handleSubmit = useCallback(
@@ -140,12 +139,13 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
       }
 
       setErrorMessage(null);
+      setStatus('VALIDATING');
 
       // 1. Client-Side Sanitization & Validation
       const sanitizedName = sanitizeStringInput(parentName);
       if (sanitizedName.length < 2) {
         const err = 'Please enter a valid parent name (at least 2 letters).';
-        setStatus('ERROR');
+        setStatus('SERVER_REJECTED');
         setErrorMessage(err);
         onError?.(err);
         return null;
@@ -154,7 +154,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
       const phoneVal = validateIndianMobile(parentPhone);
       if (!phoneVal.isValid) {
         const err = phoneVal.error || 'Please enter a valid 10-digit Indian mobile number.';
-        setStatus('ERROR');
+        setStatus('SERVER_REJECTED');
         setErrorMessage(err);
         onError?.(err);
         return null;
@@ -162,7 +162,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
 
       if (!serviceConsent) {
         const err = 'Service communication consent is required to coordinate Discovery Session.';
-        setStatus('ERROR');
+        setStatus('SERVER_REJECTED');
         setErrorMessage(err);
         onError?.(err);
         return null;
@@ -170,7 +170,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
 
       if (!parentGuardianConfirmed) {
         const err = 'Parent/guardian authority confirmation is required.';
-        setStatus('ERROR');
+        setStatus('SERVER_REJECTED');
         setErrorMessage(err);
         onError?.(err);
         return null;
@@ -211,11 +211,14 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
         }
       }
 
-      // Generate client-side idempotency key (UUIDv4 standard)
+      // Preserve existing idempotency key on retry, or generate new UUIDv4
       const idempotencyKey =
-        typeof crypto !== 'undefined' && crypto.randomUUID
+        activeIdempotencyKey ||
+        (typeof crypto !== 'undefined' && crypto.randomUUID
           ? crypto.randomUUID()
-          : `INTAKE-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`;
+          : `INTAKE-${Date.now()}-${Math.floor(1000 + Math.random() * 9000)}`);
+
+      setActiveIdempotencyKey(idempotencyKey);
 
       const payload: DiscoveryIntakePayload = {
         parentName: sanitizedName,
@@ -233,75 +236,101 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
       setStatus('SUBMITTING');
 
       try {
-        let response: GatewayResponse | null = null;
-
-        // Attempt server-side gateway endpoint if running in browser environment
-        if (typeof window !== 'undefined' && typeof window.fetch === 'function') {
-          try {
-            const serverRes = await fetch('/api/discovery-intake', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Idempotency-Key': idempotencyKey,
-              },
-              body: JSON.stringify(payload),
-            });
-
-            // If server endpoint exists and returns JSON
-            if (serverRes.status !== 404) {
-              const serverData = await serverRes.json();
-              response = {
-                statusCode: serverRes.status,
-                success: serverRes.ok,
-                leadUID: serverData.leadReference || serverData.leadUID,
-                leadReference: serverData.leadReference,
-                id: serverData.id,
-                message: serverData.message || (serverRes.ok ? 'Success' : 'Error'),
-                error: serverData.error,
-                retryAfterSeconds: serverData.retryAfterSeconds,
-                isBotDropped: serverData.isBotDropped,
-                sanitizedPayload: {
-                  parentName: sanitizedName,
-                  parentPhone: phoneVal.normalized!,
-                  childAgeBracket: mappedAge,
-                  courseInterest: mappedCourse,
-                },
-              };
-            }
-          } catch {
-            // Server endpoint unreachable (offline/local preview); fall back to local engine
-            response = null;
-          }
+        let serverRes: Response;
+        try {
+          serverRes = await fetch('/api/discovery-intake', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Idempotency-Key': idempotencyKey,
+            },
+            body: JSON.stringify(payload),
+          });
+        } catch {
+          // Network connection drop, offline mode, or DNS failure
+          const offlineErr = 'Network offline or server unreachable. Your inquiry was NOT submitted online. Please retry or click below to connect directly with Neha Patil on WhatsApp.';
+          setStatus('NETWORK_OFFLINE_ERROR');
+          setErrorMessage(offlineErr);
+          setLeadUID(null);
+          onError?.(offlineErr);
+          return {
+            statusCode: 503,
+            success: false,
+            error: offlineErr,
+            message: 'Network Offline',
+          };
         }
 
-        // Fallback to client-side simulated engine if server was unreachable or 404
-        if (!response) {
-          response = processDiscoveryIntake(payload);
+        // Handle HTTP 404 (Server endpoint unprovisioned / dev static preview)
+        if (serverRes.status === 404) {
+          const endpointErr = 'Admissions intake gateway endpoint is currently unavailable. Your inquiry was NOT registered online. Please connect directly via verified WhatsApp.';
+          setStatus('NETWORK_OFFLINE_ERROR');
+          setErrorMessage(endpointErr);
+          setLeadUID(null);
+          onError?.(endpointErr);
+          return {
+            statusCode: 404,
+            success: false,
+            error: endpointErr,
+            message: 'Endpoint Unavailable',
+          };
         }
 
-        setGatewayResponse(response);
+        // Parse JSON response safely
+        let serverData: any;
+        try {
+          serverData = await serverRes.json();
+        } catch {
+          const parseErr = 'Unexpected server response format. Please retry or contact the academy directly.';
+          setStatus('SERVER_REJECTED');
+          setErrorMessage(parseErr);
+          onError?.(parseErr);
+          return null;
+        }
 
-        if ((response.statusCode === 200 || response.statusCode === 201) && response.success) {
-          setStatus('SUCCESS');
-          setLeadUID(response.leadReference || response.leadUID || null);
-          onSuccess?.(response);
-          return response;
-        } else if (response.statusCode === 429) {
+        const gatewayResult: GatewayResponse = {
+          statusCode: serverRes.status,
+          success: serverRes.ok,
+          leadUID: serverData.leadReference || serverData.leadUID,
+          leadReference: serverData.leadReference,
+          id: serverData.id,
+          isPersisted: serverRes.ok && !!serverData.leadReference,
+          message: serverData.message || (serverRes.ok ? 'Inquiry registered' : 'Error'),
+          error: serverData.error,
+          retryAfterSeconds: serverData.retryAfterSeconds,
+          isBotDropped: serverData.isBotDropped,
+          sanitizedPayload: {
+            parentName: sanitizedName,
+            parentPhone: phoneVal.normalized!,
+            childAgeBracket: mappedAge,
+            courseInterest: mappedCourse,
+          },
+        };
+
+        setGatewayResponse(gatewayResult);
+
+        // Server-Confirmed Success strictly upon HTTP 200 or 201
+        if (serverRes.ok && (serverRes.status === 200 || serverRes.status === 201)) {
+          setStatus('SERVER_CONFIRMED');
+          setLeadUID(gatewayResult.leadReference || gatewayResult.leadUID || null);
+          onSuccess?.(gatewayResult);
+          return gatewayResult;
+        } else if (serverRes.status === 429) {
           setStatus('RATE_LIMITED');
-          const waitTime = response.retryAfterSeconds || 900;
+          const waitTime = gatewayResult.retryAfterSeconds || 900;
           setRetryCountdown(waitTime);
-          setErrorMessage(response.error || 'Rate limit exceeded. Please wait before retrying.');
-          onError?.(response.error || 'Rate limit exceeded.');
-          return response;
+          setErrorMessage(gatewayResult.error || 'Rate limit exceeded. Please wait before retrying.');
+          onError?.(gatewayResult.error || 'Rate limit exceeded.');
+          return gatewayResult;
         } else {
-          setStatus('ERROR');
-          setErrorMessage(response.error || 'Submission could not be completed.');
-          onError?.(response.error || 'Submission failed.');
-          return response;
+          setStatus('SERVER_REJECTED');
+          setErrorMessage(gatewayResult.error || 'Submission could not be completed.');
+          onError?.(gatewayResult.error || 'Submission failed.');
+          return gatewayResult;
         }
       } catch (err: unknown) {
-        const errMsg = err instanceof Error ? err.message : 'Network error during submission.';
-        setStatus('ERROR');
+        const errMsg = err instanceof Error ? err.message : 'Unexpected submission error.';
+        setStatus('NETWORK_OFFLINE_ERROR');
         setErrorMessage(errMsg);
         onError?.(errMsg);
         return null;
@@ -317,6 +346,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
       marketingConsent,
       parentGuardianConfirmed,
       honeypotField,
+      activeIdempotencyKey,
       onSuccess,
       onError,
     ]
@@ -346,7 +376,8 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
 
     status,
     isSubmitting: status === 'SUBMITTING',
-    isSuccess: status === 'SUCCESS',
+    isSuccess: status === 'SERVER_CONFIRMED',
+    isOfflineError: status === 'NETWORK_OFFLINE_ERROR',
     isRateLimited: status === 'RATE_LIMITED',
     errorMessage,
     retryCountdown,
