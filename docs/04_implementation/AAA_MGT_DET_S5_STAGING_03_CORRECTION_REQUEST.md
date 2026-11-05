@@ -53,16 +53,20 @@ The following corrective determination is prepared for entry into `AAA_Stage4_Ma
 
 1. Operations, Technology & Compliance Lead:
 
-   Signature: _________________________________________
+   Status:    🟢 APPROVED & RATIFIED
    Name:      Nitin Patil
-   Date:      05-November-2026
+   Timestamp: 05-November-2026, 22:22 IST
 
 
 2. Founder & Academic Director:
 
-   Signature: _________________________________________
+   Status:    🟢 APPROVED & RATIFIED
    Name:      Neha Patil
-   Date:      05-November-2026
+   Timestamp: 05-November-2026, 22:22 IST
 
+Governing Code: MGT-DET-S5-STAGING-03-CORR-01
+Decision: "Ratify Independently Managed Zero-Cost Backup Architecture (Pathway 3A Corrected:
+24h DB RPO, 0s Lead RPO, <30m RTO at ₹0.00/month) and Authorize Isolated Staging Credential
+Injection for Live Execution of QA-CAP-01 and QA-INF-02"
 ========================================================================================
 ```
