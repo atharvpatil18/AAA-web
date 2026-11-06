@@ -183,33 +183,42 @@ $sess2Sql = "BEGIN; SELECT public.enroll_student_into_batch('BATCH-TEST-CONCUR',
 $sess1Log = "docs/11_evidence_and_screenshots/CONCUR_SESSION1.log"
 $sess2Log = "docs/11_evidence_and_screenshots/CONCUR_SESSION2.log"
 
-Write-Host "Launching Session 1 (claims seat 5 and holds row lock for 2.0s)..." -ForegroundColor Cyan
-$p1 = Start-Process -FilePath $psqlPath -ArgumentList "-h $HostName -p $Port -U $Username -d $Database -c `"$sess1Sql`"" -PassThru -NoNewWindow -RedirectStandardOutput $sess1Log -RedirectStandardError $sess1Log
+Write-Host "Launching Session 1 in background (claims seat 5 and holds row lock for 2.0s)..." -ForegroundColor Cyan
+$job1 = Start-Job -ScriptBlock {
+    param($bin, $h, $p, $u, $d, $sql, $pass)
+    $env:PGPASSWORD = $pass
+    $env:PGSSLMODE = "require"
+    & $bin -h $h -p $p -U $u -d $d -c $sql 2>&1
+} -ArgumentList $psqlPath, $HostName, $Port, $Username, $Database, $sess1Sql, $Password
 
 # Stagger Session 2 start by 500ms to guarantee Session 1 holds the lock
 Start-Sleep -Milliseconds 500
 
-Write-Host "Launching Session 2 concurrently (contends for seat 5 while lock is held)..." -ForegroundColor Cyan
-$p2 = Start-Process -FilePath $psqlPath -ArgumentList "-h $HostName -p $Port -U $Username -d $Database -c `"$sess2Sql`"" -PassThru -NoNewWindow -RedirectStandardOutput $sess2Log -RedirectStandardError $sess2Log
+Write-Host "Launching Session 2 concurrently in background (contends for seat 5 while lock is held)..." -ForegroundColor Cyan
+$job2 = Start-Job -ScriptBlock {
+    param($bin, $h, $p, $u, $d, $sql, $pass)
+    $env:PGPASSWORD = $pass
+    $env:PGSSLMODE = "require"
+    & $bin -h $h -p $p -U $u -d $d -c $sql 2>&1
+} -ArgumentList $psqlPath, $HostName, $Port, $Username, $Database, $sess2Sql, $Password
 
 Write-Host "Awaiting completion of both concurrent sessions..." -ForegroundColor Cyan
-$p1.WaitForExit()
-$p2.WaitForExit()
+Wait-Job $job1, $job2 | Out-Null
 
-$p1Exit = $p1.ExitCode
-$p2Exit = $p2.ExitCode
-
-$s1Text = Get-Content $sess1Log -Raw
-$s2Text = Get-Content $sess2Log -Raw
+$s1Text = (Receive-Job $job1 | Out-String)
+$s2Text = (Receive-Job $job2 | Out-String)
+$p1State = $job1.State
+$p2State = $job2.State
+Remove-Job $job1, $job2 -Force
 
 "`n--- CONCURRENCY TEST RESULTS ---" | Out-File -FilePath $outputLog -Append
-"Session 1 Exit Code: $p1Exit" | Out-File -FilePath $outputLog -Append
+"Session 1 State: $p1State" | Out-File -FilePath $outputLog -Append
 "Session 1 Output:`n$s1Text" | Out-File -FilePath $outputLog -Append
-"Session 2 Exit Code: $p2Exit" | Out-File -FilePath $outputLog -Append
+"Session 2 State: $p2State" | Out-File -FilePath $outputLog -Append
 "Session 2 Output:`n$s2Text" | Out-File -FilePath $outputLog -Append
 
-Write-Host "`nSession 1 Exit Code: $p1Exit" -ForegroundColor $(if ($p1Exit -eq 0) { "Green" } else { "Red" })
-Write-Host "Session 2 Exit Code: $p2Exit" -ForegroundColor Yellow
+Write-Host "`nSession 1 Result: $p1State" -ForegroundColor Green
+Write-Host "Session 2 Result: $p2State" -ForegroundColor Yellow
 
 # Concurrency Assertions
 $session1Succeeded = ($s1Text -match '"success": true') -or ($s1Text -match 'COMMIT')
