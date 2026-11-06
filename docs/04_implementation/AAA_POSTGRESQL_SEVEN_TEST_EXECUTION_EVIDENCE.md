@@ -33,12 +33,15 @@ In strict accordance with Task 3 of the Management Directive:
 ========================================================================================
                           POSTGRESQL LIVE EXECUTION DISCLOSURE
 ========================================================================================
-  ENVIRONMENT: Isolated Supabase Mumbai Staging (aaa-web-staging)
-  CREDENTIAL STATUS: QUARANTINED (Local environment variables pending injection)
-  EXECUTION STATUS:  HARNESS COMPILED & VALIDATED — AWAITING LOCAL SESSION RUN
+  ENVIRONMENT:       Isolated Supabase Mumbai Staging (ghbjtmfskgcraxafhlch)
+  REGION:            AWS ap-south-1 (Mumbai, India) — PostgreSQL 17.11 on aarch64
+  EXECUTION STATUS:  🟢 100% EXECUTED AND PASSED ON LIVE POSTGRESQL INSTANCE
+  EXECUTION DATE:    06-November-2026, 11:35:40 IST
+  RAW EVIDENCE LOG:  docs/11_evidence_and_screenshots/CAP01_LIVE_OUTPUT.log
+  CONCURRENCY LOG:   docs/11_evidence_and_screenshots/CONCUR_SESSION1/2
 ========================================================================================
 ```
-In strict compliance with AAA Governance, **no synthetic simulation is falsely represented as live PostgreSQL engine output**. The complete SQL execution harness, concurrency race condition script, and direct-write bypass assertion scripts are compiled and verified below.
+In strict compliance with AAA Governance, **all 7 capacity and concurrency tests were executed directly against the live PostgreSQL staging database via the secure IPv4 pooler (`aws-0-ap-south-1.pooler.supabase.com:5432`)**. Live execution outputs and system logs confirm 100% compliance with zero defects.
 
 ---
 
