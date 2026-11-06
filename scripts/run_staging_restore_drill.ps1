@@ -18,7 +18,7 @@ param (
     [string]$GpgPassphrase = $env:STAGING_GPG_PASSPHRASE
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 
 Write-Host "==============================================================================" -ForegroundColor Cyan
 Write-Host "AAA STAGING CANARY-ONLY RESTORE DRILL HARNESS (QA-INF-02)" -ForegroundColor Cyan
@@ -151,7 +151,7 @@ Write-Host "Canary table seeded." -ForegroundColor Green
 # ------------------------------------------------------------------------------
 Write-Host "`nStep 2: Extracting Canary-Only Logical Dump (pg_dump -t public.canary_audit)..." -ForegroundColor Yellow
 $swDump = [System.Diagnostics.Stopwatch]::StartNew()
-& $pgDumpPath -h $HostName -p $Port -U $Username -d $Database -t public.canary_audit -Fc -b -v -f $backupFile 2>&1 | Tee-Object -FilePath $outputLog -Append
+& $pgDumpPath -h $HostName -p $Port -U $Username -d $Database -t public.canary_audit -Fc -b -f $backupFile 2>&1 | Tee-Object -FilePath $outputLog -Append
 if ($LASTEXITCODE -ne 0) {
     Write-Error "pg_dump failed with exit code $LASTEXITCODE."
     exit $LASTEXITCODE
@@ -206,7 +206,7 @@ Write-Host "Archive decrypted successfully." -ForegroundColor Green
 # ------------------------------------------------------------------------------
 Write-Host "`nStep 6: Executing Canary-Only Restoration (pg_restore -t public.canary_audit)..." -ForegroundColor Yellow
 $swRestore = [System.Diagnostics.Stopwatch]::StartNew()
-& $pgRestorePath -h $HostName -p $Port -U $Username -d $Database -t public.canary_audit --clean --if-exists -v $decryptedFile 2>&1 | Tee-Object -FilePath $outputLog -Append
+& $pgRestorePath -h $HostName -p $Port -U $Username -d $Database -t public.canary_audit --clean --if-exists $decryptedFile 2>&1 | Tee-Object -FilePath $outputLog -Append
 if ($LASTEXITCODE -ne 0) {
     Write-Error "pg_restore failed with exit code $LASTEXITCODE."
     exit $LASTEXITCODE

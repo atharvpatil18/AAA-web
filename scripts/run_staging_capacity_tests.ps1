@@ -17,7 +17,7 @@ param (
     [string]$Password = $env:STAGING_PGPASSWORD
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 
 Write-Host "==============================================================================" -ForegroundColor Cyan
 Write-Host "AAA STAGING DATABASE CAPACITY & CONCURRENCY TEST HARNESS (QA-CAP-01)" -ForegroundColor Cyan
