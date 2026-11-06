@@ -1,0 +1,7 @@
+# ARNAV ABACUS ACADEMY (AAA) — LOCAL CLOUDFLARE PAGES DEV CONFIGURATION
+# Used exclusively by Wrangler Pages Dev (Option A - QA-WS-16)
+# Target Supabase Staging: ghbjtmfskgcraxafhlch (AWS ap-south-1 Mumbai)
+# DO NOT COMMIT SECRETS TO GIT (.dev.vars is registered in .gitignore)
+
+SUPABASE_URL=https://ghbjtmfskgcraxafhlch.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=paste_your_staging_anon_or_service_role_key_here

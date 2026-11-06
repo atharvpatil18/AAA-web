@@ -59,12 +59,21 @@ flowchart TD
 
 ### Condition 1: `QA-WS-16` — Live HTTPS PostgREST Persistence Smoke Test
 - **Governing Gate:** Gate C (WS-16 Admissions Intake Gateway & Persistence)
-- **Exact Unresolved Requirement:** End-to-end verification of public form submission over live HTTPS through Cloudflare Pages Function `/api/discovery-intake` into the Supabase Mumbai staging table `discovery_leads`, verifying TLS negotiation, CORS headers, PostgREST schema cache reload, and delivery of inquiry notification.
-- **Current Evidence:** Staging database connectivity was verified via direct PostgreSQL connection pooler (`psql` on port 5432). Unit test suites verified mock HTTP handlers (22/22 PASS).
-- **Required Closure Evidence:** Network trace (HAR file or HTTP response log) showing a real browser submission through `LeadForm.tsx` on staging returning HTTP 201 with generated lead reference `AAA-2026-XXXXX`, and direct SQL confirmation that the lead row exists in staging table `discovery_leads`.
+- **Status:** 🟡 **OPEN — PARTIALLY SATISFIED (Local Integration Verified; Deployed HTTPS & Browser Test Pending)**
+- **Verification Baseline:** `dbe5872a219b39f924dbdfc34cd2d3508fc96321`
+- **Reconciliation Audit:** `docs/09_testing_and_quality_assurance/AAA_QA_WS16_EVIDENCE_RECONCILIATION_REPORT.md`
+- **Verified Findings (Local Edge & Remote Database):**
+  1. Local edge function execution verified via Cloudflare Wrangler Pages Dev on `http://127.0.0.1:8788/api/discovery-intake`.
+  2. Ingress HTTP POST returned `HTTP 201 Created` with atomic lead reference `AAA-LEAD-2026-00002` and UUID `0c5700f1-eeb7-4fd7-b70b-5b1c43a01f8a`.
+  3. Direct PostgreSQL inspection confirmed the physical row in `public.leads` in Supabase Mumbai staging (`ghbjtmfskgcraxafhlch`).
+  4. 24-hour idempotency protection verified by re-submitting with identical key, returning the retained record without duplicate row insertion or sequence increment.
+  5. Synthetic test row cleanly purged (`DELETE 1`).
+- **Remaining Pre-Merge Blocker Requirements (Must Be Completed Prior to Production Merge):**
+  1. **Deployed HTTPS Staging Preview:** The smoke test must be executed against a deployed Cloudflare Pages staging preview URL over public HTTPS with verified TLS negotiation (not localhost HTTP).
+  2. **Interactive Browser Form Submission:** Submission must originate from the real rendered DOM (`LeadForm.tsx` or `DemoBookingModal.tsx`) in a web browser, confirming end-to-end receipt modal rendering.
 - **Accountable Owner:** Nitin Patil (Operations & Tech Lead).
-- **Blocking Status:** **BLOCKS PRODUCTION MERGE (Mandatory Pre-Deployment Blocker):** Cannot merge `feat/sprint3-integration` into production `main` until this live staging smoke test is executed and verified.
-- **Management Authority:** Mandated under `MGT-DET-S5-QA-COND-01` (Section 3).
+- **Blocking Status:** **BLOCKS PRODUCTION MERGE (Mandatory Pre-Deployment Blocker):** Production `main` remains locked until the deployed HTTPS browser smoke test is executed and evidenced.
+- **Management Authority:** Governed by `MGT-DET-S5-REV-1.2.0-ACPT`.
 
 ---
 
