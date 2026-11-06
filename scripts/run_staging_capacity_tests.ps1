@@ -40,14 +40,26 @@ if (-not $ProjectRef) {
 }
 
 # Derive expected database hostname
-$ExpectedHost = "db.$ProjectRef.supabase.co"
+$ExpectedDirectHost = "db.$ProjectRef.supabase.co"
+$ExpectedPoolerHost = "aws-0-ap-south-1.pooler.supabase.com"
 
-if (-not $HostName) {
-    $HostName = $ExpectedHost
+# Check if direct host has an IPv4 address; if not, use official Supabase Mumbai IPv4 Pooler (Session Mode)
+$dnsA = Resolve-DnsName -Name $ExpectedDirectHost -Type A -ErrorAction SilentlyContinue
+if (-not $dnsA) {
+    Write-Host "Notice: Direct host is IPv6-only. Connecting via Supabase Mumbai IPv4 Pooler (Session mode)..." -ForegroundColor Yellow
+    $ExpectedHost = $ExpectedPoolerHost
+    $HostName = $ExpectedPoolerHost
+    $Port = 5432
+    $Username = "postgres.$ProjectRef"
+} else {
+    $ExpectedHost = $ExpectedDirectHost
+    if (-not $HostName) {
+        $HostName = $ExpectedDirectHost
+    }
 }
 
 # Strict Host Verification
-if ($HostName -ne $ExpectedHost) {
+if ($HostName -ne $ExpectedDirectHost -and $HostName -ne $ExpectedPoolerHost) {
     Write-Error "SECURITY HALT: Target Host '$HostName' does not match derived staging host '$ExpectedHost'. Aborting."
     exit 1
 }
