@@ -39,23 +39,19 @@ if (-not $ProjectRef) {
     exit 1
 }
 
-$ExpectedDirectHost = "db.$ProjectRef.supabase.co"
+# ------------------------------------------------------------------------------
+# Supabase Mumbai IPv4 Connection Pooler (Session Mode on Port 5432)
+# Direct db.<ref>.supabase.co is IPv6-only on Free Tier and fails DNS on IPv4 networks.
+# The official Supabase solution for IPv4 connections is aws-0-ap-south-1.pooler.supabase.com.
+# ------------------------------------------------------------------------------
 $ExpectedPoolerHost = "aws-0-ap-south-1.pooler.supabase.com"
+$HostName = $ExpectedPoolerHost
+$Port = 5432
+$Username = "postgres.$ProjectRef"
 
-# Check if direct host has an IPv4 address; if not, use official Supabase Mumbai IPv4 Pooler (Session Mode)
-$dnsA = Resolve-DnsName -Name $ExpectedDirectHost -Type A -ErrorAction SilentlyContinue
-if (-not $dnsA) {
-    Write-Host "Notice: Direct host is IPv6-only. Connecting via Supabase Mumbai IPv4 Pooler (Session mode)..." -ForegroundColor Yellow
-    $ExpectedHost = $ExpectedPoolerHost
-    $HostName = $ExpectedPoolerHost
-    $Port = 5432
-    $Username = "postgres.$ProjectRef"
-} else {
-    $ExpectedHost = $ExpectedDirectHost
-    if (-not $HostName) {
-        $HostName = $ExpectedDirectHost
-    }
-}
+Write-Host "Routing:                   Supabase Mumbai IPv4 Pooler (Session Mode, Port 5432)" -ForegroundColor Green
+Write-Host "Target Host:               $HostName" -ForegroundColor Green
+Write-Host "Target User:               $Username" -ForegroundColor Green
 
 if ($HostName -ne $ExpectedDirectHost -and $HostName -ne $ExpectedPoolerHost) {
     Write-Error "SECURITY HALT: Target Host '$HostName' does not match derived staging host '$ExpectedHost'. Aborting."
