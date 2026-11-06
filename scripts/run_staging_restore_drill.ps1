@@ -147,11 +147,11 @@ $canaryOut | Out-File -FilePath $outputLog -Append
 Write-Host "Canary table seeded." -ForegroundColor Green
 
 # ------------------------------------------------------------------------------
-# 4. Canary-Only Backup Extraction (Remediation 3: -t public.canary_audit)
+# 4. Canary-Only Backup Extraction (Remediation 3: -n public -t canary_audit)
 # ------------------------------------------------------------------------------
-Write-Host "`nStep 2: Extracting Canary-Only Logical Dump (pg_dump -t public.canary_audit)..." -ForegroundColor Yellow
+Write-Host "`nStep 2: Extracting Canary-Only Logical Dump (pg_dump -n public -t canary_audit)..." -ForegroundColor Yellow
 $swDump = [System.Diagnostics.Stopwatch]::StartNew()
-& $pgDumpPath -h $HostName -p $Port -U $Username -d $Database -t public.canary_audit -Fc -b -f $backupFile 2>&1 | Tee-Object -FilePath $outputLog -Append
+& $pgDumpPath -h $HostName -p $Port -U $Username -d $Database -n public -t canary_audit -Fc -b -f $backupFile 2>&1 | Tee-Object -FilePath $outputLog -Append
 if ($LASTEXITCODE -ne 0) {
     Write-Error "pg_dump failed with exit code $LASTEXITCODE."
     exit $LASTEXITCODE
@@ -202,11 +202,11 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Archive decrypted successfully." -ForegroundColor Green
 
 # ------------------------------------------------------------------------------
-# 8. Canary-Only Database Restoration (Remediation 3: -t public.canary_audit)
+# 8. Canary-Only Database Restoration (Remediation 3: -n public -t canary_audit)
 # ------------------------------------------------------------------------------
-Write-Host "`nStep 6: Executing Canary-Only Restoration (pg_restore -t public.canary_audit)..." -ForegroundColor Yellow
+Write-Host "`nStep 6: Executing Canary-Only Restoration (pg_restore -n public -t canary_audit)..." -ForegroundColor Yellow
 $swRestore = [System.Diagnostics.Stopwatch]::StartNew()
-& $pgRestorePath -h $HostName -p $Port -U $Username -d $Database -t public.canary_audit --clean --if-exists $decryptedFile 2>&1 | Tee-Object -FilePath $outputLog -Append
+& $pgRestorePath -h $HostName -p $Port -U $Username -d $Database -n public -t canary_audit --clean --if-exists $decryptedFile 2>&1 | Tee-Object -FilePath $outputLog -Append
 if ($LASTEXITCODE -ne 0) {
     Write-Error "pg_restore failed with exit code $LASTEXITCODE."
     exit $LASTEXITCODE
