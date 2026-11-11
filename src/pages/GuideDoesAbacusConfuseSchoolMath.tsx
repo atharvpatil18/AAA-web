@@ -40,9 +40,9 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
     "publisher": {
       "@type": "EducationalOrganization",
       "name": "Arnav Abacus Academy",
-      "url": "https://arnavabacusacademy-web.vercel.app/"
+      "url": "https://aaa-web-b0h.pages.dev/"
     },
-    "mainEntityOfPage": "https://arnavabacusacademy-web.vercel.app/parent-guides/does-abacus-confuse-school-math"
+    "mainEntityOfPage": "https://aaa-web-b0h.pages.dev/parent-guides/does-abacus-confuse-school-math"
   };
 
   const breadcrumbSchema = {
@@ -53,19 +53,19 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://arnavabacusacademy-web.vercel.app/"
+        "item": "https://aaa-web-b0h.pages.dev/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Parent Guides",
-        "item": "https://arnavabacusacademy-web.vercel.app/parent-guides"
+        "item": "https://aaa-web-b0h.pages.dev/parent-guides"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Does Abacus Confuse School Maths?",
-        "item": "https://arnavabacusacademy-web.vercel.app/parent-guides/does-abacus-confuse-school-math"
+        "item": "https://aaa-web-b0h.pages.dev/parent-guides/does-abacus-confuse-school-math"
       }
     ]
   };

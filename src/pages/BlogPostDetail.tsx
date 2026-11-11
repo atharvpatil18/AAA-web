@@ -1318,7 +1318,7 @@ export default function BlogPostDetail() {
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold text-slate-500">Share Story:</span>
               {(() => {
-                const liveBaseUrl = "https://arnavabacusacademy-web.vercel.app";
+                const liveBaseUrl = "https://aaa-web-b0h.pages.dev";
                 const shareUrl = `${liveBaseUrl}/blog/${post.slug}`;
                 const shareText = `${post.title}\n\nRead the official story at:\n${shareUrl}`;
 

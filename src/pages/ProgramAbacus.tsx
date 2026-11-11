@@ -41,7 +41,7 @@ export default function ProgramAbacus() {
     "provider": {
       "@type": "EducationalOrganization",
       "name": "Arnav Abacus Academy",
-      "url": "https://arnavabacusacademy-web.vercel.app/"
+      "url": "https://aaa-web-b0h.pages.dev/"
     },
     "educationalCredentialAwarded": "Course Level Certificate (Levels 1 to 8)",
     "audience": {
@@ -58,19 +58,19 @@ export default function ProgramAbacus() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://arnavabacusacademy-web.vercel.app/"
+        "item": "https://aaa-web-b0h.pages.dev/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Programs",
-        "item": "https://arnavabacusacademy-web.vercel.app/programs"
+        "item": "https://aaa-web-b0h.pages.dev/programs"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Abacus Learning Program",
-        "item": "https://arnavabacusacademy-web.vercel.app/programs/abacus"
+        "item": "https://aaa-web-b0h.pages.dev/programs/abacus"
       }
     ]
   };

@@ -530,12 +530,20 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       return;
     }
 
-    if (phone.trim()) {
-      const cleanDigits = phone.replace(/\D/g, "");
-      if (cleanDigits.length < 10) {
-        setValidationError("Please enter a valid 10-digit mobile number.");
-        return;
-      }
+    let cleanDigits = phone.replace(/\D/g, "");
+
+    if (cleanDigits.startsWith("91") && cleanDigits.length === 12) {
+      cleanDigits = cleanDigits.slice(2);
+    }
+
+    if (
+      cleanDigits.length !== 10 ||
+      !/^[6-9]\d{9}$/.test(cleanDigits)
+    ) {
+      setValidationError(
+        "Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9."
+      );
+      return;
     }
     if (!serviceConsent) {
       setValidationError("Please provide consent for service communication to schedule the session.");
@@ -556,7 +564,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     else if (mappedAge.includes("7") || mappedAge.includes("8") || mappedAge.includes("9")) mappedAge = "7-9";
     else mappedAge = "4.5-6";
 
-    const cleanPhoneDigits = phone.replace(/\D/g, "") || "9822011223";
+    const cleanPhoneDigits = cleanDigits;
 
     setIsSubmitting(true);
 
@@ -634,7 +642,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       leadType: "Discovery Session",
       parentName: `${salutation} ${parentName}`.trim(),
       studentName: studentName.trim(),
-      phone: "Via WhatsApp",
+      phone: cleanPhoneDigits,
       childAge,
       program,
       countryCode,
@@ -1083,7 +1091,14 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       {/* Tier 1 Enquiry Receipt Modal (OBS-02) */}
       <EnquiryReceiptModal
         isOpen={showReceiptModal}
-        onClose={() => setShowReceiptModal(false)}
+        onClose={() => {
+          setShowReceiptModal(false);
+          setParentName("");
+          setStudentName("");
+          setPhone("");
+          setAssignedUID(null);
+          setValidationError("");
+        }}
         leadReference={assignedUID || "AAA-LEAD-PENDING"}
         parentName={parentName}
         studentName={studentName}

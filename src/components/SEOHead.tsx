@@ -17,7 +17,7 @@ interface RouteMeta {
   schemaType?: "EducationalOrganization" | "Course" | "LocalBusiness" | "FAQPage";
 }
 
-const SITE_ORIGIN = "https://arnavabacusacademy-web.vercel.app";
+const SITE_ORIGIN = "https://aaa-web-b0h.pages.dev";
 
 const ROUTE_META_MAP: Record<string, RouteMeta> = {
   "/": {

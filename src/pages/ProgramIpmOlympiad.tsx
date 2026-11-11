@@ -43,7 +43,7 @@ export default function ProgramIpmOlympiad() {
     "provider": {
       "@type": "EducationalOrganization",
       "name": "Arnav Abacus Academy",
-      "url": "https://arnavabacusacademy-web.vercel.app/"
+      "url": "https://aaa-web-b0h.pages.dev/"
     },
     "educationalCredentialAwarded": "Competitive Mathematics Certificate of Excellence",
     "audience": {
@@ -60,19 +60,19 @@ export default function ProgramIpmOlympiad() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://arnavabacusacademy-web.vercel.app/"
+        "item": "https://aaa-web-b0h.pages.dev/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Programs",
-        "item": "https://arnavabacusacademy-web.vercel.app/programs"
+        "item": "https://aaa-web-b0h.pages.dev/programs"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "IPM & Olympiad Mathematics",
-        "item": "https://arnavabacusacademy-web.vercel.app/programs/ipm-olympiad"
+        "item": "https://aaa-web-b0h.pages.dev/programs/ipm-olympiad"
       }
     ]
   };
