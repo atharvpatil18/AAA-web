@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from "react";
-import { Sparkles, Calendar, ArrowRight, ShieldCheck, MapPin, Trophy, Star } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
-import { trackDemoClick } from "../lib/analytics";
+import React, { useState } from "react";
+import { Sparkles, ArrowRight, ShieldCheck, MapPin, Trophy, Star, CheckCircle2, Users, Award } from "lucide-react";
+import { trackDemoClick, trackWhatsAppClick, trackCounsellingBook } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import { Link } from "react-router-dom";
 import DemoBookingModal from "./DemoBookingModal";
@@ -14,207 +13,189 @@ import DemoBookingModal from "./DemoBookingModal";
 export default function Hero() {
   const { t } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
-  const punchlines = [
-    t("heroPunchline1"),
-    t("heroPunchline2"),
-    t("heroPunchline3")
-  ];
-  const [punchlineIndex, setPunchlineIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPunchlineIndex((prev) => (prev + 1) % punchlines.length);
-    }, 4500);
-    return () => clearInterval(interval);
-  }, [punchlines.length]);
 
   const handleCtaClick = () => {
-    trackDemoClick("hero_primary_cta");
+    trackCounsellingBook({
+      source: "hero_primary_discovery_cta",
+      program: "Personalised Learning Discovery Session",
+      deliveryMode: "offline_and_online",
+    });
+    trackDemoClick("hero_primary_discovery_cta");
     setIsDemoModalOpen(true);
   };
 
-  const handleGameScroll = () => {
-    trackDemoClick("hero_scroll_to_quiz");
-    const element = document.getElementById("speed-challenge-widget-section");
+  const handleProgramScroll = () => {
+    trackDemoClick("hero_explore_programmes");
+    const element = document.getElementById("programmes-section");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <section id="hero-section" className="relative bg-vibrant-cream overflow-hidden pt-8 pb-16 sm:pt-12 sm:pb-24 md:pt-16 md:pb-28 lg:pt-20 lg:pb-36 border-b border-slate-100">
+    <section id="hero-section" className="relative bg-gradient-to-b from-[#FFFDF9] via-[#FAF6F0] to-[#FFFDF9] overflow-hidden pt-8 pb-16 sm:pt-12 sm:pb-20 md:pt-16 md:pb-24 border-b border-slate-200/60">
       
-      {/* Dynamic Background Visual Blobs */}
-      <div className="absolute top-0 left-0 w-80 h-80 bg-vibrant-orange/5 rounded-full blur-3xl pointer-events-none -ml-40 -mt-20" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-vibrant-teal/5 rounded-full blur-3xl pointer-events-none -mr-40 -mb-20" />
- 
-      {/* Hero Body Grid */}
+      {/* Background Subtle Ambience Glow */}
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-400/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-10 w-80 h-80 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
           
-          {/* Text Left Column */}
+          {/* Left Column: Authoritative Editorial Copy */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
             
-            {/* Top Badges */}
-            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-              <div className="inline-flex items-center gap-2 bg-vibrant-orange/10 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-orange">
-                <Sparkles className="w-4 h-4 text-vibrant-orange animate-spin-slow" />
-                <span>{t("heroBadge")}</span>
-              </div>
- 
-              <div className="inline-flex items-center gap-2 bg-vibrant-teal/10 px-4 py-1.5 rounded-full text-xs font-bold text-vibrant-teal">
-                <ShieldCheck className="w-4 h-4 text-vibrant-teal" />
-                <span>{t("heroRatioBadge")}</span>
-              </div>
+            {/* Brand Identifier Pill */}
+            <div className="inline-flex items-center gap-2 bg-slate-900 text-amber-300 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>ARNAV ABACUS ACADEMY | WAKAD, PUNE</span>
             </div>
- 
+
             {/* Main Headline */}
-            <h1 className="font-display font-black text-3xl xs:text-4xl sm:text-6xl lg:text-7xl text-vibrant-dark tracking-tight leading-[1.1] mb-6 sm:mb-10">
-              {t("heroTitleStart")}<span className="text-vibrant-orange">{t("heroTitleFear")}</span>{" "} <br />
-              {t("heroTitleInto")}<span className="text-vibrant-teal">{t("heroTitleFun")}</span>{" "}
+            <h1 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight leading-[1.12]">
+              Beyond Calculation. <br className="hidden sm:inline" />
+              <span className="text-orange-600">Towards Confident Mathematical Thinking.</span>
             </h1>
 
-            {/* Dynamic Rotating Subtitle punchline */}
-            <div className="min-h-[48px] flex items-center justify-center lg:justify-start">
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={punchlineIndex}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-vibrant-orange font-display font-bold text-base md:text-lg lg:text-xl max-w-2xl leading-normal text-center lg:text-left"
-                >
-                  {punchlines[punchlineIndex]}
-                </motion.p>
-              </AnimatePresence>
-            </div>
-
-            {/* Subtitle description (LCP Element - Unblocked immediate render) */}
-            <p className="text-slate-650 text-sm md:text-base leading-relaxed max-w-2xl mx-auto lg:mx-0 pr-0 lg:pr-12">
-              {t("heroSubtitle")}
+            {/* Reassuring Supporting Message */}
+            <p className="text-slate-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium">
+              Learn Abacus, Vedic Math and Mental Math through structured, personalised learning that develops accuracy, concentration, visualization and independent thinking.
             </p>
 
-            {/* Quick Trust Indicators Card from palette specification */}
-            <div className="grid grid-cols-4 gap-4 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm shadow-slate-100/50">
-              <div className="text-center">
-                <p className="text-2xl font-black text-vibrant-orange">{t("trustTrained").split(" ")[0]}</p>
-                <p className="text-[10px] font-extrabold uppercase text-slate-600">{t("trustTrained").split(" ").slice(1).join(" ")}</p>
-              </div>
-              <div className="text-center border-l border-slate-100">
-                <p className="text-2xl font-black text-vibrant-dark">{t("trustExp").split(" ")[0]}</p>
-                <p className="text-[10px] font-extrabold uppercase text-slate-600">{t("trustExp").split(" ").slice(1).join(" ")}</p>
-              </div>
-              <div className="text-center border-l border-slate-100">
-                <p className="text-2xl font-black text-vibrant-teal">{t("trustAwards").split(" ")[0]}</p>
-                <p className="text-[10px] font-extrabold uppercase text-slate-600">{t("trustAwards").split(" ").slice(1).join(" ")}</p>
-              </div>
-              <a 
-                href="https://share.google/fFcUhDGoBJ5M27dX5" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-center border-l border-slate-100 hover:scale-102 transition-transform block"
-              >
-                <p className="text-2xl font-black text-amber-600">{t("trustRating").split(" ")[0]}</p>
-                <p className="text-[10px] font-extrabold uppercase text-slate-600 underline decoration-amber-600">{t("trustRating").split(" ").slice(1).join(" ")}</p>
-              </a>
+            {/* Verified Pillar Checkpoints */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs font-bold text-slate-700 pt-1">
+              <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
+                <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                Small Batches (Max 5 Students)
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
+                <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                Certified Trainer Mentorship
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
+                <CheckCircle2 className="w-4 h-4 text-emerald-700" />
+                Japanese Soroban Method
+              </span>
             </div>
 
-            {/* Play Button Row */}
+            {/* Conversion CTA Group */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-3">
               <button
                 type="button"
                 onClick={handleCtaClick}
-                className="w-full sm:w-auto bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold text-sm px-8 py-4 rounded-full shadow-sm hover:shadow-md active:scale-97 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm sm:text-base px-8 py-4 rounded-full shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                {t("heroCta")}
+                <span>Book a Discovery Session</span>
                 <ArrowRight className="w-4 h-4 text-orange-100" />
               </button>
 
               <button
-                onClick={handleGameScroll}
-                className="w-full sm:w-auto bg-white hover:bg-slate-50 text-vibrant-dark border border-slate-200 font-bold text-sm px-7 py-4 rounded-full shadow-xs hover:shadow-md active:scale-97 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                type="button"
+                onClick={handleProgramScroll}
+                className="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 font-bold text-sm sm:text-base px-7 py-4 rounded-full shadow-xs hover:shadow-md active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                {t("heroBtnQuiz")}
+                <span>Explore Our Programmes</span>
               </button>
+            </div>
+
+            {/* Quick Proof Snippet */}
+            <div className="pt-2 flex items-center justify-center lg:justify-start gap-3 text-xs text-slate-600">
+              <div className="flex -space-x-1">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+              <span className="font-semibold">
+                Rated 5.0/5 by 65+ Wakad Parents • Flat 3, Balaji Sagar Bungalow, Wakad
+              </span>
             </div>
 
           </div>
 
-          {/* Right Hero App Card Column with Comic Heavy Shadow Theme */}
-          <div className="lg:col-span-5 relative mt-8 lg:mt-0">
-            
-            <div className="relative bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 space-y-6">
+          {/* Right Column: Authentic AAA Classroom & Achievement Visual Card */}
+          <div className="lg:col-span-5 relative mt-6 lg:mt-0">
+            <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200 shadow-xl space-y-4 relative">
               
-              {/* Highlight promo badge rotated */}
-              <div className="absolute -top-6 -right-4 bg-vibrant-gold p-3 rounded-2xl rotate-6 border border-vibrant-dark/10 shadow-lg text-vibrant-dark text-center leading-none z-10 max-w-[120px]">
-                <p className="font-black text-xs text-vibrant-dark leading-none">{t("heroFreeTrial")}</p>
-                <p className="text-[8px] font-black tracking-wider uppercase mt-1">{t("heroTwoSessions")}</p>
-              </div>
-
-              {/* Highlight statistics metrics */}
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4">
-                <span className="text-xs text-slate-600 font-extrabold tracking-widest uppercase">
-                  {t("heroEnrollmentStatus")}
-                </span>
-                <span className="flex items-center gap-1.5 text-xs text-emerald-600 font-bold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                  {t("heroAdmissionsOpen")}
-                </span>
-              </div>
-
-              {/* Special message banner */}
-              <div className="space-y-3">
-                <span className="block text-vibrant-dark font-display font-black text-xl leading-tight">
-                  {t("heroWhyParentsChooseUs")}
-                </span>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  {t("heroParentsDesc")}
-                </p>
-              </div>
-
-              {/* Bullet highlights with check circle */}
-              <div className="grid grid-cols-2 gap-3 pb-2">
-                <div className="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
-                  <span className="block font-black text-vibrant-orange text-sm md:text-base">{t("heroStatSpeed")}</span>
-                  <span className="block text-[10px] text-slate-600 font-extrabold uppercase tracking-wider">{t("heroStatSpeedLabel")}</span>
-                </div>
-                <div className="bg-slate-50/50 p-3 rounded-xl border border-slate-100">
-                  <span className="block font-black text-vibrant-teal text-sm md:text-base">{t("heroStatAge")}</span>
-                  <span className="block text-[10px] text-slate-600 font-extrabold uppercase tracking-wider">{t("heroStatAgeLabel")}</span>
+              {/* Highlight Badge */}
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-slate-100">
+                <img
+                  src="/abacus_brain_dev.jpg"
+                  alt="Students learning Japanese Soroban Abacus at Arnav Abacus Academy Wakad Pune"
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  fetchPriority="high"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+                
+                <div className="absolute bottom-3 left-3 right-3 text-white">
+                  <span className="bg-amber-400 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded">
+                    Authentic Classroom Training
+                  </span>
+                  <p className="text-xs sm:text-sm font-bold text-white mt-1 leading-snug">
+                    Small-group interactive math sessions in Wakad, Pune
+                  </p>
                 </div>
               </div>
 
-              {/* Redirect Options: Success Stories & Google Reviews */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              {/* Trust Metric Counters Row */}
+              <div className="grid grid-cols-3 gap-2.5 pt-1 text-center">
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <span className="block font-black text-orange-600 text-lg sm:text-xl">56</span>
+                  <span className="block text-[10px] font-bold text-slate-600 uppercase">National Champions</span>
+                </div>
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <span className="block font-black text-slate-900 text-lg sm:text-xl">Max 5</span>
+                  <span className="block text-[10px] font-bold text-slate-600 uppercase">Students Per Batch</span>
+                </div>
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <span className="block font-black text-emerald-700 text-lg sm:text-xl">100%</span>
+                  <span className="block text-[10px] font-bold text-slate-600 uppercase">Zero-Finger Goal</span>
+                </div>
+              </div>
+
+              {/* Founder Credential Card */}
+              <div className="bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200/70 flex items-center gap-3">
+                <div className="w-12 h-12 rounded-xl bg-orange-600 text-white flex items-center justify-center font-bold text-sm shrink-0 overflow-hidden shadow-xs">
+                  <img
+                    src="/teacher-profile.jpg"
+                    alt="Neha Patil - Founder Arnav Abacus Academy"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = "none";
+                    }}
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-orange-700 block">
+                    Personally Mentored By
+                  </span>
+                  <strong className="text-xs sm:text-sm font-black text-slate-900 block truncate">
+                    Neha Patil (MCA, Certified Trainer)
+                  </strong>
+                  <span className="text-[10.5px] text-slate-600 block truncate">
+                    Founder &amp; Academic Director • Wakad Center
+                  </span>
+                </div>
                 <Link
-                  to="/showcase"
-                  className="flex-1 bg-vibrant-teal hover:bg-vibrant-teal/95 text-white font-bold text-xs px-4 py-3 rounded-full shadow-xs hover:shadow-md active:scale-97 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                  to="/mentor"
+                  className="bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 text-[11px] font-bold px-3 py-1.5 rounded-lg shrink-0 transition-colors"
                 >
-                  <Trophy className="w-4 h-4 text-white shrink-0" />
-                  <span>{t("heroBtnStories")}</span>
+                  Profile &rarr;
                 </Link>
-                <a
-                  href="https://share.google/fFcUhDGoBJ5M27dX5"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 bg-vibrant-gold hover:bg-vibrant-gold/95 text-vibrant-dark font-bold text-xs px-4 py-3 rounded-full shadow-xs hover:shadow-md active:scale-97 transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <Star className="w-4 h-4 fill-current text-vibrant-dark shrink-0" />
-                  <span>{t("heroBtnReviews")}</span>
-                </a>
               </div>
+
             </div>
           </div>
 
         </div>
       </div>
 
-      {/* Demo Booking Modal */}
+      {/* Discovery Booking Modal */}
       <DemoBookingModal
         isOpen={isDemoModalOpen}
         onClose={() => setIsDemoModalOpen(false)}
-        source="hero_primary_cta"
+        defaultProgram="Personalised Learning Discovery Session"
+        source="hero_primary_discovery_cta"
       />
     </section>
   );

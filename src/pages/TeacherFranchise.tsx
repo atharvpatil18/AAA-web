@@ -321,13 +321,13 @@ export default function TeacherFranchise() {
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider mb-4 shadow-sm">
             <GraduationCap className="w-4 h-4 text-amber-400" />
-            ISO 9001:2015 & Skill India Aligned Certification
+            Structured Curriculum • NEP 2020-Aligned Approach
           </div>
           <h1 className="text-3xl md:text-5xl font-black font-display tracking-tight text-white mb-3">
             Teacher Training & <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-teal-300">Academy Franchise</span>
           </h1>
           <p className="text-slate-300 max-w-2xl mx-auto text-sm md:text-base leading-relaxed font-medium">
-            Become a Certified Abacus & Vedic Math Master Trainer or open an official Arnav Abacus Academy center under certified guidance by Neha Patil.
+            Become a Certified Abacus & Vedic Math Educator or open an official Arnav Abacus Academy center under certified guidance by Neha Patil.
           </p>
 
           {/* Toggle Button */}
@@ -384,7 +384,7 @@ export default function TeacherFranchise() {
                     <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-sm font-extrabold text-slate-900">Flexible Online & Offline Batches</h4>
-                      <p className="text-xs text-slate-500">Weekend and weekday slots guided directly by Master Trainer Neha Patil.</p>
+                      <p className="text-xs text-slate-500">Weekend and weekday slots guided directly by Founder & Director Neha Patil.</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">

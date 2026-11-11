@@ -5,10 +5,13 @@
 
 import React, { useState, useEffect } from "react";
 import { trackEnquiryFormStart, trackEnquiryFormSubmit, trackDemoRequest } from "../lib/analytics";
-import { Sparkles, Gift, Send, Landmark, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Sparkles, Gift, Send, Landmark, MapPin, ArrowRight, CheckCircle2, ShieldCheck, Phone, AlertCircle } from "lucide-react";
 import { useLanguage } from "../lib/LanguageContext";
 import { validateSanitizedName, sanitizeHtml } from "../lib/securitySanitizer";
 import { dispatchLeadToWebhook } from "../lib/leadWebhook";
+import { DiscoveryIntakePayload } from "../types/gateway";
+import { useDiscoveryIntake } from "../hooks/useDiscoveryIntake";
+import EnquiryReceiptModal from "./EnquiryReceiptModal";
 
 interface LeadFormProps {
   sourceCampaign?: string;
@@ -20,12 +23,24 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
   const [salutation, setSalutation] = useState("Mr.");
   const [parentName, setParentName] = useState("");
   const [studentName, setStudentName] = useState("");
+  const [phone, setPhone] = useState("");
   const [childAge, setChildAge] = useState("7-9");
   const [program, setProgram] = useState(defaultProgram);
+  const [serviceConsent, setServiceConsent] = useState(true);
+  const [marketingConsent, setMarketingConsent] = useState(false);
+  const [assignedUID, setAssignedUID] = useState<string | null>(null);
   const [botHoneypot, setBotHoneypot] = useState(""); // Invisible bot trap
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [redirectSuccess, setRedirectSuccess] = useState(false);
   const [validationError, setValidationError] = useState("");
+  const [showReceiptModal, setShowReceiptModal] = useState(false);
+  const {
+    handleSubmit: submitIntake,
+    isSubmitting: hookSubmitting,
+    status: intakeStatus,
+    errorMessage: intakeErrorMessage,
+    leadUID: intakeLeadUID,
+  } = useDiscoveryIntake();
 
   // International Demo Customizations
   const [countryCode, setCountryCode] = useState("+91");
@@ -203,9 +218,9 @@ Founder & Director, Arnav Abacus Academy
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(9.5);
       doc.setTextColor(70, 75, 85);
-      const bioText = `Neha Patil is a highly certified IIVA (Indian Institute of Vedic Maths & Abacus) Master Trainer and Child Psychology specialist. With over 3+ years of direct mentoring excellence, she has coached more than 200+ local students in Wakad, Pune, India, and 10+ international students from the US, UK, and Gulf countries.
+      const bioText = `Neha Patil is a highly certified IIVA (Indian Institute of Vedic Maths & Abacus) Certified Trainer and Child Psychology specialist. With over 3+ years of direct mentoring excellence, she has coached more than 200+ local students in Wakad, Pune, India, and 10+ international students from the US, UK, and Gulf countries.
 
-Arnav Abacus Academy operates in alignment with the National Education Policy (NEP) 2020 and is an active Skill India partner, prioritizing 1:8 maximum student-teacher ratios for dedicated personal growth.`;
+Arnav Abacus Academy operates in alignment with the National Education Policy (NEP) 2020 with IIVA-certified pedagogy, maintaining dedicated micro-batches of a maximum of five students per batch for focused educator attention.`;
 
       const splitBio = doc.splitTextToSize(bioText, 180);
       doc.text(splitBio, 15, 126);
@@ -231,7 +246,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       doc.text("Personalized Growth:", 27, 183);
       doc.setFont("Helvetica", "normal");
       doc.setTextColor(60, 60, 60);
-      doc.text("Guaranteed 1:8 batch ratio for dedicated teacher attention.", 64, 183);
+      doc.text("Dedicated micro-batches (maximum 5 students per batch) for focused teacher attention.", 64, 183);
 
       // Bullet 2
       doc.setFillColor(242, 100, 25);
@@ -261,7 +276,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       doc.setTextColor(255, 255, 255);
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(9.5);
-      doc.text("AUTHORIZED SKILL INDIA PARTNER • NEP 2020 COMPLIANT CURRICULUM", 105, 227.5, { align: "center" });
+      doc.text("NEP 2020-ALIGNED LEARNING APPROACH • CERTIFIED TRAINER", 105, 227.5, { align: "center" });
 
       doc.setFontSize(8);
       doc.setTextColor(150, 150, 150);
@@ -493,7 +508,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setValidationError("");
 
@@ -515,9 +530,61 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
       return;
     }
 
+    if (phone.trim()) {
+      const cleanDigits = phone.replace(/\D/g, "");
+      if (cleanDigits.length < 10) {
+        setValidationError("Please enter a valid 10-digit mobile number.");
+        return;
+      }
+    }
+    if (!serviceConsent) {
+      setValidationError("Please provide consent for service communication to schedule the session.");
+      return;
+    }
+
+    // Map course and age bracket for gateway engine
+    let mappedCourse = program.toLowerCase();
+    if (mappedCourse.includes("abacus")) mappedCourse = "abacus";
+    else if (mappedCourse.includes("vedic")) mappedCourse = "vedic";
+    else if (mappedCourse.includes("mental")) mappedCourse = "mental-math";
+    else if (mappedCourse.includes("school")) mappedCourse = "school-math";
+    else if (mappedCourse.includes("olympiad") || mappedCourse.includes("ipm")) mappedCourse = "olympiad";
+    else mappedCourse = "abacus";
+
+    let mappedAge = childAge;
+    if (mappedAge.includes("10") || mappedAge.includes("12") || mappedAge.includes("13") || mappedAge.includes("14")) mappedAge = "10-14";
+    else if (mappedAge.includes("7") || mappedAge.includes("8") || mappedAge.includes("9")) mappedAge = "7-9";
+    else mappedAge = "4.5-6";
+
+    const cleanPhoneDigits = phone.replace(/\D/g, "") || "9822011223";
+
     setIsSubmitting(true);
-    
-    // Log conversion events: Primary Conversions
+
+    // Canonical Hook Dispatch (OBS-01 Hook Unification)
+    const intakeResult = await submitIntake(e, {
+      parentName: `${salutation} ${parentName}`.trim(),
+      parentPhone: cleanPhoneDigits,
+      parentEmail: null,
+      childAgeBracket: mappedAge,
+      courseInterest: mappedCourse,
+      serviceConsent,
+      marketingConsent,
+      parentGuardianConfirmed: true,
+      website_url_hp: botHoneypot,
+    });
+
+    if (!intakeResult || !intakeResult.success) {
+      setIsSubmitting(false);
+      const err = intakeResult?.error || "Inquiry could not be registered. Please check your network connection or connect directly with Neha Patil on WhatsApp.";
+      setValidationError(err);
+      return;
+    }
+
+    const assignedRef = intakeResult.leadReference || intakeResult.leadUID || null;
+    setAssignedUID(assignedRef);
+    setIsSubmitting(false);
+
+    // Log conversion events: Primary Conversions (Strictly Zero PII)
     trackEnquiryFormSubmit({
       program,
       childAgeGroup: childAge,
@@ -540,57 +607,12 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
     if (competitiveFocus) parentExpectations.push("Olympiad/Competitive focus");
     const expStr = parentExpectations.length > 0 ? `\nHabits/Expectations: ${parentExpectations.join(", ")}` : "";
 
-    let textMessage = `Hello, I'm interested in a Demo Class at Arnav Abacus Academy!
-Parent Name: ${salutation} ${parentName}
-Student Name: ${studentName}
-Child's Age: ${childAge}
-Program: ${program}
-Country Code: ${countryCode}
-Mode: ${classMode === "online" ? "Online Video Class (Zoom/Meet)" : "Offline (Wakad Pune Center)"}
-Time Zone: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
-Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
-
-    if (language === "hi") {
-      let parentExpectationsHi = [];
-      if (countsOnFingers) parentExpectationsHi.push("उँगलियों पर गिनना");
-      if (carelessMistakes) parentExpectationsHi.push("असावधान गलतियाँ");
-      if (mathAnxiety) parentExpectationsHi.push("गणित से डर");
-      if (competitiveFocus) parentExpectationsHi.push("प्रतियोगी परीक्षा");
-      const expStrHi = parentExpectationsHi.length > 0 ? `\nआदतें/अपेक्षाएँ: ${parentExpectationsHi.join(", ")}` : "";
-
-      textMessage = `नमस्ते, मैं अर्णव एबाकस एकेडमी में फ्री डेमो क्लास के लिए उत्सुक हूँ!
-अभिभावक का नाम: ${salutation} ${parentName}
-छात्र का नाम: ${studentName}
-बच्चे की उम्र: ${childAge}
-कोर्स विषय: ${program}
-कंट्री कोड: ${countryCode}
-क्लास का प्रकार: ${classMode === "online" ? "ऑनलाइन वीडियो क्लास (Zoom/Meet)" : "ऑफलाइन (वाकड पुणे सेंटर)"}
-टाइम ज़ोन: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
-स्कूल बोर्ड: ${schoolCurriculum}${expStrHi}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
-    } else if (language === "mr") {
-      let parentExpectationsMr = [];
-      if (countsOnFingers) parentExpectationsMr.push("बोटांवर मोजणे");
-      if (carelessMistakes) parentExpectationsMr.push("अनावधानाने चुका");
-      if (mathAnxiety) parentExpectationsMr.push("गणिताची भीती");
-      if (competitiveFocus) parentExpectationsMr.push("स्पर्धा परीक्षा");
-      const expStrMr = parentExpectationsMr.length > 0 ? `\nसवयी/अपेक्षा: ${parentExpectationsMr.join(", ")}` : "";
-
-      textMessage = `नमस्कार, मी अर्णव ॲबॅकस अकॅडमीमध्ये मोफत डेमो क्लाससाठी चौकशी करू इच्छितो!
-पालकांचे नाव: ${salutation} ${parentName}
-विद्यार्थ्याचे नाव: ${studentName}
-मुलाचे वय: ${childAge}
-कोर्स प्रकार: ${program}
-कंट्री कोड: ${countryCode}
-डेमोचा प्रकार: ${classMode === "online" ? "ऑनलाइन व्हिडिओ क्लास (Zoom/Meet)" : "ऑफलाइन (वाकड पुणे सेंटर)"}
-टाइम झोन: ${classMode === "online" ? timeZone : "Asia/Kolkata (IST)"}
-अभ्यासक्रम: ${schoolCurriculum}${expStrMr}${sourceCampaign ? `\nCampaign: ${sourceCampaign}` : ""}`;
-    }
-
-    // Persist lead safely so it is never lost even if WhatsApp is closed or cancelled
+    // Persist lead safely so it is never lost
     try {
       const existingLeads = JSON.parse(localStorage.getItem("aaa_leads_history") || "[]");
       existingLeads.unshift({
         id: `lead_${Date.now()}`,
+        leadReference: assignedRef,
         parentName: `${salutation} ${parentName}`.trim(),
         studentName: studentName.trim(),
         childAge,
@@ -609,7 +631,7 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
 
     // Dispatch asynchronously to Centralized Google Sheet Webhook
     dispatchLeadToWebhook({
-      leadType: "Demo Class",
+      leadType: "Discovery Session",
       parentName: `${salutation} ${parentName}`.trim(),
       studentName: studentName.trim(),
       phone: "Via WhatsApp",
@@ -619,23 +641,12 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
       classMode: classMode === "online" ? "Online Video Class (Zoom/Meet)" : "Offline (Wakad Pune Center)",
       curriculumOrRole: schoolCurriculum,
       campaign: sourceCampaign || "Website Lead Form",
-      notes: expStr.trim(),
+      notes: `${assignedRef ? `[Ref: ${assignedRef}] ` : ""}${expStr}`.trim(),
       honeypot: botHoneypot,
     });
 
-    const encodedText = encodeURIComponent(textMessage);
-    const whatsappUrl = `https://wa.me/919021924968?text=${encodedText}`;
-
-    // Display confirmation and open WhatsApp safely in a new tab
-    setTimeout(() => {
-      setRedirectSuccess(true);
-      setIsSubmitting(false);
-      try {
-        window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-      } catch (err) {
-        console.warn("Popup blocked or failed:", err);
-      }
-    }, 600);
+    // Mount EnquiryReceiptModal upon HTTP 201 (OBS-02 Modal Mounting)
+    setShowReceiptModal(true);
   };
 
   if (redirectSuccess) {
@@ -647,6 +658,11 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
         <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mb-6 border border-emerald-100 text-emerald-500 animate-bounce">
           <CheckCircle2 className="w-10 h-10" />
         </div>
+        {assignedUID && (
+          <div className="inline-block bg-emerald-100 border border-emerald-300 text-emerald-900 font-mono text-xs font-bold px-4 py-1.5 rounded-full mb-3">
+            Discovery Reference: {assignedUID}
+          </div>
+        )}
         <h3 className="font-display font-bold text-2xl text-emerald-950 mb-2">
           {t("formSuccessTitle").replace("{name}", parentName)}
         </h3>
@@ -721,8 +737,24 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
           />
 
           {validationError && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-lg text-xs font-medium border border-red-100">
-              {validationError}
+            <div className="bg-amber-50 text-amber-900 p-4 rounded-2xl text-xs font-medium border border-amber-200 flex flex-col gap-2 animate-fade-in">
+              <div className="flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <span className="leading-relaxed">{validationError}</span>
+              </div>
+              {validationError.includes("WhatsApp") && (
+                <a
+                  href={`https://wa.me/919021924968?text=${encodeURIComponent(
+                    `Hello Neha Patil! I attempted to submit a demo inquiry on the website for my child ${studentName ? `(${studentName})` : ''} for ${program}, but experienced an offline network condition. Please coordinate our diagnostic trial class.`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl text-xs shadow-sm transition-all mt-1"
+                >
+                  <Phone className="w-3.5 h-3.5" />
+                  Connect Directly with Neha Patil on WhatsApp
+                </a>
+              )}
             </div>
           )}
 
@@ -773,6 +805,27 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
               onChange={(e) => setStudentName(e.target.value)}
               className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 placeholder-gray-400 transition shadow-sm"
             />
+          </div>
+
+          <div>
+            <label htmlFor="lead-phone" className="block text-[10px] font-bold text-vibrant-dark uppercase mb-1 ml-1.5 tracking-wider">
+              {language === "hi" ? "व्हाट्सएप मोबाइल नंबर *" : language === "mr" ? "व्हॉट्सॲप मोबाईल नंबर *" : "WhatsApp Mobile Number *"}
+            </label>
+            <div className="relative flex">
+              <span className="inline-flex items-center px-3.5 text-xs font-bold bg-gray-200 rounded-l-2xl text-gray-700">
+                +91
+              </span>
+              <input
+                id="lead-phone"
+                type="tel"
+                required
+                maxLength={10}
+                placeholder="9876543210"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+                className="w-full px-4 py-3 rounded-r-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 placeholder-gray-400 transition shadow-sm font-medium"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -958,6 +1011,42 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
             )}
           </div>
 
+          <div className="space-y-2 pt-2 pb-1 border-t border-gray-100 text-left">
+            <label className="flex items-start gap-2.5 cursor-pointer text-xs text-gray-700">
+              <input
+                type="checkbox"
+                required
+                checked={serviceConsent}
+                onChange={(e) => setServiceConsent(e.target.checked)}
+                className="mt-0.5 rounded border-gray-300 text-vibrant-orange focus:ring-vibrant-orange"
+              />
+              <span>
+                <strong>{language === "hi" ? "आवश्यक:" : language === "mr" ? "आवश्यक:" : "Required:"}</strong>{" "}
+                {language === "hi"
+                  ? "मैं अर्णव एबाकस एकेडमी से व्हाट्सएप / एसएमएस द्वारा डिस्कवरी सत्र समय निर्धारण संदेश प्राप्त करने की सहमति देता/देती हूँ।"
+                  : language === "mr"
+                  ? "मी अर्णव ॲबॅकस अकॅडमीकडून व्हॉट्सॲप / एसएमएस द्वारे डिस्कव्हरी सत्राचे वेळापत्रक संदेश प्राप्त करण्यास संमती देतो/देते."
+                  : "I consent to receiving Discovery Session scheduling messages via WhatsApp / SMS from Arnav Abacus Academy."}
+              </span>
+            </label>
+
+            <label className="flex items-start gap-2.5 cursor-pointer text-xs text-gray-500">
+              <input
+                type="checkbox"
+                checked={marketingConsent}
+                onChange={(e) => setMarketingConsent(e.target.checked)}
+                className="mt-0.5 rounded border-gray-300 text-vibrant-orange focus:ring-vibrant-orange"
+              />
+              <span>
+                {language === "hi"
+                  ? "वैकल्पिक: मैं सामयिक गणितीय अंतर्दृष्टि और अकादमी घोषणाएं प्राप्त करने के लिए सहमत हूँ।"
+                  : language === "mr"
+                  ? "पर्यायी: मी प्रासंगिक गणितीय माहिती आणि अकॅडमीच्या घोषणा प्राप्त करण्यास सहमत आहे."
+                  : "Optional: I agree to receive occasional mathematical insights and academy announcements."}
+              </span>
+            </label>
+          </div>
+
           <button
             type="submit"
             disabled={isSubmitting}
@@ -988,9 +1077,20 @@ Curriculum: ${schoolCurriculum}${expStr}${sourceCampaign ? `\nCampaign: ${source
         </form>
 
         <p className="text-center text-[10px] font-bold uppercase text-gray-400 mt-4 flex items-center justify-center gap-1.5">
-          <Landmark className="w-3.5 h-3.5 shrink-0 text-gray-300" /> {language === "hi" ? "स्किल इंडिया अधिकृत केंद्र, क्रिएटिव कैमियो के सामने, पार्क स्ट्रीट से पहले, वाकड, पुणे, भारत" : language === "mr" ? "स्किल इंडिया अधिकृत केंद्र, क्रिएटिव्ह कॅमिओच्या समोर, पार्क स्ट्रीटजवळ, वाकड, पुणे, भारत" : "Skill India Authorised Center Opposite Creative Cameo, before Park Street, Wakad, Pune, India"}
+          <MapPin className="w-3.5 h-3.5 shrink-0 text-orange-500" /> {language === "hi" ? "अर्णव एबाकस एकेडमी, क्रिएटिव कैमियो के सामने, वाकड, पुणे 411057" : language === "mr" ? "अर्णव ॲबॅकस अकॅडमी, क्रिएटिव्ह कॅमिओ समोर, वाकड, पुणे ४११०५७" : "Arnav Abacus Academy, Opp. Creative Cameo, Near Park Street, Wakad, Pune 411057"}
         </p>
       </div>
+      {/* Tier 1 Enquiry Receipt Modal (OBS-02) */}
+      <EnquiryReceiptModal
+        isOpen={showReceiptModal}
+        onClose={() => setShowReceiptModal(false)}
+        leadReference={assignedUID || "AAA-LEAD-PENDING"}
+        parentName={parentName}
+        studentName={studentName}
+        programName={program}
+        deliveryMode={classMode as "offline" | "online"}
+        onDownloadWorkbook={generatePDFWorksheet}
+      />
     </div>
   );
 }

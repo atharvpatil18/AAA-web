@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   CheckCircle, 
@@ -20,9 +20,11 @@ import {
   ClipboardList,
   GraduationCap
 } from "lucide-react";
-import { trackPageView } from "../lib/analytics";
+import { trackPageView, trackDemoClick } from "../lib/analytics";
+import DemoBookingModal from "../components/DemoBookingModal";
 
 export default function GuideWhySmartChildrenMakeSillyMathMistakes() {
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   useEffect(() => {
     trackPageView(
       "/parent-guides/why-smart-children-make-silly-math-mistakes", 
@@ -58,7 +60,7 @@ export default function GuideWhySmartChildrenMakeSillyMathMistakes() {
         "@type": "ListItem",
         "position": 2,
         "name": "Parent Guides",
-        "item": "https://arnavabacusacademy-web.vercel.app/blog"
+        "item": "https://arnavabacusacademy-web.vercel.app/parent-guides"
       },
       {
         "@type": "ListItem",
@@ -566,18 +568,36 @@ export default function GuideWhySmartChildrenMakeSillyMathMistakes() {
           {/* Action CTA */}
           <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-xs text-slate-500 font-medium">
-              <strong>Center Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune.
+              <strong>Center Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
             </div>
-            <Link
-              to="/contact"
-              className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase px-5 py-3 rounded-xl transition-all shadow-md shrink-0 inline-flex items-center gap-2"
-            >
-              Schedule an Evaluation <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center gap-2.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  trackDemoClick("guide_tail_discovery_session");
+                  setIsDemoModalOpen(true);
+                }}
+                className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase px-5 py-3 rounded-xl transition-all shadow-md inline-flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Book Discovery Session</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+              <Link
+                to="/contact"
+                className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase px-4 py-3 rounded-xl transition-all shadow-md inline-flex items-center justify-center gap-2"
+              >
+                <span>Contact Wakad Center</span>
+              </Link>
+            </div>
           </div>
         </section>
-
       </article>
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        defaultProgram="Calculation Accuracy Discovery"
+        source="parent_guide_guidewhysmartchildrenmakesillymathmistakes"
+      />
     </div>
   );
 }

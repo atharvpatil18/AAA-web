@@ -27,7 +27,7 @@ const ROUTE_META_MAP: Record<string, RouteMeta> = {
   },
   "/programs": {
     title: "Abacus, Vedic Maths & School Math Programs | Arnav Abacus Academy Pune",
-    description: "Explore specialized child brain development programs: Soroban Abacus (Ages 4-14), High-Speed Vedic Maths (Ages 10+), and School Math syllabus synergy.",
+    description: "Explore specialized child brain development programs: Soroban Abacus (Ages 4-14), High-Speed Vedic Maths (Ages 10+), Mental Math & Olympiad preparation.",
     canonicalPath: "/programs",
   },
   "/programs/abacus": {
@@ -47,6 +47,23 @@ const ROUTE_META_MAP: Record<string, RouteMeta> = {
     description: "Board-aligned mathematics coaching for Class 1-10 in Wakad, Pune. Strengthen CBSE/ICSE foundations and excel in Olympiad & IPM exams. Inquire today.",
     canonicalPath: "/programs/school-maths",
     schemaType: "Course",
+  },
+  "/programs/mental-maths": {
+    title: "Mental Mathematics Classes in Wakad, Pune | Arnav Abacus Academy",
+    description: "High-agility mental arithmetic, lightning numerical recall, and cognitive visualization coaching for students in Wakad, Pune. Book a free diagnostic.",
+    canonicalPath: "/programs/mental-maths",
+    schemaType: "Course",
+  },
+  "/programs/ipm-olympiad": {
+    title: "IPM & Maths Olympiad Coaching in Wakad, Pune | Arnav Abacus Academy",
+    description: "Elite competitive mathematics, logical reasoning, and Olympiad examination coaching for Grades 2 to 9 in Wakad, Pune with Neha Patil.",
+    canonicalPath: "/programs/ipm-olympiad",
+    schemaType: "Course",
+  },
+  "/parent-guides": {
+    title: "Parent Guides & Cognitive Math Insights | Arnav Abacus Academy Wakad",
+    description: "In-depth educational parent guides on Abacus vs Vedic Maths, overcoming finger counting, eliminating calculation errors, and early childhood mathematical thinking from Arnav Abacus Academy, Wakad, Pune.",
+    canonicalPath: "/parent-guides",
   },
   "/parent-guides/abacus-vs-vedic-maths": {
     title: "Abacus vs Vedic Maths: What's the Difference? | Arnav Abacus Academy",
@@ -74,8 +91,8 @@ const ROUTE_META_MAP: Record<string, RouteMeta> = {
     canonicalPath: "/parent-guides/ideal-age-to-start-abacus",
   },
   "/mentor": {
-    title: "Meet Neha Patil | Certified Master Abacus & Vedic Maths Mentor Wakad",
-    description: "Learn about Neha Patil, founder and master trainer at Arnav Abacus Academy. IIVA certified, 3+ years experience coaching 200+ Pune and global students.",
+    title: "Meet Neha Patil | Certified Trainer of Abacus & Vedic Maths Wakad",
+    description: "Learn about Neha Patil, founder and certified trainer at Arnav Abacus Academy. IIVA certified, 3+ years experience coaching 200+ Pune and global students.",
     canonicalPath: "/mentor",
   },
   "/contact": {

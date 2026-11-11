@@ -90,7 +90,7 @@ export const generateBrochurePDF = async (language: string) => {
 
     doc.setFontSize(8.5);
     doc.setTextColor(242, 100, 25); // Vibrant Orange tag
-    doc.text("NEP 2020 COGNITIVE SKILLS | IIVA CERTIFIED TRAINING CENTER", 32, 19.5);
+    doc.text("NEP 2020-ALIGNED APPROACH | IIVA CERTIFIED TRAINER", 32, 19.5);
 
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(8.5);
@@ -134,7 +134,7 @@ export const generateBrochurePDF = async (language: string) => {
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(7.2); // Scaled down text to cleanly fit the longer certification phrase on the badge
     doc.setTextColor(240, 240, 240);
-    doc.text("Founder & Master Trainer\nIIVA Certified International\nAbacus & Vedic Math\n(200+ Students Mentored)", 151, hookY + 14);
+    doc.text("Founder & Certified Trainer\nIIVA Certified International\nAbacus & Vedic Math\n(200+ Students Mentored)", 151, hookY + 14);
 
     drawSeparator(67);
 
@@ -238,7 +238,7 @@ export const generateBrochurePDF = async (language: string) => {
     doc.text("Commercial Franchises", 142, tableY + 4.5);
 
     const tableRows = [
-      ["Classroom Student Ratio", "Max 1:8 ratio for personalized mentor care", "Crowded batches of 1:15 to 1:25 kids"],
+      ["Classroom Student Ratio", "Small batches (max 5 students) for personalized mentor care", "Crowded batches of 1:15 to 1:25 kids"],
       ["Syllabus Coordination", "Linked to school CBSE/ICSE curriculum directly", "Abstract homework drills in isolation"],
       ["Batch Flexibility", "Micro-batches matched to custom time zones", "Rigid slots with no option to reschedule"]
     ];
@@ -290,7 +290,7 @@ export const generateBrochurePDF = async (language: string) => {
       },
       {
         q: "Q: How soon can we expect improvements?",
-        a: "A: Most parents report that finger-counting disappears and scores boost within the first 30 days.",
+        a: "A: Progressive improvements in number sense and calculation confidence are observed with consistent practice.",
         bg: [225, 29, 72] // Solid Rose 600
       }
     ];
@@ -351,7 +351,7 @@ export const generateBrochurePDF = async (language: string) => {
     doc.roundedRect(107, midStartY, 91, 30, 2, 2, "F");
 
     const promiseList = [
-      "Guaranteed 1:8 Student-Teacher ratios locally in Wakad (1:4 Micro-batches for international online sessions).",
+      "Small batches (maximum five students per batch) locally in Wakad (focused micro-batches for online sessions).",
       "Direct synchronization with board curriculum so visual abacus results show up on school grade report cards."
     ];
 

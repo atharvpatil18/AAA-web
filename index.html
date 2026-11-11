@@ -40,20 +40,20 @@
         window.addEventListener(evt, triggerAnalytics, { once: true, passive: true });
       });
 
-      // Background fallback delay (5s prevents throttling during automated Lighthouse benchmarks)
+      // Background fallback delay (5s prevents throttling during automated benchmarks)
       setTimeout(loadGtagScript, 5000);
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="preload" as="image" href="/logo.png" fetchpriority="high" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="canonical" href="https://arnavabacusacademy-web.vercel.app/" />
     
     <title>Arnav Abacus Academy &amp; Vedic Maths Classes - Wakad, Pune, India</title>
 
-
     <!-- Primary & Local SEO Metadata -->
-    <meta name="description" content="Arnav Abacus Academy &amp; Vedic Maths Classes in Wakad, Pune, India. Top-rated mental arithmetic, speed math drills, visual memory &amp; kid brain development coaching." />
-    <meta name="keywords" content="Arnav Abacus Academy, Abacus Classes Wakad Pune, Vedic Maths Wakad, Abacus Coaching Pune India, Speed Math Drills, Kid Brain Development Wakad" />
+    <meta name="description" content="Arnav Abacus Academy in Wakad, Pune. Build mathematical confidence with Abacus (ages 4.5–9), Vedic Maths (ages 9–14), Mental Math, School Maths &amp; Olympiad preparation." />
+    <meta name="keywords" content="Arnav Abacus Academy, Abacus Classes Wakad Pune, Vedic Maths Wakad, Mental Maths Pune, Olympiad Maths Wakad, Maths Coaching Wakad, Neha Patil Abacus" />
     <meta name="author" content="Arnav Abacus Academy" />
     <meta name="robots" content="index, follow" />
     <meta name="google-site-verification" content="google75f35522fdaa3821" />
@@ -61,9 +61,9 @@
 
     <!-- OpenGraph Social Cards -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Arnav Abacus Academy &amp; Vedic Maths Classes - Wakad, Pune" />
-    <meta property="og:description" content="Build calculation speed, visual memory, and math confidence with Abacus &amp; Vedic Math drills! Free sample practice sessions available." />
-    <meta property="og:image" content="./logo.png" />
+    <meta property="og:title" content="Arnav Abacus Academy | Build Mathematical Confidence | Wakad, Pune" />
+    <meta property="og:description" content="Build mathematical confidence and unlock your child's potential through structured, personalised Abacus, Vedic Math and Mental Math learning." />
+    <meta property="og:image" content="/logo.png" />
 
     <!-- Schema.org EducationalOrganization & LocalBusiness Structured Data -->
     <script type="application/ld+json">
@@ -79,6 +79,12 @@
           "logo": "https://arnavabacusacademy-web.vercel.app/logo.png",
           "telephone": "+91-9021924968",
           "email": "nehaatharv@gmail.com",
+          "founder": {
+            "@type": "Person",
+            "name": "Neha Patil",
+            "jobTitle": "Founder and Academic Director",
+            "description": "Certified Professional in Abacus and Vedic Mathematics from IIVA Delhi, MCA, Certified Professional Mentor."
+          },
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL",
@@ -98,6 +104,11 @@
           "email": "nehaatharv@gmail.com",
           "url": "https://arnavabacusacademy-web.vercel.app/",
           "priceRange": "₹₹",
+          "founder": {
+            "@type": "Person",
+            "name": "Neha Patil",
+            "jobTitle": "Founder and Academic Director"
+          },
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL",
@@ -124,30 +135,46 @@
           ],
           "hasOfferCatalog": {
             "@type": "OfferCatalog",
-            "name": "Mental Math Coaching Courses",
+            "name": "Mathematics and Cognitive Development Programmes",
             "itemListElement": [
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Course",
-                  "name": "Abacus Mental Arithmetic (Ages 4-13)",
-                  "description": "Japanese Soroban mental calculation program boosting visual memory, concentration, and speed calculation without finger counting."
+                  "name": "Abacus Mathematics (Ages 4.5–9)",
+                  "description": "Structured Japanese Soroban mental arithmetic curriculum developing accuracy, concentration, and photographic visualization."
                 }
               },
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Course",
-                  "name": "Vedic Mathematics & Speed Math (Ages 10+)",
-                  "description": "16 Ancient Vedic sutras enabling 10x-15x faster calculations for school exams, Olympiad, and competitive tests."
+                  "name": "Vedic Mathematics (Ages 9–14)",
+                  "description": "16 Ancient Vedic sutras enabling high-speed mental calculations for school exams, Olympiads, and competitive tests."
                 }
               },
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Course",
-                  "name": "School Maths Foundation (Classes 1st - 8th)",
-                  "description": "Curriculum-aligned NCERT, CBSE, ICSE, and SSC board math coaching with individual 1:8 batch attention."
+                  "name": "Mental Mathematics (Ages 6–14)",
+                  "description": "Speed arithmetic, place-value agility, and number sense coaching to eliminate finger-counting and procedural mistakes."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Course",
+                  "name": "School Mathematics (Grades 5–10)",
+                  "description": "Curriculum-aligned CBSE, ICSE, and State Board math coaching with personalized 1:8 batch attention."
+                }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Course",
+                  "name": "IPM & Olympiad Mathematics (Grades 2–9)",
+                  "description": "Competitive exam coaching, logical reasoning, and non-routine problem solving for IPM, SOF IMO, and state scholarships."
                 }
               }
             ]
@@ -178,7 +205,7 @@
               "name": "What is the ideal age for a child to start Abacus classes?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "The ideal age to start Abacus training is between 5 and 12 years old. During this period, a child's brain plasticity and visual memory development are at their peak, enabling them to form strong mental bead calculation images."
+                "text": "The ideal age to start Abacus training is approximately 4.5 to 9 years old. During this period, a child's brain plasticity and visual memory development are at their peak, enabling them to form strong mental bead calculation images."
               }
             },
             {
@@ -216,4 +243,3 @@
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

@@ -89,41 +89,67 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/programs/abacus" className="hover:text-orange-500 transition-colors">
-                  {language === "hi" ? "एबाकस गणित कोर्स (वय 4-14)" : language === "mr" ? "ॲबॅकस गणित कोर्स (वय ४-१४)" : "Abacus Math Course (Ages 4-14)"}
+                  {language === "hi" ? "एबाकस गणित (उम्र 4.5–9)" : language === "mr" ? "ॲबॅकस गणित (वय ४.५–९)" : "Abacus Mathematics (Ages 4.5–9)"}
                 </Link>
               </li>
               <li>
                 <Link to="/programs/vedic-maths" className="hover:text-orange-500 transition-colors">
-                  {language === "hi" ? "वैदिक गणित (उम्र 10+)" : language === "mr" ? "वैदिक गणित (वय १०+)" : "Vedic Mathematics (Ages 10+)"}
+                  {language === "hi" ? "वैदिक गणित (उम्र 9–14)" : language === "mr" ? "वैदिक गणित (वय ९–१४)" : "Vedic Mathematics (Ages 9–14)"}
+                </Link>
+              </li>
+              <li>
+                <Link to="/programs/mental-maths" className="hover:text-orange-500 transition-colors">
+                  {language === "hi" ? "मेंटल मैथ (उम्र 6–14)" : language === "mr" ? "मेंटल मॅथ (वय ६–१४)" : "Mental Mathematics (Ages 6–14)"}
                 </Link>
               </li>
               <li>
                 <Link to="/programs/school-maths" className="hover:text-orange-500 transition-colors">
-                  {language === "hi" ? "स्कूल गणित (कक्षा 1-10)" : language === "mr" ? "शालेय गणित (इयत्ता १ ली ते १० वी)" : "School Maths (Class 1-10 CBSE/ICSE)"}
+                  {language === "hi" ? "स्कूल गणित (कक्षा 1–10)" : language === "mr" ? "शालेय गणित (इयत्ता १ ते १०)" : "School Mathematics (Grades 1–10)"}
+                </Link>
+              </li>
+              <li>
+                <Link to="/programs/ipm-olympiad" className="hover:text-orange-500 transition-colors">
+                  {language === "hi" ? "IPM और ओलंपियाड (कक्षा 2–9)" : language === "mr" ? "IPM आणि ऑलिम्पियाड (इयत्ता २ ते ९)" : "IPM & Olympiad Prep (Grades 2–9)"}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: Academy Schedule */}
+          {/* Column 3: Parent Guides & Educational Insights */}
           <div>
             <h4 className="font-display font-bold text-sm text-slate-200 uppercase tracking-widest mb-4">
-              {language === "hi" ? "अकादमी शेड्यूल" : language === "mr" ? "अकॅडमी वेळापत्रक" : "Academy Schedule"}
+              {language === "hi" ? "अभिभावक मार्गदर्शिका" : language === "mr" ? "पालक मार्गदर्शिका" : "Parent Guides"}
             </h4>
-            <ul className="space-y-3 text-xs">
-              <li className="flex items-start gap-2">
-                <Clock className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
-                <div>
-                  <span className="block font-medium text-slate-300">{language === "hi" ? "हर दिन खुला है" : language === "mr" ? "रोज सुरू" : "Open Every Day"}</span>
-                  <span className="text-slate-400">{language === "hi" ? "नियमित बैच और मूल्यांकन" : language === "mr" ? "नियमित बॅचेस आणि टेस्ट्स" : "Regular Batches &amp; Diagnostics"}</span>
-                </div>
+            <ul className="space-y-2.5 text-xs text-slate-400">
+              <li>
+                <Link to="/parent-guides" className="text-amber-400 hover:text-white font-semibold transition-colors">
+                  &rarr; {language === "hi" ? "मार्गदर्शिका हब देखें" : language === "mr" ? "मार्गदर्शिका हब पहा" : "Parent Guides Hub"}
+                </Link>
               </li>
-              <li className="flex items-start gap-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                <div>
-                  <span className="block font-medium text-slate-300">{language === "hi" ? "लचीला समय" : language === "mr" ? "सोयीस्कर वेळा" : "Flexible Timings"}</span>
-                  <span className="text-slate-400">{language === "hi" ? "व्यक्तिगत सीखने के मार्ग" : language === "mr" ? "वैयक्तिक लक्ष" : "Personalized learning paths"}</span>
-                </div>
+              <li>
+                <Link to="/parent-guides/abacus-vs-vedic-maths" className="hover:text-orange-500 transition-colors">
+                  Abacus vs Vedic Maths
+                </Link>
+              </li>
+              <li>
+                <Link to="/parent-guides/does-abacus-confuse-school-math" className="hover:text-orange-500 transition-colors">
+                  Does Abacus Confuse School Math?
+                </Link>
+              </li>
+              <li>
+                <Link to="/parent-guides/why-children-use-finger-counting" className="hover:text-orange-500 transition-colors">
+                  Stopping Finger Counting
+                </Link>
+              </li>
+              <li>
+                <Link to="/parent-guides/why-smart-children-make-silly-math-mistakes" className="hover:text-orange-500 transition-colors">
+                  Fixing Silly Math Mistakes
+                </Link>
+              </li>
+              <li>
+                <Link to="/parent-guides/ideal-age-to-start-abacus" className="hover:text-orange-500 transition-colors">
+                  Ideal Age to Start Abacus
+                </Link>
               </li>
             </ul>
           </div>
@@ -133,7 +159,7 @@ export default function Footer() {
             <h4 className="font-display font-bold text-sm text-slate-200 uppercase tracking-widest mb-4">
               {language === "hi" ? "हमारा पता" : language === "mr" ? "आमचा पत्ता" : "Our Location"}
             </h4>
-            <ul className="space-y-3.5 text-xs">
+            <ul className="space-y-3 text-xs">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
                 <span className="leading-relaxed text-slate-400 text-[11px]">
@@ -153,6 +179,17 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
+            <div className="mt-4 pt-3.5 border-t border-slate-800/80 text-[11px] space-y-1">
+              <span className="font-bold text-slate-300 block">
+                {language === "hi" ? "अभिभावक एवं ग्राहक शिकायत संपर्क:" : language === "mr" ? "पालक आणि ग्राहक तक्रार निवारण संपर्क:" : "Parent & Customer Grievance Contact:"}
+              </span>
+              <p className="text-slate-400">
+                Nitin Patil • <a href="tel:+919021924968" className="text-amber-400 hover:underline">+91 90219 24968</a>
+              </p>
+              <p className="text-[10px] text-slate-500">
+                Wakad Center, Pune (Mon–Sat, 9:30 AM – 7:30 PM)
+              </p>
+            </div>
           </div>
 
         </div>
@@ -165,11 +202,11 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-1.5 text-[11px]">
             <span className="flex items-center gap-1 text-slate-400">
-              {language === "hi" ? "संस्थापक और मेंटर: " : language === "mr" ? "संस्थापक आणि मार्गदर्शक: " : "Founder &amp; Mentor: "} <strong className="text-slate-200">Neha Patil</strong> (IIVA Certified)
+              {language === "hi" ? "संस्थापक और मेंटर: " : language === "mr" ? "संस्थापक आणि मार्गदर्शक: " : "Founder &amp; Mentor: "} <strong className="text-slate-200">Neha Patil</strong> (Certified Trainer of Abacus & Vedic Maths)
             </span>
             <span className="text-slate-600">|</span>
             <span className="flex items-center gap-1.5 text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> {language === "hi" ? "सरकारी मान्यता प्राप्त" : language === "mr" ? "शासकीय मान्यता प्राप्त" : "Government Recognized"}
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> {language === "hi" ? "अधिकृत एबाकस कौशल केंद्र (पंजी. CI2023/100000455)" : language === "mr" ? "अधिकृत ॲबॅकस कौशल्य केंद्र (नोंदणी CI2023/100000455)" : "Authorised Skill Centre in Abacus (Reg. CI2023/100000455)"}
             </span>
           </div>
         </div>

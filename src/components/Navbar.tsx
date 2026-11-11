@@ -5,8 +5,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Phone, Mail, Clock, Menu, X, ArrowRight, MessageCircle, Globe, ChevronDown } from "lucide-react";
-import { trackWhatsAppClick, trackCallClick, trackDemoRequest } from "../lib/analytics";
+import { Phone, Mail, Clock, Menu, X, ArrowRight, MessageCircle, Globe, ChevronDown, Sparkles } from "lucide-react";
+import { trackWhatsAppClick, trackCallClick, trackDemoRequest, trackCounsellingBook } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 import { Language } from "../lib/translations";
 import { useAuth } from "../lib/AuthContext";
@@ -18,10 +18,12 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [programMenuOpen, setProgramMenuOpen] = useState(false);
+  const [guideMenuOpen, setGuideMenuOpen] = useState(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const programMenuRef = useRef<HTMLDivElement>(null);
+  const guideMenuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -31,6 +33,10 @@ export default function Navbar() {
       }
       if (programMenuRef.current && !programMenuRef.current.contains(event.target as Node)) {
         setProgramMenuOpen(false);
+    setGuideMenuOpen(false);
+      }
+      if (guideMenuRef.current && !guideMenuRef.current.contains(event.target as Node)) {
+        setGuideMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -48,10 +54,10 @@ export default function Navbar() {
   }
 
   const handleBookDemoClick = () => {
-    trackWhatsAppClick("navbar_header_cta", "book_free_demo");
-    trackDemoRequest({
+    trackWhatsAppClick("navbar_header_cta", "book_discovery_session");
+    trackCounsellingBook({
       source: "navbar_header",
-      program: "General Inquiry",
+      program: "Personalised Learning Discovery Session",
       deliveryMode: "offline_and_online",
     });
   };
@@ -61,83 +67,95 @@ export default function Navbar() {
   };
 
   const programNavLinks = [
-    { name: "All Programs Overview", path: "/programs" },
-    { name: "Abacus Mental Arithmetic", path: "/programs/abacus" },
-    { name: "Vedic Mathematics", path: "/programs/vedic-maths" },
-    { name: "School Maths Foundation", path: "/programs/school-maths" },
+    { name: "All Programmes Overview", path: "/programs" },
+    { name: "Abacus Mathematics (Ages 4.5–9)", path: "/programs/abacus" },
+    { name: "Vedic Mathematics (Ages 9–14)", path: "/programs/vedic-maths" },
+    { name: "Mental Mathematics (Ages 6–14)", path: "/programs/mental-maths" },
+    { name: "School Mathematics (Grades 5–10)", path: "/programs/school-maths" },
+    { name: "IPM & Olympiad Prep (Grades 2–9)", path: "/programs/ipm-olympiad" },
   ];
 
+    const parentGuideNavLinks = [
+    { name: "Parent Guides Hub Overview", path: "/parent-guides" },
+    { name: "Abacus vs Vedic Maths", path: "/parent-guides/abacus-vs-vedic-maths" },
+    { name: "Does Abacus Confuse School Maths?", path: "/parent-guides/does-abacus-confuse-school-math" },
+    { name: "Stopping Finger Counting", path: "/parent-guides/why-children-use-finger-counting" },
+    { name: "Why Kids Make Silly Mistakes", path: "/parent-guides/why-smart-children-make-silly-math-mistakes" },
+    { name: "Ideal Age to Start Abacus", path: "/parent-guides/ideal-age-to-start-abacus" },
+  ];
   const primaryNavLinks = [
     { name: t("navHome"), path: "/" },
-    { name: t("navPrograms"), path: "/programs", hasDropdown: true },
-    { name: t("navBlog"), path: "/blog" },
-    { name: t("navPractice"), path: "/practice" },
+    { name: "Programmes", path: "/programs", hasDropdown: true },
+    { name: "Parent Guides", path: "/parent-guides", hasGuideDropdown: true },
+    { name: "Achievements", path: "/showcase" },
+    { name: "Practice Hub", path: "/practice" },
     { name: "Worksheets", path: "/worksheets" },
-    { name: t("navSuccess"), path: "/showcase" },
+    { name: "Blog", path: "/blog" },
   ];
 
   const moreNavLinks = [
-    { name: t("navMentor"), path: "/mentor" },
-    { name: "Teacher & Franchise", path: "/teacher-franchise" },
-    { name: t("navNews"), path: "/news" },
-    { name: t("navBrochure"), path: "/brochure" },
-    { name: t("navFaqs"), path: "/faqs" },
-    { name: t("navContact"), path: "/contact" },
+    { name: "Meet Neha Patil (Founder)", path: "/mentor" },
+    { name: "Teacher Training & Franchise", path: "/teacher-franchise" },
+    { name: "Championship & News", path: "/news" },
+    { name: "Academy Brochure & PDF", path: "/brochure" },
+    { name: "FAQs", path: "/faqs" },
+    { name: "Contact & Wakad Location", path: "/contact" },
   ];
 
   const allNavLinks = [
     { name: t("navHome"), path: "/" },
-    { name: t("navPrograms"), path: "/programs" },
-    { name: "↳ Abacus (Ages 4-14)", path: "/programs/abacus" },
-    { name: "↳ Vedic Maths (Ages 10+)", path: "/programs/vedic-maths" },
-    { name: "↳ School Maths (Class 1-10)", path: "/programs/school-maths" },
-    { name: t("navPractice"), path: "/practice" },
-    { name: "Worksheets", path: "/worksheets" },
-    { name: t("navSuccess"), path: "/showcase" },
-    { name: "Teacher & Franchise", path: "/teacher-franchise" },
-    { name: "Blog", path: "/blog" },
-    { name: t("navNews"), path: "/news" },
-    { name: t("navFaqs"), path: "/faqs" },
-    { name: t("navBrochure"), path: "/brochure" },
-    { name: t("navMentor"), path: "/mentor" },
-    { name: t("navContact"), path: "/contact" },
+    { name: "All Programmes Overview", path: "/programs" },
+    { name: "↳ Abacus Mathematics (Ages 4.5–9)", path: "/programs/abacus" },
+    { name: "↳ Vedic Mathematics (Ages 9–14)", path: "/programs/vedic-maths" },
+    { name: "↳ Mental Mathematics (Ages 6–14)", path: "/programs/mental-maths" },
+    { name: "↳ School Mathematics (Grades 5–10)", path: "/programs/school-maths" },
+    { name: "↳ IPM & Olympiad Prep (Grades 2–9)", path: "/programs/ipm-olympiad" },
+    { name: "Student Hall of Fame & Results", path: "/showcase" },
+    { name: "Practice Hub", path: "/practice" },
+    { name: "Free Worksheets", path: "/worksheets" },
+    { name: "Parent Guides Hub", path: "/parent-guides" },
+    { name: "↳ Abacus vs Vedic Maths", path: "/parent-guides/abacus-vs-vedic-maths" },
+    { name: "↳ Does Abacus Confuse School Maths?", path: "/parent-guides/does-abacus-confuse-school-math" },
+    { name: "↳ Transitioning from Finger Counting", path: "/parent-guides/why-children-use-finger-counting" },
+    { name: "↳ Overcoming Silly Calculation Mistakes", path: "/parent-guides/why-smart-children-make-silly-math-mistakes" },
+    { name: "↳ Ideal Age to Start Abacus", path: "/parent-guides/ideal-age-to-start-abacus" },
+    { name: "Blog & Educational Articles", path: "/blog" },
+    { name: "Meet Neha Patil (Founder)", path: "/mentor" },
+    { name: "Teacher Training & Franchise", path: "/teacher-franchise" },
+    { name: "FAQs", path: "/faqs" },
+    { name: "Contact & Wakad Location", path: "/contact" },
   ];
-
-
-
 
   const currentPath = location.pathname;
 
   return (
-    <header id="main-header" className="sticky top-0 z-50 w-full shadow-md">
-
-
+    <header id="main-header" className="sticky top-0 z-50 w-full shadow-sm bg-white">
       {/* 1. Top Alert Bar */}
       <div className="bg-slate-900 text-slate-100 py-1.5 px-3 md:px-8 text-[11px] border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex justify-between items-center gap-2">
-          {/* Working Details (Hidden on smaller screens to save space) */}
+          {/* Working Details */}
           <div className="hidden md:flex items-center gap-4 text-slate-300 shrink-0">
             <span className="flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-orange-400" />
-              {t("workingCenter")}
+              <Clock className="w-3.5 h-3.5 text-amber-400" />
+              <span>Wakad Center, Pune • Small Batches (Max 5 Students)</span>
             </span>
             <span className="hidden lg:inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              {t("batchesOngoing")}
+              <span>Admissions Open for New Batches</span>
             </span>
           </div>
 
-          {/* Social Handles / Contact info & Language Toggle */}
+          {/* Contact info & Language Toggle */}
           <div className="flex items-center justify-between md:justify-end gap-3 w-full md:w-auto font-medium text-slate-200">
             <div className="flex items-center gap-3">
               <a 
-                href="mailto:nehaatharv@gmail.com" 
-                aria-label="Email Academy at nehaatharv@gmail.com"
-                className="flex items-center gap-1 hover:text-orange-400 transition-colors"
-                title="Email nehaatharv@gmail.com"
+                href="tel:+919021924968"
+                onClick={handleCallClick}
+                aria-label="Call Academy at +91 90219 24968"
+                className="flex items-center gap-1 hover:text-amber-400 transition-colors"
               >
-                <Mail className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">nehaatharv@gmail.com</span>
+                <Phone className="w-3.5 h-3.5 text-amber-400" />
+                <span className="hidden sm:inline">+91 90219 24968</span>
               </a>
               <a 
                 href="https://wa.me/919021924968" 
@@ -148,18 +166,18 @@ export default function Navbar() {
                 rel="noopener noreferrer"
               >
                 <MessageCircle className="w-3.5 h-3.5 fill-current" />
-                <span>+91 90219 24968</span>
+                <span>WhatsApp</span>
               </a>
             </div>
             
             {/* Language Selector Dropdown */}
-            <div className="flex items-center gap-1 bg-slate-800 border border-slate-700 rounded px-1.5 py-0.5 text-slate-200 hover:border-vibrant-orange transition-colors">
+            <div className="flex items-center gap-1 bg-slate-800 border border-slate-700 rounded px-1.5 py-0.5 text-slate-200 hover:border-amber-400 transition-colors">
               <Globe className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value as Language)}
                 aria-label="Select website language"
-                className="bg-transparent border-none text-[10px] font-black focus:outline-none cursor-pointer text-slate-200 py-0.5"
+                className="bg-transparent border-none text-[10px] font-bold focus:outline-none cursor-pointer text-slate-200 py-0.5"
               >
                 <option value="en" className="bg-slate-900 text-slate-200">English</option>
                 <option value="hi" className="bg-slate-900 text-slate-200">हिन्दी</option>
@@ -171,36 +189,34 @@ export default function Navbar() {
       </div>
 
       {/* 2. Main Navbar */}
-      <nav id="navbar-body" className="bg-white border-b border-slate-100 shadow-sm">
+      <nav id="navbar-body" className="bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-3.5 flex justify-between items-center">
-          {/* Logo Name */}
+          {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="flex items-center gap-1.5 shrink-0">
-              <div className="w-10 h-10 md:w-11 md:h-11 bg-white rounded-full flex items-center justify-center overflow-hidden border border-slate-200 shadow-xs group-hover:scale-105 transition-transform shrink-0">
-                {!logoFailed ? (
-                  <img 
-                    src="/logo.png" 
-                    alt="Arnav Abacus Academy" 
-                    className="w-full h-full object-cover" 
-                    width={44}
-                    height={44}
-                    fetchPriority="high"
-                    referrerPolicy="no-referrer"
-                    onError={() => setLogoFailed(true)}
-                  />
-                ) : (
-                  <div className="w-full h-full bg-vibrant-orange flex items-center justify-center text-white font-black text-2xl">
-                    A
-                  </div>
-                )}
-              </div>
+            <div className="w-10 h-10 md:w-11 md:h-11 bg-white rounded-full flex items-center justify-center overflow-hidden border border-slate-200 shadow-xs group-hover:scale-105 transition-transform shrink-0">
+              {!logoFailed ? (
+                <img 
+                  src="/logo.png" 
+                  alt="Arnav Abacus Academy" 
+                  className="w-full h-full object-cover" 
+                  width={44}
+                  height={44}
+                  fetchPriority="high"
+                  referrerPolicy="no-referrer"
+                  onError={() => setLogoFailed(true)}
+                />
+              ) : (
+                <div className="w-full h-full bg-slate-900 flex items-center justify-center text-amber-400 font-black text-xl">
+                  AAA
+                </div>
+              )}
             </div>
             <div>
-              <span className="font-display font-black text-vibrant-dark text-sm md:text-lg tracking-tight block group-hover:text-vibrant-orange transition-colors leading-none">
-                ARNAV ABACUS
+              <span className="font-display font-black text-slate-900 text-sm md:text-lg tracking-tight block group-hover:text-orange-600 transition-colors leading-none">
+                ARNAV ABACUS ACADEMY
               </span>
-              <span className="text-[9px] md:text-[10px] text-orange-700 font-bold uppercase tracking-widest block mt-0.5 leading-none">
-                Vedic Maths Academy
+              <span className="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase tracking-widest block mt-0.5 leading-none">
+                Wakad, Pune • Certified Mentorship
               </span>
             </div>
           </Link>
@@ -209,6 +225,49 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             <ul className="flex items-center gap-3 xl:gap-5">
               {primaryNavLinks.map((link) => {
+                if ((link as any).hasGuideDropdown) {
+                  const isAnyGuideActive = currentPath === "/parent-guides" || currentPath.startsWith("/parent-guides/");
+                  return (
+                    <li key={link.name} className="relative" ref={guideMenuRef}>
+                      <button
+                        type="button"
+                        onClick={() => setGuideMenuOpen(!guideMenuOpen)}
+                        className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer relative ${
+                          isAnyGuideActive
+                            ? "text-orange-600 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
+                            : "text-slate-700 hover:text-orange-600"
+                        }`}
+                        aria-expanded={guideMenuOpen}
+                      >
+                        <span>{link.name}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${guideMenuOpen ? "rotate-180" : ""}`} />
+                      </button>
+
+                      {guideMenuOpen && (
+                        <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-fade-in">
+                          {parentGuideNavLinks.map((gLink) => {
+                            const isGActive = currentPath === gLink.path;
+                            return (
+                              <Link
+                                key={gLink.name}
+                                to={gLink.path}
+                                onClick={() => setGuideMenuOpen(false)}
+                                className={`block px-4 py-2.5 text-xs font-bold transition-colors ${
+                                  isGActive
+                                    ? "bg-orange-50 text-orange-600"
+                                    : "text-slate-700 hover:bg-slate-50 hover:text-orange-600"
+                                }`}
+                              >
+                                {gLink.name}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </li>
+                  );
+                }
+
                 if (link.hasDropdown) {
                   const isAnyProgramActive = currentPath === "/programs" || currentPath.startsWith("/programs/");
                   return (
@@ -218,8 +277,8 @@ export default function Navbar() {
                         onClick={() => setProgramMenuOpen(!programMenuOpen)}
                         className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer relative ${
                           isAnyProgramActive
-                            ? "text-orange-700 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
-                            : "text-slate-700 hover:text-vibrant-orange"
+                            ? "text-orange-600 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
+                            : "text-slate-700 hover:text-orange-600"
                         }`}
                         aria-expanded={programMenuOpen}
                       >
@@ -228,7 +287,7 @@ export default function Navbar() {
                       </button>
 
                       {programMenuOpen && (
-                        <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-fade-in">
+                        <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-fade-in">
                           {programNavLinks.map((pLink) => {
                             const isPActive = currentPath === pLink.path;
                             return (
@@ -236,10 +295,10 @@ export default function Navbar() {
                                 key={pLink.name}
                                 to={pLink.path}
                                 onClick={() => setProgramMenuOpen(false)}
-                                className={`block px-4 py-2 text-xs font-bold transition-colors ${
+                                className={`block px-4 py-2.5 text-xs font-bold transition-colors ${
                                   isPActive
-                                    ? "bg-amber-50 text-orange-700"
-                                    : "text-slate-700 hover:bg-slate-50 hover:text-vibrant-orange"
+                                    ? "bg-orange-50 text-orange-600"
+                                    : "text-slate-700 hover:bg-slate-50 hover:text-orange-600"
                                 }`}
                               >
                                 {pLink.name}
@@ -259,8 +318,8 @@ export default function Navbar() {
                       to={link.path}
                       className={`text-xs font-bold tracking-tight transition-colors duration-150 py-1.5 whitespace-nowrap relative ${
                         isActive
-                          ? "text-orange-700 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
-                          : "text-slate-700 hover:text-vibrant-orange"
+                          ? "text-orange-600 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
+                          : "text-slate-700 hover:text-orange-600"
                       }`}
                     >
                       {link.name}
@@ -276,17 +335,17 @@ export default function Navbar() {
                   onClick={() => setMoreMenuOpen(!moreMenuOpen)}
                   className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer ${
                     moreNavLinks.some((l) => l.path === currentPath)
-                      ? "text-orange-700"
-                      : "text-slate-700 hover:text-vibrant-orange"
+                      ? "text-orange-600"
+                      : "text-slate-700 hover:text-orange-600"
                   }`}
                   aria-expanded={moreMenuOpen}
                 >
-                  <span>Explore</span>
+                  <span>More</span>
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform ${moreMenuOpen ? "rotate-180" : ""}`} />
                 </button>
 
                 {moreMenuOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-fade-in">
+                  <div className="absolute top-full right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-fade-in">
                     {moreNavLinks.map((subLink) => {
                       const isSubActive = currentPath === subLink.path;
                       return (
@@ -294,10 +353,10 @@ export default function Navbar() {
                           key={subLink.name}
                           to={subLink.path}
                           onClick={() => setMoreMenuOpen(false)}
-                          className={`block px-4 py-2 text-xs font-bold transition-colors ${
+                          className={`block px-4 py-2.5 text-xs font-bold transition-colors ${
                             isSubActive
-                              ? "bg-amber-50 text-vibrant-orange"
-                              : "text-slate-700 hover:bg-slate-50 hover:text-vibrant-orange"
+                              ? "bg-orange-50 text-orange-600"
+                              : "text-slate-700 hover:bg-slate-50 hover:text-orange-600"
                           }`}
                         >
                           {subLink.name}
@@ -311,51 +370,30 @@ export default function Navbar() {
 
             {/* CTA Buttons */}
             <div className="flex items-center gap-2 xl:gap-3 shrink-0">
-              {currentUser ? (
-                <div className="flex items-center gap-3 bg-slate-100 pl-4 pr-2 py-1 rounded-full border border-slate-200">
-                  <div className="text-right">
-                    <span className="text-xs font-black text-slate-800 block leading-tight">
-                      {currentUser.name}
-                    </span>
-                    <span className="text-[9px] text-vibrant-orange font-bold uppercase tracking-wider block leading-tight">
-                      {currentUser.role}
-                    </span>
-                  </div>
-                  <button
-                    onClick={logout}
-                    className="bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-black px-4 py-2 rounded-full transition-all active:scale-95 cursor-pointer"
-                  >
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <button
-                    onClick={() => {
-                      handleBookDemoClick();
-                      setIsDemoModalOpen(true);
-                    }}
-                    className="bg-vibrant-teal hover:bg-vibrant-teal/95 text-white px-3.5 xl:px-5 py-2 rounded-full font-bold text-xs xl:text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center whitespace-nowrap"
-                  >
-                    <span>{t("bookFreeDemo")}</span>
-                    <ArrowRight className="w-3.5 h-3.5 shrink-0" />
-                  </button>
+              <button
+                onClick={() => {
+                  handleBookDemoClick();
+                  setIsDemoModalOpen(true);
+                }}
+                className="bg-orange-600 hover:bg-orange-700 text-white px-4 xl:px-5 py-2.5 rounded-full font-bold text-xs xl:text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+              >
+                <span>Discovery Session</span>
+                <ArrowRight className="w-3.5 h-3.5 shrink-0" />
+              </button>
 
-                  <Link
-                    to="/login"
-                    className="bg-vibrant-orange hover:bg-vibrant-orange/95 text-white px-3.5 xl:px-5 py-2 rounded-full font-bold text-xs xl:text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer text-center whitespace-nowrap"
-                  >
-                    Sign In
-                  </Link>
-                </>
-              )}
+              <Link
+                to="/login"
+                className="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-full font-bold text-xs shadow-xs active:scale-95 transition-all inline-flex items-center cursor-pointer whitespace-nowrap"
+              >
+                Sign In
+              </Link>
             </div>
           </div>
 
           {/* Mobile Menu Action Icon */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-vibrant-dark hover:text-vibrant-orange focus:outline-none p-1.5"
+            className="lg:hidden text-slate-800 hover:text-orange-600 focus:outline-none p-1.5 cursor-pointer"
             aria-label="Toggle Navigation Menu"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -365,11 +403,11 @@ export default function Navbar() {
         {/* 3. Mobile Expanded Drawer */}
         <div
           className={`lg:hidden transition-all duration-300 overflow-hidden ${
-            isOpen ? "max-h-screen opacity-100 border-b border-gray-100" : "max-h-0 opacity-0"
+            isOpen ? "max-h-screen opacity-100 border-b border-slate-200" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="bg-vibrant-cream px-5 py-4 space-y-3.5 shadow-inner">
-            <ul className="space-y-1.5 max-h-[60vh] overflow-y-auto">
+          <div className="bg-slate-50 px-5 py-4 space-y-3.5 shadow-inner">
+            <ul className="space-y-1 max-h-[60vh] overflow-y-auto">
               {allNavLinks.map((link) => {
                 const isActive = currentPath === link.path;
                 return (
@@ -377,10 +415,10 @@ export default function Navbar() {
                     <Link
                       to={link.path}
                       onClick={() => setIsOpen(false)}
-                      className={`block px-3 py-2 rounded-lg text-sm font-bold transition-colors ${
+                      className={`block px-3 py-2 rounded-xl text-xs md:text-sm font-bold transition-colors ${
                         isActive
-                          ? "bg-vibrant-orange/10 text-vibrant-orange"
-                          : "text-gray-655 hover:bg-white hover:text-vibrant-orange"
+                          ? "bg-orange-100 text-orange-700"
+                          : "text-slate-700 hover:bg-white hover:text-orange-600"
                       }`}
                     >
                       {link.name}
@@ -389,52 +427,18 @@ export default function Navbar() {
                 );
               })}
             </ul>
-            <div className="pt-2 border-t border-gray-100 flex flex-col gap-2.5">
-              {currentUser ? (
-                <div className="flex flex-col gap-2 bg-slate-100/60 p-3 rounded-xl border border-slate-200/60">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <span className="text-xs font-black text-slate-800 block">
-                        {currentUser.name}
-                      </span>
-                      <span className="text-[10px] text-vibrant-orange font-bold uppercase tracking-wider block">
-                        {currentUser.role}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setIsOpen(false);
-                        logout();
-                      }}
-                      className="bg-slate-900 hover:bg-slate-800 text-white text-xs font-black px-4 py-2 rounded-lg transition-all cursor-pointer"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <button
-                    onClick={() => {
-                      setIsOpen(false);
-                      handleBookDemoClick();
-                      setIsDemoModalOpen(true);
-                    }}
-                    className="w-full bg-vibrant-teal hover:bg-vibrant-teal/95 text-white py-3 rounded-xl font-bold shadow-xs hover:shadow-md active:scale-95 transition-all text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
-                  >
-                    {t("bookTrial")}
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-
-                  <Link
-                    to="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="w-full bg-vibrant-orange hover:bg-vibrant-orange/95 text-white py-3 rounded-xl font-bold shadow-xs hover:shadow-md active:scale-95 transition-all text-center text-xs md:text-sm flex items-center justify-center gap-1.5 cursor-pointer"
-                  >
-                    Sign In
-                  </Link>
-                </>
-              )}
+            <div className="pt-2 border-t border-slate-200 flex flex-col gap-2">
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  handleBookDemoClick();
+                  setIsDemoModalOpen(true);
+                }}
+                className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-full text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+              >
+                <span>Book Parent Counselling Session</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </div>
@@ -444,7 +448,7 @@ export default function Navbar() {
       <DemoBookingModal
         isOpen={isDemoModalOpen}
         onClose={() => setIsDemoModalOpen(false)}
-        source="navbar_header_cta"
+        source="navbar_button"
       />
     </header>
   );

@@ -10,194 +10,294 @@ import Hero from "../components/Hero";
 import TrustBar from "../components/TrustBar";
 import ProgramCard from "../components/ProgramCard";
 
-// Lazy load heavy below-the-fold components to minimize mobile initial bundle execution time (TBT)
+// Lazy load below-the-fold auxiliary modules
 const SpeedChallengeWidget = React.lazy(() => import("../components/SpeedChallengeWidget"));
 const TeacherProfile = React.lazy(() => import("../components/TeacherProfile"));
 const TestimonialCarousel = React.lazy(() => import("../components/TestimonialCarousel"));
 const LeadForm = React.lazy(() => import("../components/LeadForm"));
 const InteractiveAbacus = React.lazy(() => import("../components/InteractiveAbacus"));
 const VedicMathDemo = React.lazy(() => import("../components/VedicMathDemo"));
-const MathComparisonDemo = React.lazy(() => import("../components/MathComparisonDemo"));
-const MathConcernVideoBooth = React.lazy(() => import("../components/MathConcernVideoBooth"));
+import DemoBookingModal from "../components/DemoBookingModal";
 
 import { useLanguage } from "../lib/LanguageContext";
 import { PROGRAMS } from "../data";
 import { INITIAL_BLOG_POSTS } from "../data/blogData";
-import { Sparkles, HelpCircle, MapPin, Phone, Mail, ArrowRight, Star, Heart, CheckCircle2, ChevronDown, ChevronUp, BookOpen, Download, Clock, X, Trophy } from "lucide-react";
-import { trackDemoClick } from "../lib/analytics";
+import { 
+  Sparkles, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  ArrowRight, 
+  Star, 
+  CheckCircle2, 
+  ChevronDown, 
+  ChevronUp, 
+  BookOpen, 
+  Download, 
+  Clock, 
+  X, 
+  Trophy, 
+  Brain, 
+  Target, 
+  Zap, 
+  Lightbulb, 
+  Compass, 
+  CheckCircle,
+  Eye,
+  Layers,
+  Activity,
+  Smile,
+  ShieldCheck,
+  Calendar
+} from "lucide-react";
+import { trackDemoClick, trackWhatsAppClick, trackCounsellingBook } from "../lib/analytics";
 
 export default function Home() {
   const { language, t } = useLanguage();
-  const [showAbacus, setShowAbacus] = useState(false);
-  const [showVedic, setShowVedic] = useState(false);
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [showCompareTable, setShowCompareTable] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState("abacus");
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-  const [showLocalDetails, setShowLocalDetails] = useState(false);
-  const [showOnlineDetails, setShowOnlineDetails] = useState(false);
-  const [parentFocus, setParentFocus] = useState<"all" | "fear" | "speed" | "details">("all");
-  const [showBlogToast, setShowBlogToast] = useState(false);
+  const [showAbacusPlayground, setShowAbacusPlayground] = useState(false);
+  const [showVedicPlayground, setShowVedicPlayground] = useState(false);
+  const [showQuizWidget, setShowQuizWidget] = useState(false);
+  const [isCounsellingModalOpen, setIsCounsellingModalOpen] = useState(false);
+  const [activeFaq, setActiveFaq] = useState<number | null>(0);
 
-  useEffect(() => {
-    try {
-      const dismissed = localStorage.getItem("aaa_championship_toast_dismissed");
-      if (!dismissed) {
-        const timer = setTimeout(() => {
-          setShowBlogToast(true);
-        }, 2200);
-        return () => clearTimeout(timer);
-      }
-    } catch {
-      // LocalStorage access error fallback
-    }
-  }, []);
-
-  const handleDismissToast = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setShowBlogToast(false);
-    try {
-      localStorage.setItem("aaa_championship_toast_dismissed", "true");
-    } catch {
-      // ignore
-    }
+  const handleOpenCounselling = (source: string) => {
+    trackCounsellingBook({
+      source,
+      program: selectedProgram,
+      deliveryMode: "offline_and_online",
+    });
+    trackDemoClick(source);
+    setIsCounsellingModalOpen(true);
   };
 
-  const parentFocusText = {
-    en: {
-      title: "How can we help your child today?",
-      subtitle: "Select your main interest or concern to customize your tour of Arnav Abacus Academy.",
-      all: "Show All Details",
-      fear: "Overcome Math Fear & Focus 😰",
-      speed: "Boost Speed & Exam Scores ⚡",
-      details: "Explore Wakad Center & Timings 📅",
+  const handleWhatsAppChat = (source: string) => {
+    trackWhatsAppClick(source, "parent_counselling");
+    const waText = encodeURIComponent(
+      "Hello Arnav Abacus Academy! I would like to book a Parent Counselling Session with Neha Patil for my child."
+    );
+    window.open(`https://wa.me/919021924968?text=${waText}`, "_blank");
+  };
+
+  // AAA Learning Model 6 Stages
+  const learningStages = [
+    {
+      step: "01",
+      title: "Inspire",
+      tagline: "Spark Numerical Wonder",
+      desc: "We introduce numbers as playful spatial patterns rather than stressful drills, instantly dissolving math anxiety.",
+      icon: Sparkles,
+      color: "bg-amber-100 text-amber-800",
     },
-    hi: {
-      title: "आज हम आपके बच्चे की कैसे मदद कर सकते हैं?",
-      subtitle: "अर्णव एबाकस एकेडमी की जानकारी को अपनी पसंद के अनुसार देखने के लिए मुख्य चिंता या लक्ष्य चुनें।",
-      all: "सभी विवरण दिखाएं",
-      fear: "गणित का डर और फोकस बढ़ाएं 😰",
-      speed: "स्पीड और एग्जाम स्कोर बढ़ाएं ⚡",
-      details: "वाकड सेंटर और टाइमिंग्स 📅",
+    {
+      step: "02",
+      title: "Explore",
+      tagline: "Tactile Bead Exploration",
+      desc: "Children touch and slide physical Soroban beads, anchoring abstract digit values into concrete sensory reality.",
+      icon: Compass,
+      color: "bg-orange-100 text-orange-800",
     },
-    mr: {
-      title: "आज आम्ही तुमच्या मुलाला कशी मदत करू शकतो?",
-      subtitle: "अर्णव ॲबॅकस अकॅडमीची माहिती तुमच्या आवडीनुसार पाहण्यासाठी मुख्य ध्येय निवडा.",
-      all: "सर्व माहिती पहा",
-      fear: "गणित भीती घालवा आणि लक्ष वाढवा 😰",
-      speed: "स्पीड आणि परीक्षेचे गुण वाढवा ⚡",
-      details: "वाकड सेंटर आणि वेळा 📅",
+    {
+      step: "03",
+      title: "Understand",
+      tagline: "Conceptual Place-Value Logic",
+      desc: "Deep comprehension of number complements (Friends of 5 & 10) ensures children understand the 'why' behind every step.",
+      icon: Lightbulb,
+      color: "bg-teal-100 text-teal-800",
+    },
+    {
+      step: "04",
+      title: "Practice",
+      tagline: "Micro-Batch Deliberate Drills",
+      desc: "Daily 10–15 minute focused practice in small batches (maximum 5 students per batch) with immediate corrective feedback from mentors.",
+      icon: Target,
+      color: "bg-blue-100 text-blue-800",
+    },
+    {
+      step: "05",
+      title: "Apply",
+      tagline: "Mental Bead Visualization (Anzan)",
+      desc: "Children mentally compute multi-digit problems without physical beads, applying speed arithmetic directly to schoolwork.",
+      icon: Zap,
+      color: "bg-indigo-100 text-indigo-800",
+    },
+    {
+      step: "06",
+      title: "Reflect",
+      tagline: "Self-Belief & Meta-Cognition",
+      desc: "Students evaluate their own calculation logs, celebrate precision milestones, and build independent academic confidence.",
+      icon: Smile,
+      color: "bg-emerald-100 text-emerald-800",
+    },
+  ];
+
+  // 8 Child Development Intelligence Pillars
+  const developmentPillars = [
+    {
+      title: "Visualization",
+      desc: "Children form vivid mental images of abacus beads, moving away from paper counting and developing spatial mental models.",
+      observation: "Observed when a child calculates mentally with eyes focused or closed, moving imaginary beads with accuracy.",
+      icon: Eye,
+    },
+    {
+      title: "Working Memory",
+      desc: "Holding intermediate calculations while processing next-step digits, expanding short-term retention capacity.",
+      observation: "Observed during rapid multi-row additions where earlier subtotals are retained without writing.",
+      icon: Brain,
+    },
+    {
+      title: "Pattern Recognition",
+      desc: "Intuitive discernment of mathematical relationships, base-10 pairs, and algebraic structures effortlessly.",
+      observation: "Observed when a child quickly groups numbers into easy complements (e.g. 7 + 8 as 7 + 3 + 5).",
+      icon: Layers,
+    },
+    {
+      title: "Processing Speed",
+      desc: "Elimination of procedural calculation lag and finger counting, accelerating arithmetical execution naturally.",
+      observation: "Measured via time-trial drills where reaction latency drops from 4 seconds per sum to under 1 second.",
+      icon: Zap,
+    },
+    {
+      title: "Attention & Focus",
+      desc: "Sustained concentration during multi-step tasks without distraction or restlessness.",
+      observation: "Observed in 20-minute uninterrupted problem-solving sessions without digital screen fatigue.",
+      icon: Target,
+    },
+    {
+      title: "Cognitive Flexibility",
+      desc: "Ability to switch fluently between traditional school math column methods, Vedic shortcuts, and mental visualization.",
+      observation: "Observed when a child independently verifies a standard long division using Vedic digit-sums.",
+      icon: Activity,
+    },
+    {
+      title: "Executive Function",
+      desc: "Self-monitoring, methodical error-checking, and disciplined pacing during exam time constraints.",
+      observation: "Observed when a child spots their own carry-over oversight before submitting a worksheet.",
+      icon: ShieldCheck,
+    },
+    {
+      title: "Confidence",
+      desc: "Complete eradication of math phobia, transforming a reluctant learner into an enthusiastic, voluntary problem-solver.",
+      observation: "Parent-reported transformation in homework independence and eagerness to participate in school math classes.",
+      icon: Smile,
+    },
+  ];
+
+  // Homepage FAQs
+  const homeFaqs = [
+    {
+      q: "What is the best age to enroll my child in Arnav Abacus Academy?",
+      a: "For Abacus, the ideal developmental window is approximately 4.5 to 9 years old, when neuroplasticity and visual memory development are at their peak. For Vedic Mathematics, students aged 9 to 14 (Grades 5–10) benefit most because they apply the 16 sutras directly to heavy school syllabus and competitive exams."
+    },
+    {
+      q: "Does Abacus create confusion with my child's school board syllabus (CBSE/ICSE/SSC)?",
+      a: "No, Abacus does not confuse school math. Abacus trains internal computation agility, place-value sense, and working memory. In school exams, students still write the required step-by-step layout on paper, but they complete the underlying arithmetic in seconds with zero scratch-margin errors."
+    },
+    {
+      q: "What makes Arnav Abacus Academy different from commercial chain franchises?",
+      a: "Commercial franchises often rely on large batches (15–25 students) and part-time instructors with high turnover. AAA is founded and directed personally by Neha Patil (MCA, IIVA Certified), strictly maintaining small batches with a maximum of five students per batch. Every child receives customized pacing, error diagnostics, and direct mentor care."
+    },
+    {
+      q: "How much daily practice is expected from the child at home?",
+      a: "We advocate a manageable 10 to 15-minute daily practice routine. Consistent daily micro-drills strengthen neural pathways far more effectively than cramming for 2 hours once a week. This keeps math fun and prevents burnout."
+    },
+    {
+      q: "Can we attend classes offline in Wakad or online from home?",
+      a: "We offer both! We conduct offline micro-batches at our dedicated center in Wakad (Flat No. 3, Balaji Sagar Bungalow, Near Park Street, behind Wisdom World School) and live interactive 1-on-1 and small group online sessions for students across Pune, India, and overseas."
+    },
+    {
+      q: "How can parents track progress?",
+      a: "Through our AAA Brain Dashboard™ methodology, parents receive regular level-completion reports, speed benchmarks, accuracy audits, and 1-on-1 consultation feedback with Mentor Neha Patil."
     }
-  };
-
-  const strings = parentFocusText[language as "en" | "hi" | "mr"] || parentFocusText.en;
-
-  const handleMapCtaClick = () => {
-    trackDemoClick("home_map_nav_cta");
-  };
-
-  const abacusBtnText = showAbacus
-    ? (language === "hi" ? "एबाकस सिम्युलेटर छिपाएं" : language === "mr" ? "ॲबॅकस सिम्युलेटर लपवा" : "Hide Interactive Abacus")
-    : (language === "hi" ? "इंटरएक्टिव एबाकस आज़माएं" : language === "mr" ? "इंटरएक्टिव्ह ॲबॅकस वापरून पहा" : "Try Interactive Abacus");
-
-  const vedicBtnText = showVedic
-    ? (language === "hi" ? "स्पीड मैथ सिम्युलेटर छिपाएं" : language === "mr" ? "स्पीड मॅथ सिम्युलेटर लपवा" : "Hide Speed Math Simulator")
-    : (language === "hi" ? "स्पीड मैथ सिम्युलेटर आज़माएं" : language === "mr" ? "स्पीड मॅथ सिम्युलेटर वापरून पहा" : "Try Speed Math Simulator");
-
-  const quizBtnText = showQuiz
-    ? (language === "hi" ? "क्विज़ चुनौती छिपाएं" : language === "mr" ? "क्विझ आव्हान लपवा" : "Hide Quiz Challenge")
-    : (language === "hi" ? "गणित क्विज़ चुनौती शुरू करें" : language === "mr" ? "गणित क्विझ आव्हान सुरू करा" : "Try Math Quiz Challenge");
+  ];
 
   return (
-    <div id="home-page-container" className="bg-[#FFFDF9] min-h-screen">
-      {/* 1. Hero Banner */}
+    <div id="home-page-container" className="bg-[#FFFDF9] min-h-screen text-slate-800">
+      
+      {/* =========================================================================
+          SECTION 1: HERO
+          Brand Identifier, Clear 5-Second Headline, Reassuring Message, Primary & Secondary CTAs
+          ========================================================================= */}
       <Hero />
 
-      {/* 2. Trust Counters Bar */}
+      {/* =========================================================================
+          SECTION 2: TRUST AND CREDIBILITY
+          Showcase verified founder credentials, student achievements, championship participation
+          ========================================================================= */}
       <div className="px-4 md:px-8">
         <TrustBar />
       </div>
 
-      {/* 2. Parent-Centric Pathway Hub */}
-      <section className="py-8 bg-vibrant-cream/30 border-y-2 border-slate-200/50 max-w-7xl mx-auto px-4 md:px-8 mt-6">
-        <div className="text-center space-y-2.5 max-w-3xl mx-auto mb-6">
-          <h2 className="font-display font-black text-xl md:text-2xl text-vibrant-dark tracking-tight">
-            {strings.title}
-          </h2>
-          <p className="text-gray-500 text-xs font-semibold">
-            {strings.subtitle}
-          </p>
-        </div>
-
-        {/* Tab/Selector Layout */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
-          {(["all", "fear", "speed", "details"] as const).map((mode) => {
-            const isActive = parentFocus === mode;
-            return (
-              <button
-                key={mode}
-                onClick={() => setParentFocus(mode)}
-                className={`py-3 px-2 rounded-2xl text-[10px] md:text-xs font-black uppercase tracking-wider transition-all duration-200 cursor-pointer text-center border-2 active:scale-98 ${
-                  isActive
-                    ? "bg-vibrant-dark text-white border-vibrant-dark shadow-md"
-                    : "bg-white text-slate-600 hover:bg-slate-50 border-slate-200"
-                }`}
-              >
-                {strings[mode]}
-              </button>
-            );
-          })}
+      {/* Trust & Credibility Strip */}
+      <section className="py-10 max-w-7xl mx-auto px-4 md:px-8">
+        <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
+          <div className="space-y-1 text-center md:text-left">
+            <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest block">
+              Verified Institutional Authority
+            </span>
+            <h3 className="font-display font-black text-lg sm:text-xl text-white">
+              Recognised Excellence in Mathematical Child Development
+            </h3>
+            <p className="text-xs text-slate-300 max-w-xl font-medium">
+              Certified Trainer in Abacus &amp; Vedic Mathematics • Small Batches • Serving Wakad &amp; Pune.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <Link
+              to="/mentor"
+              className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-5 py-2.5 rounded-full transition-all"
+            >
+              Verify Credentials &rarr;
+            </Link>
+            <Link
+              to="/showcase"
+              className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all border border-slate-700"
+            >
+              Student Hall of Fame
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* 2.2. Interactive Parent Consultation Booth */}
-      {(parentFocus === "all" || parentFocus === "fear") && (
-        <React.Suspense fallback={<div className="min-h-[100px]" />}>
-          <MathConcernVideoBooth />
-        </React.Suspense>
-      )}
-
-      {/* 3. Core Programs Showcase */}
-      {(parentFocus === "all" || parentFocus === "details") && (
-        <section id="programs-showcase" className="py-20 md:py-28 max-w-7xl mx-auto px-4 md:px-8">
+      {/* =========================================================================
+          SECTION 3: PROGRAMMES
+          Clear introductions for all 5 programmes linking to dedicated landing pages
+          ========================================================================= */}
+      <section id="programmes-section" className="py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
-          <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            {t("progBadge")}
+          <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+            Five Dedicated Pathways
           </span>
-          <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
-            {t("progTitle")}
+          <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
+            Our Structured Mathematics Programmes
           </h2>
-          <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-            {t("progSubtitle")}
+          <p className="text-slate-600 text-xs md:text-sm font-semibold">
+            Every programme is calibrated to child development stages and taught in personalised small batches with a maximum of five students per batch.
           </p>
         </div>
 
         {/* Tab Selection Headings */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-center gap-3 md:gap-6 mb-10 pb-6 max-w-4xl mx-auto border-b border-slate-200">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10 pb-6 max-w-5xl mx-auto border-b border-slate-200">
           {PROGRAMS.map((prog) => {
-            const prefix = prog.id === "abacus" ? "Abacus" : prog.id === "vedic-math" ? "Vedic" : "School";
-            const progTitle = t(`prog${prefix}Title` as any) || prog.title;
             const isSelected = selectedProgram === prog.id;
-
             return (
               <button
                 key={prog.id}
                 onClick={() => setSelectedProgram(prog.id)}
-                className={`flex-1 py-3.5 px-4 rounded-full text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer text-center shadow-xs active:scale-97 ${
+                className={`py-2.5 px-4 rounded-full text-xs font-bold transition-all cursor-pointer text-center ${
                   isSelected
-                    ? "bg-vibrant-orange text-white shadow-md"
-                    : "bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-vibrant-dark border border-slate-200/50"
+                    ? "bg-slate-900 text-white shadow-md"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                 }`}
               >
-                {progTitle}
+                {prog.title}
               </button>
             );
           })}
         </div>
 
         {/* Selected Program Card Display */}
-        <div className="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto transition-all duration-300">
+        <div className="max-w-2xl lg:max-w-3xl mx-auto transition-all duration-300">
           {PROGRAMS.map((prog) => {
             if (prog.id !== selectedProgram) return null;
             return (
@@ -213,880 +313,491 @@ export default function Home() {
             );
           })}
         </div>
-      </section>
-      )}
 
-      {/* 2.5. Interactive Abacus Playground */}
-      {(parentFocus === "all" || parentFocus === "fear") && (
-        <section id="interactive-abacus-playground" className="py-16 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-2 border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col items-center">
-          <div className="text-center space-y-3 max-w-2xl mx-auto mb-6">
-            <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              {t("abacusBadge")}
-            </span>
-            <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-              {t("abacusTitle")}
-            </h2>
-            <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              {t("abacusSubtitle")}
-            </p>
-          </div>
-
-          {/* Toggle Button */}
-          <button
-            onClick={() => setShowAbacus(!showAbacus)}
-            className="flex items-center gap-2 bg-vibrant-teal text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-teal/95 transition-all text-xs md:text-sm uppercase tracking-wider mb-8 cursor-pointer"
+        {/* View All Programmes Footer Link */}
+        <div className="text-center pt-8">
+          <Link
+            to="/programs"
+            className="inline-flex items-center gap-2 text-xs font-bold text-orange-600 hover:text-orange-700 uppercase tracking-wider"
           >
-            {abacusBtnText}
-            {showAbacus ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </button>
-
-          {showAbacus && (
-            <div className="w-full transition-all duration-300">
-              <React.Suspense fallback={<div className="h-64 bg-slate-100 rounded-3xl animate-pulse" />}>
-                <InteractiveAbacus />
-              </React.Suspense>
-            </div>
-          )}
+            <span>Compare All 5 Programmes &amp; Curriculum Breakdown</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
-      )}
 
-      {/* 2.6. Interactive Vedic Math Playground */}
-      {(parentFocus === "all" || parentFocus === "speed") && (
-        <section id="interactive-vedic-playground" className="py-16 md:py-20 bg-white border-t-2 border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-6 flex flex-col items-center">
-          <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              {t("homeVedicBadge")}
-            </span>
-            <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-              {t("homeVedicTitle")}
-            </h2>
-            <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              {t("homeVedicSubtitle")}
-            </p>
-          </div>
-
-          {/* Toggle Button */}
-          <button
-            onClick={() => setShowVedic(!showVedic)}
-            className="flex items-center gap-2 bg-vibrant-orange text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/95 transition-all text-xs md:text-sm uppercase tracking-wider mb-8 cursor-pointer"
-          >
-            {vedicBtnText}
-            {showVedic ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </button>
-
-          {showVedic && (
-            <div className="w-full transition-all duration-300">
-              <React.Suspense fallback={<div className="h-64 bg-slate-100 rounded-3xl animate-pulse" />}>
-                <VedicMathDemo />
-              </React.Suspense>
-            </div>
-          )}
-        </div>
-      </section>
-      )}
-
-      {/* 3.5. Interactive Math Synergy System (Comparison) */}
-      {(parentFocus === "all" || parentFocus === "details") && (
-        <>
-          <section id="math-synergy-comparison" className="py-20 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFFBF5] border-t-4 border-vibrant-dark">
+      {/* =========================================================================
+          SECTION 4: AAA LEARNING MODEL™
+          Inspire → Explore → Understand → Practice → Apply → Reflect
+          ========================================================================= */}
+      <section className="py-16 md:py-24 bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <React.Suspense fallback={<div className="h-64 bg-slate-100 rounded-3xl animate-pulse" />}>
-            <MathComparisonDemo />
-          </React.Suspense>
-        </div>
-      </section>
-
-      {/* 3.8. Competitor Differentiation Comparison Grid */}
-      <section id="competitor-comparison" className="py-20 md:py-24 bg-white border-t-4 border-vibrant-dark">
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
-          <div className="text-center space-y-3 max-w-2xl mx-auto mb-8">
-            <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              {t("diffAAA")}
+          <div className="text-center space-y-3 max-w-3xl mx-auto mb-14">
+            <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+              Proprietary Pedagogy
             </span>
-            <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-              {t("diffTitle")}
+            <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
+              The AAA Learning Model™
             </h2>
-            <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              {t("diffSubtitle")}
+            <p className="text-slate-600 text-xs md:text-sm font-semibold leading-relaxed">
+              "Mathematics is the medium; developing confident, independent and thoughtful learners is the mission."
+              Our 6-stage progressive mastery model transforms anxious students into joyful, autonomous thinkers.
             </p>
           </div>
 
-          {/* Toggle Button to collapse the entire comparison content */}
-          <div className="flex justify-center mb-8">
-            <button
-              onClick={() => setShowCompareTable(!showCompareTable)}
-              className="flex items-center gap-2 bg-vibrant-orange text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/95 transition-all text-xs md:text-sm uppercase tracking-wider cursor-pointer"
-            >
-              {showCompareTable
-                ? (language === "hi" ? "तुलना विवरण छिपाएं" : language === "mr" ? "तुलना तपशील लपवा" : "Hide Comparison Grid")
-                : (language === "hi" ? "तुलना विवरण देखें" : language === "mr" ? "तुलना तपशील पहा" : "Compare AAA vs Franchises")
-              }
-              {showCompareTable ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </button>
-          </div>
-
-          {showCompareTable && (
-            <>
-              {/* DESKTOP TABLE VIEW (hidden on mobile, blocks on md+) */}
-              <div className="hidden md:block overflow-x-auto rounded-[32px] border-4 border-vibrant-dark shadow-[8px_8px_0_0_#1A2E35]">
-                <table className="w-full text-left border-collapse bg-white">
-                  <thead>
-                    <tr className="bg-vibrant-cream border-b-4 border-vibrant-dark font-black text-xs md:text-sm text-vibrant-dark uppercase tracking-wider">
-                      <th className="p-4 md:p-6 border-r-4 border-vibrant-dark w-1/4">{t("diffFeature")}</th>
-                      <th className="p-4 md:p-6 border-r-4 border-vibrant-dark bg-vibrant-teal/10 text-vibrant-teal w-3/8">{t("diffAAA")}</th>
-                      <th className="p-4 md:p-6 text-gray-550 w-3/8">{t("diffOthers")}</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y-4 divide-vibrant-dark font-bold text-xs md:text-sm text-vibrant-dark">
-                    {/* Row 1 */}
-                    <tr 
-                      onClick={() => setExpandedRows(prev => ({ ...prev, row1: !prev.row1 }))}
-                      className="cursor-pointer hover:bg-slate-50/50 transition-colors divide-x-4 divide-vibrant-dark"
-                    >
-                      <td className="p-4 md:p-6 bg-slate-50 font-black flex items-center justify-between gap-2">
-                        <span>{t("diffRow1Name")}</span>
-                        {expandedRows.row1 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
-                      </td>
-                      <td className="p-4 md:p-6 bg-vibrant-teal/5 text-vibrant-teal">
-                        <div className="flex items-center gap-2">
-                          <span className="text-emerald-500 text-base font-black">✓</span>
-                          <span>{t("diffRow1AAA")}</span>
-                        </div>
-                        {expandedRows.row1 && (
-                          <p className="mt-3 text-xs text-vibrant-teal/80 font-semibold leading-relaxed border-t border-vibrant-teal/15 pt-2">
-                            {t("diffRow1Desc")}
-                          </p>
-                        )}
-                      </td>
-                      <td className="p-4 md:p-6 text-gray-400">
-                        <div className="flex items-center gap-2">
-                          <span className="text-rose-500 text-base font-black">✗</span>
-                          <span>{t("diffRow1Others")}</span>
-                        </div>
-                      </td>
-                    </tr>
-
-                    {/* Row 2 */}
-                    <tr 
-                      onClick={() => setExpandedRows(prev => ({ ...prev, row2: !prev.row2 }))}
-                      className="cursor-pointer hover:bg-slate-50/50 transition-colors divide-x-4 divide-vibrant-dark"
-                    >
-                      <td className="p-4 md:p-6 bg-slate-50 font-black flex items-center justify-between gap-2">
-                        <span>{t("diffRow2Name")}</span>
-                        {expandedRows.row2 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
-                      </td>
-                      <td className="p-4 md:p-6 bg-vibrant-teal/5 text-vibrant-teal">
-                        <div className="flex items-center gap-2">
-                          <span className="text-emerald-500 text-base font-black">✓</span>
-                          <span>{t("diffRow2AAA")}</span>
-                        </div>
-                        {expandedRows.row2 && (
-                          <p className="mt-3 text-xs text-vibrant-teal/80 font-semibold leading-relaxed border-t border-vibrant-teal/15 pt-2">
-                            {t("diffRow2Desc")}
-                          </p>
-                        )}
-                      </td>
-                      <td className="p-4 md:p-6 text-gray-400">
-                        <div className="flex items-center gap-2">
-                          <span className="text-rose-500 text-base font-black">✗</span>
-                          <span>{t("diffRow2Others")}</span>
-                        </div>
-                      </td>
-                    </tr>
-
-                    {/* Row 3 */}
-                    <tr 
-                      onClick={() => setExpandedRows(prev => ({ ...prev, row3: !prev.row3 }))}
-                      className="cursor-pointer hover:bg-slate-50/50 transition-colors divide-x-4 divide-vibrant-dark"
-                    >
-                      <td className="p-4 md:p-6 bg-slate-50 font-black flex items-center justify-between gap-2">
-                        <span>{t("diffRow3Name")}</span>
-                        {expandedRows.row3 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
-                      </td>
-                      <td className="p-4 md:p-6 bg-vibrant-teal/5 text-vibrant-teal">
-                        <div className="flex items-center gap-2">
-                          <span className="text-emerald-500 text-base font-black">✓</span>
-                          <span>{t("diffRow3AAA")}</span>
-                        </div>
-                        {expandedRows.row3 && (
-                          <p className="mt-3 text-xs text-vibrant-teal/80 font-semibold leading-relaxed border-t border-vibrant-teal/15 pt-2">
-                            {t("diffRow3Desc")}
-                          </p>
-                        )}
-                      </td>
-                      <td className="p-4 md:p-6 text-gray-400">
-                        <div className="flex items-center gap-2">
-                          <span className="text-rose-500 text-base font-black">✗</span>
-                          <span>{t("diffRow3Others")}</span>
-                        </div>
-                      </td>
-                    </tr>
-
-                    {/* Row 4 */}
-                    <tr 
-                      onClick={() => setExpandedRows(prev => ({ ...prev, row4: !prev.row4 }))}
-                      className="cursor-pointer hover:bg-slate-50/50 transition-colors divide-x-4 divide-vibrant-dark"
-                    >
-                      <td className="p-4 md:p-6 bg-slate-50 font-black flex items-center justify-between gap-2">
-                        <span>{t("diffRow4Name")}</span>
-                        {expandedRows.row4 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
-                      </td>
-                      <td className="p-4 md:p-6 bg-vibrant-teal/5 text-vibrant-teal">
-                        <div className="flex items-center gap-2">
-                          <span className="text-emerald-500 text-base font-black">✓</span>
-                          <span>{t("diffRow4AAA")}</span>
-                        </div>
-                        {expandedRows.row4 && (
-                          <p className="mt-3 text-xs text-vibrant-teal/80 font-semibold leading-relaxed border-t border-vibrant-teal/15 pt-2">
-                            {t("diffRow4Desc")}
-                          </p>
-                        )}
-                      </td>
-                      <td className="p-4 md:p-6 text-gray-400">
-                        <div className="flex items-center gap-2">
-                          <span className="text-rose-500 text-base font-black">✗</span>
-                          <span>{t("diffRow4Others")}</span>
-                        </div>
-                      </td>
-                    </tr>
-
-                    {/* Row 5 */}
-                    <tr 
-                      onClick={() => setExpandedRows(prev => ({ ...prev, row5: !prev.row5 }))}
-                      className="cursor-pointer hover:bg-slate-50/50 transition-colors divide-x-4 divide-vibrant-dark"
-                    >
-                      <td className="p-4 md:p-6 bg-slate-50 font-black flex items-center justify-between gap-2">
-                        <span>{t("diffRow5Name")}</span>
-                        {expandedRows.row5 ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
-                      </td>
-                      <td className="p-4 md:p-6 bg-vibrant-teal/5 text-vibrant-teal">
-                        <div className="flex items-center gap-2">
-                          <span className="text-emerald-500 text-base font-black">✓</span>
-                          <span>{t("diffRow5AAA")}</span>
-                        </div>
-                        {expandedRows.row5 && (
-                          <p className="mt-3 text-xs text-vibrant-teal/80 font-semibold leading-relaxed border-t border-vibrant-teal/15 pt-2">
-                            {t("diffRow5Desc")}
-                          </p>
-                        )}
-                      </td>
-                      <td className="p-4 md:p-6 text-gray-400">
-                        <div className="flex items-center gap-2">
-                          <span className="text-rose-500 text-base font-black">✗</span>
-                          <span>{t("diffRow5Others")}</span>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* MOBILE STACKED CARD VIEW (visible on mobile, hidden on md+) */}
-              <div className="block md:hidden space-y-6">
-                {[
-                  { key: "row1", name: t("diffRow1Name"), aaa: t("diffRow1AAA"), others: t("diffRow1Others"), desc: t("diffRow1Desc") },
-                  { key: "row2", name: t("diffRow2Name"), aaa: t("diffRow2AAA"), others: t("diffRow2Others"), desc: t("diffRow2Desc") },
-                  { key: "row3", name: t("diffRow3Name"), aaa: t("diffRow3AAA"), others: t("diffRow3Others"), desc: t("diffRow3Desc") },
-                  { key: "row4", name: t("diffRow4Name"), aaa: t("diffRow4AAA"), others: t("diffRow4Others"), desc: t("diffRow4Desc") },
-                  { key: "row5", name: t("diffRow5Name"), aaa: t("diffRow5AAA"), others: t("diffRow5Others"), desc: t("diffRow5Desc") }
-                ].map((row) => {
-                  const isRowExpanded = !!expandedRows[row.key];
-                  return (
-                    <div 
-                      key={row.key} 
-                      onClick={() => setExpandedRows(prev => ({ ...prev, [row.key]: !prev[row.key] }))}
-                      className="bg-white border-4 border-vibrant-dark rounded-2xl p-5 shadow-[4px_4px_0_0_#1A2E35] space-y-3 cursor-pointer"
-                    >
-                      <div className="flex justify-between items-center border-b-2 border-slate-100 pb-2">
-                        <span className="font-display font-black text-sm text-vibrant-dark">{row.name}</span>
-                        {isRowExpanded ? <ChevronUp className="w-4 h-4 text-vibrant-orange" /> : <ChevronDown className="w-4 h-4 text-vibrant-orange" />}
-                      </div>
-
-                      {/* AAA Card Part */}
-                      <div className="space-y-1">
-                        <span className="text-[9px] font-black text-vibrant-teal bg-vibrant-teal/10 px-2 py-0.5 rounded uppercase tracking-wider block w-fit">
-                          {t("diffAAA")}
-                        </span>
-                        <div className="flex items-start gap-1.5 text-xs text-vibrant-dark font-black">
-                          <span className="text-emerald-500 font-bold shrink-0">✓</span>
-                          <span>{row.aaa}</span>
-                        </div>
-                      </div>
-
-                      {/* Others Card Part */}
-                      <div className="space-y-1">
-                        <span className="text-[9px] font-black text-gray-500 bg-slate-100 px-2 py-0.5 rounded uppercase tracking-wider block w-fit">
-                          {t("diffOthers")}
-                        </span>
-                        <div className="flex items-start gap-1.5 text-xs text-gray-400 font-semibold">
-                          <span className="text-rose-500 font-bold shrink-0">✗</span>
-                          <span>{row.others}</span>
-                        </div>
-                      </div>
-
-                      {/* Expandable Details */}
-                      {isRowExpanded && (
-                        <div className="bg-slate-50 p-3 rounded-lg border border-slate-100 text-[11px] md:text-xs text-gray-600 font-medium leading-relaxed mt-2">
-                          {row.desc}
-                        </div>
-                      )}
+          {/* 6 Stages Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {learningStages.map((stage) => {
+              const Icon = stage.icon;
+              return (
+                <div 
+                  key={stage.step}
+                  className="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md transition-all space-y-4 relative group"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-2xl font-black text-slate-300 group-hover:text-orange-600 transition-colors">
+                      {stage.step}
+                    </span>
+                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center font-bold ${stage.color}`}>
+                      <Icon className="w-5 h-5" />
                     </div>
-                  );
-                })}
-              </div>
-            </>
-          )}
-        </div>
-      </section>
-      </>)}
-
-      {/* 4. Gamified Quiz & Lead Form CTA Segment (Split columns) */}
-      {(parentFocus === "all" || parentFocus === "speed") && (
-        <section 
-          id="speed-challenge-widget-section" 
-          className="py-16 md:py-24 bg-vibrant-cream border-y-4 border-vibrant-dark relative overflow-hidden"
-        >
-        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center lg:items-start">
-            
-            {/* Left Hand: Interactive Widget */}
-            <div className="lg:col-span-6 space-y-6 flex flex-col items-start">
-              <div className="space-y-3 w-full">
-                <div className="inline-flex items-center gap-1.5 text-[10px] text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider font-bold">
-                  <Star className="w-3.5 h-3.5 fill-current text-vibrant-orange animate-spin-slow" /> {t("quizBadge")}
+                  </div>
+                  <div>
+                    <h3 className="font-display font-black text-lg text-slate-900">
+                      {stage.title}
+                    </h3>
+                    <span className="text-[11px] font-bold text-orange-600 block mb-2">
+                      {stage.tagline}
+                    </span>
+                    <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                      {stage.desc}
+                    </p>
+                  </div>
                 </div>
-                <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark tracking-tight leading-tight">
-                  {t("quizTitle")}
-                </h2>
-                <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-                  {t("quizSubtitle")}
-                </p>
-              </div>
-
-              {/* Toggle Button */}
-              <button
-                onClick={() => setShowQuiz(!showQuiz)}
-                className="flex items-center gap-2 bg-vibrant-orange text-white border-2 border-vibrant-dark font-black px-6 py-3 rounded-2xl shadow-[4px_4px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none hover:bg-vibrant-orange/95 transition-all text-xs md:text-sm uppercase tracking-wider cursor-pointer mt-2"
-              >
-                {quizBtnText}
-                {showQuiz ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-
-              {/* Game Element */}
-              {showQuiz && (
-                <div className="w-full transition-all duration-300">
-                  <React.Suspense fallback={<div className="h-64 bg-slate-900/10 rounded-3xl animate-pulse" />}>
-                    <SpeedChallengeWidget />
-                  </React.Suspense>
-                </div>
-              )}
-            </div>
-
-            {/* Right Hand: Lead Generation Form */}
-            <div className="lg:col-span-6">
-              <React.Suspense fallback={<div className="h-96 bg-white border border-slate-100 rounded-3xl animate-pulse" />}>
-                <LeadForm sourceCampaign="Home Page Split Form" />
-              </React.Suspense>
-            </div>
-
+              );
+            })}
           </div>
         </div>
       </section>
-      )}
 
-      {/* 5. Mentor Overview section */}
-      {(parentFocus === "all" || parentFocus === "details") && (
-        <section id="mentor-overview" className="py-20 md:py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
-            <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              {t("mentorBadge")}
+      {/* =========================================================================
+          SECTION 5: CHILD DEVELOPMENT INTELLIGENCE
+          The Eight Development Pillars (Visualization, Working Memory, etc.)
+          ========================================================================= */}
+      <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
+        <div className="text-center space-y-3 max-w-3xl mx-auto mb-14">
+          <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+            Cognitive Growth Pillars
+          </span>
+          <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
+            Child Development Intelligence
+          </h2>
+          <p className="text-slate-600 text-xs md:text-sm font-semibold leading-relaxed">
+            Abacus and Vedic Mathematics training goes far beyond fast calculations. We track learning progress across eight fundamental child development pillars:
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {developmentPillars.map((pillar, idx) => {
+            const Icon = pillar.icon;
+            return (
+              <div
+                key={idx}
+                className="bg-white p-6 rounded-3xl border border-slate-200 shadow-xs hover:border-orange-500 transition-colors space-y-3"
+              >
+                <div className="w-10 h-10 rounded-2xl bg-slate-100 text-slate-800 flex items-center justify-center font-bold">
+                  <Icon className="w-5 h-5 text-orange-600" />
+                </div>
+                <h3 className="font-display font-black text-base text-slate-900">
+                  {pillar.title}
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                  {pillar.desc}
+                </p>
+                <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[10.5px] text-slate-600 font-medium leading-relaxed">
+                  <strong className="text-slate-800 block mb-0.5">How It Is Observed:</strong>
+                  {pillar.observation}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-8 text-center text-xs text-slate-500 font-medium max-w-2xl mx-auto">
+          * Note: Development indicators reflect observed learning progress and cognitive skill tracking; they are not intended as clinical neurological diagnostic scores.
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 5B: PARENT GUIDES & PRACTICAL LEARNING INSIGHTS
+          Featured Parent Guides to address common child math dilemmas
+          ========================================================================= */}
+      <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8 border-t border-slate-200/80">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="space-y-3 max-w-2xl">
+            <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+              Practical Insights for Parents
             </span>
-            <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
-              {t("mentorTitle")}
+            <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
+              Evidence-Based Answers to Common Math Dilemmas
             </h2>
-            <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              {t("mentorSubtitle")}
+            <p className="text-slate-600 text-xs md:text-sm font-semibold">
+              Before choosing a programme, explore how children learn calculation, why finger counting occurs, and how sensory bead arithmetic connects with school exams.
+            </p>
+          </div>
+          <Link
+            to="/parent-guides"
+            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-orange-600 text-white font-bold text-xs px-5 py-3 rounded-full transition-all shadow-sm shrink-0 self-start md:self-auto"
+          >
+            <span>Explore All 5 Parent Guides</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link
+            to="/parent-guides/abacus-vs-vedic-maths"
+            className="bg-white border border-slate-200 hover:border-orange-500 rounded-3xl p-6 shadow-xs hover:shadow-lg transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-2.5 py-1 rounded-full uppercase">
+                Ages 4.5–14
+              </span>
+              <h3 className="font-display font-black text-lg text-slate-900 group-hover:text-orange-600 transition-colors leading-snug">
+                Abacus vs Vedic Maths: What's the Difference?
+              </h3>
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                Learn why tactile bead visualization is best for ages 4.5–9, while Vedic Sutras empower older students with high-speed exam calculation.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-bold text-orange-600 pt-4 group-hover:translate-x-1 transition-transform">
+              Read Guide &rarr;
+            </span>
+          </Link>
+
+          <Link
+            to="/parent-guides/why-children-use-finger-counting"
+            className="bg-white border border-slate-200 hover:border-teal-500 rounded-3xl p-6 shadow-xs hover:shadow-lg transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full uppercase">
+                Early Numeracy
+              </span>
+              <h3 className="font-display font-black text-lg text-slate-900 group-hover:text-teal-700 transition-colors leading-snug">
+                Why Children Count on Fingers & How to Transition
+              </h3>
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                Why finger counting is natural, why scolding backfires, and how the Soroban abacus bridges physical fingers into mental images.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-bold text-teal-700 pt-4 group-hover:translate-x-1 transition-transform">
+              Read Guide &rarr;
+            </span>
+          </Link>
+
+          <Link
+            to="/parent-guides/why-smart-children-make-silly-math-mistakes"
+            className="bg-white border border-slate-200 hover:border-amber-500 rounded-3xl p-6 shadow-xs hover:shadow-lg transition-all group flex flex-col justify-between"
+          >
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full uppercase">
+                Accuracy & Focus
+              </span>
+              <h3 className="font-display font-black text-lg text-slate-900 group-hover:text-amber-800 transition-colors leading-snug">
+                Why Children Make Mistakes Despite Understanding Concepts
+              </h3>
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
+                Understand procedural slips, working memory overload, and a 4-step parent review routine to build lasting calculation accuracy.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-800 pt-4 group-hover:translate-x-1 transition-transform">
+              Read Guide &rarr;
+            </span>
+          </Link>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 6: FOUNDER PROFILE
+          Introduce Neha Patil, verified credentials, MCA, IIVA, teaching philosophy
+          ========================================================================= */}
+      <section id="mentor-overview" className="py-16 md:py-24 bg-slate-50 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
+            <span className="text-[10px] font-bold text-orange-600 bg-orange-100 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+              Dedicated Mentorship
+            </span>
+            <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
+              Personalised Guidance by Neha Patil
+            </h2>
+            <p className="text-slate-600 text-xs md:text-sm font-semibold">
+              Meet our Founder and Academic Director, dedicated to small-batch micro-teaching in Wakad, Pune.
             </p>
           </div>
 
-          <React.Suspense fallback={<div className="h-64 bg-slate-50 rounded-3xl animate-pulse" />}>
+          <React.Suspense fallback={<div className="h-64 bg-white rounded-3xl animate-pulse" />}>
             <TeacherProfile />
           </React.Suspense>
         </div>
       </section>
-      )}
 
-      {/* 6. Testimonials Row carousel */}
-      {(parentFocus === "all" || parentFocus === "fear" || parentFocus === "speed") && (
-        <section id="parent-testimonials" className="py-20 md:py-28 bg-[#FFFDF9] border-t-4 border-vibrant-dark relative">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
-            <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              {t("testimonialsBadge")}
-            </span>
-            <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
-              {t("testimonialsTitle")}
+      {/* =========================================================================
+          SECTION 7: STUDENT ACHIEVEMENTS
+          15th National Championship 2026 case study, 56 participants across 15 levels
+          ========================================================================= */}
+      <section id="achievements-section" className="py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          
+          <div className="lg:col-span-6 space-y-6">
+            <div className="inline-flex items-center gap-2 bg-amber-400/20 text-amber-800 border border-amber-400/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+              <Trophy className="w-3.5 h-3.5 text-amber-600" />
+              <span>National Competition Excellence</span>
+            </div>
+            <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
+              15th National Level Championship 2026: 56 Champions from Wakad
             </h2>
-            <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-              {t("testimonialsSubtitle")}
+            <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">
+              At the 15th National Level Abacus &amp; Vedic Mathematics Championship, 56 dedicated students from Arnav Abacus Academy represented our Wakad center across 15 competitive levels.
+            </p>
+            <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">
+              Competing against hundreds of young mathematicians nationwide under AVAS and IIVA benchmarks, our students achieved top podium spots, championship trophies, and gold medals.
+            </p>
+
+            <div className="grid grid-cols-2 gap-4 pt-2">
+              <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+                <span className="font-display font-black text-3xl text-amber-600 block">56</span>
+                <span className="text-xs font-bold text-slate-800">Student Participants</span>
+                <span className="text-[10.5px] text-slate-500 block">Wakad Center Contingent</span>
+              </div>
+              <div className="bg-orange-50 p-4 rounded-2xl border border-orange-200">
+                <span className="font-display font-black text-3xl text-orange-600 block">15</span>
+                <span className="text-xs font-bold text-slate-800">Mastery Levels</span>
+                <span className="text-[10.5px] text-slate-500 block">From Foundation to Advance</span>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <Link
+                to="/showcase"
+                className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full inline-flex items-center gap-2 shadow-sm transition-all"
+              >
+                <span>View Full Student Hall of Fame</span>
+                <ArrowRight className="w-4 h-4 text-amber-400" />
+              </Link>
+            </div>
+          </div>
+
+          <div className="lg:col-span-6 space-y-4">
+            <div className="rounded-3xl overflow-hidden border border-slate-200 shadow-xl bg-slate-100 aspect-video relative group">
+              <img
+                src="/competition_glimpses_collage.jpg"
+                alt="15th National Level Abacus Championship 2026 - Arnav Abacus Academy Students"
+                className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent flex items-end p-6">
+                <p className="text-white text-xs sm:text-sm font-bold">
+                  AAA students celebrating their national championship trophies with Founder Neha Patil
+                </p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="rounded-2xl overflow-hidden border border-slate-200 aspect-video bg-slate-100">
+                <img
+                  src="/arnav_patil_international_1st_2025.webp"
+                  alt="International Abacus Champion Arnav Patil"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="rounded-2xl overflow-hidden border border-slate-200 aspect-video bg-slate-100">
+                <img
+                  src="/seven_runner_up_stars_2025.webp"
+                  alt="State Level Runner Up Stars 2025"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 8: PARENT TESTIMONIALS
+          Authentic feedback from verified Wakad & Pune parents
+          ========================================================================= */}
+      <section id="parent-testimonials" className="py-16 md:py-24 bg-slate-50 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
+            <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+              Parent Experiences
+            </span>
+            <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
+              Trusted by 65+ Wakad Parents
+            </h2>
+            <p className="text-slate-600 text-xs md:text-sm font-semibold">
+              Read how personalized mentorship transformed calculation speed, homework discipline, and exam confidence. Disclosures under CCPA Coaching Guidelines 2024: Testimonials reflect genuine experiences of enrolled students in paid programs.
             </p>
           </div>
 
-          <React.Suspense fallback={<div className="h-64 bg-slate-50 rounded-3xl animate-pulse" />}>
+          <React.Suspense fallback={<div className="h-64 bg-white rounded-3xl animate-pulse" />}>
             <TestimonialCarousel />
           </React.Suspense>
         </div>
       </section>
-      )}
 
-      {/* 6.5. Featured Parent Guides & Blog Insights */}
-      <section id="featured-parent-guides" className="py-20 md:py-24 bg-gradient-to-b from-[#FFFDF9] to-[#FFF8EE] border-t-4 border-vibrant-dark">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div className="space-y-3 max-w-2xl">
-              <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-                💡 AAA Knowledge Hub
-              </span>
-              <h2 className="font-display font-black text-3xl sm:text-4xl text-vibrant-dark leading-tight">
-                Featured Parenting Guides &amp; Math Insights
-              </h2>
-              <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-                Explore expert articles by Neha Patil on overcoming math anxiety, speed calculation secrets, and cognitive child brain development.
-              </p>
-            </div>
-            <div>
-              <Link
-                to="/blog"
-                className="inline-flex items-center gap-2 bg-vibrant-dark hover:bg-vibrant-dark/95 text-white font-black text-xs uppercase tracking-wider px-6 py-3.5 rounded-2xl shadow-md transition-all active:scale-95 shrink-0"
+      {/* =========================================================================
+          SECTION 9: FAQS
+          Comprehensive Parent FAQs on eligibility, batch ratio, methodology, etc.
+          ========================================================================= */}
+      <section id="faq-section" className="py-16 md:py-24 max-w-4xl mx-auto px-4 md:px-8">
+        <div className="text-center space-y-3 mb-12">
+          <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+            Clear Answers
+          </span>
+          <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-slate-600 text-xs md:text-sm font-semibold">
+            Everything you need to know about our programmes, batches, and teaching methodology.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {homeFaqs.map((faq, idx) => {
+            const isOpen = activeFaq === idx;
+            return (
+              <div 
+                key={idx}
+                className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs transition-colors"
               >
-                <span>Explore All Articles</span>
-                <ArrowRight className="w-4 h-4 text-vibrant-orange" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Blog Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {INITIAL_BLOG_POSTS.slice(0, 3).map((post) => (
-              <Link
-                key={post.id}
-                to={`/blog/${post.slug}`}
-                className="group flex flex-col bg-white border-2 border-slate-200 hover:border-vibrant-orange rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
-              >
-                <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
-                  <img
-                    src={post.coverImage}
-                    alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <div className="absolute top-3 left-3 bg-vibrant-dark/90 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full backdrop-blur-xs">
-                    {post.category}
+                <button
+                  type="button"
+                  onClick={() => setActiveFaq(isOpen ? null : idx)}
+                  className="w-full text-left p-5 md:p-6 flex justify-between items-center gap-4 cursor-pointer"
+                  aria-expanded={isOpen}
+                >
+                  <span className="font-display font-bold text-sm md:text-base text-slate-900">
+                    {faq.q}
+                  </span>
+                  {isOpen ? (
+                    <ChevronUp className="w-5 h-5 text-orange-600 shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-slate-400 shrink-0" />
+                  )}
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-6 md:px-6 md:pb-6 text-xs md:text-sm text-slate-600 font-medium leading-relaxed border-t border-slate-100 pt-3">
+                    {faq.a}
                   </div>
-                </div>
-
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-[11px] font-bold text-slate-600">
-                      <Clock className="w-3.5 h-3.5 text-vibrant-orange" />
-                      <span>{post.readTime}</span>
-                      <span>•</span>
-                      <span>By {post.author.name}</span>
-                    </div>
-                    <h3 className="font-display font-black text-base md:text-lg text-vibrant-dark group-hover:text-vibrant-orange transition-colors line-clamp-2 leading-snug">
-                      {post.title}
-                    </h3>
-                    <p className="text-gray-600 text-xs font-medium line-clamp-3 leading-relaxed">
-                      {post.excerpt}
-                    </p>
-                  </div>
-
-                  <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-black text-vibrant-orange">
-                    <span className="group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                      Read Full Guide <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-                    <span className="text-[10px] text-slate-600 font-bold">
-                      {post.publishedAt}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* 7. Wakad Center Address & Google Map Contact Block */}
-      {(parentFocus === "all" || parentFocus === "details") && (
-        <section id="location-contact" className="py-20 md:py-28 bg-white border-t-4 border-vibrant-dark">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+      {/* =========================================================================
+          SECTION 10: FINAL CONVERSION SECTION
+          "Give Your Child a Stronger Start in Mathematics"
+          Book Counselling, WhatsApp AAA, Full Wakad Location
+          ========================================================================= */}
+      <section className="py-16 md:py-24 bg-slate-900 text-white border-t border-slate-800 relative overflow-hidden">
+        <div className="absolute inset-0 bg-radial from-orange-500/10 via-transparent to-transparent pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            {/* Column Left: Map Details */}
-            <div className="lg:col-span-5 space-y-6">
-              <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-                {t("locationBadge")}
+            {/* Left Column: Direct Call to Action */}
+            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
+              <span className="inline-flex items-center gap-1.5 bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Admissions Open for New Batches</span>
               </span>
-              <h2 className="font-display font-black text-3.5xl text-vibrant-dark tracking-tight leading-tight">
-                {t("locationTitle")}
+
+              <h2 className="font-display font-black text-3xl sm:text-5xl tracking-tight leading-tight text-white">
+                Give Your Child a Stronger Start in Mathematics.
               </h2>
-              <p className="text-gray-500 text-xs md:text-sm leading-relaxed font-semibold">
-                {t("locationSubtitle")}
+
+              <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed font-medium">
+                Connect directly with Founder Neha Patil for an encouraging, educator-led Personalised Learning Discovery Session. Discover your child's arithmetic readiness, bead visualization aptitude, and focus in small batches (maximum 5 students per batch).
               </p>
 
-      {/* Local Wakad Hub vs Global Online Batch Comparison Section */}
-      <div className="py-12 bg-white rounded-3xl border-2 border-vibrant-dark/20 p-6 md:p-8 mt-10">
-        <div className="text-center space-y-2 mb-8">
-          <span className="text-[10px] font-black text-white bg-vibrant-orange px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-            {t("quizExclusiveOffer").split("•")[0].trim()}
-          </span>
-          <h3 className="font-display font-black text-2xl text-vibrant-dark">
-            {t("formatTitle")}
-          </h3>
-          <p className="text-gray-500 text-xs md:text-sm font-semibold max-w-xl mx-auto">
-            {t("formatSubtitle")}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Column 1: Wakad Hub */}
-          <div className="bg-orange-50/20 border-2 border-orange-100 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300">
-            <div>
-              <span className="text-[9px] font-black text-white bg-vibrant-orange px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-3">
-                {t("formatLocalBadge")}
-              </span>
-              <h4 className="font-black text-base text-vibrant-dark mb-2">
-                {t("formatLocalTitle")}
-              </h4>
-              <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-3">
-                {t("formatLocalDesc")}
-              </p>
-              
-              <button 
-                onClick={() => setShowLocalDetails(!showLocalDetails)}
-                className="flex items-center gap-1 text-[10px] font-black text-vibrant-orange hover:text-vibrant-orange/80 transition-colors uppercase tracking-wider mb-4"
-              >
-                {showLocalDetails ? (
-                  <>Show Less <ChevronUp className="w-3.5 h-3.5" /></>
-                ) : (
-                  <>Explore Details <ChevronDown className="w-3.5 h-3.5" /></>
-                )}
-              </button>
-
-              {showLocalDetails && (
-                <motion.ul 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="space-y-1.5 text-xs font-bold text-gray-500 mb-6 border-t border-dashed border-orange-200/50 pt-3"
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                <button
+                  type="button"
+                  onClick={() => handleOpenCounselling("home_final_conversion_counselling")}
+                  className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-8 py-4 rounded-full shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <li className="flex items-center gap-1.5"><span className="text-vibrant-orange">✔</span> {t("formatLocalB1")}</li>
-                  <li className="flex items-center gap-1.5"><span className="text-vibrant-orange">✔</span> {t("formatLocalB2")}</li>
-                  <li className="flex items-center gap-1.5"><span className="text-vibrant-orange">✔</span> {t("formatLocalB3")}</li>
-                </motion.ul>
-              )}
-            </div>
-            <a
-              href="https://maps.app.goo.gl/A7QVndN4donCTM4P9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-vibrant-dark text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block mt-2"
-            >
-              {t("formatLocalBtn")}
-            </a>
-          </div>
+                  <span>Book a Discovery Session</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
 
-          {/* Column 2: Global Online */}
-          <div className="bg-teal-50/20 border-2 border-teal-100 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300">
-            <div>
-              <span className="text-[9px] font-black text-white bg-vibrant-teal px-2.5 py-0.5 rounded-full uppercase tracking-wider inline-block mb-3">
-                {t("formatOnlineBadge")}
-              </span>
-              <h4 className="font-black text-base text-vibrant-dark mb-2">
-                {t("formatOnlineTitle")}
-              </h4>
-              <p className="text-gray-600 text-xs font-semibold leading-relaxed mb-3">
-                {t("formatOnlineDesc")}
-              </p>
-              
-              <button 
-                onClick={() => setShowOnlineDetails(!showOnlineDetails)}
-                className="flex items-center gap-1 text-[10px] font-black text-vibrant-teal hover:text-vibrant-teal/80 transition-colors uppercase tracking-wider mb-4"
-              >
-                {showOnlineDetails ? (
-                  <>Show Less <ChevronUp className="w-3.5 h-3.5" /></>
-                ) : (
-                  <>Explore Details <ChevronDown className="w-3.5 h-3.5" /></>
-                )}
-              </button>
-
-              {showOnlineDetails && (
-                <motion.ul 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="space-y-1.5 text-xs font-bold text-gray-500 mb-6 border-t border-dashed border-teal-200/50 pt-3"
+                <button
+                  type="button"
+                  onClick={() => handleWhatsAppChat("home_final_conversion_whatsapp")}
+                  className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-7 py-4 rounded-full shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <li className="flex items-center gap-1.5"><span className="text-vibrant-teal">✔</span> {t("formatOnlineB1")}</li>
-                  <li className="flex items-center gap-1.5"><span className="text-vibrant-teal">✔</span> {t("formatOnlineB2")}</li>
-                  <li className="flex items-center gap-1.5"><span className="text-vibrant-teal">✔</span> {t("formatOnlineB3")}</li>
-                </motion.ul>
-              )}
-            </div>
-            <a
-              href="https://wa.me/919021924968?text=Hello!%20I%2520would%20like%20to%20inquire%20about%20your%20Online%20International%20Abacus%20batches."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-vibrant-teal text-white text-center font-black px-4 py-2.5 rounded-xl text-xs uppercase tracking-wider block mt-2"
-            >
-              {t("formatOnlineBtn")}
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Video Demonstration Reel Showcase */}
-      <div className="py-12 bg-white rounded-3xl border-2 border-vibrant-dark/20 p-6 md:p-8 mt-10">
-        <div className="text-center space-y-2 mb-6">
-          <span className="text-[10px] font-black text-white bg-vibrant-orange px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-            {t("videoBadge")}
-          </span>
-          <h3 className="font-display font-black text-2xl text-vibrant-dark">
-            {t("videoTitle")}
-          </h3>
-          <p className="text-gray-500 text-xs md:text-sm font-semibold max-w-xl mx-auto">
-            {t("videoSubtitle")}
-          </p>
-        </div>
-
-        <a 
-          href="https://www.instagram.com/reel/DYPkbDEN5U1/?igsh=MXR5ZHJ1NWEydHVmMA=="
-          target="_blank"
-          rel="noopener noreferrer"
-          className="max-w-2xl mx-auto bg-slate-950 rounded-2xl relative flex flex-col items-center justify-center text-center p-6 group cursor-pointer overflow-hidden border border-slate-800 aspect-video block"
-        >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-300"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent"></div>
-          
-          <div className="relative z-10 w-14 h-14 bg-vibrant-orange text-white rounded-full flex items-center justify-center shadow-lg border-2 border-white group-hover:scale-110 transition-transform mb-3">
-            <span className="text-xl ml-1">▶</span>
-          </div>
-          <span className="relative z-10 text-white font-display font-black text-base md:text-lg leading-tight">
-            {t("videoReelTitle")}
-          </span>
-          <span className="relative z-10 text-gray-300 text-xs mt-1 font-bold">
-            {t("videoReelSub")}
-          </span>
-        </a>
-      </div>
-
-              {/* Safe Drop-off & Parking Tips */}
-              <div className="bg-teal-50 border border-dashed border-vibrant-teal/30 text-vibrant-teal text-xs font-bold p-3.5 rounded-2xl flex items-center gap-2">
-                <span>{t("locationParkingTips")}</span>
+                  <span>WhatsApp AAA</span>
+                </button>
               </div>
 
-              <div className="space-y-4 text-xs md:text-sm text-gray-700">
-                <div className="flex items-start gap-3 bg-vibrant-cream p-5 rounded-2xl border-2 border-vibrant-dark">
-                  <MapPin className="w-5 h-5 text-vibrant-orange shrink-0 mt-0.5" />
+              {/* Address card */}
+              <div className="pt-4 space-y-3 text-left">
+                <div className="flex items-start gap-3 bg-slate-800/80 p-4 rounded-2xl border border-slate-700 text-xs text-slate-300">
+                  <MapPin className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-vibrant-dark font-black mb-1">{t("homeCenterAddress")}</strong>
-                    <span className="text-xs text-gray-600 font-medium leading-relaxed block">
-                      {t("footerAddress")}
-                    </span>
+                    <strong className="text-white block mb-0.5">Wakad Center Location:</strong>
+                    Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune, Maharashtra 411057.
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 bg-vibrant-cream p-4.5 py-3.5 rounded-2xl border-2 border-vibrant-dark">
-                  <Phone className="w-5 h-5 text-vibrant-teal shrink-0" />
-                  <div>
-                    <span className="text-xs text-slate-600 font-bold block">{t("homeCallSupport")}</span>
-                    <a href="tel:+919021924968" onClick={handleMapCtaClick} className="font-black text-vibrant-dark hover:text-vibrant-orange block text-sm">
-                      +91 90219 24968
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 bg-vibrant-cream p-4.5 py-3.5 rounded-2xl border-2 border-vibrant-dark">
-                  <Mail className="w-5 h-5 text-vibrant-orange shrink-0" />
-                  <div>
-                    <span className="text-xs text-slate-600 font-bold block">{t("homeEmailInquiries")}</span>
-                    <a href="mailto:nehaatharv@gmail.com" className="font-black text-vibrant-dark hover:text-vibrant-orange block text-sm">
-                      nehaatharv@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                {/* Serving Neighborhoods & Schools */}
-                <div className="bg-white p-4 rounded-2xl border border-slate-200">
-                  <span className="text-[11px] font-black text-slate-800 uppercase tracking-wider block mb-2">
-                    📍 Conveniently Located For Students From:
+                <div className="flex items-center gap-4 text-xs text-slate-300">
+                  <span className="flex items-center gap-1.5">
+                    <Phone className="w-4 h-4 text-emerald-400" />
+                    <a href="tel:+919021924968" className="hover:text-white font-bold">+91 90219 24968</a>
                   </span>
-                  <div className="flex flex-wrap gap-1.5 text-[11px] font-bold text-slate-700">
-                    <span className="bg-orange-50 text-orange-700 px-2.5 py-1 rounded-lg border border-orange-200">Wakad</span>
-                    <span className="bg-amber-50 text-amber-800 px-2.5 py-1 rounded-lg border border-amber-200">Pimple Saudagar</span>
-                    <span className="bg-teal-50 text-teal-700 px-2.5 py-1 rounded-lg border border-teal-200">Rahatani</span>
-                    <span className="bg-blue-50 text-blue-700 px-2.5 py-1 rounded-lg border border-blue-200">Hinjawadi Phases 1-3</span>
-                    <span className="bg-purple-50 text-purple-700 px-2.5 py-1 rounded-lg border border-purple-200">Thergaon / Tathawade</span>
-                    <span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-lg border border-emerald-200">Wisdom World / Park Street Area</span>
-                  </div>
+                  <span>•</span>
+                  <span className="flex items-center gap-1.5">
+                    <Mail className="w-4 h-4 text-amber-400" />
+                    <a href="mailto:nehaatharv@gmail.com" className="hover:text-white font-bold">nehaatharv@gmail.com</a>
+                  </span>
                 </div>
               </div>
 
-              <div>
-                <a
-                  href="https://maps.app.goo.gl/A7QVndN4donCTM4P9"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-black text-vibrant-orange hover:text-vibrant-orange/95 uppercase tracking-widest bg-vibrant-cream border-2 border-vibrant-dark px-4 py-2 rounded-xl text-center shadow-[0_2px_0_0_#1A2E35] active:translate-y-0.5 active:shadow-none transition-all"
-                >
-                  {t("homeViewDirections")} <ArrowRight className="w-4 h-4 text-vibrant-orange" />
-                </a>
-              </div>
             </div>
 
-            {/* Column Right: Map Iframe wrapper */}
-            <div className="lg:col-span-7 h-[350px] md:h-[450px] bg-white rounded-[32px] border-4 border-vibrant-dark overflow-hidden shadow-[6px_6px_0_0_#1A2E35] md:shadow-[12px_12px_0_0_#1A2E35] relative group">
-              <iframe 
-                src="https://maps.google.com/maps?q=18.5975866,73.7810869&z=17&output=embed" 
-                className="w-full h-full border-0" 
-                allowFullScreen={true}
-                loading="lazy" 
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Arnav Abacus Academy Center Location"
-              />
-              <div className="absolute bottom-4 left-4 bg-vibrant-dark text-white text-[10px] font-black px-3.5 py-1.5 rounded-full backdrop-blur-sm tracking-widest uppercase shadow-md border border-slate-700/50">
-                {t("homeOppCreativeCameo")}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* 7.5. Brochure & Speed Math SOP User Manual Highlight Banner */}
-      <section className="py-14 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-t-4 border-vibrant-dark text-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2 max-w-2xl text-center md:text-left">
-            <span className="text-[10px] font-black text-amber-400 bg-amber-400/10 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block border border-amber-400/20">
-              📖 Official Resource & User Manual
-            </span>
-            <h2 className="font-display font-black text-2xl md:text-3xl text-white tracking-tight">
-              Academy Brochure & Speed Math SOP User Manual
-            </h2>
-            <p className="text-xs md:text-sm text-slate-300 font-semibold leading-relaxed">
-              Download our complete 2-Page A4 PDF Guide covering our NEP 2020 cognitive math framework, student achievements, and the 3-Mode Speed Math Practice SOP for parents & educators.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full sm:w-auto">
-            <Link
-              to="/brochure?tab=manual"
-              className="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-white font-black px-6 py-3.5 rounded-2xl border border-slate-700 transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-md"
-            >
-              <BookOpen className="w-4 h-4 text-amber-400" />
-              View Online Manual
-            </Link>
-            <button
-              onClick={() => {
-                import("../lib/brochure").then(({ generateBrochurePDF }) => {
-                  generateBrochurePDF(language);
-                });
-              }}
-              className="w-full sm:w-auto bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-black px-6 py-3.5 rounded-2xl shadow-lg transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300"
-            >
-              <Download className="w-4 h-4 animate-bounce" />
-              Download 2-Page PDF
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. Call to Action Lead Form Section */}
-      <section className="py-20 md:py-28 bg-[#FF6321] text-white border-t-4 border-vibrant-dark relative">
-        <div className="max-w-4xl mx-auto px-4 md:px-8 text-center space-y-6 relative z-10">
-          <div className="inline-flex items-center gap-1.5 bg-white/20 border border-white/20 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-            {t("heroBadge").replace("⚡", "").trim()}
-          </div>
-          <h2 className="font-display font-black text-3xl md:text-5xl tracking-tight leading-tight text-white">
-            {t("ctaTitle")}
-          </h2>
-          <p className="text-[#FFF2E0] text-xs md:text-sm max-w-2xl mx-auto leading-relaxed font-bold">
-            {t("ctaSubtitle")}
-          </p>
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="https://wa.me/919021924968"
-              onClick={() => trackDemoClick("home_bottom_cta_wa")}
-              className="w-full sm:w-auto bg-vibrant-gold text-vibrant-dark border-2 border-vibrant-dark font-black px-8 py-5 rounded-2xl shadow-[0_6px_0_0_#1A2E35] active:translate-y-1 active:shadow-none hover:scale-[1.01] transition-all text-center"
-            >
-              {t("homeBookTrialWhatsapp")}
-            </a>
-            <Link
-              to="/programs"
-              className="text-xs uppercase font-black text-white tracking-widest hover:underline flex items-center gap-1"
-            >
-              {t("homeExamineCourses")} <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Floating Championship Blog Announcement Toast (Option A) */}
-      <AnimatePresence>
-        {showBlogToast && (
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.92 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.92 }}
-            transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            className="fixed bottom-6 right-4 sm:right-6 z-50 max-w-sm sm:max-w-md bg-slate-900/95 backdrop-blur-md text-white p-3.5 sm:p-4 rounded-2xl shadow-2xl border-2 border-amber-400/50 shadow-amber-500/10 flex items-start sm:items-center gap-3.5 group hover:border-amber-400 transition-all"
-            role="alert"
-          >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shrink-0 shadow-md text-slate-950 font-black">
-              <Trophy className="w-5 h-5 text-slate-950 animate-pulse" />
-            </div>
-
-            <div className="flex-1 min-w-0 pr-1">
-              <div className="flex items-center gap-1.5 mb-0.5">
-                <span className="text-[9px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded font-mono">
-                  Official Exam Center
+            {/* Right Column: Embedded Counselling Form */}
+            <div className="lg:col-span-6 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100">
+              <div className="mb-4">
+                <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  Direct Parent Inquiry
                 </span>
-                <span className="text-[10px] text-amber-300 font-bold">Wakad, Pune</span>
+                <h3 className="text-xl font-black text-slate-900 mt-2">
+                  Book a Personalised Discovery Session
+                </h3>
+                <p className="text-xs text-slate-500 font-medium">
+                  We'll review your child's age group and recommend the ideal learning pathway.
+                </p>
               </div>
-              <p className="text-xs font-black text-white leading-tight truncate">
-                National Championship 2026
-              </p>
-              <p className="text-[11px] text-slate-300 font-medium leading-snug line-clamp-2 mt-0.5">
-                56 AAA students competing under AVAS & IIVA Book of Records. Read the complete story!
-              </p>
-              <div className="mt-2 flex items-center gap-2">
-                <Link
-                  to="/blog/national-level-abacus-vedic-maths-championship-2026"
-                  onClick={() => trackDemoClick("home_championship_toast_read")}
-                  className="inline-flex items-center gap-1 text-[11px] font-black text-amber-400 hover:text-amber-300 transition-colors uppercase tracking-wider underline underline-offset-2"
-                >
-                  Read Story <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
+              <LeadForm sourceCampaign="home_final_conversion_section" />
             </div>
 
-            <button
-              onClick={handleDismissToast}
-              aria-label="Dismiss notification"
-              className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition-colors shrink-0 cursor-pointer"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      </section>
+
+      {/* Floating Counselling Booking Modal */}
+      <DemoBookingModal
+        isOpen={isCounsellingModalOpen}
+        onClose={() => setIsCounsellingModalOpen(false)}
+        source="home_counselling_cta"
+      />
+
     </div>
   );
 }

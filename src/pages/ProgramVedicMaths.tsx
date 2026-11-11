@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import DemoBookingModal from "../components/DemoBookingModal";
 import { Link } from "react-router-dom";
 import { 
   CheckCircle, 
@@ -20,11 +21,12 @@ import {
   Target
 } from "lucide-react";
 import LeadForm from "../components/LeadForm";
-import { trackProgramView } from "../lib/analytics";
+import { trackProgramView, trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function ProgramVedicMaths() {
   const { t } = useLanguage();
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   useEffect(() => {
     trackProgramView("Vedic Maths", "canonical_program_hub");
@@ -115,7 +117,7 @@ export default function ProgramVedicMaths() {
               {/* Quick Spec Pills */}
               <div className="flex flex-wrap gap-2.5 pt-2">
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-teal-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <Clock className="w-3.5 h-3.5" /> Target Age: 10+ Years (Class 5–10)
+                  <Clock className="w-3.5 h-3.5" /> Target Age: 9 to 14 Years (Grades 5–10)
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-amber-300 text-xs px-3 py-1.5 rounded-xl font-bold">
                   <Zap className="w-3.5 h-3.5" /> Speed Sutras & Checking Habits
@@ -125,11 +127,25 @@ export default function ProgramVedicMaths() {
                 </span>
               </div>
 
+              <div className="pt-3 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackDemoClick("vedic_hero_discovery_cta");
+                    setIsDemoModalOpen(true);
+                  }}
+                  className="bg-teal-600 hover:bg-teal-700 text-white font-black text-xs uppercase px-6 py-3.5 rounded-full shadow-md transition-all inline-flex items-center gap-2 cursor-pointer"
+                >
+                  <span>Book a Discovery Session</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
               {/* Academy Location Snippet */}
               <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 text-xs text-slate-300 flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-vibrant-orange shrink-0 mt-0.5" />
                 <span>
-                  <strong>Classroom Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune.
+                  <strong>Classroom Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
                 </span>
               </div>
             </div>
@@ -138,13 +154,13 @@ export default function ProgramVedicMaths() {
             <div className="lg:col-span-5 bg-white text-slate-900 rounded-3xl p-6 md:p-8 shadow-2xl border-4 border-vibrant-dark">
               <div className="mb-4">
                 <span className="text-[10px] font-black text-vibrant-teal bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                  Book A Trial Session
+                  Personalised Learning
                 </span>
                 <h2 className="text-xl font-black text-vibrant-dark mt-2">
-                  Complimentary Vedic Math Assessment
+                  AAA Personalised Learning Discovery Session
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
-                  Assess your child's calculation speed, rough-work habits, and exam confidence with Mentor Neha Patil.
+                  Meet Founder Neha Patil for an encouraging, educator-led exploration of numerical agility, mental cross-multiplication, and error-verification habits.
                 </p>
               </div>
               <LeadForm sourceCampaign="programs_vedic_maths_page" defaultProgram="Vedic Maths" />
@@ -460,6 +476,12 @@ export default function ProgramVedicMaths() {
           </div>
         </div>
       </section>
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        defaultProgram="Vedic Mathematics (Ages 9–14)"
+        source="program_page_vedic_maths"
+      />
     </div>
   );
 }

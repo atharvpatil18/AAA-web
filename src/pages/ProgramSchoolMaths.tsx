@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import DemoBookingModal from "../components/DemoBookingModal";
 import { Link } from "react-router-dom";
 import { 
   CheckCircle, 
@@ -20,11 +21,12 @@ import {
   Trophy
 } from "lucide-react";
 import LeadForm from "../components/LeadForm";
-import { trackProgramView } from "../lib/analytics";
+import { trackProgramView, trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function ProgramSchoolMaths() {
   const { t } = useLanguage();
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   useEffect(() => {
     trackProgramView("School Maths", "canonical_program_hub");
@@ -125,11 +127,25 @@ export default function ProgramSchoolMaths() {
                 </span>
               </div>
 
+              <div className="pt-3 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    trackDemoClick("school_hero_discovery_cta");
+                    setIsDemoModalOpen(true);
+                  }}
+                  className="bg-amber-600 hover:bg-amber-700 text-white font-black text-xs uppercase px-6 py-3.5 rounded-full shadow-md transition-all inline-flex items-center gap-2 cursor-pointer"
+                >
+                  <span>Book a Discovery Session</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
               {/* Academy Location Snippet */}
               <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 text-xs text-slate-300 flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-vibrant-orange shrink-0 mt-0.5" />
                 <span>
-                  <strong>Classroom Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune.
+                  <strong>Classroom Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
                 </span>
               </div>
             </div>
@@ -141,7 +157,7 @@ export default function ProgramSchoolMaths() {
                   Book A Trial Session
                 </span>
                 <h2 className="text-xl font-black text-vibrant-dark mt-2">
-                  Academic Math Consultation
+                  AAA Personalised Learning Discovery Session
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
                   Review your child's syllabus needs, concept clarity, and competitive exam goals with our mentors.
@@ -417,7 +433,7 @@ export default function ProgramSchoolMaths() {
               to="/mentor"
               className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase px-5 py-3.5 rounded-2xl text-center shadow-md transition-all flex items-center justify-center gap-2"
             >
-              Meet Mentor Neha Patil <ArrowRight className="w-4 h-4" />
+              Meet Founder Neha Patil (Certified Trainer of Abacus & Vedic Mathematics) <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               to="/contact"
@@ -460,6 +476,12 @@ export default function ProgramSchoolMaths() {
           </div>
         </div>
       </section>
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        defaultProgram="School Mathematics (Grades 1–10)"
+        source="program_page_school_maths"
+      />
     </div>
   );
 }

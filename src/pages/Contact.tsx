@@ -132,6 +132,30 @@ export default function Contact() {
                 </div>
               </div>
 
+              {/* Parent & Customer Grievance Contact (DIR-03 / CAP-03) */}
+              <div className="bg-[#FFFDF9] border-4 border-vibrant-dark rounded-[32px] p-6 shadow-[8px_8px_0_0_#1A2E35] flex items-start gap-4">
+                <div className="w-12 h-12 bg-amber-500 text-white border-2 border-vibrant-dark rounded-xl flex items-center justify-center shrink-0">
+                  <CheckCircle className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-display font-black text-sm text-vibrant-dark mb-1">
+                    Parent & Customer Grievance Contact
+                  </h3>
+                  <p className="text-xs text-gray-700 font-bold leading-relaxed">
+                    Nitin Patil • Operations & Grievance Lead
+                  </p>
+                  <a
+                    href="tel:+919021924968"
+                    className="font-black text-vibrant-dark hover:text-vibrant-orange text-sm block mt-0.5"
+                  >
+                    +91 90219 24968
+                  </a>
+                  <span className="text-[10px] text-gray-500 font-bold block mt-0.5">
+                    Wakad Center, Pune • Available Mon–Sat, 9:30 AM – 7:30 PM
+                  </span>
+                </div>
+              </div>
+
               {/* Operating Hours */}
               <div className="bg-vibrant-dark text-white rounded-[32px] p-6 flex items-start gap-4 border-4 border-vibrant-dark shadow-[8px_8px_0_0_#E0FAF5]">
                 <div className="w-12 h-12 bg-[#233C45] text-vibrant-gold border-2 border-slate-700 rounded-xl flex items-center justify-center shrink-0">

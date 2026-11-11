@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ApprovedEmailRecord, AccessFeatureMode } from "../types";
+import { ApprovedEmailRecord, AccessFeatureMode, EnrolledSiblingSummary } from "../types";
 
 export const ACCESS_DB_KEY = "aaa_approved_email_access_db";
 export const ACCESS_UPDATED_EVENT = "aaa_access_updated";
@@ -305,16 +305,41 @@ export async function syncApprovedRecordsFromCloud(): Promise<ApprovedEmailRecor
 
 /**
  * Saves or updates an approved email record in localStorage and cloud storage.
+ * Preserves multi-student sibling profiles when saving records for shared parent emails.
  */
 export function saveApprovedRecord(record: ApprovedEmailRecord): void {
   const records = getAllApprovedRecords();
   const cleanEmail = record.email.trim().toLowerCase();
   const index = records.findIndex((r) => r.email.trim().toLowerCase() === cleanEmail);
 
+  let mergedStudents = record.students ? [...record.students] : [];
+
+  if (index >= 0) {
+    const existing = records[index];
+    if (existing.students && existing.students.length > 0) {
+      const studentMap = new Map<string, EnrolledSiblingSummary>();
+      for (const s of existing.students) {
+        studentMap.set(s.studentUid, s);
+      }
+      for (const s of mergedStudents) {
+        studentMap.set(s.studentUid, s);
+      }
+      mergedStudents = Array.from(studentMap.values());
+    } else if (existing.studentName && (!record.students || record.students.length === 0)) {
+      if (existing.studentName !== record.studentName) {
+        mergedStudents = [
+          { studentUid: "AAA-STD-LEGACY-01", studentName: existing.studentName },
+          { studentUid: "AAA-STD-LEGACY-02", studentName: record.studentName || cleanEmail.split("@")[0] }
+        ];
+      }
+    }
+  }
+
   const normalizedRecord: ApprovedEmailRecord = {
     ...record,
     email: cleanEmail,
     studentName: record.studentName?.trim() || cleanEmail.split("@")[0],
+    students: mergedStudents.length > 0 ? mergedStudents : undefined,
   };
 
   if (index >= 0) {
@@ -326,6 +351,21 @@ export function saveApprovedRecord(record: ApprovedEmailRecord): void {
   localStorage.setItem(ACCESS_DB_KEY, JSON.stringify(records));
   window.dispatchEvent(new CustomEvent(ACCESS_UPDATED_EVENT));
   pushApprovedRecordsToCloud(records);
+}
+
+/**
+ * Retrieves all enrolled sibling profiles associated with a parent email.
+ */
+export function getEnrolledStudentsForEmail(email?: string): EnrolledSiblingSummary[] {
+  const record = getApprovedRecord(email);
+  if (!record) return [];
+  if (record.students && record.students.length > 0) {
+    return record.students;
+  }
+  if (record.studentName) {
+    return [{ studentUid: "AAA-STD-PRIMARY", studentName: record.studentName }];
+  }
+  return [];
 }
 
 /**
