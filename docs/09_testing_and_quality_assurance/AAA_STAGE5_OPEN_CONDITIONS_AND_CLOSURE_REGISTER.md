@@ -59,21 +59,18 @@ flowchart TD
 
 ### Condition 1: `QA-WS-16` — Live HTTPS PostgREST Persistence Smoke Test
 - **Governing Gate:** Gate C (WS-16 Admissions Intake Gateway & Persistence)
-- **Status:** 🟡 **OPEN — PARTIALLY SATISFIED (Local Integration Verified; Deployed HTTPS & Browser Test Pending)**
-- **Verification Baseline:** `dbe5872a219b39f924dbdfc34cd2d3508fc96321`
-- **Reconciliation Audit:** `docs/09_testing_and_quality_assurance/AAA_QA_WS16_EVIDENCE_RECONCILIATION_REPORT.md`
-- **Verified Findings (Local Edge & Remote Database):**
-  1. Local edge function execution verified via Cloudflare Wrangler Pages Dev on `http://127.0.0.1:8788/api/discovery-intake`.
-  2. Ingress HTTP POST returned `HTTP 201 Created` with atomic lead reference `AAA-LEAD-2026-00002` and UUID `0c5700f1-eeb7-4fd7-b70b-5b1c43a01f8a`.
-  3. Direct PostgreSQL inspection confirmed the physical row in `public.leads` in Supabase Mumbai staging (`ghbjtmfskgcraxafhlch`).
-  4. 24-hour idempotency protection verified by re-submitting with identical key, returning the retained record without duplicate row insertion or sequence increment.
-  5. Synthetic test row cleanly purged (`DELETE 1`).
-- **Remaining Pre-Merge Blocker Requirements (Must Be Completed Prior to Production Merge):**
-  1. **Deployed HTTPS Staging Preview:** The smoke test must be executed against a deployed Cloudflare Pages staging preview URL over public HTTPS with verified TLS negotiation (not localhost HTTP).
-  2. **Interactive Browser Form Submission:** Submission must originate from the real rendered DOM (`LeadForm.tsx` or `DemoBookingModal.tsx`) in a web browser, confirming end-to-end receipt modal rendering.
+- **Status:** 🟢 **CLOSED & FULLY SATISFIED (11-Nov-2026)**
+- **Verification Evidence Baseline:** `docs/11_evidence_and_screenshots/WS16_PREVIEW_HTTPS_SMOKE_TEST.log`
+- **Verification Summary (Public HTTPS & Real Browser Test):**
+  1. Deployed public Cloudflare Pages preview endpoint verified live over HTTPS with TLS 1.3: `https://aaa-web-b0h.pages.dev/contact`.
+  2. Real browser form interaction submitted synthetic inquiry (`SYNTHETIC-TEST Parent`, `9822000005`) through `DemoBookingModal.tsx`.
+  3. Serverless edge function `/api/discovery-intake` executed and returned `HTTP 201 Created` with atomic lead reference `AAA-LEAD-2026-00004` and UUID `1854be18-e44e-4cb7-b2f4-15adfa49eafb`.
+  4. Interactive browser UI displayed `EnquiryReceiptModal` with prominent official lead reference and truthful 2-operating-hour service target.
+  5. Direct physical PostgreSQL row confirmed in `public.leads` in Supabase Mumbai staging (`ghbjtmfskgcraxafhlch`, AWS `ap-south-1`).
+  6. Targeted cleanup executed (`DELETE FROM public.leads WHERE lead_reference IN ('AAA-LEAD-2026-00003', 'AAA-LEAD-2026-00004')`), leaving 0 residual test records.
 - **Accountable Owner:** Nitin Patil (Operations & Tech Lead).
-- **Blocking Status:** **BLOCKS PRODUCTION MERGE (Mandatory Pre-Deployment Blocker):** Production `main` remains locked until the deployed HTTPS browser smoke test is executed and evidenced.
-- **Management Authority:** Governed by `MGT-DET-S5-REV-1.2.0-ACPT`.
+- **Blocking Status:** **CLEARED / SATISFIED.** The mandatory pre-merge blocker is formally closed. `feat/sprint3-integration` is technically and operationally unblocked for production merge into `main`.
+- **Management Authority:** Formally validated under `MGT-DET-S5-REV-1.2.0-ACPT` and `MGT-DET-S5-WS16-PREVIEW-AUTH-01`.
 
 ---
 
