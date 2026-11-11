@@ -44,7 +44,7 @@ export default function ProgramMentalMaths() {
     "provider": {
       "@type": "EducationalOrganization",
       "name": "Arnav Abacus Academy",
-      "url": "https://arnavabacusacademy-web.vercel.app/"
+      "url": "https://aaa-web-b0h.pages.dev/"
     },
     "educationalCredentialAwarded": "Certificate in Mental Arithmetic Excellence",
     "audience": {
@@ -61,19 +61,19 @@ export default function ProgramMentalMaths() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://arnavabacusacademy-web.vercel.app/"
+        "item": "https://aaa-web-b0h.pages.dev/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Programs",
-        "item": "https://arnavabacusacademy-web.vercel.app/programs"
+        "item": "https://aaa-web-b0h.pages.dev/programs"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Mental Mathematics",
-        "item": "https://arnavabacusacademy-web.vercel.app/programs/mental-maths"
+        "item": "https://aaa-web-b0h.pages.dev/programs/mental-maths"
       }
     ]
   };

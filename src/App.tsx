@@ -186,10 +186,12 @@ export default function App() {
                 <Route path="/mentor" element={<Mentor />} />
                 <Route path="/programs" element={<Programs />} />
                 <Route path="/programs/abacus" element={<ProgramAbacus />} />
+                <Route path="/programs/abacus-maths" element={<Navigate to="/programs/abacus" replace />} />
                 <Route path="/programs/vedic-maths" element={<ProgramVedicMaths />} />
                 <Route path="/programs/school-maths" element={<ProgramSchoolMaths />} />
                 <Route path="/programs/mental-maths" element={<ProgramMentalMaths />} />
                 <Route path="/programs/ipm-olympiad" element={<ProgramIpmOlympiad />} />
+                <Route path="/programs/olympiad-ipm" element={<Navigate to="/programs/ipm-olympiad" replace />} />
                 <Route path="/parent-guides" element={<ParentGuidesHub />} />
                 <Route path="/parent-guides/abacus-vs-vedic-maths" element={<GuideAbacusVsVedicMaths />} />
                 <Route path="/parent-guides/does-abacus-confuse-school-math" element={<GuideDoesAbacusConfuseSchoolMath />} />

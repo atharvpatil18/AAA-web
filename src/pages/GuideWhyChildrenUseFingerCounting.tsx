@@ -39,9 +39,9 @@ export default function GuideWhyChildrenUseFingerCounting() {
     "publisher": {
       "@type": "EducationalOrganization",
       "name": "Arnav Abacus Academy",
-      "url": "https://arnavabacusacademy-web.vercel.app/"
+      "url": "https://aaa-web-b0h.pages.dev/"
     },
-    "mainEntityOfPage": "https://arnavabacusacademy-web.vercel.app/parent-guides/why-children-use-finger-counting"
+    "mainEntityOfPage": "https://aaa-web-b0h.pages.dev/parent-guides/why-children-use-finger-counting"
   };
 
   const breadcrumbSchema = {
@@ -52,19 +52,19 @@ export default function GuideWhyChildrenUseFingerCounting() {
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://arnavabacusacademy-web.vercel.app/"
+        "item": "https://aaa-web-b0h.pages.dev/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "Parent Guides",
-        "item": "https://arnavabacusacademy-web.vercel.app/parent-guides"
+        "item": "https://aaa-web-b0h.pages.dev/parent-guides"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "Finger Counting & Mental Calculation",
-        "item": "https://arnavabacusacademy-web.vercel.app/parent-guides/why-children-use-finger-counting"
+        "item": "https://aaa-web-b0h.pages.dev/parent-guides/why-children-use-finger-counting"
       }
     ]
   };

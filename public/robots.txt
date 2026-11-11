@@ -10,4 +10,4 @@ Disallow: /#/practice/results
 Disallow: /#/login
 
 # Canonical Sitemap
-Sitemap: https://arnavabacusacademy-web.vercel.app/sitemap.xml
+Sitemap: https://aaa-web-b0h.pages.dev/sitemap.xml
