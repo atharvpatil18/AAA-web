@@ -16,27 +16,23 @@ export default function TestimonialCarousel() {
     trackTestimonialsView();
   }, []);
 
+  // 15 Latest Verified Google Reviews & Verbatim Parent Feedbacks (Chronological, Newest First)
   const testimonials: Testimonial[] = [
     {
-      id: "t1",
-      author: t("t1Author"),
-      role: t("t1Role"),
-      content: t("t1Content"),
+      id: "t25",
+      author: t("t25Author"),
+      role: t("t25Role"),
+      content: t("t25Content"),
       rating: 5,
+      date: "Nov 2026",
     },
     {
-      id: "t2",
-      author: t("t2Author"),
-      role: t("t2Role"),
-      content: t("t2Content"),
+      id: "t24",
+      author: t("t24Author"),
+      role: t("t24Role"),
+      content: t("t24Content"),
       rating: 5,
-    },
-    {
-      id: "t3",
-      author: t("t3Author"),
-      role: t("t3Role"),
-      content: t("t3Content"),
-      rating: 5,
+      date: "Nov 2026",
     },
     {
       id: "t7",
@@ -44,90 +40,7 @@ export default function TestimonialCarousel() {
       role: t("t7Role"),
       content: t("t7Content"),
       rating: 5,
-    },
-    {
-      id: "t11",
-      author: t("t11Author"),
-      role: t("t11Role"),
-      content: t("t11Content"),
-      rating: 5,
-    },
-    {
-      id: "t12",
-      author: t("t12Author"),
-      role: t("t12Role"),
-      content: t("t12Content"),
-      rating: 5,
-    },
-    {
-      id: "t13",
-      author: t("t13Author"),
-      role: t("t13Role"),
-      content: t("t13Content"),
-      rating: 5,
-    },
-    {
-      id: "t14",
-      author: t("t14Author"),
-      role: t("t14Role"),
-      content: t("t14Content"),
-      rating: 5,
-    },
-    {
-      id: "t15",
-      author: t("t15Author"),
-      role: t("t15Role"),
-      content: t("t15Content"),
-      rating: 5,
-    },
-    {
-      id: "t16",
-      author: t("t16Author"),
-      role: t("t16Role"),
-      content: t("t16Content"),
-      rating: 5,
-    },
-    {
-      id: "t17",
-      author: t("t17Author"),
-      role: t("t17Role"),
-      content: t("t17Content"),
-      rating: 5,
-    },
-    {
-      id: "t18",
-      author: t("t18Author"),
-      role: t("t18Role"),
-      content: t("t18Content"),
-      rating: 5,
-    },
-    {
-      id: "t19",
-      author: t("t19Author"),
-      role: t("t19Role"),
-      content: t("t19Content"),
-      rating: 5,
-    },
-    {
-      id: "t20",
-      author: t("t20Author"),
-      role: t("t20Role"),
-      content: t("t20Content"),
-      rating: 5,
-    },
-    {
-      id: "t21",
-      author: t("t21Author"),
-      role: t("t21Role"),
-      content: t("t21Content"),
-      rating: 5,
-    },
-    {
-      id: "t22",
-      author: t("t22Author"),
-      role: t("t22Role"),
-      content: t("t22Content"),
-      rating: 5,
+      date: "Oct 2026",
     },
     {
       id: "t23",
@@ -135,16 +48,105 @@ export default function TestimonialCarousel() {
       role: t("t23Role"),
       content: t("t23Content"),
       rating: 5,
+      date: "Oct 2026",
+    },
+    {
+      id: "t20",
+      author: t("t20Author"),
+      role: t("t20Role"),
+      content: t("t20Content"),
+      rating: 5,
+      date: "Sep 2026",
+    },
+    {
+      id: "t22",
+      author: t("t22Author"),
+      role: t("t22Role"),
+      content: t("t22Content"),
+      rating: 5,
+      date: "Sep 2026",
+    },
+    {
+      id: "t11",
+      author: t("t11Author"),
+      role: t("t11Role"),
+      content: t("t11Content"),
+      rating: 5,
+      date: "Aug 2026",
+    },
+    {
+      id: "t16",
+      author: t("t16Author"),
+      role: t("t16Role"),
+      content: t("t16Content"),
+      rating: 5,
+      date: "Aug 2026",
+    },
+    {
+      id: "t15",
+      author: t("t15Author"),
+      role: t("t15Role"),
+      content: t("t15Content"),
+      rating: 5,
+      date: "Jul 2026",
+    },
+    {
+      id: "t1",
+      author: t("t1Author"),
+      role: t("t1Role"),
+      content: t("t1Content"),
+      rating: 5,
+      date: "Jul 2026",
+    },
+    {
+      id: "t2",
+      author: t("t2Author"),
+      role: t("t2Role"),
+      content: t("t2Content"),
+      rating: 5,
+      date: "Jun 2026",
+    },
+    {
+      id: "t19",
+      author: t("t19Author"),
+      role: t("t19Role"),
+      content: t("t19Content"),
+      rating: 5,
+      date: "Jun 2026",
+    },
+    {
+      id: "t14",
+      author: t("t14Author"),
+      role: t("t14Role"),
+      content: t("t14Content"),
+      rating: 5,
+      date: "May 2026",
+    },
+    {
+      id: "t12",
+      author: t("t12Author"),
+      role: t("t12Role"),
+      content: t("t12Content"),
+      rating: 5,
+      date: "Apr 2026",
+    },
+    {
+      id: "t3",
+      author: t("t3Author"),
+      role: t("t3Role"),
+      content: t("t3Content"),
+      rating: 5,
+      date: "Mar 2026",
     }
   ];
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Automatic Rotation Logic
+  // Automatic Rotation Logic (8s rotation)
   useEffect(() => {
     const slideInterval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % testimonials.length);
-    }, 8000); // 8s auto-rotation
+    }, 8000);
 
     return () => clearInterval(slideInterval);
   }, [testimonials.length]);
@@ -155,6 +157,39 @@ export default function TestimonialCarousel() {
 
   const handleNext = () => {
     setActiveIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return "";
+    if (language === "hi") {
+      return dateStr
+        .replace("Nov", "नवंबर")
+        .replace("Oct", "अक्टूबर")
+        .replace("Sep", "सितंबर")
+        .replace("Aug", "अगस्त")
+        .replace("Jul", "जुलाई")
+        .replace("Jun", "जून")
+        .replace("May", "मई")
+        .replace("Apr", "अप्रैल")
+        .replace("Mar", "मार्च")
+        .replace("Feb", "फरवरी")
+        .replace("Jan", "जनवरी");
+    }
+    if (language === "mr") {
+      return dateStr
+        .replace("Nov", "नोव्हेंबर")
+        .replace("Oct", "ऑक्टोबर")
+        .replace("Sep", "सप्टेंबर")
+        .replace("Aug", "ऑगस्ट")
+        .replace("Jul", "जुलै")
+        .replace("Jun", "जून")
+        .replace("May", "मे")
+        .replace("Apr", "एप्रिल")
+        .replace("Mar", "मार्च")
+        .replace("Feb", "फेब्रुवारी")
+        .replace("Jan", "जानेवारी");
+    }
+    return dateStr;
   };
 
   const activeTestimonial = testimonials[activeIndex];
@@ -172,19 +207,28 @@ export default function TestimonialCarousel() {
 
         <div className="relative z-10 flex flex-col justify-between h-full min-h-[220px]">
           <div>
-            {/* Stars Row */}
-            <div className="flex items-center gap-1 mb-5">
-              {[...Array(activeTestimonial.rating)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 text-vibrant-gold fill-current" />
-              ))}
-              <span className="text-xs text-vibrant-dark font-black uppercase tracking-wider ml-2">
-                {language === "hi" ? "अभिभावक समीक्षा एवं गूगल रेटिंग" : language === "mr" ? "पालक अभिप्राय आणि गुगल रेटिंग" : "PARENT FEEDBACK & GOOGLE REVIEWS"}
-              </span>
+            {/* Stars & Month-Year Badge Row */}
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div className="flex items-center gap-1">
+                {[...Array(activeTestimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 text-vibrant-gold fill-current" />
+                ))}
+                <span className="text-xs text-vibrant-dark font-black uppercase tracking-wider ml-2">
+                  {language === "hi" ? "अभिभावक समीक्षा एवं गूगल रेटिंग" : language === "mr" ? "पालक अभिप्राय आणि गुगल रेटिंग" : "PARENT FEEDBACK & GOOGLE REVIEWS"}
+                </span>
+              </div>
+
+              {activeTestimonial.date && (
+                <span className="inline-flex items-center gap-1.5 text-xs font-black text-slate-800 bg-amber-100/90 border border-amber-300 px-3 py-1 rounded-full shadow-2xs">
+                  <Calendar className="w-3.5 h-3.5 text-orange-600" />
+                  <span>{formatDate(activeTestimonial.date)}</span>
+                </span>
+              )}
             </div>
 
             {/* Testimonial Quote Speech */}
             <blockquote>
-              <p className="text-vibrant-dark text-sm md:text-base md:leading-relaxed font-sans font-bold text-left leading-relaxed">
+              <p className="text-vibrant-dark text-sm md:text-base md:leading-relaxed font-sans font-bold text-left leading-relaxed whitespace-pre-line">
                 "{activeTestimonial.content}"
               </p>
             </blockquote>
@@ -210,7 +254,7 @@ export default function TestimonialCarousel() {
             {/* Pagination Controls and Google Link */}
             <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto">
               <a
-                href="https://share.google/fFcUhDGoBJ5M27dX5"
+                href="https://share.google/KaLau6KnhQjV16co2"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs font-black text-white bg-vibrant-orange hover:bg-vibrant-orange/95 px-4 py-2 rounded-xl shadow-[0_3px_0_0_#B33A00] active:translate-y-0.5 active:shadow-none transition-all cursor-pointer shrink-0"
@@ -239,13 +283,13 @@ export default function TestimonialCarousel() {
       </div>
 
       {/* Bullet Dot indicators */}
-      <div className="flex items-center justify-center gap-2.5 mt-6">
+      <div className="flex items-center justify-center gap-2 mt-6 overflow-x-auto py-1">
         {testimonials.map((_, index) => (
           <button
             key={index}
             onClick={() => setActiveIndex(index)}
-            className={`h-3.5 rounded-full border border-vibrant-dark transition-all duration-300 cursor-pointer ${
-              index === activeIndex ? "w-10 bg-vibrant-orange" : "w-3.5 bg-white hover:bg-gray-150"
+            className={`h-3 rounded-full border border-vibrant-dark transition-all duration-300 cursor-pointer ${
+              index === activeIndex ? "w-8 bg-vibrant-orange" : "w-3 bg-white hover:bg-gray-150"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
