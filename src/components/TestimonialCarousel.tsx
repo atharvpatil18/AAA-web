@@ -35,6 +35,14 @@ export default function TestimonialCarousel() {
       date: "Nov 2026",
     },
     {
+      id: "t26",
+      author: t("t26Author"),
+      role: t("t26Role"),
+      content: t("t26Content"),
+      rating: 5,
+      date: "Oct 2026",
+    },
+    {
       id: "t7",
       author: t("t7Author"),
       role: t("t7Role"),

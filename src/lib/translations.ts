@@ -632,6 +632,10 @@ export const translations = {
     t25Role: "Grandfather of Aarav & Ovi Vora",
     t25Content: "AAA is exceptional Gurukul who has transformed my Grand Children, Aarav and Ovi, from Maths Hating to Maths Loving students. Academy patiently followed up the routine and gradually created liking for Maths in their minds. Thanks a lot Patil Sir and Madam for this transformation. 🙏🙏",
 
+    t26Author: "Mrs. Sandhya Ghorpade",
+    t26Role: "Mother of Shantanu (Junior Vedic Math Champ)",
+    t26Content: "Our experience with AAA has been wonderful! The demo classes and onboarding process were smooth and well-organized. The teaching quality is excellent, and the team maintains good communication with parents.\n\nI especially appreciate the guidance and support provided for competitions. They encourage children to explore their potential, build confidence, and develop their skills. The way they handle and support my highly active child with patience, understanding, and encouragement is truly commendable.\n\nThank you to the entire AAA team for your dedication, continuous support, and efforts in making learning enjoyable and meaningful for children. We are happy to be part of the AAA family! ❤️🙏",
+
     news1Title: "Launching Our Parent-Student Mobile App!",
     news1Date: "Rolling Out Oct'26 End",
     news1Tag: "Digital Ecosystem",
@@ -1576,6 +1580,10 @@ export const translations = {
     t25Role: "आरव और ओवी वोरा के दादाजी",
     t25Content: "AAA एक असाधारण गुरुकुल है जिसने मेरे पोते-पोती, आरव और ओवी को गणित से डरने वाले बच्चों से गणित से प्यार करने वाले छात्रों में बदल दिया है। अकादमी ने धैर्यपूर्वक दिनचर्या का पालन किया और धीरे-धीरे उनके मन में गणित के प्रति रुचि पैदा की। इस बदलाव के लिए पाटिल सर और मैडम का बहुत-बहुत धन्यवाद। 🙏🙏",
 
+    t26Author: "श्रीमती संध्या घोरपड़े",
+    t26Role: "शांतनु की माताजी (जूनियर वैदिक मैथ चैंप)",
+    t26Content: "AAA के साथ हमारा अनुभव बेहद शानदार रहा है! डेमो क्लासेस और ऑनबोर्डिंग की प्रक्रिया बहुत ही सहज और सुव्यवस्थित थी। शिक्षण की गुणवत्ता उत्कृष्ट है, और पूरी टीम माता-पिता के साथ निरंतर बेहतरीन संवाद बनाए रखती है।\n\nप्रतियोगिताओं के लिए प्रदान किए गए मार्गदर्शन और सहयोग की मैं विशेष रूप से सराहना करती हूँ। वे बच्चों को अपनी क्षमताओं को पहचानने, आत्मविश्वास बढ़ाने और अपने कौशल विकसित करने के लिए प्रोत्साहित करते हैं। जिस धैर्य, समझ और प्रोत्साहन के साथ वे मेरे अत्यधिक सक्रिय बच्चे को संभालते हैं और उसका मार्गदर्शन करते हैं, वह वास्तव में सराहनीय है।\n\nबच्चों के लिए सीखने को आनंददायक और सार्थक बनाने में समर्पण, निरंतर सहयोग और प्रयासों के लिए पूरी AAA टीम को हार्दिक धन्यवाद। हमें AAA परिवार का हिस्सा बनने पर बहुत खुशी है! ❤️🙏",
+
     news1Title: "हमारा पैरेंट-स्टूडेंट मोबाइल ऐप लॉन्च हो रहा है !",
     news1Date: "अक्टूबर 2026 के अंत तक उपलब्ध",
     news1Tag: "डिजिटल इकोसिस्टम",
@@ -2518,6 +2526,10 @@ export const translations = {
     t25Author: "श्री राजेश व्होरा",
     t25Role: "आरव आणि ओवी व्होरा यांचे आजोबा",
     t25Content: "AAA हे एक अद्वितीय गुरुकुल आहे ज्याने माझे नातवंडे, आरव आणि ओवी यांना गणिताची भीती वाटणाऱ्या मुलांमधून गणिताची आवड असणाऱ्या विद्यार्थ्यांमध्ये रूपांतरित केले आहे। अकादमीने अत्यंत संयमाने दैनंदिन सरावाचा पाठपुरावा केला आणि त्यांच्या मनात गणिताबद्दल आवड निर्माण केली। या सुंदर बदलासाठी पाटील सर आणि मॅडम यांचे मनापासून खूप खूप आभार। 🙏🙏",
+
+    t26Author: "सौ. संध्या घोरपडे",
+    t26Role: "शांतनू यांची आई (ज्युनियर वैदिक मॅथ चॅम्प)",
+    t26Content: "AAA सोबतचा आमचा अनुभव अत्यंत अप्रतिम राहिला आहे! डेमो क्लासेस आणि प्रवेश प्रक्रिया अत्यंत सोपी व सुव्यवस्थित होती. शिकवण्याची गुणवत्ता उत्कृष्ट असून संपूर्ण टीम पालकांशी उत्तम संवाद ठेवते.\n\nस्पर्धांसाठी दिलेले मार्गदर्शन आणि पाठिंब्याचे मी विशेष कौतुक करते. ते मुलांना त्यांच्यातील सुप्त गुण ओळखण्यासाठी, आत्मविश्वास वाढवण्यासाठी आणि कौशल्ये विकसित करण्यासाठी सतत प्रोत्साहन देतात. माझ्या अत्यंत चंचल आणि उत्साही मुलाला ज्या संयमाने, समजुतीने आणि प्रेमाने त्यांनी सांभाळले व मार्गदर्शन केले, ते खरोखरच प्रशंसनीय आहे.\n\nमुलांसाठी शिक्षण आनंददायी आणि अर्थपूर्ण बनवण्यासाठी घेतलेले परिश्रम, सातत्यपूर्ण सहकार्य आणि समर्पणाबद्दल संपूर्ण AAA टीमचे मनापासून आभार. AAA परिवाराचा भाग असल्याचा आम्हाला मनस्वी आनंद आहे! ❤️🙏",
 
     news1Title: "आमचे पैरेंट-स्टूडेंट मोबाईल ॲप लवकरच उपलब्ध !",
     news1Date: "ऑक्टोबर २०२६ च्या शेवटी उपलब्ध",
