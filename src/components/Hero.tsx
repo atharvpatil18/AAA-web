@@ -106,7 +106,7 @@ export default function Hero() {
                 ))}
               </div>
               <span className="font-semibold">
-                Rated 5.0/5 by 65+ Wakad Parents • Flat 3, Balaji Sagar Bungalow, Wakad
+                Rated 5.0/5 by 76+ Wakad Parents • Flat 3, Balaji Sagar Bungalow, Wakad
               </span>
             </div>
 

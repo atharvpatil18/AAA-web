@@ -34,7 +34,7 @@ export const translations = {
     heroTitleFun: "Fun !",
     heroSubtitle: "Empower your child with Foundational Numeracy, lightning-fast mental math, and visual confidence to eliminate silly mistakes without exam stress in alignment with NEP 2020 principles.",
     heroCta: "Book a Free Assessment Class",
-    heroReviewHook: "Trust supported by 65+ 5-star Google Reviews",
+    heroReviewHook: "Trust supported by 76+ 5-star Google Reviews",
     heroPunchline1: "Does your child make silly mistakes? Let's zero them down!",
     heroPunchline2: "Already sharp? Let them excel in National & International competitions!",
     heroPunchline3: "Give your child the power of speed with accuracy and consistency!",
@@ -53,7 +53,7 @@ export const translations = {
     heroAdmissionsOpen: "Admissions Open",
 
     // TrustBar
-    trustTrained: "200+ Students",
+    trustTrained: "300+ Students",
     trustExp: "4+ Years Exp",
     trustAwards: "100+ Awards",
     trustRating: "5/5 Ratings",
@@ -171,9 +171,9 @@ export const translations = {
     // Mentor Profile
     mentorBadge: "MEET YOUR MAIN MENTOR",
     mentorTitle: "Professional Mentorial Expertise",
-    mentorSubtitle: "Arnav Abacus Academy operates under child-centric pedagogical guidelines. Over 200+ local & 10 plus international students have unlocked photographic visual memory with us.",
+    mentorSubtitle: "Arnav Abacus Academy operates under child-centric pedagogical guidelines. Over 300+ local & 15+ international students have unlocked photographic visual memory with us.",
     mentorBioQuote: "Our mission is to replace math fear with photographic visualization.",
-    mentorBioP1: "Neha Patil is an IIVA-certified trainer who has mentored over 200+ students. She specializes in child spatial diagnostics, classroom discipline, and stress-free academic coaching.",
+    mentorBioP1: "Neha Patil is an IIVA-certified trainer who has mentored over 300+ students. She specializes in child spatial diagnostics, classroom discipline, and stress-free academic coaching.",
     mentorBioP2: "Supported by Nitin Patil, the academy is focused on whole-brain development, expanding auditory listening capacity, and building self-belief.",
 
     // Testimonials
@@ -970,7 +970,7 @@ export const translations = {
     heroTitleFun: "मजे में बदलें !",
     heroSubtitle: "NEP २०२० के बुनियादी संख्याज्ञान (FLN) और गणितीय सोच के उद्देश्यों के अनुरूप, प्रमाणित एबाकस और वैदिक गणित से अपने बच्चे को सशक्त बनाएं - बिना किसी परीक्षा तनाव के छोटी गलतियों को दूर करें।",
     heroCta: "फ्री असेसमेंट क्लास बुक करें",
-    heroReviewHook: "65+ 5-स्टार गूगल रिव्यूज द्वारा समर्थित विश्वास",
+    heroReviewHook: "76+ 5-स्टार गूगल रिव्यूज द्वारा समर्थित विश्वास",
     heroPunchline1: "क्या आपका बच्चा छोटी गलतियां करता है ? आइए उन्हें शून्य पर लाएं !",
     heroPunchline2: "पहले से ही तेज हैं ? उन्हें राष्ट्रीय और अंतर्राष्ट्रीय प्रतियोगिताओं में उत्कृष्ट बनाने दें !",
     heroPunchline3: "अपने बच्चे को सटीकता और निरंतरता के साथ गति की शक्ति दें !",
@@ -989,7 +989,7 @@ export const translations = {
     heroAdmissionsOpen: "प्रवेश शुरू हैं",
 
     // TrustBar
-    trustTrained: "200+ छात्र",
+    trustTrained: "300+ छात्र",
     trustExp: "4+ वर्ष अनुभव",
     trustAwards: "100+ पुरस्कार",
     trustRating: "5/5 रेटिंग",
@@ -1107,9 +1107,9 @@ export const translations = {
     // Mentor Profile
     mentorBadge: "अपने मुख्य मेंटर से मिलें",
     mentorTitle: "व्यावसायिक सलाहकारी विशेषज्ञता",
-    mentorSubtitle: "अर्णव एबाकस एकेडमी बाल-केंद्रित शैक्षणिक दिशानिर्देशों के तहत काम करती है। हमारे साथ 200+ स्थानीय और 10 से अधिक अंतरराष्ट्रीय छात्रों ने फोटोग्राफिक विजुअल मेमोरी को अनलॉक किया है।",
+    mentorSubtitle: "अर्णव एबाकस एकेडमी बाल-केंद्रित शैक्षणिक दिशानिर्देशों के तहत काम करती है। हमारे साथ 300+ स्थानीय और 15+ अंतरराष्ट्रीय छात्रों ने फोटोग्राफिक विजुअल मेमोरी को अनलॉक किया है।",
     mentorBioQuote: "हमारा मिशन गणित के डर को फोटोग्राफिक विज़ुअलाइज़ेशन से बदलना है।",
-    mentorBioP1: "नेहा पाटिल एक IIVA-प्रमाणित प्रशिक्षक हैं जिन्होंने 200+ छात्रों का मार्गदर्शन किया है। वह बच्चों के स्थानिक निदान, कक्षा अनुशासन और तनाव मुक्त कोचिंग में माहिर हैं।",
+    mentorBioP1: "नेहा पाटिल एक IIVA-प्रमाणित प्रशिक्षक हैं जिन्होंने 300+ छात्रों का मार्गदर्शन किया है। वह बच्चों के स्थानिक निदान, कक्षा अनुशासन और तनाव मुक्त कोचिंग में माहिर हैं।",
     mentorBioP2: "नितिन पाटिल के सहयोग से, अकादमी पूरे मस्तिष्क के विकास, सुनने की क्षमता बढ़ाने और आत्मविश्वास बढ़ाने पर केंद्रित है।",
 
     // Testimonials
@@ -1906,7 +1906,7 @@ export const translations = {
     heroTitleFun: "आनंदात बदला !",
     heroSubtitle: "NEP २०२० च्या पायाभूत साक्षरता आणि संख्याज्ञान (FLN) उद्दिष्टांनुसार, प्रमाणित ॲबॅकस आणि वैदिक गणिताद्वारे आपल्या मुलाला तार्किक विचार आणि गणिताच्या वेगासह सक्षम बनवा - परीक्षेच्या ताणाशिवाय छोट्या चुका दूर करा.",
     heroCta: "मोफत असेसमेंट क्लास बुक करा",
-    heroReviewHook: "६५+ ५-स्टार गुगल रिव्ह्यूज द्वारे समर्थित विश्वास",
+    heroReviewHook: "७६+ ५-स्टार गुगल रिव्ह्यूज द्वारे समर्थित विश्वास",
     heroPunchline1: "तुमचे मूल छोट्या चुका करते का ? चला त्या पूर्णपणे दूर करूया !",
     heroPunchline2: "आधीच हुशार आहे ? त्यांना राष्ट्रीय आणि आंतरराष्ट्रीय स्पर्धांमध्ये चमकू द्या !",
     heroPunchline3: "तुमच्या मुलाला अचूकतेसह गणिताच्या वेगाची शक्ती द्या !",
@@ -1925,7 +1925,7 @@ export const translations = {
     heroAdmissionsOpen: "प्रवेश सुरू आहेत",
 
     // TrustBar
-    trustTrained: "२००+ विद्यार्थी",
+    trustTrained: "३००+ विद्यार्थी",
     trustExp: "४+ वर्षे अनुभव",
     trustAwards: "१००+ पुरस्कार",
     trustRating: "५/५ रेटिंग",

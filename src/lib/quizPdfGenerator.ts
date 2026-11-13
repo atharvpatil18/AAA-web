@@ -481,7 +481,7 @@ export const generateQuizWorksheetPDF = async (
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(7.2);
     doc.setTextColor(240, 240, 240);
-    doc.text("Founder & Certified Trainer\nIIVA Certified International\nAbacus & Vedic Math\n(200+ Students Mentored)", 151, hookY + 14);
+    doc.text("Founder & Certified Trainer\nIIVA Certified International\nAbacus & Vedic Math\n(300+ Students Mentored)", 151, hookY + 14);
 
     drawBrochureSeparator(67);
 

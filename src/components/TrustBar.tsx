@@ -23,7 +23,7 @@ export default function TrustBar() {
     {
       id: "students",
       label: "Students Mentored",
-      target: 200,
+      target: 300,
       suffix: "+",
       subtext: "Across Wakad, Pune & Online",
       icon: Users,
@@ -41,7 +41,7 @@ export default function TrustBar() {
     {
       id: "ratio",
       label: "Batch Student Ratio",
-      target: 8,
+      target: 5,
       suffix: ":1",
       subtext: "Small Batches (Max 5 Students)",
       icon: Calendar,

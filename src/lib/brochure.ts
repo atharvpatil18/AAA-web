@@ -134,7 +134,7 @@ export const generateBrochurePDF = async (language: string) => {
     doc.setFont("Helvetica", "normal");
     doc.setFontSize(7.2); // Scaled down text to cleanly fit the longer certification phrase on the badge
     doc.setTextColor(240, 240, 240);
-    doc.text("Founder & Certified Trainer\nIIVA Certified International\nAbacus & Vedic Math\n(200+ Students Mentored)", 151, hookY + 14);
+    doc.text("Founder & Certified Trainer\nIIVA Certified International\nAbacus & Vedic Math\n(300+ Students Mentored)", 151, hookY + 14);
 
     drawSeparator(67);
 

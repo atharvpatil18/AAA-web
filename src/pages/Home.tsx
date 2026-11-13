@@ -672,7 +672,7 @@ export default function Home() {
               Parent Experiences
             </span>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-              Trusted by 65+ Wakad Parents
+              Trusted by 76+ Wakad Parents
             </h2>
             <p className="text-slate-600 text-xs md:text-sm font-semibold">
               Read how personalized mentorship transformed calculation speed, homework discipline, and exam confidence. Disclosures under CCPA Coaching Guidelines 2024: Testimonials reflect genuine experiences of enrolled students in paid programs.
