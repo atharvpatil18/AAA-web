@@ -22,10 +22,10 @@ export default function TrustBar() {
   const stats: StatItem[] = [
     {
       id: "students",
-      label: "Students Mentored",
+      label: t("trustStudents") || "Students Mentored",
       target: 300,
       suffix: "+",
-      subtext: "Across Wakad, Pune & Online",
+      subtext: t("trustStudentsSub") || "Across Wakad, Pune & Online",
       icon: Users,
       iconColor: "text-orange-600 bg-orange-50 border-orange-200",
     },
@@ -40,19 +40,19 @@ export default function TrustBar() {
     },
     {
       id: "ratio",
-      label: "Batch Student Ratio",
+      label: t("trustRatio") || "Batch Student Ratio",
       target: 5,
       suffix: ":1",
-      subtext: "Small Batches (Max 5 Students)",
+      subtext: t("trustRatioSub") || "Small Batches (Max 5 Students)",
       icon: Calendar,
       iconColor: "text-teal-600 bg-teal-50 border-teal-200",
     },
     {
       id: "satisfaction",
-      label: "Parent Satisfaction",
+      label: t("trustSatisfaction") || "Parent Satisfaction",
       target: 100,
       suffix: "%",
-      subtext: "Verified 5-Star Google Reviews",
+      subtext: t("trustSatisfactionSub") || "Verified 5-Star Google Reviews",
       icon: Star,
       iconColor: "text-emerald-600 bg-emerald-50 border-emerald-200",
     }
@@ -117,7 +117,7 @@ export default function TrustBar() {
               </div>
 
               <span className="font-display font-black text-2xl sm:text-3xl text-slate-900 tracking-tight block">
-                {stat.id === "ratio" ? `1:${currentCount}` : `${formatNumber(currentCount)}${stat.suffix}`}
+                {stat.id === "ratio" ? `${formatNumber(1)}:${formatNumber(currentCount)}` : `${formatNumber(currentCount)}${stat.suffix}`}
               </span>
 
               <span className="font-bold text-slate-800 text-xs sm:text-sm mt-0.5 block">

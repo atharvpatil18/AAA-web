@@ -22,11 +22,11 @@ export default function TeacherProfile() {
   };
 
   const verifiedCredentials = [
-    "Certified Trainer of Abacus (AVAS / Reg. CI2023/100000455)",
-    "Certified Trainer of Vedic Maths (AVAS / Reg. CI2023/100000403)",
-    "Authorised Owner of Skill Centre in Abacus — Wakad Center",
-    "Master of Computer Applications (MCA)",
-    "Mentor of 30+ State, National & International Champions (68 Intl & 56 Nat Contenders)"
+    t("teacherProfileCert1"),
+    t("teacherProfileCert2"),
+    t("teacherProfileCert3"),
+    t("teacherProfileCert4"),
+    t("teacherProfileCert5")
   ];
 
   return (
@@ -67,7 +67,7 @@ export default function TeacherProfile() {
             <div className="absolute -bottom-3 -right-3 bg-slate-900 text-white p-2.5 sm:p-3 rounded-2xl shadow-xl flex items-center gap-2 border border-slate-700">
               <Star className="w-4 h-4 text-amber-400 fill-current animate-pulse" />
               <div>
-                <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">Top-Rated Mentor</span>
+                <span className="block text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{t("teacherTopRated")}</span>
                 <span className="block text-xs font-black text-white leading-none mt-0.5">Wakad, Pune</span>
               </div>
             </div>
@@ -75,10 +75,10 @@ export default function TeacherProfile() {
 
           <div className="mt-8 text-center bg-slate-50 border border-slate-200/80 p-4 rounded-2xl max-w-xs shadow-xs">
             <span className="block text-[11px] font-black text-orange-600 uppercase tracking-widest text-center mb-1">
-              Focused Micro-Batch Standard
+              {t("teacherMicroBatchLabel")}
             </span>
             <p className="text-xs text-slate-600 font-medium leading-relaxed text-center">
-              "Every micro-batch is strictly limited to maximum 5 students so each child receives direct, diagnostic feedback every session."
+              {t("teacherMicroBatchDesc")}
             </p>
           </div>
         </div>
@@ -88,29 +88,29 @@ export default function TeacherProfile() {
           <div className="space-y-2 text-center lg:text-left">
             <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider">
               <Award className="w-4 h-4 text-orange-600" />
-              Founder &amp; Academic Director
+              {t("teacherBadge")}
             </span>
             <h3 className="font-display font-black text-3xl md:text-4xl text-slate-900 tracking-tight leading-tight">
-              Meet Neha Patil
+              {t("teacherMeetNeha")}
             </h3>
             <p className="font-display font-semibold text-sm md:text-base text-slate-600 italic">
-              "Mathematics is the medium; developing confident, independent and thoughtful learners is the mission."
+              {t("teacherPhilosophy")}
             </p>
           </div>
 
           <div className="text-slate-600 text-xs md:text-sm leading-relaxed space-y-3 font-medium">
             <p>
-              Neha Patil is an MCA and an IIVA Delhi-certified Trainer in Soroban Abacus and Vedic Mathematics. With a child-first pedagogy, she focuses on moving children away from mechanical memorization toward photographic visualization, number agility, and logical independence.
+              {t("teacherBioP1")}
             </p>
             <p>
-              Under her leadership, Arnav Abacus Academy has nurtured state and national champions, including 56 participants across 15 levels in the 15th National Level Championship 2026.
+              {t("teacherBioP2")}
             </p>
           </div>
 
           {/* Verified Credentials Checklist */}
           <div className="space-y-2 pt-1">
             <span className="text-[11px] font-black uppercase tracking-wider text-slate-800 block">
-              Verified Professional Credentials:
+              {t("teacherCredentialsHeading")}
             </span>
             {verifiedCredentials.map((cert, idx) => (
               <div key={idx} className="flex items-start gap-2.5 text-xs text-slate-700 font-semibold">
@@ -129,11 +129,11 @@ export default function TeacherProfile() {
               rel="noopener noreferrer"
               className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs sm:text-sm px-7 py-3.5 rounded-full flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0"
             >
-              <span>Consult Director Neha Patil</span>
+              <span>{t("teacherConsultBtn")}</span>
             </a>
             <div className="text-slate-500 text-xs font-semibold flex items-center gap-1.5 text-center">
               <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
-              <span>Free initial diagnostic assessment at Wakad Center or Online</span>
+              <span>{t("teacherFreeDiag")}</span>
             </div>
           </div>
         </div>

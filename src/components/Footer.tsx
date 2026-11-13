@@ -46,12 +46,12 @@ export default function Footer() {
                   Arnav Abacus Academy
                 </span>
                 <span className="text-[9px] text-slate-500 font-medium tracking-wider uppercase block leading-none">
-                  &amp; {language === "hi" ? "वैदिक गणित क्लासेस" : language === "mr" ? "वैदिक गणित क्लासेस" : "Vedic Maths Classes"}
+                  &amp; {t("footerVedicClasses")}
                 </span>
               </div>
             </Link>
             <p className="text-xs text-slate-400 leading-relaxed pt-2">
-              {language === "hi" ? "4-14 वर्ष के बच्चों को संज्ञानात्मक कौशल, तीव्र अंकगणित, विज़ुअल गणना और पूर्ण गणित आत्मविश्वास के साथ सशक्त बनाना।" : language === "mr" ? "४-१४ वर्षे वयोगटातील मुलांना गणिती कौशल्ये, वेगवान आकडेमोड आणि संपूर्ण गणिताचा आत्मविश्वास मिळवून देणे." : "Empowering children aged 4-14 with cognitive skills, speed arithmetic, visual calculation, and complete math confidence."}
+              {t("footerEmpoweringDesc")}
             </p>
             {/* Social handles */}
             <div className="flex items-center gap-3 pt-2">
@@ -79,37 +79,37 @@ export default function Footer() {
           {/* Column 2: Program Links */}
           <div>
             <h4 className="font-display font-bold text-sm text-slate-200 uppercase tracking-widest mb-4">
-              {language === "hi" ? "हमारे कोर्सेस" : language === "mr" ? "आमचे कोर्सेस" : "Our Programs"}
+              {t("footerOurPrograms")}
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-400">
               <li>
                 <Link to="/programs" className="hover:text-orange-500 transition-colors">
-                  {language === "hi" ? "सभी कोर्सेस का विवरण" : language === "mr" ? "सर्व कोर्सेसची माहिती" : "All Courses Overview"}
+                  {t("footerAllCourses")}
                 </Link>
               </li>
               <li>
                 <Link to="/programs/abacus" className="hover:text-orange-500 transition-colors">
-                  {language === "hi" ? "एबाकस गणित (उम्र 4.5–9)" : language === "mr" ? "ॲबॅकस गणित (वय ४.५–९)" : "Abacus Mathematics (Ages 4.5–9)"}
+                  {t("navAbacusProgram")}
                 </Link>
               </li>
               <li>
                 <Link to="/programs/vedic-maths" className="hover:text-orange-500 transition-colors">
-                  {language === "hi" ? "वैदिक गणित (उम्र 9–14)" : language === "mr" ? "वैदिक गणित (वय ९–१४)" : "Vedic Mathematics (Ages 9–14)"}
+                  {t("navVedicProgram")}
                 </Link>
               </li>
               <li>
                 <Link to="/programs/mental-maths" className="hover:text-orange-500 transition-colors">
-                  {language === "hi" ? "मेंटल मैथ (उम्र 6–14)" : language === "mr" ? "मेंटल मॅथ (वय ६–१४)" : "Mental Mathematics (Ages 6–14)"}
+                  {t("navMentalProgram")}
                 </Link>
               </li>
               <li>
                 <Link to="/programs/school-maths" className="hover:text-orange-500 transition-colors">
-                  {language === "hi" ? "स्कूल गणित (कक्षा 1–10)" : language === "mr" ? "शालेय गणित (इयत्ता १ ते १०)" : "School Mathematics (Grades 1–10)"}
+                  {t("navSchoolProgram")}
                 </Link>
               </li>
               <li>
                 <Link to="/programs/ipm-olympiad" className="hover:text-orange-500 transition-colors">
-                  {language === "hi" ? "IPM और ओलंपियाड (कक्षा 2–9)" : language === "mr" ? "IPM आणि ऑलिम्पियाड (इयत्ता २ ते ९)" : "IPM & Olympiad Prep (Grades 2–9)"}
+                  {t("navIpmProgram")}
                 </Link>
               </li>
             </ul>
@@ -118,37 +118,37 @@ export default function Footer() {
           {/* Column 3: Parent Guides & Educational Insights */}
           <div>
             <h4 className="font-display font-bold text-sm text-slate-200 uppercase tracking-widest mb-4">
-              {language === "hi" ? "अभिभावक मार्गदर्शिका" : language === "mr" ? "पालक मार्गदर्शिका" : "Parent Guides"}
+              {t("footerParentGuidesTitle")}
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-400">
               <li>
                 <Link to="/parent-guides" className="text-amber-400 hover:text-white font-semibold transition-colors">
-                  &rarr; {language === "hi" ? "मार्गदर्शिका हब देखें" : language === "mr" ? "मार्गदर्शिका हब पहा" : "Parent Guides Hub"}
+                  &rarr; {t("footerParentGuidesHub")}
                 </Link>
               </li>
               <li>
                 <Link to="/parent-guides/abacus-vs-vedic-maths" className="hover:text-orange-500 transition-colors">
-                  Abacus vs Vedic Maths
+                  {t("footerGuide1")}
                 </Link>
               </li>
               <li>
                 <Link to="/parent-guides/does-abacus-confuse-school-math" className="hover:text-orange-500 transition-colors">
-                  Does Abacus Confuse School Math?
+                  {t("footerGuide2")}
                 </Link>
               </li>
               <li>
                 <Link to="/parent-guides/why-children-use-finger-counting" className="hover:text-orange-500 transition-colors">
-                  Stopping Finger Counting
+                  {t("footerGuide3")}
                 </Link>
               </li>
               <li>
                 <Link to="/parent-guides/why-smart-children-make-silly-math-mistakes" className="hover:text-orange-500 transition-colors">
-                  Fixing Silly Math Mistakes
+                  {t("footerGuide4")}
                 </Link>
               </li>
               <li>
                 <Link to="/parent-guides/ideal-age-to-start-abacus" className="hover:text-orange-500 transition-colors">
-                  Ideal Age to Start Abacus
+                  {t("footerGuide5")}
                 </Link>
               </li>
             </ul>
@@ -157,7 +157,7 @@ export default function Footer() {
           {/* Column 4: Contact & Academy Center Address */}
           <div>
             <h4 className="font-display font-bold text-sm text-slate-200 uppercase tracking-widest mb-4">
-              {language === "hi" ? "हमारा पता" : language === "mr" ? "आमचा पत्ता" : "Our Location"}
+              {t("footerOurLocation")}
             </h4>
             <ul className="space-y-3 text-xs">
               <li className="flex items-start gap-2.5">
@@ -181,13 +181,13 @@ export default function Footer() {
             </ul>
             <div className="mt-4 pt-3.5 border-t border-slate-800/80 text-[11px] space-y-1">
               <span className="font-bold text-slate-300 block">
-                {language === "hi" ? "अभिभावक एवं ग्राहक शिकायत संपर्क:" : language === "mr" ? "पालक आणि ग्राहक तक्रार निवारण संपर्क:" : "Parent & Customer Grievance Contact:"}
+                {t("footerGrievanceTitle")}
               </span>
               <p className="text-slate-400">
                 Nitin Patil • <a href="tel:+919021924968" className="text-amber-400 hover:underline">+91 90219 24968</a>
               </p>
               <p className="text-[10px] text-slate-500">
-                Wakad Center, Pune (Mon–Sat, 9:30 AM – 7:30 PM)
+                {t("footerGrievanceTiming")}
               </p>
             </div>
           </div>
@@ -198,15 +198,15 @@ export default function Footer() {
         <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
           <div className="flex items-center gap-2">
             <img src="/logo.png" alt="Arnav Logo" className="w-5 h-5 object-cover rounded-full shrink-0" />
-            <p>{language === "hi" ? `© ${currentYear} अर्णव एबाकस एकेडमी और वैदिक गणित क्लासेस। सर्वाधिकार सुरक्षित।` : language === "mr" ? `© ${currentYear} अर्णव ॲबॅकस अकॅडमी आणि वैदिक गणित क्लासेस. सर्व हक्क सुरक्षित.` : `© ${currentYear} Arnav Abacus Academy and Vedic Maths Classes. All Rights Reserved.`}</p>
+            <p>© {currentYear} {t("footerCopyrightNotice")}</p>
           </div>
           <div className="flex items-center gap-1.5 text-[11px]">
             <span className="flex items-center gap-1 text-slate-400">
-              {language === "hi" ? "संस्थापक और मेंटर: " : language === "mr" ? "संस्थापक आणि मार्गदर्शक: " : "Founder &amp; Mentor: "} <strong className="text-slate-200">Neha Patil</strong> (Certified Trainer of Abacus & Vedic Maths)
+              {t("footerFounderMentor")} <strong className="text-slate-200">Neha Patil</strong> {t("footerFounderRole")}
             </span>
             <span className="text-slate-600">|</span>
             <span className="flex items-center gap-1.5 text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> {language === "hi" ? "अधिकृत एबाकस कौशल केंद्र (पंजी. CI2023/100000455)" : language === "mr" ? "अधिकृत ॲबॅकस कौशल्य केंद्र (नोंदणी CI2023/100000455)" : "Authorised Skill Centre in Abacus (Reg. CI2023/100000455)"}
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> {t("footerSkillCenter")}
             </span>
           </div>
         </div>

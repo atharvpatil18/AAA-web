@@ -778,9 +778,9 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 onChange={(e) => setSalutation(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
               >
-                <option value="Mr.">Mr.</option>
-                <option value="Mrs.">Mrs.</option>
-                <option value="Ms.">Ms.</option>
+                <option value="Mr.">{t("salutationMr") || "Mr."}</option>
+                <option value="Mrs.">{t("salutationMrs") || "Mrs."}</option>
+                <option value="Ms.">{t("salutationMs") || "Ms."}</option>
               </select>
             </div>
 
@@ -907,11 +907,11 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
               >
                 <option value="CBSE/ICSE">CBSE / ICSE</option>
-                <option value="State Board">State Board</option>
+                <option value="State Board">{language === "hi" ? "स्टेट बोर्ड (State Board)" : language === "mr" ? "स्टेट बोर्ड (State Board)" : "State Board"}</option>
                 <option value="IB">IB (International Baccalaureate)</option>
                 <option value="IGCSE">Cambridge IGCSE</option>
                 <option value="US Common Core">US Common Core</option>
-                <option value="Other">Other / International</option>
+                <option value="Other">{language === "hi" ? "अन्य / अंतर्राष्ट्रीय (Other)" : language === "mr" ? "इतर / आंतरराष्ट्रीय (Other)" : "Other / International"}</option>
               </select>
             </div>
           </div>

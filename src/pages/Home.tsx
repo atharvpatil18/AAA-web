@@ -83,49 +83,49 @@ export default function Home() {
   const learningStages = [
     {
       step: "01",
-      title: "Inspire",
-      tagline: "Spark Numerical Wonder",
-      desc: "We introduce numbers as playful spatial patterns rather than stressful drills, instantly dissolving math anxiety.",
+      title: t("homeStageInspireTitle"),
+      tagline: t("homeStageInspireTagline"),
+      desc: t("homeStageInspireDesc"),
       icon: Sparkles,
       color: "bg-amber-100 text-amber-800",
     },
     {
       step: "02",
-      title: "Explore",
-      tagline: "Tactile Bead Exploration",
-      desc: "Children touch and slide physical Soroban beads, anchoring abstract digit values into concrete sensory reality.",
+      title: t("homeStageExploreTitle"),
+      tagline: t("homeStageExploreTagline"),
+      desc: t("homeStageExploreDesc"),
       icon: Compass,
       color: "bg-orange-100 text-orange-800",
     },
     {
       step: "03",
-      title: "Understand",
-      tagline: "Conceptual Place-Value Logic",
-      desc: "Deep comprehension of number complements (Friends of 5 & 10) ensures children understand the 'why' behind every step.",
+      title: t("homeStageUnderstandTitle"),
+      tagline: t("homeStageUnderstandTagline"),
+      desc: t("homeStageUnderstandDesc"),
       icon: Lightbulb,
       color: "bg-teal-100 text-teal-800",
     },
     {
       step: "04",
-      title: "Practice",
-      tagline: "Micro-Batch Deliberate Drills",
-      desc: "Daily 10–15 minute focused practice in small batches (maximum 5 students per batch) with immediate corrective feedback from mentors.",
+      title: t("homeStagePracticeTitle"),
+      tagline: t("homeStagePracticeTagline"),
+      desc: t("homeStagePracticeDesc"),
       icon: Target,
       color: "bg-blue-100 text-blue-800",
     },
     {
       step: "05",
-      title: "Apply",
-      tagline: "Mental Bead Visualization (Anzan)",
-      desc: "Children mentally compute multi-digit problems without physical beads, applying speed arithmetic directly to schoolwork.",
+      title: t("homeStageApplyTitle"),
+      tagline: t("homeStageApplyTagline"),
+      desc: t("homeStageApplyDesc"),
       icon: Zap,
       color: "bg-indigo-100 text-indigo-800",
     },
     {
       step: "06",
-      title: "Reflect",
-      tagline: "Self-Belief & Meta-Cognition",
-      desc: "Students evaluate their own calculation logs, celebrate precision milestones, and build independent academic confidence.",
+      title: t("homeStageReflectTitle"),
+      tagline: t("homeStageReflectTagline"),
+      desc: t("homeStageReflectDesc"),
       icon: Smile,
       color: "bg-emerald-100 text-emerald-800",
     },
@@ -134,51 +134,51 @@ export default function Home() {
   // 8 Child Development Intelligence Pillars
   const developmentPillars = [
     {
-      title: "Visualization",
-      desc: "Children form vivid mental images of abacus beads, moving away from paper counting and developing spatial mental models.",
-      observation: "Observed when a child calculates mentally with eyes focused or closed, moving imaginary beads with accuracy.",
+      title: t("pillar1Title"),
+      desc: t("pillar1Desc"),
+      observation: t("pillar1Obs"),
       icon: Eye,
     },
     {
-      title: "Working Memory",
-      desc: "Holding intermediate calculations while processing next-step digits, expanding short-term retention capacity.",
-      observation: "Observed during rapid multi-row additions where earlier subtotals are retained without writing.",
+      title: t("pillar2Title"),
+      desc: t("pillar2Desc"),
+      observation: t("pillar2Obs"),
       icon: Brain,
     },
     {
-      title: "Pattern Recognition",
-      desc: "Intuitive discernment of mathematical relationships, base-10 pairs, and algebraic structures effortlessly.",
-      observation: "Observed when a child quickly groups numbers into easy complements (e.g. 7 + 8 as 7 + 3 + 5).",
+      title: t("pillar3Title"),
+      desc: t("pillar3Desc"),
+      observation: t("pillar3Obs"),
       icon: Layers,
     },
     {
-      title: "Processing Speed",
-      desc: "Elimination of procedural calculation lag and finger counting, accelerating arithmetical execution naturally.",
-      observation: "Measured via time-trial drills where reaction latency drops from 4 seconds per sum to under 1 second.",
+      title: t("pillar4Title"),
+      desc: t("pillar4Desc"),
+      observation: t("pillar4Obs"),
       icon: Zap,
     },
     {
-      title: "Attention & Focus",
-      desc: "Sustained concentration during multi-step tasks without distraction or restlessness.",
-      observation: "Observed in 20-minute uninterrupted problem-solving sessions without digital screen fatigue.",
+      title: t("pillar5Title"),
+      desc: t("pillar5Desc"),
+      observation: t("pillar5Obs"),
       icon: Target,
     },
     {
-      title: "Cognitive Flexibility",
-      desc: "Ability to switch fluently between traditional school math column methods, Vedic shortcuts, and mental visualization.",
-      observation: "Observed when a child independently verifies a standard long division using Vedic digit-sums.",
+      title: t("pillar6Title"),
+      desc: t("pillar6Desc"),
+      observation: t("pillar6Obs"),
       icon: Activity,
     },
     {
-      title: "Executive Function",
-      desc: "Self-monitoring, methodical error-checking, and disciplined pacing during exam time constraints.",
-      observation: "Observed when a child spots their own carry-over oversight before submitting a worksheet.",
+      title: t("pillar7Title"),
+      desc: t("pillar7Desc"),
+      observation: t("pillar7Obs"),
       icon: ShieldCheck,
     },
     {
-      title: "Confidence",
-      desc: "Complete eradication of math phobia, transforming a reluctant learner into an enthusiastic, voluntary problem-solver.",
-      observation: "Parent-reported transformation in homework independence and eagerness to participate in school math classes.",
+      title: t("pillar8Title"),
+      desc: t("pillar8Desc"),
+      observation: t("pillar8Obs"),
       icon: Smile,
     },
   ];
@@ -186,28 +186,28 @@ export default function Home() {
   // Homepage FAQs
   const homeFaqs = [
     {
-      q: "What is the best age to enroll my child in Arnav Abacus Academy?",
-      a: "For Abacus, the ideal developmental window is approximately 4.5 to 9 years old, when neuroplasticity and visual memory development are at their peak. For Vedic Mathematics, students aged 9 to 14 (Grades 5–10) benefit most because they apply the 16 sutras directly to heavy school syllabus and competitive exams."
+      q: t("faq1Question"),
+      a: t("faq1Answer")
     },
     {
-      q: "Does Abacus create confusion with my child's school board syllabus (CBSE/ICSE/SSC)?",
-      a: "No, Abacus does not confuse school math. Abacus trains internal computation agility, place-value sense, and working memory. In school exams, students still write the required step-by-step layout on paper, but they complete the underlying arithmetic in seconds with zero scratch-margin errors."
+      q: t("faq5Question"),
+      a: t("faq5Answer")
     },
     {
-      q: "What makes Arnav Abacus Academy different from commercial chain franchises?",
-      a: "Commercial franchises often rely on large batches (15–25 students) and part-time instructors with high turnover. AAA is founded and directed personally by Neha Patil (MCA, IIVA Certified), strictly maintaining small batches with a maximum of five students per batch. Every child receives customized pacing, error diagnostics, and direct mentor care."
+      q: t("faq3Question"),
+      a: t("faq3Answer")
     },
     {
-      q: "How much daily practice is expected from the child at home?",
-      a: "We advocate a manageable 10 to 15-minute daily practice routine. Consistent daily micro-drills strengthen neural pathways far more effectively than cramming for 2 hours once a week. This keeps math fun and prevents burnout."
+      q: t("faq2Question"),
+      a: t("faq2Answer")
     },
     {
-      q: "Can we attend classes offline in Wakad or online from home?",
-      a: "We offer both! We conduct offline micro-batches at our dedicated center in Wakad (Flat No. 3, Balaji Sagar Bungalow, Near Park Street, behind Wisdom World School) and live interactive 1-on-1 and small group online sessions for students across Pune, India, and overseas."
+      q: t("faq7Question"),
+      a: t("faq7Answer")
     },
     {
-      q: "How can parents track progress?",
-      a: "Through our AAA Brain Dashboard™ methodology, parents receive regular level-completion reports, speed benchmarks, accuracy audits, and 1-on-1 consultation feedback with Mentor Neha Patil."
+      q: t("faq6Question"),
+      a: t("faq6Answer")
     }
   ];
 
@@ -233,13 +233,13 @@ export default function Home() {
         <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-lg">
           <div className="space-y-1 text-center md:text-left">
             <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest block">
-              Verified Institutional Authority
+              {t("homeTrustStripBadge")}
             </span>
             <h3 className="font-display font-black text-lg sm:text-xl text-white">
-              Recognised Excellence in Mathematical Child Development
+              {t("homeTrustStripTitle")}
             </h3>
             <p className="text-xs text-slate-300 max-w-xl font-medium">
-              Certified Trainer in Abacus &amp; Vedic Mathematics • Small Batches • Serving Wakad &amp; Pune.
+              {t("homeTrustStripDesc")}
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
@@ -247,13 +247,13 @@ export default function Home() {
               to="/mentor"
               className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs px-5 py-2.5 rounded-full transition-all"
             >
-              Verify Credentials &rarr;
+              {t("homeTrustStripVerify")}
             </Link>
             <Link
               to="/showcase"
               className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all border border-slate-700"
             >
-              Student Hall of Fame
+              {t("homeTrustStripFame")}
             </Link>
           </div>
         </div>
@@ -266,13 +266,13 @@ export default function Home() {
       <section id="programmes-section" className="py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
           <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Five Dedicated Pathways
+            {t("homeProgSectionBadge")}
           </span>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-            Our Structured Mathematics Programmes
+            {t("homeProgSectionTitle")}
           </h2>
           <p className="text-slate-600 text-xs md:text-sm font-semibold">
-            Every programme is calibrated to child development stages and taught in personalised small batches with a maximum of five students per batch.
+            {t("homeProgSectionSubtitle")}
           </p>
         </div>
 
@@ -280,6 +280,12 @@ export default function Home() {
         <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10 pb-6 max-w-5xl mx-auto border-b border-slate-200">
           {PROGRAMS.map((prog) => {
             const isSelected = selectedProgram === prog.id;
+            const progTitle = prog.id === "abacus" ? t("navAbacusProgram")
+              : prog.id === "vedic-math" ? t("navVedicProgram")
+              : prog.id === "mental-math" ? t("navMentalProgram")
+              : prog.id === "school-math" ? t("navSchoolProgram")
+              : prog.id === "ipm-olympiad" ? t("navIpmProgram")
+              : prog.title;
             return (
               <button
                 key={prog.id}
@@ -290,7 +296,7 @@ export default function Home() {
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                 }`}
               >
-                {prog.title}
+                {progTitle}
               </button>
             );
           })}
@@ -320,7 +326,7 @@ export default function Home() {
             to="/programs"
             className="inline-flex items-center gap-2 text-xs font-bold text-orange-600 hover:text-orange-700 uppercase tracking-wider"
           >
-            <span>Compare All 5 Programmes &amp; Curriculum Breakdown</span>
+            <span>{t("homeCompareProgramsLink")}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -334,14 +340,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-3xl mx-auto mb-14">
             <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              Proprietary Pedagogy
+              {t("homeModelBadge")}
             </span>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-              The AAA Learning Model™
+              {t("homeModelTitle")}
             </h2>
             <p className="text-slate-600 text-xs md:text-sm font-semibold leading-relaxed">
-              "Mathematics is the medium; developing confident, independent and thoughtful learners is the mission."
-              Our 6-stage progressive mastery model transforms anxious students into joyful, autonomous thinkers.
+              {t("homeModelSubtitle")}
             </p>
           </div>
 
@@ -382,13 +387,13 @@ export default function Home() {
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="space-y-1 text-center md:text-left">
                 <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-                  Interactive Learning Labs
+                  {t("homeLabsStripBadge")}
                 </span>
                 <h3 className="font-display font-black text-xl text-slate-900">
-                  Experience Our Pedagogical Tools Directly
+                  {t("homeLabsStripTitle")}
                 </h3>
                 <p className="text-xs text-slate-600 font-medium max-w-xl">
-                  Test abacus bead manipulation, explore Vedic multiplication Sutras, or let your child take our 45-second arithmetic speed drill online.
+                  {t("homeLabsStripDesc")}
                 </p>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-2.5 shrink-0">
@@ -396,19 +401,19 @@ export default function Home() {
                   to="/abacus-simulator"
                   className="bg-slate-900 hover:bg-orange-600 text-white text-xs font-bold px-4 py-2.5 rounded-full transition-colors shadow-xs inline-flex items-center gap-1.5"
                 >
-                  <span>🧮 Abacus Simulator</span>
+                  <span>{t("homeLabBtnSimulator")}</span>
                 </Link>
                 <Link
                   to="/vedic-maths-sutras"
                   className="bg-slate-100 hover:bg-orange-100 hover:text-orange-700 text-slate-800 text-xs font-bold px-4 py-2.5 rounded-full transition-colors border border-slate-200/60 inline-flex items-center gap-1.5"
                 >
-                  <span>📐 Vedic Sutras</span>
+                  <span>{t("homeLabBtnSutras")}</span>
                 </Link>
                 <Link
                   to="/speed-challenge"
                   className="bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold px-4 py-2.5 rounded-full transition-colors border border-amber-200 inline-flex items-center gap-1.5"
                 >
-                  <span>⚡ Speed Challenge</span>
+                  <span>{t("homeLabBtnSpeed")}</span>
                 </Link>
               </div>
             </div>
@@ -423,13 +428,13 @@ export default function Home() {
       <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-3xl mx-auto mb-14">
           <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Cognitive Growth Pillars
+            {t("homePillarsBadge")}
           </span>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-            Child Development Intelligence
+            {t("homePillarsTitle")}
           </h2>
           <p className="text-slate-600 text-xs md:text-sm font-semibold leading-relaxed">
-            Abacus and Vedic Mathematics training goes far beyond fast calculations. We track learning progress across eight fundamental child development pillars:
+            {t("homePillarsSubtitle")}
           </p>
         </div>
 
@@ -451,7 +456,7 @@ export default function Home() {
                   {pillar.desc}
                 </p>
                 <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-[10.5px] text-slate-600 font-medium leading-relaxed">
-                  <strong className="text-slate-800 block mb-0.5">How It Is Observed:</strong>
+                  <strong className="text-slate-800 block mb-0.5">{t("homePillarsObservationLabel")}</strong>
                   {pillar.observation}
                 </div>
               </div>
@@ -460,7 +465,7 @@ export default function Home() {
         </div>
 
         <div className="mt-8 text-center text-xs text-slate-500 font-medium max-w-2xl mx-auto">
-          * Note: Development indicators reflect observed learning progress and cognitive skill tracking; they are not intended as clinical neurological diagnostic scores.
+          {t("homePillarsFootnote")}
         </div>
       </section>
 
@@ -472,20 +477,20 @@ export default function Home() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div className="space-y-3 max-w-2xl">
             <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              Practical Insights for Parents
+              {t("homeGuidesBadge")}
             </span>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-              Evidence-Based Answers to Common Math Dilemmas
+              {t("homeGuidesTitle")}
             </h2>
             <p className="text-slate-600 text-xs md:text-sm font-semibold">
-              Before choosing a programme, explore how children learn calculation, why finger counting occurs, and how sensory bead arithmetic connects with school exams.
+              {t("homeGuidesSubtitle")}
             </p>
           </div>
           <Link
             to="/parent-guides"
             className="inline-flex items-center gap-2 bg-slate-900 hover:bg-orange-600 text-white font-bold text-xs px-5 py-3 rounded-full transition-all shadow-sm shrink-0 self-start md:self-auto"
           >
-            <span>Explore All 5 Parent Guides</span>
+            <span>{t("homeGuidesExploreAll")}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -497,17 +502,17 @@ export default function Home() {
           >
             <div className="space-y-3">
               <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-2.5 py-1 rounded-full uppercase">
-                Ages 4.5–14
+                {t("homeGuide1Badge")}
               </span>
               <h3 className="font-display font-black text-lg text-slate-900 group-hover:text-orange-600 transition-colors leading-snug">
-                Abacus vs Vedic Maths: What's the Difference?
+                {t("homeGuide1Title")}
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                Learn why tactile bead visualization is best for ages 4.5–9, while Vedic Sutras empower older students with high-speed exam calculation.
+                {t("homeGuide1Desc")}
               </p>
             </div>
             <span className="inline-flex items-center gap-1 text-xs font-bold text-orange-600 pt-4 group-hover:translate-x-1 transition-transform">
-              Read Guide &rarr;
+              {t("homeGuideReadCta")}
             </span>
           </Link>
 
@@ -517,17 +522,17 @@ export default function Home() {
           >
             <div className="space-y-3">
               <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full uppercase">
-                Early Numeracy
+                {t("homeGuide2Badge")}
               </span>
               <h3 className="font-display font-black text-lg text-slate-900 group-hover:text-teal-700 transition-colors leading-snug">
-                Why Children Count on Fingers & How to Transition
+                {t("homeGuide2Title")}
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                Why finger counting is natural, why scolding backfires, and how the Soroban abacus bridges physical fingers into mental images.
+                {t("homeGuide2Desc")}
               </p>
             </div>
             <span className="inline-flex items-center gap-1 text-xs font-bold text-teal-700 pt-4 group-hover:translate-x-1 transition-transform">
-              Read Guide &rarr;
+              {t("homeGuideReadCta")}
             </span>
           </Link>
 
@@ -537,17 +542,17 @@ export default function Home() {
           >
             <div className="space-y-3">
               <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full uppercase">
-                Accuracy & Focus
+                {t("homeGuide3Badge")}
               </span>
               <h3 className="font-display font-black text-lg text-slate-900 group-hover:text-amber-800 transition-colors leading-snug">
-                Why Children Make Mistakes Despite Understanding Concepts
+                {t("homeGuide3Title")}
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed">
-                Understand procedural slips, working memory overload, and a 4-step parent review routine to build lasting calculation accuracy.
+                {t("homeGuide3Desc")}
               </p>
             </div>
             <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-800 pt-4 group-hover:translate-x-1 transition-transform">
-              Read Guide &rarr;
+              {t("homeGuideReadCta")}
             </span>
           </Link>
         </div>
@@ -561,13 +566,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
             <span className="text-[10px] font-bold text-orange-600 bg-orange-100 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              Dedicated Mentorship
+              {t("homeFounderBadge")}
             </span>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-              Personalised Guidance by Neha Patil
+              {t("homeFounderTitle")}
             </h2>
             <p className="text-slate-600 text-xs md:text-sm font-semibold">
-              Meet our Founder and Academic Director, dedicated to small-batch micro-teaching in Wakad, Pune.
+              {t("homeFounderSubtitle")}
             </p>
           </div>
 
@@ -587,33 +592,33 @@ export default function Home() {
           <div className="lg:col-span-6 space-y-6">
             <div className="inline-flex items-center gap-2 bg-amber-400/20 text-amber-800 border border-amber-400/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
               <Trophy className="w-3.5 h-3.5 text-amber-600" />
-              <span>National Competition Excellence</span>
+              <span>{t("homeAchieveBadge")}</span>
             </div>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-              Championship Excellence: 30+ Champions &amp; Global Competitors
+              {t("homeAchieveTitle")}
             </h2>
             <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">
-              Till date, over 30+ students have won top championship trophies across State, National, and International competitions in Abacus, Vedic Math, and IPM.
+              {t("homeAchievePara1")}
             </p>
             <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">
-              56 students represented our Wakad center at the 15th National Level Championship 2026 (results awaited), and 68 dedicated students are competing in the prestigious International Championship on 27th December 2026!
+              {t("homeAchievePara2")}
             </p>
 
             <div className="grid grid-cols-3 gap-3 pt-2">
               <div className="bg-amber-50 p-3 sm:p-4 rounded-2xl border border-amber-200 text-center">
-                <span className="font-display font-black text-2xl sm:text-3xl text-amber-600 block">30+</span>
-                <span className="text-[11px] sm:text-xs font-bold text-slate-800 block">Champions</span>
-                <span className="text-[9.5px] sm:text-[10.5px] text-slate-500 block">State, National &amp; Intl</span>
+                <span className="font-display font-black text-2xl sm:text-3xl text-amber-600 block">{t("homeAchieveCard1Num")}</span>
+                <span className="text-[11px] sm:text-xs font-bold text-slate-800 block">{t("homeAchieveCard1Label")}</span>
+                <span className="text-[9.5px] sm:text-[10.5px] text-slate-500 block">{t("homeAchieveCard1Sub")}</span>
               </div>
               <div className="bg-orange-50 p-3 sm:p-4 rounded-2xl border border-orange-200 text-center">
-                <span className="font-display font-black text-2xl sm:text-3xl text-orange-600 block">56</span>
-                <span className="text-[11px] sm:text-xs font-bold text-slate-800 block">National</span>
-                <span className="text-[9.5px] sm:text-[10.5px] text-slate-500 block">Contingent 2026</span>
+                <span className="font-display font-black text-2xl sm:text-3xl text-orange-600 block">{t("homeAchieveCard2Num")}</span>
+                <span className="text-[11px] sm:text-xs font-bold text-slate-800 block">{t("homeAchieveCard2Label")}</span>
+                <span className="text-[9.5px] sm:text-[10.5px] text-slate-500 block">{t("homeAchieveCard2Sub")}</span>
               </div>
               <div className="bg-teal-50 p-3 sm:p-4 rounded-2xl border border-teal-200 text-center">
-                <span className="font-display font-black text-2xl sm:text-3xl text-teal-600 block">68</span>
-                <span className="text-[11px] sm:text-xs font-bold text-slate-800 block">International</span>
-                <span className="text-[9.5px] sm:text-[10.5px] text-slate-500 block">27th Dec 2026</span>
+                <span className="font-display font-black text-2xl sm:text-3xl text-teal-600 block">{t("homeAchieveCard3Num")}</span>
+                <span className="text-[11px] sm:text-xs font-bold text-slate-800 block">{t("homeAchieveCard3Label")}</span>
+                <span className="text-[9.5px] sm:text-[10.5px] text-slate-500 block">{t("homeAchieveCard3Sub")}</span>
               </div>
             </div>
 
@@ -622,7 +627,7 @@ export default function Home() {
                 to="/showcase"
                 className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-full inline-flex items-center gap-2 shadow-sm transition-all"
               >
-                <span>View Full Student Hall of Fame</span>
+                <span>{t("homeAchieveHallOfFame")}</span>
                 <ArrowRight className="w-4 h-4 text-amber-400" />
               </Link>
             </div>
@@ -638,7 +643,7 @@ export default function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent flex items-end p-6">
                 <p className="text-white text-xs sm:text-sm font-bold">
-                  AAA students celebrating their national championship trophies with Founder Neha Patil
+                  {t("homeAchievePhotoCaption")}
                 </p>
               </div>
             </div>
@@ -674,13 +679,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
             <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              Parent Experiences
+              {t("homeTestimonialsBadge")}
             </span>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-              Trusted by 76+ Wakad Parents
+              {t("homeTestimonialsTitle")}
             </h2>
             <p className="text-slate-600 text-xs md:text-sm font-semibold">
-              Read how personalized mentorship transformed calculation speed, homework discipline, and exam confidence. Disclosures under CCPA Coaching Guidelines 2024: Testimonials reflect genuine experiences of enrolled students in paid programs.
+              {t("homeTestimonialsSubtitle")}
             </p>
           </div>
 
@@ -697,13 +702,13 @@ export default function Home() {
       <section id="faq-section" className="py-16 md:py-24 max-w-4xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 mb-12">
           <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Clear Answers
+            {t("faqBadge") || "Clear Answers"}
           </span>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-            Frequently Asked Questions
+            {t("faqTitle")}
           </h2>
           <p className="text-slate-600 text-xs md:text-sm font-semibold">
-            Everything you need to know about our programmes, batches, and teaching methodology.
+            {t("faqSubtitle")}
           </p>
         </div>
 
@@ -756,15 +761,15 @@ export default function Home() {
             <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
               <span className="inline-flex items-center gap-1.5 bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Admissions Open for New Batches</span>
+                <span>{t("homeFinalSectionBadge")}</span>
               </span>
 
               <h2 className="font-display font-black text-3xl sm:text-5xl tracking-tight leading-tight text-white">
-                Give Your Child a Stronger Start in Mathematics.
+                {t("homeFinalSectionTitle")}
               </h2>
 
               <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed font-medium">
-                Connect directly with Founder Neha Patil for an encouraging, educator-led Personalised Learning Discovery Session. Discover your child's arithmetic readiness, bead visualization aptitude, and focus in small batches (maximum 5 students per batch).
+                {t("homeFinalSectionDesc")}
               </p>
 
               {/* CTAs */}
@@ -774,7 +779,7 @@ export default function Home() {
                   onClick={() => handleOpenCounselling("home_final_conversion_counselling")}
                   className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm px-8 py-4 rounded-full shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span>Book a Discovery Session</span>
+                  <span>{t("homeFinalBookCta")}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
@@ -783,7 +788,7 @@ export default function Home() {
                   onClick={() => handleWhatsAppChat("home_final_conversion_whatsapp")}
                   className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-7 py-4 rounded-full shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span>WhatsApp AAA</span>
+                  <span>{t("homeFinalWhatsappCta")}</span>
                 </button>
               </div>
 
@@ -792,8 +797,8 @@ export default function Home() {
                 <div className="flex items-start gap-3 bg-slate-800/80 p-4 rounded-2xl border border-slate-700 text-xs text-slate-300">
                   <MapPin className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-white block mb-0.5">Wakad Center Location:</strong>
-                    Flat no. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune, Maharashtra 411057.
+                    <strong className="text-white block mb-0.5">{t("homeFinalWakadAddressLabel")}</strong>
+                    {t("footerAddress")}
                   </div>
                 </div>
 
@@ -816,13 +821,13 @@ export default function Home() {
             <div className="lg:col-span-6 bg-white text-slate-900 rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-100">
               <div className="mb-4">
                 <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                  Direct Parent Inquiry
+                  {t("homeFinalDirectInquiryBadge")}
                 </span>
                 <h3 className="text-xl font-black text-slate-900 mt-2">
-                  Book a Personalised Discovery Session
+                  {t("homeFinalBookSessionTitle")}
                 </h3>
                 <p className="text-xs text-slate-500 font-medium">
-                  We'll review your child's age group and recommend the ideal learning pathway.
+                  {t("homeFinalBookSessionSub")}
                 </p>
               </div>
               <LeadForm sourceCampaign="home_final_conversion_section" />

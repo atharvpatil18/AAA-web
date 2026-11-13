@@ -31,12 +31,65 @@ export default function ProgramCard({ program }: ProgramCardProps) {
     }
   };
 
-  const title = program.title;
-  const tagline = program.tagline;
-  const targetAge = program.targetAge;
-  const description = program.description;
-  const benefits = program.benefits;
-  const curriculum = program.curriculum;
+  const getLocalizedProgram = () => {
+    switch (program.id) {
+      case "abacus":
+        return {
+          title: t("progAbacusTitle") || program.title,
+          tagline: t("progAbacusTagline") || program.tagline,
+          targetAge: t("progAbacusAge") || program.targetAge,
+          description: t("progAbacusDesc") || program.description,
+          benefits: [t("progAbacusBenefit1"), t("progAbacusBenefit2"), t("progAbacusBenefit3"), t("progAbacusBenefit4"), t("progAbacusBenefit5")].filter(Boolean),
+          curriculum: [t("progAbacusCurriculum1"), t("progAbacusCurriculum2"), t("progAbacusCurriculum3"), t("progAbacusCurriculum4"), t("progAbacusCurriculum5")].filter(Boolean),
+        };
+      case "vedic-math":
+        return {
+          title: t("progVedicTitle") || program.title,
+          tagline: t("progVedicTagline") || program.tagline,
+          targetAge: t("progVedicAge") || program.targetAge,
+          description: t("progVedicDesc") || program.description,
+          benefits: [t("progVedicBenefit1"), t("progVedicBenefit2"), t("progVedicBenefit3"), t("progVedicBenefit4"), t("progVedicBenefit5")].filter(Boolean),
+          curriculum: [t("progVedicCurriculum1"), t("progVedicCurriculum2"), t("progVedicCurriculum3"), t("progVedicCurriculum4"), t("progVedicCurriculum5")].filter(Boolean),
+        };
+      case "mental-math":
+        return {
+          title: t("progMentalTitle") || program.title,
+          tagline: t("progMentalTagline") || program.tagline,
+          targetAge: t("progMentalAge") || program.targetAge,
+          description: t("progMentalDesc") || program.description,
+          benefits: [t("progMentalBenefit1"), t("progMentalBenefit2"), t("progMentalBenefit3"), t("progMentalBenefit4"), t("progMentalBenefit5")].filter(Boolean),
+          curriculum: [t("progMentalCurriculum1"), t("progMentalCurriculum2"), t("progMentalCurriculum3"), t("progMentalCurriculum4"), t("progMentalCurriculum5")].filter(Boolean),
+        };
+      case "school-math":
+        return {
+          title: t("progSchoolTitle") || program.title,
+          tagline: t("progSchoolTagline") || program.tagline,
+          targetAge: t("progSchoolAge") || program.targetAge,
+          description: t("progSchoolDesc") || program.description,
+          benefits: [t("progSchoolBenefit1"), t("progSchoolBenefit2"), t("progSchoolBenefit3"), t("progSchoolBenefit4"), t("progSchoolBenefit5")].filter(Boolean),
+          curriculum: [t("progSchoolCurriculum1"), t("progSchoolCurriculum2"), t("progSchoolCurriculum3"), t("progSchoolCurriculum4"), t("progSchoolCurriculum5")].filter(Boolean),
+        };
+      case "ipm-olympiad":
+        return {
+          title: t("progIpmTitle") || program.title,
+          tagline: t("progIpmTagline") || program.tagline,
+          targetAge: t("progIpmAge") || program.targetAge,
+          description: t("progIpmDesc") || program.description,
+          benefits: [t("progIpmBenefit1"), t("progIpmBenefit2"), t("progIpmBenefit3"), t("progIpmBenefit4"), t("progIpmBenefit5")].filter(Boolean),
+          curriculum: [t("progIpmCurriculum1"), t("progIpmCurriculum2"), t("progIpmCurriculum3"), t("progIpmCurriculum4"), t("progIpmCurriculum5")].filter(Boolean),
+        };
+      default:
+        return program;
+    }
+  };
+
+  const localized = getLocalizedProgram();
+  const title = localized.title;
+  const tagline = localized.tagline;
+  const targetAge = localized.targetAge;
+  const description = localized.description;
+  const benefits = localized.benefits.length > 0 ? localized.benefits : program.benefits;
+  const curriculum = localized.curriculum.length > 0 ? localized.curriculum : program.curriculum;
   
   // Custom theme logic for coloring
   const getThemeClasses = (theme: string) => {
@@ -109,7 +162,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
             {targetAge}
           </span>
           <span className="text-[11px] font-bold text-slate-500">
-            Small Batches (Max 5 Students)
+            {t("heroPillarSmallBatches")}
           </span>
         </div>
 
@@ -149,7 +202,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
             {/* Benefits Segment */}
             <div className="mb-6">
               <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">
-                Key Learning Benefits:
+                {t("progKeyBenefits")}
               </span>
               <ul className="space-y-2.5">
                 {benefits.map((benefit, idx) => (
@@ -169,7 +222,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
             {/* Curriculum Checkpoints */}
             <div className="mb-8">
               <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">
-                Curriculum Modules:
+                {t("progCurriculum")}
               </span>
               <div className="flex flex-wrap gap-2">
                 {curriculum.map((item, idx) => (
@@ -189,10 +242,10 @@ export default function ProgramCard({ program }: ProgramCardProps) {
               <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
               <div>
                 <strong className="block text-[11px] md:text-xs font-bold text-slate-900 uppercase tracking-wider mb-1">
-                  Small Batches (Max 5 Students)
+                  {t("heroPillarSmallBatches")}
                 </strong>
                 <p className="text-[10.5px] md:text-xs text-slate-600 font-medium leading-relaxed">
-                  Every child receives personalized diagnostic attention and customized practice pacing by certified mentors.
+                  {t("progSmallBatchDesc")}
                 </p>
               </div>
             </div>
@@ -206,7 +259,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
           to={getProgramRoute(program.id)}
           className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-full text-center flex items-center justify-center py-2.5 text-xs font-bold uppercase tracking-wider cursor-pointer duration-150 transition-all gap-1.5 shadow-xs"
         >
-          <span>Explore Programme Hub</span>
+          <span>{t("progExploreHub")}</span>
           <ArrowRight className="w-3.5 h-3.5 shrink-0" />
         </Link>
         <a
@@ -216,7 +269,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
           rel="noopener noreferrer"
           className={`w-full ${currentTheme.btn} rounded-full text-center flex items-center justify-center py-3 text-xs md:text-sm font-bold uppercase tracking-wider cursor-pointer duration-150 transition-all gap-2`}
         >
-          <span>Book Parent Counselling</span>
+          <span>{t("navBookParentCounselling")}</span>
           <ArrowRight className="w-4 h-4 shrink-0" />
         </a>
       </div>
