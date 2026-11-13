@@ -590,25 +590,30 @@ export default function Home() {
               <span>National Competition Excellence</span>
             </div>
             <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-              15th National Level Championship 2026: 56 Champions from Wakad
+              Championship Excellence: 30+ Champions &amp; Global Competitors
             </h2>
             <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">
-              At the 15th National Level Abacus &amp; Vedic Mathematics Championship, 56 dedicated students from Arnav Abacus Academy represented our Wakad center across 15 competitive levels.
+              Till date, over 30+ students have won top championship trophies across State, National, and International competitions in Abacus, Vedic Math, and IPM.
             </p>
             <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">
-              Competing against hundreds of young mathematicians nationwide under AVAS and IIVA benchmarks, our students achieved top podium spots, championship trophies, and gold medals.
+              56 students represented our Wakad center at the 15th National Level Championship 2026 (results awaited), and 68 dedicated students are competing in the prestigious International Championship on 27th December 2026!
             </p>
 
-            <div className="grid grid-cols-2 gap-4 pt-2">
-              <div className="bg-amber-50 p-4 rounded-2xl border border-amber-200">
-                <span className="font-display font-black text-3xl text-amber-600 block">56</span>
-                <span className="text-xs font-bold text-slate-800">Student Participants</span>
-                <span className="text-[10.5px] text-slate-500 block">Wakad Center Contingent</span>
+            <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="bg-amber-50 p-3 sm:p-4 rounded-2xl border border-amber-200 text-center">
+                <span className="font-display font-black text-2xl sm:text-3xl text-amber-600 block">30+</span>
+                <span className="text-[11px] sm:text-xs font-bold text-slate-800 block">Champions</span>
+                <span className="text-[9.5px] sm:text-[10.5px] text-slate-500 block">State, National &amp; Intl</span>
               </div>
-              <div className="bg-orange-50 p-4 rounded-2xl border border-orange-200">
-                <span className="font-display font-black text-3xl text-orange-600 block">15</span>
-                <span className="text-xs font-bold text-slate-800">Mastery Levels</span>
-                <span className="text-[10.5px] text-slate-500 block">From Foundation to Advance</span>
+              <div className="bg-orange-50 p-3 sm:p-4 rounded-2xl border border-orange-200 text-center">
+                <span className="font-display font-black text-2xl sm:text-3xl text-orange-600 block">56</span>
+                <span className="text-[11px] sm:text-xs font-bold text-slate-800 block">National</span>
+                <span className="text-[9.5px] sm:text-[10.5px] text-slate-500 block">Contingent 2026</span>
+              </div>
+              <div className="bg-teal-50 p-3 sm:p-4 rounded-2xl border border-teal-200 text-center">
+                <span className="font-display font-black text-2xl sm:text-3xl text-teal-600 block">68</span>
+                <span className="text-[11px] sm:text-xs font-bold text-slate-800 block">International</span>
+                <span className="text-[9.5px] sm:text-[10.5px] text-slate-500 block">27th Dec 2026</span>
               </div>
             </div>
 
