@@ -11,7 +11,7 @@ import { useLanguage } from "../lib/LanguageContext";
 import DemoBookingModal from "./DemoBookingModal";
 
 export default function FloatingCTA() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
@@ -112,7 +112,7 @@ export default function FloatingCTA() {
 
             {/* Hover tooltip for desktop users */}
             <span className="absolute right-14 bg-slate-900 text-white font-bold text-xs py-1.5 px-3 rounded-xl opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all origin-right pointer-events-none whitespace-nowrap shadow-lg">
-              WhatsApp (+91 90219 24968)
+              {language === "mr" ? "व्हॉट्सॲप (+९१ ९०२१९ २४९६८)" : language === "hi" ? "व्हाट्सएप (+९१ ९०२१९ २४९६८)" : "WhatsApp (+91 90219 24968)"}
             </span>
           </button>
         </div>

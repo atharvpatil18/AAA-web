@@ -172,7 +172,7 @@ export default function Navbar() {
                 className="flex items-center gap-1 hover:text-amber-400 transition-colors"
               >
                 <Phone className="w-3.5 h-3.5 text-amber-400" />
-                <span className="hidden sm:inline">+91 90219 24968</span>
+                <span className="hidden sm:inline">{t("academyPhoneDisplay")}</span>
               </a>
               <a 
                 href="https://wa.me/919021924968" 

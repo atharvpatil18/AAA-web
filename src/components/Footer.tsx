@@ -169,7 +169,7 @@ export default function Footer() {
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-emerald-500 shrink-0" />
                 <a href="tel:+919021924968" className="hover:text-white transition">
-                  +91 90219 24968
+                  {t("academyPhoneDisplay")}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
@@ -184,7 +184,7 @@ export default function Footer() {
                 {t("footerGrievanceTitle")}
               </span>
               <p className="text-slate-400">
-                Nitin Patil • <a href="tel:+919021924968" className="text-amber-400 hover:underline">+91 90219 24968</a>
+                {t("footerGrievanceOfficer")} • <a href="tel:+919021924968" className="text-amber-400 hover:underline">{t("academyPhoneDisplay")}</a>
               </p>
               <p className="text-[10px] text-slate-500">
                 {t("footerGrievanceTiming")}
@@ -202,7 +202,7 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-1.5 text-[11px]">
             <span className="flex items-center gap-1 text-slate-400">
-              {t("footerFounderMentor")} <strong className="text-slate-200">Neha Patil</strong> {t("footerFounderRole")}
+              {t("footerFounderMentor")} <strong className="text-slate-200">{t("footerFounderName")}</strong> {t("footerFounderRole")}
             </span>
             <span className="text-slate-600">|</span>
             <span className="flex items-center gap-1.5 text-slate-400">
