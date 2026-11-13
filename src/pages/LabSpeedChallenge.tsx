@@ -22,7 +22,7 @@ import { trackPageView } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function LabSpeedChallenge() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     trackPageView(
@@ -167,7 +167,7 @@ export default function LabSpeedChallenge() {
                 Book a Center Assessment in Wakad
               </h3>
               <p className="text-xs text-slate-300 max-w-xl">
-                Bring your child to our center behind Wisdom World School, Wakad for a personalized arithmetic agility evaluation with Academic Director Neha Patil.
+                Bring your child to our center behind Wisdom World School, Wakad for a personalized arithmetic agility evaluation with Academic Director {language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil"}.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">

@@ -24,7 +24,7 @@ interface NewsItem {
 }
 
 export default function NewsEvents() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [expandedEvents, setExpandedEvents] = useState<Record<string, boolean>>({});
   const [showResultsModal, setShowResultsModal] = useState(false);
 
@@ -446,7 +446,7 @@ export default function NewsEvents() {
                     Celebrating 8 Golden Champions!
                   </h2>
                   <p className="text-xs md:text-sm text-gray-600 font-bold leading-relaxed">
-                    IIVA State Level Abacus & Vedic Math Competition 2026 • Felicitation held on 15th Aug 2026 at Arnav Abacus Academy Wakad, Pune by Founder & Director Neha Patil.
+                    {t("resultsModalSubtitle")}
                   </p>
                 </div>
                 <button
@@ -470,7 +470,7 @@ export default function NewsEvents() {
                     />
                   </div>
                   <div className="text-[11px] text-center font-black text-vibrant-dark bg-[#FFF5CC] border-2 border-vibrant-dark px-3 py-1.5 rounded-xl w-full">
-                    🎖️ Gold Medals Awarded by Founder & Director Neha Patil
+                    {language === "mr" ? "🎖️ संस्थापिका व संचालिका नेहा पाटील यांच्या हस्ते सुवर्णपदके प्रदान" : language === "hi" ? "🎖️ संस्थापिका व निदेशिका नेहा पाटिल द्वारा स्वर्ण पदक प्रदान" : "🎖️ Gold Medals Awarded by Founder & Director Neha Patil"}
                   </div>
                 </div>
 

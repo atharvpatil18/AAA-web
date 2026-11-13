@@ -291,7 +291,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       tag: t("showcaseTag2"),
       achievementText: t("showcaseItem2Text"),
       imageUrl: "arnav_patil_international_1st_2025.webp",
-      imageAlt: "Arnav Patil holding the 1st Rank Trophy with Neha Patil on stage",
+      imageAlt: language === "mr" ? "अर्णव पाटील मंचावर नेहा पाटील यांच्यासोबत प्रथम क्रमांकाची ट्रॉफी स्वीकारताना" : language === "hi" ? "अर्णव पाटिल मंच पर नेहा पाटिल के साथ प्रथम स्थान की ट्रॉफी लेते हुए" : "Arnav Patil holding the 1st Rank Trophy with Neha Patil on stage",
       colorTheme: "gold",
       mainCategory: "international"
     },
@@ -302,7 +302,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       tag: t("showcaseTag3"),
       achievementText: t("showcaseItem3Text"),
       imageUrl: "business_excellence_award_2025.webp",
-      imageAlt: "Neha Patil receiving the Business Excellence Award 2025 from Sanjay Kalamkar",
+      imageAlt: language === "mr" ? "नेहा पाटील संजय कलमकर यांच्या हस्ते बिझनेस एक्सलन्स पुरस्कार २०२५ स्वीकारताना" : language === "hi" ? "नेहा पाटिल संजय कलमकर से बिजनेस एक्सीलेंस अवॉर्ड २०२५ प्राप्त करते हुए" : "Neha Patil receiving the Business Excellence Award 2025 from Sanjay Kalamkar",
       colorTheme: "gold",
       mainCategory: "national_state"
     },
@@ -313,7 +313,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       tag: t("showcaseTag4"),
       achievementText: t("showcaseItem4Text"),
       imageUrl: "neha_achiever_collage.webp",
-      imageAlt: "Neha Patil receiving the Women's Achiever Award from LPBMW community leaders",
+      imageAlt: language === "mr" ? "नेहा पाटील LPBMW समुदाय नेत्यांकडून महिला अचीव्हर पुरस्कार स्वीकारताना" : language === "hi" ? "नेहा पाटिल LPBMW समुदाय के नेताओं से वीमेन्स अचीवर अवॉर्ड प्राप्त करते हुए" : "Neha Patil receiving the Women's Achiever Award from LPBMW community leaders",
       colorTheme: "gold",
       mainCategory: "national_state"
     },
@@ -324,7 +324,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       tag: t("showcaseTag5"),
       achievementText: t("showcaseItem5Text"),
       imageUrl: "best_student_spriha_kamat_2025_2026.webp",
-      imageAlt: "Spriha Kamath holding the Best Student of the Year Trophy with Neha Patil",
+      imageAlt: language === "mr" ? "स्पृहा कामत नेहा पाटील यांच्यासोबत वर्षातील सर्वोत्कृष्ट विद्यार्थी ट्रॉफी स्वीकारताना" : language === "hi" ? "स्पृहा कामत नेहा पाटिल के साथ बेस्ट स्टूडेंट ऑफ द ईयर ट्रॉफी लेते हुए" : "Spriha Kamath holding the Best Student of the Year Trophy with Neha Patil",
       colorTheme: "teal",
       mainCategory: "academy_level",
       academySubCategory: "abacus"
@@ -347,7 +347,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       tag: t("showcaseTag7"),
       achievementText: t("showcaseItem7Text"),
       imageUrl: "shreshth_gupta_champion_2025.webp",
-      imageAlt: "Shreshth Gupta receiving the 1st Rank International Abacus Competition Trophy with Neha Patil",
+      imageAlt: language === "mr" ? "श्रेष्ठ गुप्ता नेहा पाटील यांच्यासोबत आंतरराष्ट्रीय ॲबॅकस स्पर्धेची प्रथम क्रमांकाची ट्रॉफी स्वीकारताना" : language === "hi" ? "श्रेष्ठ गुप्ता नेहा पाटिल के साथ इंटरनेशनल एबाकस प्रतियोगिता की प्रथम स्थान ट्रॉफी प्राप्त करते हुए" : "Shreshth Gupta receiving the 1st Rank International Abacus Competition Trophy with Neha Patil",
       colorTheme: "gold",
       mainCategory: "international"
     },
@@ -380,7 +380,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       tag: t("showcaseTag10"),
       achievementText: t("showcaseItem10Text"),
       imageUrl: "bliss_international_abacus_camp_2024.webp",
-      imageAlt: "Neha Patil teaching abacus to students at Bliss International School summer camp",
+      imageAlt: language === "mr" ? "नेहा पाटील ब्लिस इंटरनॅशनल स्कूल समर कॅम्पमध्ये विद्यार्थ्यांना ॲबॅकस शिकवताना" : language === "hi" ? "नेहा पाटिल ब्लिस इंटरनेशनल स्कूल समर कैंप में छात्रों को एबाकस सिखाते हुए" : "Neha Patil teaching abacus to students at Bliss International School summer camp",
       colorTheme: "orange",
       mainCategory: "academy_level",
       academySubCategory: "abacus"
@@ -392,7 +392,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
       tag: t("showcaseTag11"),
       achievementText: t("showcaseItem11Text"),
       imageUrl: "national_math_day_award.webp",
-      imageAlt: "Neha Patil receiving Entrepreneurship Excellence Award at IIT Delhi from IIVA & IVAS",
+      imageAlt: language === "mr" ? "नेहा पाटील आयआयटी दिल्ली येथे IIVA आणि IVAS कडून राष्ट्रीय उद्योजकता उत्कृष्टता पुरस्कार स्वीकारताना" : language === "hi" ? "नेहा पाटिल आईआईटी दिल्ली में IIVA व IVAS से राष्ट्रीय उद्यमिता उत्कृष्टता पुरस्कार प्राप्त करते हुए" : "Neha Patil receiving Entrepreneurship Excellence Award at IIT Delhi from IIVA & IVAS",
       colorTheme: "gold",
       mainCategory: "national_state"
     },

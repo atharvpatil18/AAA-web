@@ -44,7 +44,7 @@ export default function TeacherProfile() {
               {!imgFailed ? (
                 <img 
                   src="/teacher-profile.jpg" 
-                  alt="Neha Patil - Founder & Academic Director, Arnav Abacus Academy Wakad Pune" 
+                  alt={language === "mr" ? "नेहा पाटील - संस्थापिका आणि शैक्षणिक संचालिका, अर्णव ॲबॅकस अकॅडमी वाकड पुणे" : language === "hi" ? "नेहा पाटिल - संस्थापिका और शैक्षणिक निदेशिका, अर्णव एबाकस एकेडमी वाकड पुणे" : "Neha Patil - Founder & Academic Director, Arnav Abacus Academy Wakad Pune"} 
                   className="w-full h-full rounded-2xl object-cover" 
                   loading="lazy"
                   decoding="async"
@@ -55,7 +55,7 @@ export default function TeacherProfile() {
               ) : (
                 <div className="w-full h-full rounded-2xl bg-slate-900 flex flex-col items-center justify-center p-4 text-center text-white">
                   <span className="font-display font-black text-6xl text-amber-400">NP</span>
-                  <span className="font-bold text-lg mt-2 block">Neha Patil</span>
+                  <span className="font-bold text-lg mt-2 block">{language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil"}</span>
                   <span className="text-[10px] text-teal-300 font-bold uppercase tracking-wider block mt-1">
                     IIVA Certified Mentor
                   </span>

@@ -21,6 +21,7 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import ParentPreparationCard from './ParentPreparationCard';
+import { useLanguage } from '../lib/LanguageContext';
 import {
   generateDiscoveryCalendarInvite,
   downloadCalendarInviteFile,
@@ -52,6 +53,7 @@ export default function AppointmentConfirmedModal({
   onClose,
   appointment,
 }: AppointmentConfirmedModalProps) {
+  const { language } = useLanguage();
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
   React.useEffect(() => {
@@ -282,7 +284,7 @@ export default function AppointmentConfirmedModal({
               className="min-h-[44px] inline-flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3.5 px-5 rounded-2xl text-xs md:text-sm border border-slate-200 transition-colors"
             >
               <Phone className="w-4 h-4 text-emerald-600" />
-              <span>Contact Neha Patil</span>
+              <span>{language === "mr" ? "नेहा पाटील यांच्याशी संपर्क साधा" : language === "hi" ? "नेहा पाटिल से संपर्क करें" : "Contact Neha Patil"}</span>
             </a>
           </div>
 

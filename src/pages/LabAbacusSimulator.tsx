@@ -24,7 +24,7 @@ import { trackPageView, trackDemoClick, trackWhatsAppClick } from "../lib/analyt
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function LabAbacusSimulator() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   useEffect(() => {
@@ -168,7 +168,7 @@ export default function LabAbacusSimulator() {
                 Offline Center in Wakad & Global Online Batches
               </span>
               <h3 className="font-display font-black text-xl md:text-2xl text-white">
-                Experience Neha Patil's Micro-Batch Classroom
+                {language === "mr" ? "संस्थापिका नेहा पाटील यांच्या मायक्रो-बॅचचा प्रत्यक्ष अनुभव घ्या" : language === "hi" ? "संस्थापिका नेहा पाटिल के माइक्रो-बैच का अनुभव करें" : "Experience Neha Patil's Micro-Batch Classroom"}
               </h3>
               <p className="text-xs text-slate-300 max-w-xl">
                 Every child receives a personalized 1-on-1 diagnostic assessment at our Wakad center. Small batches of maximum 5 students ensure individualized attention.

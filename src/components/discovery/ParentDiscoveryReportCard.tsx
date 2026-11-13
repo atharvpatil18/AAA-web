@@ -20,6 +20,7 @@ import {
   BookOpen
 } from "lucide-react";
 import { DiscoverySessionRecord, DevelopmentalBand } from "../../types/discovery";
+import { useLanguage } from "../../lib/LanguageContext";
 
 interface ParentDiscoveryReportCardProps {
   record: DiscoverySessionRecord;
@@ -37,6 +38,7 @@ export default function ParentDiscoveryReportCard({
   record,
   studentDisplayName = "Candidate"
 }: ParentDiscoveryReportCardProps) {
+  const { language } = useLanguage();
   const { recommendation, assessments, progressTracking } = record;
 
   return (
@@ -54,7 +56,7 @@ export default function ParentDiscoveryReportCard({
         </h3>
         
         <p className="text-xs md:text-sm text-slate-300 mt-1">
-          Candidate: <strong className="text-white">{studentDisplayName}</strong> ({record.childAgeGroup} Years) • Evaluated by Founder Neha Patil at Wakad Center
+          Candidate: <strong className="text-white">{studentDisplayName}</strong> ({record.childAgeGroup} Years) • Evaluated by Founder {language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil"} at Wakad Center
         </p>
 
         <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-300">
@@ -155,7 +157,7 @@ export default function ParentDiscoveryReportCard({
           {/* Educator Handwritten-Style Personal Note */}
           <div className="bg-amber-100/10 border border-amber-400/30 rounded-2xl p-4 text-amber-200 text-xs italic leading-relaxed">
             "{recommendation.educatorPersonalNote}"
-            <span className="block not-italic font-bold text-amber-300 text-right mt-2">— Founder Neha Patil</span>
+            <span className="block not-italic font-bold text-amber-300 text-right mt-2">— {language === "mr" ? "संस्थापिका नेहा पाटील" : language === "hi" ? "संस्थापिका नेहा पाटिल" : "Founder Neha Patil"}</span>
           </div>
         </div>
 
@@ -197,7 +199,7 @@ export default function ParentDiscoveryReportCard({
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             <span>Arnav Abacus Academy • Wakad Center, Pune • Strictly Private &amp; Confidential</span>
           </div>
-          <span>Grievance Contact: Nitin Patil (+91 90219 24968)</span>
+          <span>{language === "mr" ? "तक्रार निवारण संपर्क: नितीन पाटील (+९१ ९०२१९ २४९६८)" : language === "hi" ? "शिकायत निवारण संपर्क: नितिन पाटिल (+९१ ९०२१९ २४९६८)" : "Grievance Contact: Nitin Patil (+91 90219 24968)"}</span>
         </div>
 
       </div>

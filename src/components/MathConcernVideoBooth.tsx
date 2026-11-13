@@ -291,7 +291,7 @@ export default function MathConcernVideoBooth() {
                             🎓
                           </div>
                           <span className="text-vibrant-teal text-[10px] font-black uppercase tracking-wider">
-                            Neha Patil (Academy Director)
+                            {language === "mr" ? "नेहा पाटील (अकॅडमी संचालिका)" : language === "hi" ? "नेहा पाटिल (अकादमी निदेशिका)" : "Neha Patil (Academy Director)"}
                           </span>
                         </div>
                       )}

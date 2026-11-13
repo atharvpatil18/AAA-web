@@ -5,6 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../lib/LanguageContext";
 import { 
   BookOpen, 
   Sparkles, 
@@ -134,6 +135,7 @@ const PARENT_GUIDES: ParentGuideItem[] = [
 ];
 
 export default function ParentGuidesHub() {
+  const { language } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [selectedGuideForModal, setSelectedGuideForModal] = useState("General Parent Guide Inquiry");
 
@@ -162,7 +164,7 @@ export default function ParentGuidesHub() {
           </h1>
 
           <p className="text-slate-300 text-xs sm:text-sm md:text-base font-medium max-w-2xl mx-auto leading-relaxed">
-            Objective, research-informed educational guides authored by Neha Patil and the AAA academic team in Wakad, Pune. Designed to help parents resolve common learning dilemmas, understand calculation mechanics, and support confident mathematical thinking.
+            Objective, research-informed educational guides authored by {language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil"} and the AAA academic team in Wakad, Pune. Designed to help parents resolve common learning dilemmas, understand calculation mechanics, and support confident mathematical thinking.
           </p>
 
           <div className="pt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-300">
@@ -320,7 +322,7 @@ export default function ParentGuidesHub() {
               </h2>
 
               <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed font-medium">
-                Reading guides is a great first step, but every child processes numbers differently. Book a one-on-one Personalised Learning Discovery Session with Director Neha Patil. We evaluate base-10 number sense, bead visualization aptitude, and focus in an encouraging, low-pressure environment.
+                Reading guides is a great first step, but every child processes numbers differently. Book a one-on-one Personalised Learning Discovery Session with Director {language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil"}. We evaluate base-10 number sense, bead visualization aptitude, and focus in an encouraging, low-pressure environment.
               </p>
 
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
@@ -366,7 +368,7 @@ export default function ParentGuidesHub() {
 
               <div className="pt-1 flex items-center justify-between text-slate-400 text-[11px]">
                 <span>Batches: Maximum 5 students</span>
-                <span>Mentor: Neha Patil</span>
+                <span>{language === "mr" ? "मार्गदर्शिका: नेहा पाटील" : language === "hi" ? "मेंटर: नेहा पाटिल" : "Mentor: Neha Patil"}</span>
               </div>
             </div>
 

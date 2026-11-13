@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import DemoBookingModal from "./DemoBookingModal";
 
 export default function Hero() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   const handleCtaClick = () => {
@@ -158,7 +158,7 @@ export default function Hero() {
                 <div className="w-12 h-12 rounded-xl bg-orange-600 text-white flex items-center justify-center font-bold text-sm shrink-0 overflow-hidden shadow-xs">
                   <img
                     src="/teacher-profile.jpg"
-                    alt="Neha Patil - Founder Arnav Abacus Academy"
+                    alt={language === "mr" ? "नेहा पाटील - संस्थापिका अर्णव ॲबॅकस अकॅडमी" : language === "hi" ? "नेहा पाटिल - संस्थापिका अर्णव एबाकस एकेडमी" : "Neha Patil - Founder Arnav Abacus Academy"}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = "none";
