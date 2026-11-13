@@ -52,6 +52,96 @@ export function getCloudUrl(): string {
   return CLOUD_URL;
 }
 
+/**
+ * Localizes student awards / competition highlights for Marathi and Hindi views
+ */
+export function localizeHighlight(text: string, lang: string, formatNum?: (v: string | number) => string): string {
+  if (!text || lang === "en") return text;
+  
+  const dictMr: Record<string, string> = {
+    "Grand Master International Abacus Champion": "ग्रँड मास्टर आंतरराष्ट्रीय ॲबॅकस चॅम्पियन",
+    "Best Student of the Year Award 2025-2026": "सर्वोत्कृष्ट विद्यार्थी पुरस्कार २०२५-२०२६",
+    "Best Student of the Year Award": "सर्वोत्कृष्ट विद्यार्थी पुरस्कार",
+    "1st Place International Abacus Competition": "प्रथम क्रमांक आंतरराष्ट्रीय ॲबॅकस स्पर्धा",
+    "National Abacus Champion": "राष्ट्रीय ॲबॅकस चॅम्पियन",
+    "State Level Vedic Math Champion": "राज्यस्तरीय वैदिक गणित चॅम्पियन",
+    "100/100 Perfect Score Runner Level 1": "१००/१०० परिपूर्ण गुण - रनर पातळी १",
+    "State Level Mental Math Gold Medalist": "राज्यस्तरीय मेंटल मॅथ सुवर्णपदक विजेता",
+    "International Champion": "आंतरराष्ट्रीय चॅम्पियन",
+    "National Champion": "राष्ट्रीय चॅम्पियन",
+  };
+
+  const dictHi: Record<string, string> = {
+    "Grand Master International Abacus Champion": "ग्रैंड मास्टर अंतर्राष्ट्रीय अबैकस चैंपियन",
+    "Best Student of the Year Award 2025-2026": "वर्ष का सर्वश्रेष्ठ छात्र पुरस्कार २०२५-२०२६",
+    "Best Student of the Year Award": "वर्ष का सर्वश्रेष्ठ छात्र पुरस्कार",
+    "1st Place International Abacus Competition": "प्रथम स्थान अंतर्राष्ट्रीय अबैकस प्रतियोगिता",
+    "National Abacus Champion": "राष्ट्रीय अबैकस चैंपियन",
+    "State Level Vedic Math Champion": "राज्य स्तरीय वैदिक गणित चैंपियन",
+    "100/100 Perfect Score Runner Level 1": "१००/१०० शत-प्रतिशत स्कोर - रनर स्तर १",
+    "State Level Mental Math Gold Medalist": "राज्य स्तरीय मेंटल मैथ स्वर्ण पदक विजेता",
+    "International Champion": "अंतर्राष्ट्रीय चैंपियन",
+    "National Champion": "राष्ट्रीय चैंपियन",
+  };
+
+  const dict = lang === "mr" ? dictMr : dictHi;
+  if (dict[text]) return dict[text];
+
+  let res = text;
+  Object.entries(dict).forEach(([k, v]) => {
+    if (res.includes(k)) {
+      res = res.replace(k, v);
+    }
+  });
+
+  if (formatNum) {
+    res = formatNum(res);
+  }
+  return res;
+}
+
+/**
+ * Safely resolves and normalizes a student photo URL.
+ * Ensures root-relative leading slash, handles webp/jpg fallbacks, and auto-maps known academy star students.
+ */
+export function resolveStudentPhoto(url?: string, name?: string): string {
+  const trimmedUrl = (url || "").trim();
+  const trimmedName = (name || "").toLowerCase().trim();
+
+  // If no URL or default logo placeholder, auto-map known academy champions
+  if (!trimmedUrl || trimmedUrl === "/logo.png" || trimmedUrl === "logo.png") {
+    if (trimmedName.includes("arnav")) return "/arnav_patil_international_1st_2025.webp";
+    if (trimmedName.includes("spriha")) return "/best_student_spriha_kamat_2025_2026.webp";
+    if (trimmedName.includes("shreshth")) return "/shreshth_gupta_champion_2025.webp";
+    if (trimmedName.includes("hitanshi")) return "/hitanshi_collage.webp";
+    if (trimmedName.includes("anaya")) return "/iiva_state_champions_2026.jpg";
+    if (trimmedName.includes("devaansh")) return "/devaansh_runner_level_1.webp";
+    if (trimmedName.includes("sushmit")) return "/sushmit_championship_birthday.webp";
+    return "/logo.png";
+  }
+
+  // Preserve absolute HTTP/HTTPS URLs and base64 data URIs
+  if (trimmedUrl.startsWith("http://") || trimmedUrl.startsWith("https://") || trimmedUrl.startsWith("data:")) {
+    return trimmedUrl;
+  }
+
+  // Ensure root-relative leading slash to avoid Vite SPA route collision
+  const cleanUrl = trimmedUrl.startsWith("/") ? trimmedUrl : `/${trimmedUrl}`;
+
+  // If stored path does not match standard file patterns, auto-correct for known champions
+  if (trimmedName.includes("arnav") && !cleanUrl.includes("arnav") && !cleanUrl.includes("international_abacus_champion")) {
+    return "/arnav_patil_international_1st_2025.webp";
+  }
+  if (trimmedName.includes("spriha") && !cleanUrl.includes("spriha")) {
+    return "/best_student_spriha_kamat_2025_2026.webp";
+  }
+  if (trimmedName.includes("shreshth") && !cleanUrl.includes("shreshth")) {
+    return "/shreshth_gupta_champion_2025.webp";
+  }
+
+  return cleanUrl;
+}
+
 export function getSuccessStories(): SuccessStory[] {
   try {
     let raw = localStorage.getItem(STORAGE_KEY);
@@ -72,7 +162,10 @@ export function getSuccessStories(): SuccessStory[] {
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
-    });
+    }).map((s) => ({
+      ...s,
+      studentPhotoUrl: resolveStudentPhoto(s.studentPhotoUrl, s.studentName),
+    }));
     
     // Migrate to v2 key
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned)); } catch {}
@@ -218,9 +311,12 @@ export async function fetchSuccessStoriesFromCloud(): Promise<SuccessStory[]> {
     if (res.ok) {
       const payload = await res.json();
       const rawStories = payload?.stories || [];
-      cloud = (Array.isArray(rawStories) ? rawStories : []).filter(
-        (s) => s && s.id && !s.id.startsWith("test_") && s.studentName && s.highlight
-      );
+      cloud = (Array.isArray(rawStories) ? rawStories : [])
+        .filter((s) => s && s.id && !s.id.startsWith("test_") && s.studentName && s.highlight)
+        .map((s) => ({
+          ...s,
+          studentPhotoUrl: resolveStudentPhoto(s.studentPhotoUrl, s.studentName),
+        }));
     }
 
     // Merge: cloud wins for same id, but keep any local stories missing from cloud
