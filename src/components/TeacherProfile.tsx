@@ -26,7 +26,7 @@ export default function TeacherProfile() {
     "Certified Trainer of Vedic Maths (AVAS / Reg. CI2023/100000403)",
     "Authorised Owner of Skill Centre in Abacus — Wakad Center",
     "Master of Computer Applications (MCA)",
-    "Lead Trainer of 56 National Championship 2026 Participants"
+    "Mentor of 30+ State, National & International Champions (68 Intl & 56 Nat Contenders)"
   ];
 
   return (

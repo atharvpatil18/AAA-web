@@ -57,6 +57,9 @@ export const translations = {
     trustExp: "4+ Years Exp",
     trustAwards: "100+ Awards",
     trustRating: "5/5 Ratings",
+    trustChampions: "Competition Champions",
+    trustChampionsSub: "State, National & International (Abacus, Vedic, IPM)",
+    heroStatChampions: "Competition Champions",
 
     // Interactive Abacus
     abacusBadge: "TACTILE BRAIN AGILITY",
@@ -1005,6 +1008,9 @@ export const translations = {
     trustExp: "4+ वर्ष अनुभव",
     trustAwards: "100+ पुरस्कार",
     trustRating: "5/5 रेटिंग",
+    trustChampions: "प्रतियोगिता चैंपियंस",
+    trustChampionsSub: "राज्य, राष्ट्रीय और अंतर्राष्ट्रीय स्तर (एबाकस, वैदिक, IPM)",
+    heroStatChampions: "प्रतियोगिता चैंपियंस",
 
     // Interactive Abacus
     abacusBadge: "मस्तिष्क चपलता",
@@ -1953,6 +1959,9 @@ export const translations = {
     trustExp: "४+ वर्षे अनुभव",
     trustAwards: "१००+ पुरस्कार",
     trustRating: "५/५ रेटिंग",
+    trustChampions: "स्पर्धा विजेते",
+    trustChampionsSub: "राज्य, राष्ट्रीय आणि आंतरराष्ट्रीय (ॲबॅकस, वैदिक, IPM)",
+    heroStatChampions: "स्पर्धा विजेते",
 
     // Interactive Abacus
     abacusBadge: "मेंदूची चपळता",

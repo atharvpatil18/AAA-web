@@ -139,9 +139,9 @@ export default function Hero() {
 
               {/* Trust Metric Counters Row */}
               <div className="grid grid-cols-3 gap-2.5 pt-1 text-center">
-                <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  <span className="block font-black text-orange-600 text-lg sm:text-xl">56</span>
-                  <span className="block text-[10px] font-bold text-slate-600 uppercase">National Champions</span>
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-100" title="30+ Champions across State, National & International levels (Abacus, Vedic, IPM)">
+                  <span className="block font-black text-orange-600 text-lg sm:text-xl">30+</span>
+                  <span className="block text-[10px] font-bold text-slate-600 uppercase leading-tight">{t("heroStatChampions")}</span>
                 </div>
                 <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
                   <span className="block font-black text-slate-900 text-lg sm:text-xl">Max 5</span>
