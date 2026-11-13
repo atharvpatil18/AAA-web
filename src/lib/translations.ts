@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { parentGuidesEn, parentGuidesHi, parentGuidesMr } from "./translations_parent_guides";
+
 export type Language = "en" | "hi" | "mr";
 
 export const translations = {
@@ -1722,6 +1724,7 @@ export const translations = {
     modalDiscoveryNote: "* Submission represents a Discovery Session scheduling request, not an automatically confirmed appointment. Founder Neha Patil personally confirms each slot based on batch availability.",
     modalDiscoverySubmitBtn: "Confirm Discovery Session on WhatsApp",
     modalDiscoverySecurityNote: "Zero spam policy. Small batches (maximum 5 students). No obligation.",
+    ...parentGuidesEn,
   },
   hi: {
     // Navbar
@@ -3439,6 +3442,7 @@ export const translations = {
     modalDiscoveryNote: "* यह केवल समय निर्धारण का अनुरोध है। संस्थापिका नेहा पाटिल बैच उपलब्धता के आधार पर प्रत्येक स्लॉट की व्यक्तिगत पुष्टि करती हैं।",
     modalDiscoverySubmitBtn: "व्हाट्सएप पर डिस्कवरी सत्र की पुष्टि करें",
     modalDiscoverySecurityNote: "शून्य स्पैम नीति। छोटे बैच (अधिकतम ५ छात्र)। कोई बाध्यता नहीं।",
+    ...parentGuidesHi,
   },
   mr: {
     // Navbar
@@ -5156,6 +5160,7 @@ export const translations = {
     modalDiscoveryNote: "* ही केवळ सत्राची नोंदणी विनंती आहे. संस्थापिका नेहा पाटील बॅचच्या उपलब्धतेनुसार प्रत्येक वेळेची वैयक्तिक खात्री करतात.",
     modalDiscoverySubmitBtn: "व्हॉट्सॲपवर डिस्कव्हरी सत्राची खात्री करा",
     modalDiscoverySecurityNote: "शून्य स्पॅम धोरण. लहान बॅच (कमाल ५ विद्यार्थी). कोणतीही सक्ती नाही.",
+    ...parentGuidesMr,
   }
 };
 
