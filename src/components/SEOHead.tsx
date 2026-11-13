@@ -27,7 +27,7 @@ const ROUTE_META_MAP: Record<string, RouteMeta> = {
   },
   "/programs": {
     title: "Abacus, Vedic Maths & School Math Programs | Arnav Abacus Academy Pune",
-    description: "Explore specialized child brain development programs: Soroban Abacus (Ages 4-14), High-Speed Vedic Maths (Ages 10+), Mental Math & Olympiad preparation.",
+    description: "Explore specialized child brain development programs: Soroban Abacus (Ages 4.5–9), High-Speed Vedic Maths (Ages 9–14), Mental Math & Olympiad preparation.",
     canonicalPath: "/programs",
   },
   "/programs/abacus": {
@@ -92,7 +92,7 @@ const ROUTE_META_MAP: Record<string, RouteMeta> = {
   },
   "/mentor": {
     title: "Meet Neha Patil | Certified Trainer of Abacus & Vedic Maths Wakad",
-    description: "Learn about Neha Patil, founder and certified trainer at Arnav Abacus Academy. IIVA certified, 3+ years experience coaching 200+ Pune and global students.",
+    description: "Learn about Neha Patil, founder and certified trainer at Arnav Abacus Academy. IIVA certified, 3+ years experience coaching 300+ Pune and global students.",
     canonicalPath: "/mentor",
   },
   "/contact": {
@@ -134,6 +134,22 @@ const ROUTE_META_MAP: Record<string, RouteMeta> = {
     title: "Interactive Academy Brochure & Syllabus | Arnav Abacus Academy",
     description: "Explore curriculum levels, batch structure, and download the official Arnav Abacus Academy prospectus PDF.",
     canonicalPath: "/brochure",
+  },
+  "/abacus-simulator": {
+    title: "Interactive Soroban Abacus Simulator | Free Online Tool | AAA Pune",
+    description: "Experience authentic Japanese Soroban abacus math online. Slide virtual beads, practice photographic memory flashcards, and discover tactile whole-brain calculation in Wakad, Pune.",
+    canonicalPath: "/abacus-simulator",
+  },
+  "/vedic-maths-sutras": {
+    title: "Interactive Vedic Maths Sutras | Fast Mental Calculation Tricks | AAA Pune",
+    description: "Explore interactive Vedic Mathematics shortcuts. Test Urdhva Tiryagbhyam cross-multiplication, Nikhilam squaring, and Ekadhikena formulas with algebraic proofs.",
+    canonicalPath: "/vedic-maths-sutras",
+    schemaType: "Course",
+  },
+  "/speed-challenge": {
+    title: "Child Mental Math Speed Challenge | 45-Second Agility Test | AAA Pune",
+    description: "Take our free 45-second mental arithmetic agility challenge for ages 4-16. Test calculation speed without finger counting and book a diagnostic assessment in Wakad.",
+    canonicalPath: "/speed-challenge",
   },
 };
 

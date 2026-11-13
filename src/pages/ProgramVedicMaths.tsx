@@ -304,6 +304,22 @@ export default function ProgramVedicMaths() {
                 </div>
               </div>
 
+              {/* Public Vedic Math Lab Discovery Card */}
+              <div className="bg-gradient-to-r from-teal-50 to-emerald-50 border-2 border-teal-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+                <div className="space-y-0.5 text-center sm:text-left">
+                  <span className="text-[9px] font-black text-teal-700 uppercase tracking-widest block">Interactive Tool</span>
+                  <h4 className="font-display font-black text-xs text-slate-900">Explore Vedic Sutras In Motion</h4>
+                  <p className="text-[11px] text-slate-600 font-medium">See interactive vector steppers for Yāvadūnam, Ekādhikena, and Urdhva-Tiryakbhyam calculations.</p>
+                </div>
+                <Link
+                  to="/vedic-maths-sutras"
+                  className="bg-slate-900 hover:bg-teal-700 text-white text-[11px] font-bold px-3.5 py-2 rounded-xl transition-colors shadow-xs shrink-0 flex items-center gap-1.5"
+                >
+                  <span>Open Sutras Lab</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+
               <div className="bg-teal-50 border border-teal-200 rounded-2xl p-3.5 text-[11px] text-teal-900 font-semibold">
                 💡 Taught under the guidance of IIVA-certified educators with direct focus on school syllabus synergy.
               </div>

@@ -305,6 +305,22 @@ export default function ProgramAbacus() {
                 💡 Batch sizes are strictly kept small (personalized mentor ratio) to ensure Neha Ma'am can observe each child's counting mechanics directly.
               </div>
 
+              {/* Public Abacus Lab Discovery Card */}
+              <div className="bg-gradient-to-r from-orange-50 to-amber-50 border-2 border-orange-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+                <div className="space-y-0.5 text-center sm:text-left">
+                  <span className="text-[9px] font-black text-orange-600 uppercase tracking-widest block">Interactive Tool</span>
+                  <h4 className="font-display font-black text-xs text-slate-900">Try Our Digital Soroban Abacus</h4>
+                  <p className="text-[11px] text-slate-600 font-medium">Explore tactile bead movements and test our photographic memory flashcards before enrolling.</p>
+                </div>
+                <Link
+                  to="/abacus-simulator"
+                  className="bg-slate-900 hover:bg-orange-600 text-white text-[11px] font-bold px-3.5 py-2 rounded-xl transition-colors shadow-xs shrink-0 flex items-center gap-1.5"
+                >
+                  <span>Open Abacus Lab</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+
               <button
                 onClick={() => {
                   import("../lib/brochure").then(({ generateBrochurePDF }) => {

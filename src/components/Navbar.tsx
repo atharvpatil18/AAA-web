@@ -19,6 +19,8 @@ export default function Navbar() {
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [programMenuOpen, setProgramMenuOpen] = useState(false);
   const [guideMenuOpen, setGuideMenuOpen] = useState(false);
+  const [labMenuOpen, setLabMenuOpen] = useState(false);
+  const labMenuRef = useRef<HTMLDivElement>(null);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
   const moreMenuRef = useRef<HTMLDivElement>(null);
@@ -33,7 +35,11 @@ export default function Navbar() {
       }
       if (programMenuRef.current && !programMenuRef.current.contains(event.target as Node)) {
         setProgramMenuOpen(false);
+    setLabMenuOpen(false);
     setGuideMenuOpen(false);
+      }
+      if (labMenuRef.current && !labMenuRef.current.contains(event.target as Node)) {
+        setLabMenuOpen(false);
       }
       if (guideMenuRef.current && !guideMenuRef.current.contains(event.target as Node)) {
         setGuideMenuOpen(false);
@@ -66,6 +72,12 @@ export default function Navbar() {
     trackCallClick("navbar_top_banner");
   };
 
+  const interactiveLabLinks = [
+    { name: "Abacus Simulator (Digital Soroban)", path: "/abacus-simulator" },
+    { name: "Vedic Maths Sutras Demo", path: "/vedic-maths-sutras" },
+    { name: "Speed Math Challenge", path: "/speed-challenge" },
+  ];
+
   const programNavLinks = [
     { name: "All Programmes Overview", path: "/programs" },
     { name: "Abacus Mathematics (Ages 4.5–9)", path: "/programs/abacus" },
@@ -87,6 +99,7 @@ export default function Navbar() {
     { name: t("navHome"), path: "/" },
     { name: "Programmes", path: "/programs", hasDropdown: true },
     { name: "Parent Guides", path: "/parent-guides", hasGuideDropdown: true },
+    { name: "Interactive Labs", path: "/abacus-simulator", hasLabDropdown: true },
     { name: "Achievements", path: "/showcase" },
     { name: "Practice Hub", path: "/practice" },
     { name: "Worksheets", path: "/worksheets" },
@@ -110,6 +123,10 @@ export default function Navbar() {
     { name: "↳ Mental Mathematics (Ages 6–14)", path: "/programs/mental-maths" },
     { name: "↳ School Mathematics (Grades 5–10)", path: "/programs/school-maths" },
     { name: "↳ IPM & Olympiad Prep (Grades 2–9)", path: "/programs/ipm-olympiad" },
+    { name: "Interactive Labs (Discovery)", path: "/abacus-simulator" },
+    { name: "↳ Abacus Simulator", path: "/abacus-simulator" },
+    { name: "↳ Vedic Maths Sutras", path: "/vedic-maths-sutras" },
+    { name: "↳ Speed Math Challenge", path: "/speed-challenge" },
     { name: "Student Hall of Fame & Results", path: "/showcase" },
     { name: "Practice Hub", path: "/practice" },
     { name: "Free Worksheets", path: "/worksheets" },
@@ -225,6 +242,49 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-4 xl:gap-6">
             <ul className="flex items-center gap-3 xl:gap-5">
               {primaryNavLinks.map((link) => {
+                if ((link as any).hasLabDropdown) {
+                  const isAnyLabActive = currentPath === "/abacus-simulator" || currentPath === "/vedic-maths-sutras" || currentPath === "/speed-challenge";
+                  return (
+                    <li key={link.name} className="relative" ref={labMenuRef}>
+                      <button
+                        type="button"
+                        onClick={() => setLabMenuOpen(!labMenuOpen)}
+                        className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer relative ${
+                          isAnyLabActive
+                            ? "text-orange-600 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
+                            : "text-slate-700 hover:text-orange-600"
+                        }`}
+                        aria-expanded={labMenuOpen}
+                      >
+                        <span>{link.name}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${labMenuOpen ? "rotate-180" : ""}`} />
+                      </button>
+
+                      {labMenuOpen && (
+                        <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 animate-fade-in">
+                          {interactiveLabLinks.map((lLink) => {
+                            const isLActive = currentPath === lLink.path;
+                            return (
+                              <Link
+                                key={lLink.name}
+                                to={lLink.path}
+                                onClick={() => setLabMenuOpen(false)}
+                                className={`block px-4 py-2.5 text-xs font-bold transition-colors ${
+                                  isLActive
+                                    ? "bg-orange-50 text-orange-600"
+                                    : "text-slate-700 hover:bg-slate-50 hover:text-orange-600"
+                                }`}
+                              >
+                                {lLink.name}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </li>
+                  );
+                }
+
                 if ((link as any).hasGuideDropdown) {
                   const isAnyGuideActive = currentPath === "/parent-guides" || currentPath.startsWith("/parent-guides/");
                   return (

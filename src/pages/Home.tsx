@@ -377,6 +377,42 @@ export default function Home() {
               );
             })}
           </div>
+          {/* Interactive Learning Labs Strip */}
+          <div className="mt-12 pt-8 border-t border-slate-200/80">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="space-y-1 text-center md:text-left">
+                <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3 py-1 rounded-full uppercase tracking-wider inline-block">
+                  Interactive Learning Labs
+                </span>
+                <h3 className="font-display font-black text-xl text-slate-900">
+                  Experience Our Pedagogical Tools Directly
+                </h3>
+                <p className="text-xs text-slate-600 font-medium max-w-xl">
+                  Test abacus bead manipulation, explore Vedic multiplication Sutras, or let your child take our 45-second arithmetic speed drill online.
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-2.5 shrink-0">
+                <Link
+                  to="/abacus-simulator"
+                  className="bg-slate-900 hover:bg-orange-600 text-white text-xs font-bold px-4 py-2.5 rounded-full transition-colors shadow-xs inline-flex items-center gap-1.5"
+                >
+                  <span>🧮 Abacus Simulator</span>
+                </Link>
+                <Link
+                  to="/vedic-maths-sutras"
+                  className="bg-slate-100 hover:bg-orange-100 hover:text-orange-700 text-slate-800 text-xs font-bold px-4 py-2.5 rounded-full transition-colors border border-slate-200/60 inline-flex items-center gap-1.5"
+                >
+                  <span>📐 Vedic Sutras</span>
+                </Link>
+                <Link
+                  to="/speed-challenge"
+                  className="bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold px-4 py-2.5 rounded-full transition-colors border border-amber-200 inline-flex items-center gap-1.5"
+                >
+                  <span>⚡ Speed Challenge</span>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

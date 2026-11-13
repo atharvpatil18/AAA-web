@@ -7,13 +7,18 @@ import React, { useState } from "react";
 import { RotateCcw, HelpCircle, Star, Sparkles, Hash } from "lucide-react";
 import { motion } from "motion/react";
 import { useLanguage } from "../lib/LanguageContext";
+import DemoBookingModal from "./DemoBookingModal";
+
+export interface InteractiveAbacusProps {
+  onBookDemo?: () => void;
+}
 
 interface RodState {
   upper: boolean; // true if active (slid down to divider)
   lowerCount: number; // 0 to 4 (number of beads slid up to divider)
 }
 
-export default function InteractiveAbacus() {
+export default function InteractiveAbacus({ onBookDemo }: InteractiveAbacusProps = {}) {
   const { language, t, formatNumber } = useLanguage();
   // 7 rods: Indices 0 (Thousands) to 6 (Thousandths) from left to right
   const [rods, setRods] = useState<RodState[]>([
@@ -28,6 +33,7 @@ export default function InteractiveAbacus() {
 
   const [showGuide, setShowGuide] = useState(false);
   const [customInput, setCustomInput] = useState("");
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   // Flashcard Game Mode States
   const [isFlashcardMode, setIsFlashcardMode] = useState<boolean>(false);
@@ -62,13 +68,14 @@ export default function InteractiveAbacus() {
   // Set abacus to a specific number supporting decimals up to 9999.999
   const setAbacusNumber = (num: number) => {
     const clamped = Math.max(0, Math.min(9999.999, num));
-    const d0 = Math.floor(clamped / 1000) % 10;
-    const d1 = Math.floor(clamped / 100) % 10;
-    const d2 = Math.floor(clamped / 10) % 10;
-    const d3 = Math.floor(clamped) % 10;
-    const d4 = Math.floor(clamped * 10) % 10;
-    const d5 = Math.floor(clamped * 100) % 10;
-    const d6 = Math.round(clamped * 1000) % 10;
+    const totalThousandths = Math.round(clamped * 1000);
+    const d0 = Math.floor(totalThousandths / 1000000) % 10;
+    const d1 = Math.floor(totalThousandths / 100000) % 10;
+    const d2 = Math.floor(totalThousandths / 10000) % 10;
+    const d3 = Math.floor(totalThousandths / 1000) % 10;
+    const d4 = Math.floor(totalThousandths / 100) % 10;
+    const d5 = Math.floor(totalThousandths / 10) % 10;
+    const d6 = totalThousandths % 10;
 
     const digits = [d0, d1, d2, d3, d4, d5, d6];
     const nextRods = digits.map((digit) => {
@@ -142,12 +149,13 @@ export default function InteractiveAbacus() {
 
     // Set abacus to represent target number
     const clamped = Math.max(0, Math.min(9999.999, target));
-    const d0 = Math.floor(clamped / 1000) % 10;
-    const d1 = Math.floor(clamped / 100) % 10;
-    const d2 = Math.floor(clamped / 10) % 10;
-    const d3 = Math.floor(clamped) % 10;
-    const d4 = Math.floor(clamped * 10) % 10;
-    const d5 = Math.floor(clamped * 100) % 10;
+    const totalThousandths = Math.round(clamped * 1000);
+    const d0 = Math.floor(totalThousandths / 1000000) % 10;
+    const d1 = Math.floor(totalThousandths / 100000) % 10;
+    const d2 = Math.floor(totalThousandths / 10000) % 10;
+    const d3 = Math.floor(totalThousandths / 1000) % 10;
+    const d4 = Math.floor(totalThousandths / 100) % 10;
+    const d5 = Math.floor(totalThousandths / 10) % 10;
     const d6 = Math.round(clamped * 1000) % 10;
 
     const digits = [d0, d1, d2, d3, d4, d5, d6];
@@ -357,46 +365,56 @@ export default function InteractiveAbacus() {
                   }`} />
 
                   {/* --- UPPER DECK --- */}
-                  <div 
+                  <button 
+                    type="button"
+                    role="button"
+                    aria-label={`${['Thousands', 'Hundreds', 'Tens', 'Ones', 'Tenths', 'Hundredths', 'Thousandths'][rIdx]} rod, Upper Bead, Value 5, ${rod.upper ? 'Active' : 'Inactive'}`}
                     onClick={() => toggleUpper(rIdx)}
-                    className="absolute w-8 xs:w-10 sm:w-12 h-[60px] top-1 cursor-pointer flex items-center justify-center"
+                    className="absolute w-8 xs:w-10 sm:w-12 h-[60px] top-1 cursor-pointer flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-vibrant-teal rounded-lg z-20 bg-transparent border-0 p-0"
                   >
                     <motion.div 
                       animate={{ y: rod.upper ? 20 : -10 }}
                       whileHover={{ scale: 1.08 }}
                       whileTap={{ scale: 0.90 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                      className={`w-7 xs:w-9 sm:w-11 h-6 rounded-full border shadow-md flex items-center justify-center text-[10px] font-black cursor-pointer ${
+                      className={`w-7 xs:w-9 sm:w-11 h-6 rounded-full border shadow-md flex items-center justify-center text-[10px] font-black select-none ${
                         rod.upper ? beadStyle : inactiveBeadStyle
                       }`}
                     >
                       {rIdx === 3 ? "5" : ""}
                     </motion.div>
-                  </div>
+                  </button>
 
                   {/* --- LOWER DECK --- */}
-                  <div className="absolute top-[88px] bottom-1 w-8 xs:w-10 sm:w-12 cursor-pointer flex flex-col justify-end items-center pb-3">
+                  <div className="absolute top-[88px] bottom-1 w-8 xs:w-10 sm:w-12 flex flex-col justify-end items-center pb-3 z-20">
                     {[1, 2, 3, 4].map((idx) => {
                       const isActive = rod.lowerCount >= idx;
                       const yOffset = isActive ? -32 : 0;
 
                       return (
-                        <motion.div
+                        <button
                           key={idx}
+                          type="button"
+                          role="button"
+                          aria-label={`${['Thousands', 'Hundreds', 'Tens', 'Ones', 'Tenths', 'Hundredths', 'Thousandths'][rIdx]} rod, Lower Bead ${idx}, Value 1, ${isActive ? 'Active' : 'Inactive'}`}
                           onClick={(e) => {
                              e.stopPropagation();
                              setLowerCount(rIdx, idx);
                           }}
-                          animate={{ y: yOffset }}
-                          whileHover={{ scale: 1.08 }}
-                          whileTap={{ scale: 0.90 }}
-                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                          className={`relative w-7 xs:w-9 sm:w-11 h-6 rounded-full border shadow-md flex items-center justify-center text-[9px] font-black cursor-pointer ${
-                            isActive ? beadStyle : inactiveBeadStyle
-                          }`}
+                          className="relative w-8 xs:w-10 sm:w-12 h-6 flex items-center justify-center cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-vibrant-teal rounded-lg bg-transparent border-0 p-0 my-0.5"
                         >
-                          {rIdx === 3 ? "1" : ""}
-                        </motion.div>
+                          <motion.div
+                            animate={{ y: yOffset }}
+                            whileHover={{ scale: 1.08 }}
+                            whileTap={{ scale: 0.90 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                            className={`w-7 xs:w-9 sm:w-11 h-6 rounded-full border shadow-md flex items-center justify-center text-[9px] font-black select-none ${
+                              isActive ? beadStyle : inactiveBeadStyle
+                            }`}
+                          >
+                            {rIdx === 3 ? "1" : ""}
+                          </motion.div>
+                        </button>
                       );
                     })}
                   </div>
@@ -612,7 +630,7 @@ export default function InteractiveAbacus() {
                           <button
                             onClick={() => {
                               resetFlashcardSession();
-                              document.getElementById("speed-challenge-widget-section")?.scrollIntoView({ behavior: "smooth" });
+                              if (onBookDemo) { onBookDemo(); } else { setIsDemoModalOpen(true); }
                             }}
                             className="w-full text-center text-xs font-black text-vibrant-orange hover:text-vibrant-orange/80 transition cursor-pointer underline block font-display"
                           >
@@ -643,6 +661,12 @@ export default function InteractiveAbacus() {
           </p>
         </div>
       )}
+      <DemoBookingModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        defaultProgram="Abacus Mathematics Discovery Session"
+        source="abacus_flashcard_cta"
+      />
     </div>
   );
 }
