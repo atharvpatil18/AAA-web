@@ -11,7 +11,7 @@ import { useLanguage } from "../lib/LanguageContext";
 import DemoBookingModal from "./DemoBookingModal";
 
 export default function FloatingCTA() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
@@ -66,15 +66,15 @@ export default function FloatingCTA() {
             <div className="flex-1">
               <div className="flex items-center gap-1.5">
                 <span className="block text-xs font-black text-slate-900 leading-tight">
-                  Personalised Discovery Session
+                  {t("floatingDiscoveryTitle")}
                 </span>
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               </div>
               <span className="block text-[11px] text-slate-600 font-medium mt-1 leading-snug">
-                Diagnostic exploration of number sense, bead visualization &amp; concentration for your child.
+                {t("floatingDiscoverySub")}
               </span>
               <span className="inline-flex items-center gap-1 text-[11px] font-bold text-orange-600 mt-1.5 hover:underline">
-                Book Discovery Session &rarr;
+                {t("floatingBookDiscovery")} &rarr;
               </span>
             </div>
             <button
@@ -83,7 +83,7 @@ export default function FloatingCTA() {
                 setShowNotification(false);
               }}
               className="text-gray-500 hover:text-gray-700 p-0.5 cursor-pointer"
-              aria-label="Close message"
+              aria-label={t("floatingClose")}
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -96,23 +96,23 @@ export default function FloatingCTA() {
           <button
             onClick={handleOpenDemoModal}
             className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-xs py-2.5 px-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center gap-2 cursor-pointer border border-white/20"
-            aria-label="Book a Personalised Discovery Session"
+            aria-label={t("floatingBookAria")}
           >
             <Calendar className="w-3.5 h-3.5" />
-            <span>Book Discovery Session</span>
+            <span>{t("floatingBookDiscovery")}</span>
           </button>
 
           {/* WhatsApp Action Button */}
           <button
             onClick={handleWhatsappDirect}
             className="bg-emerald-500 hover:bg-emerald-600 text-white p-3.5 rounded-full shadow-xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center relative cursor-pointer group"
-            aria-label="Direct Chat on WhatsApp"
+            aria-label={t("floatingWhatsAppAria")}
           >
             <MessageSquare className="w-6 h-6 fill-current text-white" />
 
             {/* Hover tooltip for desktop users */}
             <span className="absolute right-14 bg-slate-900 text-white font-bold text-xs py-1.5 px-3 rounded-xl opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100 transition-all origin-right pointer-events-none whitespace-nowrap shadow-lg">
-              WhatsApp (+91 90219 24968)
+              {language === "mr" ? "व्हॉट्सॲप (+९१ ९०२१९ २४९६८)" : language === "hi" ? "व्हाट्सएप (+९१ ९०२१९ २४९६८)" : "WhatsApp (+91 90219 24968)"}
             </span>
           </button>
         </div>

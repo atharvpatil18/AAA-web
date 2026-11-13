@@ -284,7 +284,7 @@ export default function BlogPostDetail() {
             {post.author.name.includes("Neha Patil") ? (
               <img
                 src="/neha_patil_director.jpg"
-                alt="Neha Patil - Director & Founder"
+                alt={language === "mr" ? "नेहा पाटील - संचालिका व संस्थापिका" : language === "hi" ? "नेहा पाटिल - निदेशिका व संस्थापिका" : "Neha Patil - Director & Founder"}
                 className="w-13 h-13 rounded-full object-cover border-2 border-amber-400 shadow-md bg-white shrink-0 ring-2 ring-amber-400/40"
               />
             ) : (
@@ -294,7 +294,7 @@ export default function BlogPostDetail() {
             )}
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <span>{post.author.name}</span>
+                <span>{post.author.name.includes("Neha Patil") ? (language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil") : post.author.name}</span>
                 {post.author.name.includes("Neha Patil") && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">
                     O+ Certified
@@ -516,7 +516,7 @@ export default function BlogPostDetail() {
                         Ready to Unlock Your Child's Full Brain Potential?
                       </h3>
                       <p className="text-sm text-amber-100 max-w-xl mx-auto">
-                        Book a 1-on-1 Free Abacus & Vedic Math Skill Assessment Session with Neha Patil & Nitin Patil.
+                        Book a 1-on-1 Free Abacus & Vedic Math Skill Assessment Session with {language === "mr" ? "नेहा पाटील आणि नितीन पाटील" : language === "hi" ? "नेहा पाटिल और नितिन पाटिल" : "Neha Patil & Nitin Patil"}.
                       </p>
                       <div className="pt-2">
                         <button
@@ -543,12 +543,12 @@ export default function BlogPostDetail() {
                       <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 pt-4 border-t border-amber-200/80 relative z-10 text-center sm:text-left">
                         <img
                           src="/neha_patil_director.jpg"
-                          alt="Neha Patil - Founder & Director, Certified Professional (O+ Grade)"
+                          alt={language === "mr" ? "नेहा पाटील - संस्थापिका आणि संचालिका" : language === "hi" ? "नेहा पाटिल - संस्थापिका और निदेशिका" : "Neha Patil - Founder & Director, Certified Professional (O+ Grade)"}
                           className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-amber-400 shadow-md shrink-0 bg-white ring-2 ring-amber-300/60"
                         />
                         <div>
                           <h4 className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center justify-center sm:justify-start gap-2">
-                            <span>Neha Patil</span>
+                            <span>{language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil"}</span>
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
                               O+ Grade Certified
                             </span>
@@ -1094,12 +1094,12 @@ export default function BlogPostDetail() {
                                   <div className="flex items-center gap-3 pb-2.5 mb-1 border-b border-amber-200/80">
                                     <img
                                       src="/neha_patil_director.jpg"
-                                      alt="Neha Patil - Founder & Director"
+                                      alt={language === "mr" ? "नेहा पाटील - संस्थापिका आणि संचालिका" : language === "hi" ? "नेहा पाटिल - संस्थापिका और निदेशिका" : "Neha Patil - Founder & Director"}
                                       className="w-12 h-12 rounded-full object-cover border-2 border-amber-400 shadow-sm shrink-0 bg-white ring-2 ring-amber-300/70"
                                     />
                                     <div>
                                       <h5 className="text-xs sm:text-sm font-black text-slate-900 flex items-center gap-1.5">
-                                        <span>Neha Patil's Direct Message</span>
+                                        <span>{language === "mr" ? "नेहा पाटील यांचा थेट संदेश" : language === "hi" ? "नेहा पाटिल का सीधा संदेश" : "Neha Patil's Direct Message"}</span>
                                         <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-200/80 text-amber-900">
                                           O+ Certified
                                         </span>

@@ -194,21 +194,21 @@ export default function DemoBookingModal({
           <button
             onClick={handleResetAndClose}
             className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 min-w-[44px] min-h-[44px] bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors cursor-pointer"
-            aria-label="Close dialog"
+            aria-label={language === "hi" ? "डायलॉग बंद करें" : language === "mr" ? "डायलॉग बंद करा" : "Close dialog"}
           >
             <X className="w-5 h-5" />
           </button>
           
           <div className="inline-flex items-center gap-1.5 bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            <span>Personalised Learning Discovery Session</span>
+            <span>{t("modalDiscoveryBadge")}</span>
           </div>
 
           <h3 id="modal-title" className="text-xl md:text-2xl font-black leading-tight text-white pr-10">
-            Book a Personalised Discovery Session
+            {t("modalDiscoveryTitle")}
           </h3>
           <p className="text-xs md:text-sm text-slate-300 mt-1">
-            An educator-led diagnostic exploration with Founder Neha Patil at our Wakad Center or Live Online.
+            {t("modalDiscoverySubtitle")}
           </p>
         </div>
 
@@ -220,21 +220,21 @@ export default function DemoBookingModal({
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <h4 className="text-xl font-black text-slate-900 mb-2">
-                Discovery Session Request Sent!
+                {t("modalDiscoverySentTitle")}
               </h4>
               {assignedUID && (
                 <div className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-800 font-mono text-xs font-bold px-3 py-1 rounded-full mb-3">
-                  Booking Ref: {assignedUID}
+                  {language === "hi" ? "बुकिंग संदर्भ:" : language === "mr" ? "नोंदणी संदर्भ:" : "Booking Ref:"} {assignedUID}
                 </div>
               )}
               <p className="text-sm text-slate-600 mb-6 max-w-sm mx-auto leading-relaxed">
-                Thank you! WhatsApp has opened with your request details. Founder Neha Patil and our academic team will confirm your Discovery Session slot shortly.
+                {t("modalDiscoverySentDesc")}
               </p>
               <button
                 onClick={handleResetAndClose}
                 className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm px-6 py-2.5 rounded-full transition-all cursor-pointer"
               >
-                Close &amp; Continue Browsing
+                {t("modalDiscoveryCloseBtn")}
               </button>
             </div>
           ) : (
@@ -267,7 +267,7 @@ export default function DemoBookingModal({
                       className="inline-flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3.5 rounded-lg text-xs transition-colors shadow-sm"
                     >
                       <Phone className="w-3.5 h-3.5" />
-                      Connect on WhatsApp
+                      {language === "hi" ? "व्हाट्सएप पर संपर्क करें" : language === "mr" ? "व्हॉट्सॲपवर संपर्क साधा" : "Connect on WhatsApp"}
                     </a>
                   )}
                 </div>
@@ -276,7 +276,7 @@ export default function DemoBookingModal({
               {/* Parent Name */}
               <div>
                 <label htmlFor="modal-parent-name" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Parent / Guardian Name *
+                  {t("modalDiscoveryParentLabel")}
                 </label>
                 <div className="relative">
                   <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -286,7 +286,7 @@ export default function DemoBookingModal({
                     required
                     value={parentName}
                     onChange={(e) => setParentName(e.target.value)}
-                    placeholder="e.g. Sangeeta Sharma"
+                    placeholder={t("modalDiscoveryParentPlaceholder")}
                     className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all font-medium text-slate-900"
                   />
                 </div>
@@ -295,7 +295,7 @@ export default function DemoBookingModal({
               {/* WhatsApp Mobile Number */}
               <div>
                 <label htmlFor="modal-phone" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  WhatsApp Contact Number *
+                  {t("modalDiscoveryPhoneLabel")}
                 </label>
                 <div className="relative flex">
                   <span className="inline-flex items-center px-3 text-xs font-bold bg-slate-100 border border-r-0 border-slate-200 rounded-l-xl text-slate-700">
@@ -308,7 +308,7 @@ export default function DemoBookingModal({
                     maxLength={10}
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ""))}
-                    placeholder="9876543210"
+                    placeholder={language === "hi" || language === "mr" ? "९८७६५४३२१०" : "9876543210"}
                     className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-r-xl focus:bg-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all font-medium text-slate-900"
                   />
                 </div>
@@ -318,41 +318,41 @@ export default function DemoBookingModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
                   <label htmlFor="modal-child-age" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Child's Age / Grade
+                    {t("modalDiscoveryAgeLabel")}
                   </label>
                   <select
                     id="modal-child-age"
-                    aria-label="Child's Age Group"
+                    aria-label={t("modalDiscoveryAgeLabel") || "Child's Age Group"}
                     value={childAge}
                     onChange={(e) => setChildAge(e.target.value)}
-                    className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-orange-500 font-medium text-slate-900 cursor-pointer"
+                    className="w-full pl-2.5 pr-6 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-orange-500 font-medium text-slate-900 cursor-pointer"
                   >
-                    <option value="4.5-6">4.5 - 6 yrs (Junior Abacus)</option>
-                    <option value="7-9">7 - 9 yrs (Foundation Abacus)</option>
-                    <option value="9-11">9 - 11 yrs (Vedic / Mental Math)</option>
-                    <option value="12-14">12 - 14 yrs (Advanced Speed Math)</option>
-                    <option value="Grade 2-5">Grade 2 - 5 (IPM & Olympiad)</option>
-                    <option value="Grade 6-10">Grade 6 - 10 (School Board & Olympiad)</option>
+                    <option value="4.5-6">{t("modalDiscoveryAgeOpt1")}</option>
+                    <option value="7-9">{t("modalDiscoveryAgeOpt2")}</option>
+                    <option value="9-11">{t("modalDiscoveryAgeOpt3")}</option>
+                    <option value="12-14">{t("modalDiscoveryAgeOpt4")}</option>
+                    <option value="Grade 2-5">{t("modalDiscoveryAgeOpt5")}</option>
+                    <option value="Grade 6-10">{t("modalDiscoveryAgeOpt6")}</option>
                   </select>
                 </div>
 
                 <div>
                   <label htmlFor="modal-program" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                    Programme Interested
+                    {t("modalDiscoveryProgLabel")}
                   </label>
                   <select
                     id="modal-program"
-                    aria-label="Programme Interested"
+                    aria-label={t("modalDiscoveryProgLabel") || "Programme Interested"}
                     value={program}
                     onChange={(e) => setProgram(e.target.value)}
-                    className="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-orange-500 font-medium text-slate-900 cursor-pointer"
+                    className="w-full pl-2.5 pr-6 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:border-orange-500 font-medium text-slate-900 cursor-pointer"
                   >
-                    <option value="Abacus Mathematics (Ages 4.5–9)">Abacus Mathematics (Ages 4.5–9)</option>
-                    <option value="Vedic Mathematics (Ages 9–14)">Vedic Mathematics (Ages 9–14)</option>
-                    <option value="Mental Mathematics (Speed & Recall)">Mental Mathematics</option>
-                    <option value="School Mathematics (Grades 5–10)">School Mathematics (Grades 5–10)</option>
-                    <option value="IPM & Olympiad Mathematics (Grades 2–9)">IPM &amp; Olympiad Mathematics</option>
-                    <option value="Teacher Training & Franchise">Teacher Training &amp; Franchise</option>
+                    <option value="Abacus Mathematics (Ages 4.5–9)">{t("modalDiscoveryProgOpt1")}</option>
+                    <option value="Vedic Mathematics (Ages 9–14)">{t("modalDiscoveryProgOpt2")}</option>
+                    <option value="Mental Mathematics (Speed & Recall)">{t("modalDiscoveryProgOpt3")}</option>
+                    <option value="School Mathematics (Grades 5–10)">{t("modalDiscoveryProgOpt4")}</option>
+                    <option value="IPM & Olympiad Mathematics (Grades 2–9)">{t("modalDiscoveryProgOpt5")}</option>
+                    <option value="Teacher Training & Franchise">{t("modalDiscoveryProgOpt6")}</option>
                   </select>
                 </div>
               </div>
@@ -360,7 +360,7 @@ export default function DemoBookingModal({
               {/* Offline vs Online Selection */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Learning Mode Preference
+                  {t("modalDiscoveryModeLabel")}
                 </label>
                 <div className="grid grid-cols-2 gap-2.5">
                   <button
@@ -372,7 +372,7 @@ export default function DemoBookingModal({
                         : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
                     }`}
                   >
-                    <span>🏫 Wakad Center (Offline)</span>
+                    <span>{t("modalDiscoveryModeOffline")}</span>
                   </button>
                   <button
                     type="button"
@@ -383,15 +383,15 @@ export default function DemoBookingModal({
                         : "bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100"
                     }`}
                   >
-                    <span>💻 Live Online (Global)</span>
+                    <span>{t("modalDiscoveryModeOnline")}</span>
                   </button>
                 </div>
               </div>
 
               {/* Educational Exploration Callout */}
               <div className="bg-amber-50/70 border border-amber-200/70 rounded-xl p-3 text-[11.5px] text-slate-700 leading-snug">
-                <strong className="text-slate-900 block font-bold mb-0.5">What happens in a Discovery Session?</strong>
-                An encouraging 1-on-1 session where we explore your child's number sense, bead visualization aptitude, and focus to recommend the ideal learning track. Low-pressure and educational—never an exam.
+                <strong className="text-slate-900 block font-bold mb-0.5">{t("modalDiscoveryCalloutTitle")}</strong>
+                {t("modalDiscoveryCalloutDesc")}
               </div>
 
               {/* Unbundled Dual Consent Protocol & Scheduling Notice */}
@@ -405,7 +405,7 @@ export default function DemoBookingModal({
                     required
                   />
                   <span>
-                    <strong>Required:</strong> I consent to receiving Discovery Session scheduling messages via WhatsApp / SMS from Arnav Abacus Academy.
+                    {t("modalDiscoveryConsentReq")}
                   </span>
                 </label>
 
@@ -417,14 +417,14 @@ export default function DemoBookingModal({
                     className="mt-0.5 rounded border-slate-300 text-orange-600 focus:ring-orange-500"
                   />
                   <span>
-                    Optional: I agree to receive occasional mathematical insights and academy announcements.
+                    {t("modalDiscoveryConsentOpt")}
                   </span>
                 </label>
               </div>
 
               {/* Scheduling Confirmation Notice */}
               <p className="text-[10.5px] text-slate-500 leading-relaxed italic bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
-                * Submission represents a Discovery Session scheduling request, not an automatically confirmed appointment. Founder Neha Patil personally confirms each slot based on batch availability.
+                {t("modalDiscoveryNote")}
               </p>
 
               {/* Submit CTA */}
@@ -433,13 +433,13 @@ export default function DemoBookingModal({
                 disabled={isSubmitting}
                 className="w-full mt-2 min-h-[48px] bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm py-3.5 px-6 rounded-2xl shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Confirm Discovery Session on WhatsApp</span>
+                <span>{t("modalDiscoverySubmitBtn")}</span>
                 <Send className="w-4 h-4" />
               </button>
 
               <div className="flex items-center justify-center gap-2 text-[11px] text-slate-500 pt-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Zero spam policy. Small batches (maximum 5 students). No obligation.</span>
+                <span>{t("modalDiscoverySecurityNote")}</span>
               </div>
             </form>
           )}

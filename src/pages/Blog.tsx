@@ -144,7 +144,7 @@ export default function Blog() {
                     {featuredPost.author.avatar}
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-slate-900">{featuredPost.author.name}</h4>
+                    <h4 className="text-xs font-bold text-slate-900">{featuredPost.author.name.includes("Neha Patil") ? (language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil") : featuredPost.author.name}</h4>
                     <p className="text-[11px] text-slate-500">{t("blogAuthorRole")}</p>
                   </div>
                 </div>
@@ -212,7 +212,7 @@ export default function Blog() {
                   <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span className="text-lg">{post.author.avatar}</span>
-                      <span className="text-xs font-semibold text-slate-700">{post.author.name}</span>
+                      <span className="text-xs font-semibold text-slate-700">{post.author.name.includes("Neha Patil") ? (language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil") : post.author.name}</span>
                     </div>
                     <Link
                       to={`/blog/${post.slug}`}

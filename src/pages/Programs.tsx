@@ -30,13 +30,13 @@ export default function Programs() {
         <div className="absolute inset-0 bg-radial from-orange-500/10 via-transparent to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center space-y-4 relative z-10">
           <span className="text-[10px] font-bold text-amber-300 bg-amber-400/10 border border-amber-400/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Structured Cognitive Pathways
+            {t("progHubBannerBadge")}
           </span>
           <h1 className="font-display font-black text-4xl md:text-5xl tracking-tight leading-tight">
-            Mathematics &amp; Brain Development Programmes
+            {t("progHubBannerTitle")}
           </h1>
           <p className="text-slate-300 text-xs md:text-sm font-medium max-w-2xl mx-auto leading-relaxed">
-            Age-appropriate, research-backed curricula taught in small batches (maximum 5 students per batch) by certified mentors in Wakad, Pune.
+            {t("progHubBannerDesc")}
           </p>
 
           {/* Canonical Sub-Program Quick Links */}
@@ -45,31 +45,31 @@ export default function Programs() {
               to="/programs/abacus"
               className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs px-4 py-2 rounded-full shadow-sm transition-all"
             >
-              Abacus (Ages 4.5–9) &rarr;
+              {t("progHubAbacusQuick")}
             </Link>
             <Link
               to="/programs/vedic-maths"
               className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-4 py-2 rounded-full shadow-sm transition-all"
             >
-              Vedic Maths (Ages 9–14) &rarr;
+              {t("progHubVedicQuick")}
             </Link>
             <Link
               to="/programs/mental-maths"
               className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-4 py-2 rounded-full shadow-sm transition-all"
             >
-              Mental Maths (Ages 6–14) &rarr;
+              {t("progHubMentalQuick")}
             </Link>
             <Link
               to="/programs/school-maths"
               className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-xs px-4 py-2 rounded-full shadow-sm transition-all"
             >
-              School Maths (Grades 5–10) &rarr;
+              {t("progHubSchoolQuick")}
             </Link>
             <Link
               to="/programs/ipm-olympiad"
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2 rounded-full shadow-sm transition-all"
             >
-              IPM &amp; Olympiad (Grades 2–9) &rarr;
+              {t("progHubIpmQuick")}
             </Link>
           </div>
         </div>
@@ -79,13 +79,13 @@ export default function Programs() {
       <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-16">
           <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Five Dedicated Pathways
+            {t("progHubGridBadge")}
           </span>
           <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-900 leading-tight">
-            Explore Our Comprehensive Programmes
+            {t("progHubGridTitle")}
           </h2>
           <p className="text-slate-600 text-xs md:text-sm font-semibold">
-            Choose the right mathematics foundation based on your child's age, academic focus, and developmental goals.
+            {t("progHubGridSubtitle")}
           </p>
         </div>
 
@@ -101,13 +101,13 @@ export default function Programs() {
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 md:mb-16">
             <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              Foundational vs Speed Math
+              {t("progHubCompareBadge")}
             </span>
             <h2 className="font-display font-black text-3xl text-slate-900 leading-tight">
-              Which Programme Fits Your Child?
+              {t("progHubCompareTitle")}
             </h2>
             <p className="text-slate-600 text-xs md:text-sm font-semibold">
-              Compare our core mathematical disciplines to choose the ideal starting milestone.
+              {t("progHubCompareSubtitle")}
             </p>
           </div>
 
@@ -118,23 +118,23 @@ export default function Programs() {
                 AB
               </div>
               <h3 className="font-display font-black text-lg text-slate-900">
-                Soroban Japanese Abacus (Ages 4.5–9)
+                {t("progHubAbacusBoxTitle")}
               </h3>
               <p className="text-xs md:text-sm text-slate-600 font-medium leading-relaxed">
-                Best suited for early learners developing foundational number sense. Uses physical beads transitioning into mental bead visualization (Anzan) to eliminate finger counting and build photographic memory.
+                {t("progHubAbacusBoxDesc")}
               </p>
               <ul className="space-y-2.5 text-xs text-slate-700 font-bold">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                  Activates both brain hemispheres during the peak cognitive growth window
+                  {t("progHubAbacusBoxPoint1")}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                  8 structured levels with national competition eligibility
+                  {t("progHubAbacusBoxPoint2")}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                  Zero screen dependency during concrete foundational years
+                  {t("progHubAbacusBoxPoint3")}
                 </li>
               </ul>
               <div className="pt-2">
@@ -142,7 +142,7 @@ export default function Programs() {
                   to="/programs/abacus"
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700"
                 >
-                  Explore Abacus Programme Details &rarr;
+                  {t("progHubAbacusBoxLink")}
                 </Link>
               </div>
             </div>
@@ -153,23 +153,23 @@ export default function Programs() {
                 VD
               </div>
               <h3 className="font-display font-black text-lg text-slate-900">
-                Vedic Mathematics &amp; Olympiad (Ages 9–14)
+                {t("progHubVedicBoxTitle")}
               </h3>
               <p className="text-xs md:text-sm text-slate-600 font-medium leading-relaxed">
-                Designed for students in Grades 5–10 facing heavy school arithmetic, algebraic factorisation, and competitive tests (IPM, IMO). Eliminates scrap scratch-work and speeds up multi-digit calculation.
+                {t("progHubVedicBoxDesc")}
               </p>
               <ul className="space-y-2.5 text-xs text-slate-700 font-bold">
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                  16 ancient Indian mathematical sutras for 10x-15x faster evaluation
+                  {t("progHubVedicBoxPoint1")}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                  Cross-checks that catch procedural mistakes before answer submission
+                  {t("progHubVedicBoxPoint2")}
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                  Proven competitive edge in Olympiads, IPM &amp; scholarship exams
+                  {t("progHubVedicBoxPoint3")}
                 </li>
               </ul>
               <div className="pt-2">
@@ -177,7 +177,7 @@ export default function Programs() {
                   to="/programs/vedic-maths"
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 hover:text-amber-800"
                 >
-                  Explore Vedic Maths Programme Details &rarr;
+                  {t("progHubVedicBoxLink")}
                 </Link>
               </div>
             </div>
@@ -191,13 +191,13 @@ export default function Programs() {
           
           <div className="lg:col-span-6 space-y-6">
             <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              Academic Consultation
+              {t("progHubConsultBadge")}
             </span>
             <h2 className="font-display font-black text-3xl text-slate-900 leading-tight">
-              Unsure Which Programme Your Child Needs?
+              {t("progHubConsultTitle")}
             </h2>
             <p className="text-slate-600 text-xs md:text-sm leading-relaxed font-semibold">
-              Every child has a unique learning pace. Schedule a one-on-one Personalised Learning Discovery Session with Founder Neha Patil at our Wakad Center or Live Online to explore your child's exact readiness in small batches (maximum 5 students per batch).
+              {t("progHubConsultDesc")}
             </p>
 
             <div className="flex items-center gap-3 pt-2">
@@ -206,10 +206,10 @@ export default function Programs() {
               </div>
               <div>
                 <cite className="not-italic font-black text-slate-900 text-sm leading-none block">
-                  Neha Patil (MCA, Certified Trainer of Abacus & Vedic Mathematics)
+                  {t("progHubConsultDirectorBio")}
                 </cite>
                 <span className="text-xs text-slate-500 font-medium block mt-1 leading-none">
-                  Founder &amp; Academic Director, Arnav Abacus Academy
+                  {t("progHubConsultDirectorTitle")}
                 </span>
               </div>
             </div>
@@ -219,14 +219,14 @@ export default function Programs() {
                 onClick={handleConsult}
                 className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs md:text-sm px-7 py-3.5 rounded-full inline-flex items-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer"
               >
-                <span>Book a Discovery Session</span>
+                <span>{t("bookFreeDemo")}</span>
               </button>
             </div>
           </div>
 
           <div className="lg:col-span-6 bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-xl">
-            <h3 className="font-black text-lg text-slate-900 mb-2">Book a Personalised Discovery Session</h3>
-            <p className="text-xs text-slate-500 mb-6 font-medium">We'll review your child's current grade and recommend the best learning track.</p>
+            <h3 className="font-black text-lg text-slate-900 mb-2">{t("progHubLeadFormTitle")}</h3>
+            <p className="text-xs text-slate-500 mb-6 font-medium">{t("progHubLeadFormSubtitle")}</p>
             <LeadForm sourceCampaign="Programs Overview Layout" />
           </div>
 

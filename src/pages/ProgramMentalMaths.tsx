@@ -101,11 +101,11 @@ export default function ProgramMentalMaths() {
       {/* 1. Breadcrumb Navigation */}
       <nav aria-label="Breadcrumb" className="bg-slate-100/80 border-b border-slate-200 py-2.5 px-4 md:px-8 text-xs font-semibold text-slate-600">
         <div className="max-w-7xl mx-auto flex items-center gap-1.5 flex-wrap">
-          <Link to="/" className="hover:text-orange-600 transition-colors">Home</Link>
+          <Link to="/" className="hover:text-orange-600 transition-colors">{t("navHome")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <Link to="/programs" className="hover:text-orange-600 transition-colors">Programs</Link>
+          <Link to="/programs" className="hover:text-orange-600 transition-colors">{t("navPrograms")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-slate-900 font-bold">Mental Mathematics</span>
+          <span className="text-slate-900 font-bold">{t("progMentalBreadcrumb")}</span>
         </div>
       </nav>
 
@@ -118,25 +118,25 @@ export default function ProgramMentalMaths() {
             <div className="lg:col-span-7 space-y-5">
               <div className="inline-flex items-center gap-2 bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
                 <Brain className="w-3.5 h-3.5" />
-                <span>Cognitive Speed &amp; Number Sense</span>
+                <span>{t("progMentalHeroBadge")}</span>
               </div>
               <h1 className="font-display font-black text-3xl md:text-5xl tracking-tight leading-tight">
-                Mental Mathematics &amp; Speed Arithmetic in Wakad, Pune
+                {t("progMentalHeroTitle")}
               </h1>
               <p className="text-slate-300 text-sm md:text-base leading-relaxed font-medium">
-                Transform calculations from a stressful chore into intuitive mental agility. Our structured Mental Math curriculum develops lightning recall, numerical estimation, working memory, and zero-finger calculation fluency.
+                {t("progMentalHeroDesc")}
               </p>
 
               {/* Quick Spec Pills */}
               <div className="flex flex-wrap gap-2.5 pt-2">
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-amber-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <Clock className="w-3.5 h-3.5" /> Age Eligibility: 6 to 14 Years
+                  <Clock className="w-3.5 h-3.5" /> {t("progMentalSpecAge")}
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-emerald-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <Users className="w-3.5 h-3.5" /> Small Batch Ratio (Max 5 Students)
+                  <Users className="w-3.5 h-3.5" /> {t("progMentalSpecRatio")}
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-sky-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <MapPin className="w-3.5 h-3.5" /> Wakad Center &amp; Online
+                  <MapPin className="w-3.5 h-3.5" /> {t("progMentalSpecLoc")}
                 </span>
               </div>
 
@@ -144,7 +144,7 @@ export default function ProgramMentalMaths() {
               <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 text-xs text-slate-300 flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                 <span>
-                  <strong>Academy Center:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
+                  <strong>{t("progMentalLocTitle")}</strong> {t("progMentalLocDesc")}
                 </span>
               </div>
             </div>
@@ -153,13 +153,13 @@ export default function ProgramMentalMaths() {
             <div className="lg:col-span-5 bg-white text-slate-900 rounded-3xl p-6 md:p-8 shadow-2xl border border-slate-100">
               <div className="mb-4">
                 <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                  Book A Counselling Session
+                  {t("progMentalLeadBadge")}
                 </span>
                 <h2 className="text-xl font-black text-slate-900 mt-2">
-                  AAA Personalised Learning Discovery Session
+                  {t("progMentalLeadTitle")}
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
-                  Meet Director Neha Patil for a personalized mental calculation and number agility diagnostic.
+                  {t("progMentalLeadDesc")}
                 </p>
               </div>
               <LeadForm sourceCampaign="programs_mental_maths_page" defaultProgram="Mental Mathematics" />
@@ -173,13 +173,13 @@ export default function ProgramMentalMaths() {
       <section className="py-14 md:py-20 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
           <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Target Learner Profile
+            {t("progMentalWhoBadge")}
           </span>
           <h2 className="font-display font-black text-3xl text-slate-900">
-            Who Should Join Mental Mathematics?
+            {t("progMentalWhoTitle")}
           </h2>
           <p className="text-slate-600 text-xs md:text-sm font-semibold">
-            Designed for school students looking to eliminate calculation bottlenecks and build razor-sharp arithmetic reflexes.
+            {t("progMentalWhoSubtitle")}
           </p>
         </div>
 
@@ -188,22 +188,22 @@ export default function ProgramMentalMaths() {
             <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-black text-sm">
               1
             </div>
-            <h3 className="font-display font-black text-base text-slate-900">Overcoming Slow Rough-Work</h3>
+            <h3 className="font-display font-black text-base text-slate-900">{t("progMentalWho1Title")}</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              Students who grasp concepts easily in school but waste critical test minutes writing down trivial additions, subtractions, and scratch scribbles on margins.
+              {t("progMentalWho1Desc")}
             </p>
           </div>
 
           <div className="bg-white border-2 border-orange-500/30 p-6 rounded-3xl space-y-3 shadow-md relative">
             <span className="absolute -top-3 right-4 bg-orange-600 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-              Common Challenge
+              {t("progMentalWho2Badge")}
             </span>
             <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-black text-sm">
               2
             </div>
-            <h3 className="font-display font-black text-base text-slate-900">Eliminating "Silly Mistakes"</h3>
+            <h3 className="font-display font-black text-base text-slate-900">{t("progMentalWho2Title")}</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              Bright children who lose 5–15% marks due to simple calculation slips, carry-over lapses, and procedural rushing under timed exam conditions.
+              {t("progMentalWho2Desc")}
             </p>
           </div>
 
@@ -211,9 +211,9 @@ export default function ProgramMentalMaths() {
             <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-black text-sm">
               3
             </div>
-            <h3 className="font-display font-black text-base text-slate-900">Competitive Exam Agility</h3>
+            <h3 className="font-display font-black text-base text-slate-900">{t("progMentalWho3Title")}</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              Aspirants for IPM, Maths Olympiads, and scholarship exams requiring rapid elimination of answer choices, quick estimation, and high mental accuracy.
+              {t("progMentalWho3Desc")}
             </p>
           </div>
         </div>
@@ -224,54 +224,54 @@ export default function ProgramMentalMaths() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center space-y-3 max-w-2xl mx-auto mb-14">
             <span className="text-[10px] font-bold text-orange-600 bg-orange-100 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              Structured Roadmap
+              {t("progMentalLevelsBadge")}
             </span>
             <h2 className="font-display font-black text-3xl text-slate-900 leading-tight">
-              Curriculum &amp; Progressive Mastery Levels
+              {t("progMentalLevelsTitle")}
             </h2>
             <p className="text-slate-600 text-xs md:text-sm font-semibold">
-              Step-by-step cognitive training taking children from physical calculation dependency to instantaneous mental computation.
+              {t("progMentalLevelsSubtitle")}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-              <span className="text-xs font-black text-orange-600 uppercase tracking-widest block">Level 1</span>
-              <h3 className="font-bold text-base text-slate-900">Number Sense &amp; Complements</h3>
+              <span className="text-xs font-black text-orange-600 uppercase tracking-widest block">{t("progMentalL1Badge")}</span>
+              <h3 className="font-bold text-base text-slate-900">{t("progMentalL1Title")}</h3>
               <ul className="text-xs text-slate-600 space-y-1.5 font-medium">
-                <li>• Base 10 &amp; Base 100 relationships</li>
-                <li>• Single-digit flash additions</li>
-                <li>• Elimination of finger counting</li>
+                <li>• {t("progMentalL1Point1")}</li>
+                <li>• {t("progMentalL1Point2")}</li>
+                <li>• {t("progMentalL1Point3")}</li>
               </ul>
             </div>
 
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-              <span className="text-xs font-black text-teal-700 uppercase tracking-widest block">Level 2</span>
-              <h3 className="font-bold text-base text-slate-900">Multi-Digit Addition &amp; Subtraction</h3>
+              <span className="text-xs font-black text-teal-700 uppercase tracking-widest block">{t("progMentalL2Badge")}</span>
+              <h3 className="font-bold text-base text-slate-900">{t("progMentalL2Title")}</h3>
               <ul className="text-xs text-slate-600 space-y-1.5 font-medium">
-                <li>• Left-to-right mental addition</li>
-                <li>• Subtraction through complements</li>
-                <li>• 2-digit by 2-digit mental drills</li>
+                <li>• {t("progMentalL2Point1")}</li>
+                <li>• {t("progMentalL2Point2")}</li>
+                <li>• {t("progMentalL2Point3")}</li>
               </ul>
             </div>
 
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-              <span className="text-xs font-black text-indigo-600 uppercase tracking-widest block">Level 3</span>
-              <h3 className="font-bold text-base text-slate-900">High-Speed Multiplication &amp; Division</h3>
+              <span className="text-xs font-black text-indigo-600 uppercase tracking-widest block">{t("progMentalL3Badge")}</span>
+              <h3 className="font-bold text-base text-slate-900">{t("progMentalL3Title")}</h3>
               <ul className="text-xs text-slate-600 space-y-1.5 font-medium">
-                <li>• Table mastery up to 20 &amp; beyond</li>
-                <li>• Split &amp; merge multiplication strategies</li>
-                <li>• Fast mental division &amp; remainders</li>
+                <li>• {t("progMentalL3Point1")}</li>
+                <li>• {t("progMentalL3Point2")}</li>
+                <li>• {t("progMentalL3Point3")}</li>
               </ul>
             </div>
 
             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
-              <span className="text-xs font-black text-emerald-600 uppercase tracking-widest block">Level 4</span>
-              <h3 className="font-bold text-base text-slate-900">Advanced Numerical Estimation</h3>
+              <span className="text-xs font-black text-emerald-600 uppercase tracking-widest block">{t("progMentalL4Badge")}</span>
+              <h3 className="font-bold text-base text-slate-900">{t("progMentalL4Title")}</h3>
               <ul className="text-xs text-slate-600 space-y-1.5 font-medium">
-                <li>• Percentage, fraction &amp; ratio shortcuts</li>
-                <li>• Square roots and rapid checks</li>
-                <li>• Timed competitive sprint drills</li>
+                <li>• {t("progMentalL4Point1")}</li>
+                <li>• {t("progMentalL4Point2")}</li>
+                <li>• {t("progMentalL4Point3")}</li>
               </ul>
             </div>
           </div>
@@ -283,30 +283,30 @@ export default function ProgramMentalMaths() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-              Pedagogical Framework
+              {t("progMentalMethodBadge")}
             </span>
             <h2 className="font-display font-black text-3xl text-slate-900 leading-tight">
-              The AAA Learning Model™ in Mental Math
+              {t("progMentalMethodTitle")}
             </h2>
             <p className="text-slate-600 text-xs md:text-sm font-semibold leading-relaxed">
-              We never promote rote cramming or mindless memorization. Every calculation shortcut is understood deeply before speed is trained:
+              {t("progMentalMethodSubtitle")}
             </p>
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span className="text-xs md:text-sm text-slate-700"><strong>Inspire &amp; Explore:</strong> Showing the beauty and simplicity of numbers to dispel math anxiety.</span>
+                <span className="text-xs md:text-sm text-slate-700"><strong>{t("progMentalMethodP1Title")}</strong> {t("progMentalMethodP1Desc")}</span>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span className="text-xs md:text-sm text-slate-700"><strong>Understand the Principle:</strong> Deep arithmetic logic behind place values and number complements.</span>
+                <span className="text-xs md:text-sm text-slate-700"><strong>{t("progMentalMethodP2Title")}</strong> {t("progMentalMethodP2Desc")}</span>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span className="text-xs md:text-sm text-slate-700"><strong>Deliberate Practice:</strong> Small batch focus (max 5 students per batch) ensuring personalized corrective feedback in real time.</span>
+                <span className="text-xs md:text-sm text-slate-700"><strong>{t("progMentalMethodP3Title")}</strong> {t("progMentalMethodP3Desc")}</span>
               </div>
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                <span className="text-xs md:text-sm text-slate-700"><strong>Apply &amp; Reflect:</strong> Transferring calculation agility into school homework, school exams, and competitions.</span>
+                <span className="text-xs md:text-sm text-slate-700"><strong>{t("progMentalMethodP4Title")}</strong> {t("progMentalMethodP4Desc")}</span>
               </div>
             </div>
           </div>
@@ -315,27 +315,27 @@ export default function ProgramMentalMaths() {
             <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
               <Award className="w-8 h-8 text-orange-500" />
               <div>
-                <h3 className="font-black text-slate-900 text-lg">Expected Learning Outcomes</h3>
-                <span className="text-xs text-slate-500 font-medium">Measurable progress within 60–90 days</span>
+                <h3 className="font-black text-slate-900 text-lg">{t("progMentalOutHeading")}</h3>
+                <span className="text-xs text-slate-500 font-medium">{t("progMentalOutSub")}</span>
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-orange-50/60 p-4 rounded-xl border border-orange-100">
-                <span className="text-2xl font-black text-orange-600 block">5x–10x</span>
-                <span className="text-[11px] font-bold text-slate-700">Faster arithmetic speed</span>
+                <span className="text-2xl font-black text-orange-600 block">{t("progMentalOutMetric1Val")}</span>
+                <span className="text-[11px] font-bold text-slate-700">{t("progMentalOutMetric1")}</span>
               </div>
               <div className="bg-teal-50/60 p-4 rounded-xl border border-teal-100">
-                <span className="text-2xl font-black text-teal-700 block">0</span>
-                <span className="text-[11px] font-bold text-slate-700">Finger-counting reliance</span>
+                <span className="text-2xl font-black text-teal-700 block">{t("progMentalOutMetric2Val")}</span>
+                <span className="text-[11px] font-bold text-slate-700">{t("progMentalOutMetric2")}</span>
               </div>
               <div className="bg-indigo-50/60 p-4 rounded-xl border border-indigo-100">
-                <span className="text-2xl font-black text-indigo-700 block">95%+</span>
-                <span className="text-[11px] font-bold text-slate-700">Calculation accuracy rate</span>
+                <span className="text-2xl font-black text-indigo-700 block">{t("progMentalOutMetric3Val")}</span>
+                <span className="text-[11px] font-bold text-slate-700">{t("progMentalOutMetric3")}</span>
               </div>
               <div className="bg-emerald-50/60 p-4 rounded-xl border border-emerald-100">
-                <span className="text-2xl font-black text-emerald-700 block">High</span>
-                <span className="text-[11px] font-bold text-slate-700">Math exam confidence</span>
+                <span className="text-2xl font-black text-emerald-700 block">{t("progMentalOutMetric4Val")}</span>
+                <span className="text-[11px] font-bold text-slate-700">{t("progMentalOutMetric4")}</span>
               </div>
             </div>
           </div>
@@ -348,30 +348,30 @@ export default function ProgramMentalMaths() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             <div className="space-y-4">
               <span className="text-[10px] font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-                Daily Habit Formula
+                {t("progMentalHabitBadge")}
               </span>
               <h2 className="font-display font-black text-2xl md:text-3xl text-white">
-                Practice Expectations: 10–15 Minutes Daily
+                {t("progMentalHabitTitle")}
               </h2>
               <p className="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">
-                Mastery in mental arithmetic doesn't require hours of tedious homework. We advocate a 10-to-15 minute daily micro-drill routine that keeps neural pathways agile and builds lasting speed reflexes without overwhelming the child.
+                {t("progMentalHabitDesc")}
               </p>
             </div>
 
             <div className="bg-slate-800/80 border border-slate-700 rounded-3xl p-6 md:p-8 space-y-4">
               <h3 className="font-bold text-lg text-white flex items-center gap-2">
                 <Target className="w-5 h-5 text-orange-400" />
-                AAA Brain Dashboard™ Progress Tracking
+                {t("progMentalDashTitle")}
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Parents receive regular weekly checkpoint logs detailing the child's processing speed (seconds per evaluation), accuracy percentage, and level advancement.
+                {t("progMentalDashDesc")}
               </p>
               <div className="pt-2">
                 <button
                   onClick={handleConsult}
                   className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs px-6 py-3 rounded-full transition-all flex items-center gap-2 cursor-pointer"
                 >
-                  <span>Inquire About Batch Timings</span>
+                  <span>{t("progMentalBtnTimings")}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -384,38 +384,38 @@ export default function ProgramMentalMaths() {
       <section className="py-14 md:py-20 max-w-5xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 mb-12">
           <span className="text-[10px] font-bold text-orange-600 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Parent Questions
+            {t("progMentalFaqBadge")}
           </span>
           <h2 className="font-display font-black text-3xl text-slate-900">
-            Frequently Asked Questions: Mental Math
+            {t("progMentalFaqTitle")}
           </h2>
         </div>
 
         <div className="space-y-4">
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
             <h3 className="font-bold text-sm md:text-base text-slate-900 mb-2">
-              How does Mental Math differ from Abacus training?
+              {t("progMentalQ1")}
             </h3>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
-              Abacus uses tactile beads as a concrete sensory anchor transitioning to mental beads (Anzan), ideal for foundational ages 4.5–9. Mental Mathematics teaches direct numerical decomposition, complement arithmetic, and split-merge calculation shortcuts. At AAA, Mental Math is offered both as an independent standalone track (Ages 6–14) and as an integrated bridging curriculum between Abacus and Vedic Maths.
+              {t("progMentalA1")}
             </p>
           </div>
 
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
             <h3 className="font-bold text-sm md:text-base text-slate-900 mb-2">
-              Will this confuse the steps taught in my child's school board (CBSE/ICSE/State)?
+              {t("progMentalQ2")}
             </h3>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
-              No. Mental Math teaches children how numbers interact internally. In school exams, students still write the required explanatory steps on paper, but they complete the calculations instantaneously in their head with zero scratch errors.
+              {t("progMentalA2")}
             </p>
           </div>
 
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
             <h3 className="font-bold text-sm md:text-base text-slate-900 mb-2">
-              What is the student-to-teacher batch size?
+              {t("progMentalQ3")}
             </h3>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
-              Every batch at Arnav Abacus Academy has a strict maximum of five students per batch. This ensures Founder Neha Patil (Certified Trainer of Abacus & Vedic Mathematics) provides personalized feedback to each student every single session.
+              {t("progMentalA3")}
             </p>
           </div>
         </div>
@@ -425,23 +425,23 @@ export default function ProgramMentalMaths() {
       <section className="py-16 md:py-24 bg-gradient-to-r from-orange-600 to-amber-600 text-white text-center">
         <div className="max-w-4xl mx-auto px-4 md:px-8 space-y-6">
           <h2 className="font-display font-black text-3xl md:text-5xl leading-tight">
-            Give Your Child the Gift of Lifelong Mental Math Agility
+            {t("progMentalCtaTitle")}
           </h2>
           <p className="text-orange-100 text-xs md:text-sm max-w-2xl mx-auto leading-relaxed font-semibold">
-            Join hundreds of confident Pune students mastering mental arithmetic with personal mentorship by Neha Patil in Wakad.
+            {t("progMentalCtaDesc")}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
             <button
               onClick={handleConsult}
               className="w-full sm:w-auto bg-white text-slate-900 hover:bg-slate-100 font-black text-xs md:text-sm uppercase tracking-wider px-8 py-4 rounded-full shadow-lg transition-all cursor-pointer"
             >
-              Book Parent Counselling on WhatsApp
+              {t("progMentalCtaBtnWa")}
             </button>
             <Link
               to="/contact"
               className="w-full sm:w-auto bg-slate-900/40 hover:bg-slate-900/60 border border-white/30 text-white font-bold text-xs md:text-sm uppercase tracking-wider px-8 py-4 rounded-full transition-all"
             >
-              Visit Wakad Center
+              {t("progMentalCtaBtnVisit")}
             </Link>
           </div>
         </div>

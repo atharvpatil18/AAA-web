@@ -19,9 +19,11 @@ import {
   Scale
 } from "lucide-react";
 import { trackPageView, trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 import DemoBookingModal from "../components/DemoBookingModal";
 
 export default function GuideAbacusVsVedicMaths() {
+  const { language } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   useEffect(() => {
     trackPageView("/parent-guides/abacus-vs-vedic-maths", "Abacus vs Vedic Maths: What's the Difference? | Arnav Abacus Academy");
@@ -521,7 +523,7 @@ export default function GuideAbacusVsVedicMaths() {
               Still Unsure Which Program Fits Your Child?
             </h2>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed font-medium">
-              Every child has unique learning habits. Parents in Wakad and Pune are welcome to visit our center for a personal evaluation with Founder Neha Patil to assess counting readiness and curriculum alignment.
+              Every child has unique learning habits. Parents in Wakad and Pune are welcome to visit our center for a personal evaluation with Founder {language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil"} to assess counting readiness and curriculum alignment.
             </p>
           </div>
 

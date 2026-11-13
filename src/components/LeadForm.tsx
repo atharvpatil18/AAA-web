@@ -760,7 +760,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                   className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl text-xs shadow-sm transition-all mt-1"
                 >
                   <Phone className="w-3.5 h-3.5" />
-                  Connect Directly with Neha Patil on WhatsApp
+                  {language === "hi" ? "व्हाट्सएप पर नेहा पाटिल से सीधे संपर्क करें" : language === "mr" ? "व्हॉट्सॲपवर नेहा पाटील यांच्याशी थेट संपर्क साधा" : "Connect Directly with Neha Patil on WhatsApp"}
                 </a>
               )}
             </div>
@@ -776,11 +776,11 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 aria-label={t("formSalutation") || "Salutation"}
                 value={salutation}
                 onChange={(e) => setSalutation(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
+                className="w-full pl-2.5 pr-6 py-2.5 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-xs sm:text-sm text-gray-800 transition cursor-pointer shadow-sm font-medium"
               >
-                <option value="Mr.">Mr.</option>
-                <option value="Mrs.">Mrs.</option>
-                <option value="Ms.">Ms.</option>
+                <option value="Mr.">{t("salutationMr") || "Mr."}</option>
+                <option value="Mrs.">{t("salutationMrs") || "Mrs."}</option>
+                <option value="Ms.">{t("salutationMs") || "Ms."}</option>
               </select>
             </div>
 
@@ -828,7 +828,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 type="tel"
                 required
                 maxLength={10}
-                placeholder="9876543210"
+                placeholder={language === "hi" || language === "mr" ? "९८७६५४३२१०" : "9876543210"}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                 className="w-full px-4 py-3 rounded-r-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 placeholder-gray-400 transition shadow-sm font-medium"
@@ -846,12 +846,12 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 aria-label={t("formAgeBracket") || "Child Age Bracket"}
                 value={childAge}
                 onChange={(e) => setChildAge(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
+                className="w-full pl-2.5 pr-6 py-2.5 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-xs sm:text-sm text-gray-800 transition cursor-pointer shadow-sm font-medium"
               >
-                <option value="4.5-6">{language === "hi" ? "4.5 - 6 वर्ष (जूनियर एबाकस)" : language === "mr" ? "४.५ - ६ वर्षे (ज्युनियर ॲबॅकस)" : "4.5 - 6 Years (Junior Abacus)"}</option>
-                <option value="6-9">{language === "hi" ? "6 - 9 वर्ष (एबाकस / मेंटल मैथ)" : language === "mr" ? "६ - ९ वर्षे (ॲबॅकस / मेंटल मॅथ)" : "6 - 9 Years (Abacus / Mental Math)"}</option>
-                <option value="9-12">{language === "hi" ? "9 - 12 वर्ष (वैदिक मैथ / ओलंपियाड)" : language === "mr" ? "९ - १२ वर्षे (वैदिक मॅथ / ऑलिम्पियाड)" : "9 - 12 Years (Vedic Math / Olympiad)"}</option>
-                <option value="12+">{language === "hi" ? "12+ वर्ष (स्कूल मैथ / एडवांस)" : language === "mr" ? "१२+ वर्षे (शालेय गणित / ॲडव्हान्स)" : "12+ Years (School Math / Advanced)"}</option>
+                <option value="4.5-6">{language === "hi" ? "४.५ - ६ वर्ष" : language === "mr" ? "४.५ - ६ वर्षे" : "4.5 - 6 Yrs"}</option>
+                <option value="6-9">{language === "hi" ? "६ - ९ वर्ष" : language === "mr" ? "६ - ९ वर्षे" : "6 - 9 Yrs"}</option>
+                <option value="9-12">{language === "hi" ? "९ - १२ वर्ष" : language === "mr" ? "९ - १२ वर्षे" : "9 - 12 Yrs"}</option>
+                <option value="12+">{language === "hi" ? "१२+ वर्ष" : language === "mr" ? "१२+ वर्षे" : "12+ Yrs"}</option>
               </select>
             </div>
 
@@ -864,16 +864,16 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 aria-label={t("formProgramTopic") || "Program Topic"}
                 value={program}
                 onChange={(e) => setProgram(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
+                className="w-full pl-2.5 pr-6 py-2.5 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-xs sm:text-sm text-gray-800 transition cursor-pointer shadow-sm font-medium"
               >
                 <option value="Abacus Math">{language === "hi" ? "एबाकस गणित" : language === "mr" ? "ॲबॅकस गणित" : "Abacus Math"}</option>
                 <option value="Vedic Math">{language === "hi" ? "वैदिक गणित" : language === "mr" ? "वैदिक गणित" : "Vedic Math"}</option>
                 <option value="School Math">{language === "hi" ? "स्कूल गणित" : language === "mr" ? "शालेय गणित" : "School Math"}</option>
                 <option value="IPM Math">{language === "hi" ? "आईपीएम गणित" : language === "mr" ? "आयपीएम गणित" : "IPM Math"}</option>
                 <option value="Olympiad Math">{language === "hi" ? "ओलंपियाड गणित" : language === "mr" ? "ऑलिम्पियाड गणित" : "Olympiad Math"}</option>
-                <option value="Scholarship Math">{language === "hi" ? "स्कॉलरशिप गणित" : language === "mr" ? "स्कॉलरशिप गणित" : "Scholarship Math"}</option>
-                <option value="Competitive Math">{language === "hi" ? "प्रतियोगी गणित" : language === "mr" ? "स्पर्धात्मक गणित" : "Competitive Math"}</option>
-                <option value="Mental Math">{language === "hi" ? "मेंटल मैथ" : language === "mr" ? "मेंटल मॅथ" : "Mental Math"}</option>
+                <option value="Scholarship Math">{language === "hi" ? "छात्रवृत्ति गणित" : language === "mr" ? "शिष्यवृत्ती गणित" : "Scholarship Math"}</option>
+                <option value="Competitive Math">{language === "hi" ? "प्रतियोगी गणित" : language === "mr" ? "स्पर्धा गणित" : "Competitive Math"}</option>
+                <option value="Mental Math">{language === "hi" ? "मेंटल मैथ" : language === "mr" ? "मानसिक गणित" : "Mental Math"}</option>
               </select>
             </div>
           </div>
@@ -888,7 +888,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 aria-label={t("formClassMode") || "Class Mode"}
                 value={classMode}
                 onChange={(e) => setClassMode(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
+                className="w-full pl-2.5 pr-6 py-2.5 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-xs sm:text-sm text-gray-800 transition cursor-pointer shadow-sm font-medium"
               >
                 <option value="offline">{t("formOffline")}</option>
                 <option value="online">{t("formOnline")}</option>
@@ -904,14 +904,14 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 aria-label={t("formCurriculum") || "School Curriculum"}
                 value={schoolCurriculum}
                 onChange={(e) => setSchoolCurriculum(e.target.value)}
-                className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
+                className="w-full pl-2.5 pr-6 py-2.5 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-xs sm:text-sm text-gray-800 transition cursor-pointer shadow-sm font-medium"
               >
-                <option value="CBSE/ICSE">CBSE / ICSE</option>
-                <option value="State Board">State Board</option>
-                <option value="IB">IB (International Baccalaureate)</option>
+                <option value="CBSE/ICSE">{language === "hi" ? "CBSE / ICSE" : language === "mr" ? "CBSE / ICSE" : "CBSE / ICSE"}</option>
+                <option value="State Board">{language === "hi" ? "स्टेट बोर्ड" : language === "mr" ? "राज्य मंडळ" : "State Board"}</option>
+                <option value="IB">{language === "hi" ? "IB बोर्ड" : language === "mr" ? "IB मंडळ" : "IB (International)"}</option>
                 <option value="IGCSE">Cambridge IGCSE</option>
                 <option value="US Common Core">US Common Core</option>
-                <option value="Other">Other / International</option>
+                <option value="Other">{language === "hi" ? "अन्य" : language === "mr" ? "इतर" : "Other"}</option>
               </select>
             </div>
           </div>
@@ -927,7 +927,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                   aria-label={t("formCountryCode") || "Country Code"}
                   value={countryCode}
                   onChange={(e) => setCountryCode(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
+                  className="w-full pl-2.5 pr-6 py-2.5 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-xs sm:text-sm text-gray-800 transition cursor-pointer shadow-sm font-medium"
                 >
                   <option value="+91">🇮🇳 India (+91)</option>
                   <option value="+1">🇺🇸/🇨🇦 US/Canada (+1)</option>
@@ -949,7 +949,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                   aria-label={t("formTimeZone") || "Time Zone"}
                   value={timeZone}
                   onChange={(e) => setTimeZone(e.target.value)}
-                  className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-[11px] text-gray-800 transition cursor-pointer shadow-sm"
+                  className="w-full pl-2.5 pr-6 py-2.5 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-xs sm:text-sm text-gray-800 transition cursor-pointer shadow-sm font-medium"
                 >
                   <option value="Asia/Kolkata">🇮🇳 India (IST - UTC+5:30)</option>
                   <option value="America/New_York">🇺🇸 US Eastern (EST/EDT)</option>

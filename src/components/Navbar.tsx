@@ -73,74 +73,74 @@ export default function Navbar() {
   };
 
   const interactiveLabLinks = [
-    { name: "Abacus Simulator (Digital Soroban)", path: "/abacus-simulator" },
-    { name: "Vedic Maths Sutras Demo", path: "/vedic-maths-sutras" },
-    { name: "Speed Math Challenge", path: "/speed-challenge" },
+    { name: t("navLabSimulator"), path: "/abacus-simulator" },
+    { name: t("navLabVedic"), path: "/vedic-maths-sutras" },
+    { name: t("navLabSpeed"), path: "/speed-challenge" },
   ];
 
   const programNavLinks = [
-    { name: "All Programmes Overview", path: "/programs" },
-    { name: "Abacus Mathematics (Ages 4.5–9)", path: "/programs/abacus" },
-    { name: "Vedic Mathematics (Ages 9–14)", path: "/programs/vedic-maths" },
-    { name: "Mental Mathematics (Ages 6–14)", path: "/programs/mental-maths" },
-    { name: "School Mathematics (Grades 5–10)", path: "/programs/school-maths" },
-    { name: "IPM & Olympiad Prep (Grades 2–9)", path: "/programs/ipm-olympiad" },
+    { name: t("navExploreAllPrograms"), path: "/programs" },
+    { name: t("navAbacusProgram"), path: "/programs/abacus" },
+    { name: t("navVedicProgram"), path: "/programs/vedic-maths" },
+    { name: t("navMentalProgram"), path: "/programs/mental-maths" },
+    { name: t("navSchoolProgram"), path: "/programs/school-maths" },
+    { name: t("navIpmProgram"), path: "/programs/ipm-olympiad" },
   ];
 
     const parentGuideNavLinks = [
-    { name: "Parent Guides Hub Overview", path: "/parent-guides" },
-    { name: "Abacus vs Vedic Maths", path: "/parent-guides/abacus-vs-vedic-maths" },
-    { name: "Does Abacus Confuse School Maths?", path: "/parent-guides/does-abacus-confuse-school-math" },
-    { name: "Stopping Finger Counting", path: "/parent-guides/why-children-use-finger-counting" },
-    { name: "Why Kids Make Silly Mistakes", path: "/parent-guides/why-smart-children-make-silly-math-mistakes" },
-    { name: "Ideal Age to Start Abacus", path: "/parent-guides/ideal-age-to-start-abacus" },
+    { name: t("navParentGuidesOverview"), path: "/parent-guides" },
+    { name: t("navGuideAbacusVedic"), path: "/parent-guides/abacus-vs-vedic-maths" },
+    { name: t("navGuideSchoolConfuse"), path: "/parent-guides/does-abacus-confuse-school-math" },
+    { name: t("navGuideFingerCounting"), path: "/parent-guides/why-children-use-finger-counting" },
+    { name: t("navGuideSillyMistakes"), path: "/parent-guides/why-smart-children-make-silly-math-mistakes" },
+    { name: t("navGuideIdealAge"), path: "/parent-guides/ideal-age-to-start-abacus" },
   ];
   const primaryNavLinks = [
     { name: t("navHome"), path: "/" },
-    { name: "Programmes", path: "/programs", hasDropdown: true },
-    { name: "Parent Guides", path: "/parent-guides", hasGuideDropdown: true },
-    { name: "Interactive Labs", path: "/abacus-simulator", hasLabDropdown: true },
-    { name: "Achievements", path: "/showcase" },
-    { name: "Practice Hub", path: "/practice" },
-    { name: "Worksheets", path: "/worksheets" },
-    { name: "Blog", path: "/blog" },
+    { name: t("navPrograms"), path: "/programs", hasDropdown: true },
+    { name: t("navParentGuides"), path: "/parent-guides", hasGuideDropdown: true },
+    { name: t("navInteractiveLabs"), path: "/abacus-simulator", hasLabDropdown: true },
+    { name: t("navAchievements"), path: "/showcase" },
+    { name: t("navPractice"), path: "/practice" },
+    { name: t("navWorksheets"), path: "/worksheets" },
+    { name: t("navBlog"), path: "/blog" },
   ];
 
   const moreNavLinks = [
-    { name: "Meet Neha Patil (Founder)", path: "/mentor" },
-    { name: "Teacher Training & Franchise", path: "/teacher-franchise" },
-    { name: "Championship & News", path: "/news" },
-    { name: "Academy Brochure & PDF", path: "/brochure" },
-    { name: "FAQs", path: "/faqs" },
-    { name: "Contact & Wakad Location", path: "/contact" },
+    { name: t("navMeetFounder"), path: "/mentor" },
+    { name: t("navTeacherFranchise"), path: "/teacher-franchise" },
+    { name: t("navChampionshipNews"), path: "/news" },
+    { name: t("navBrochurePdf"), path: "/brochure" },
+    { name: t("navFaqs"), path: "/faqs" },
+    { name: t("navContactWakad"), path: "/contact" },
   ];
 
   const allNavLinks = [
     { name: t("navHome"), path: "/" },
-    { name: "All Programmes Overview", path: "/programs" },
-    { name: "↳ Abacus Mathematics (Ages 4.5–9)", path: "/programs/abacus" },
-    { name: "↳ Vedic Mathematics (Ages 9–14)", path: "/programs/vedic-maths" },
-    { name: "↳ Mental Mathematics (Ages 6–14)", path: "/programs/mental-maths" },
-    { name: "↳ School Mathematics (Grades 5–10)", path: "/programs/school-maths" },
-    { name: "↳ IPM & Olympiad Prep (Grades 2–9)", path: "/programs/ipm-olympiad" },
-    { name: "Interactive Labs (Discovery)", path: "/abacus-simulator" },
-    { name: "↳ Abacus Simulator", path: "/abacus-simulator" },
-    { name: "↳ Vedic Maths Sutras", path: "/vedic-maths-sutras" },
-    { name: "↳ Speed Math Challenge", path: "/speed-challenge" },
-    { name: "Student Hall of Fame & Results", path: "/showcase" },
-    { name: "Practice Hub", path: "/practice" },
-    { name: "Free Worksheets", path: "/worksheets" },
-    { name: "Parent Guides Hub", path: "/parent-guides" },
-    { name: "↳ Abacus vs Vedic Maths", path: "/parent-guides/abacus-vs-vedic-maths" },
-    { name: "↳ Does Abacus Confuse School Maths?", path: "/parent-guides/does-abacus-confuse-school-math" },
-    { name: "↳ Transitioning from Finger Counting", path: "/parent-guides/why-children-use-finger-counting" },
-    { name: "↳ Overcoming Silly Calculation Mistakes", path: "/parent-guides/why-smart-children-make-silly-math-mistakes" },
-    { name: "↳ Ideal Age to Start Abacus", path: "/parent-guides/ideal-age-to-start-abacus" },
-    { name: "Blog & Educational Articles", path: "/blog" },
-    { name: "Meet Neha Patil (Founder)", path: "/mentor" },
-    { name: "Teacher Training & Franchise", path: "/teacher-franchise" },
-    { name: "FAQs", path: "/faqs" },
-    { name: "Contact & Wakad Location", path: "/contact" },
+    { name: t("navExploreAllPrograms"), path: "/programs" },
+    { name: "↳ " + t("navAbacusProgram"), path: "/programs/abacus" },
+    { name: "↳ " + t("navVedicProgram"), path: "/programs/vedic-maths" },
+    { name: "↳ " + t("navMentalProgram"), path: "/programs/mental-maths" },
+    { name: "↳ " + t("navSchoolProgram"), path: "/programs/school-maths" },
+    { name: "↳ " + t("navIpmProgram"), path: "/programs/ipm-olympiad" },
+    { name: t("navInteractiveLabs"), path: "/abacus-simulator" },
+    { name: "↳ " + t("navLabSimulator"), path: "/abacus-simulator" },
+    { name: "↳ " + t("navLabVedic"), path: "/vedic-maths-sutras" },
+    { name: "↳ " + t("navLabSpeed"), path: "/speed-challenge" },
+    { name: t("navAchievements"), path: "/showcase" },
+    { name: t("navPractice"), path: "/practice" },
+    { name: t("navWorksheets"), path: "/worksheets" },
+    { name: t("navParentGuidesOverview"), path: "/parent-guides" },
+    { name: "↳ " + t("navGuideAbacusVedic"), path: "/parent-guides/abacus-vs-vedic-maths" },
+    { name: "↳ " + t("navGuideSchoolConfuse"), path: "/parent-guides/does-abacus-confuse-school-math" },
+    { name: "↳ " + t("navGuideFingerCounting"), path: "/parent-guides/why-children-use-finger-counting" },
+    { name: "↳ " + t("navGuideSillyMistakes"), path: "/parent-guides/why-smart-children-make-silly-math-mistakes" },
+    { name: "↳ " + t("navGuideIdealAge"), path: "/parent-guides/ideal-age-to-start-abacus" },
+    { name: t("navBlog"), path: "/blog" },
+    { name: t("navMeetFounder"), path: "/mentor" },
+    { name: t("navTeacherFranchise"), path: "/teacher-franchise" },
+    { name: t("navFaqs"), path: "/faqs" },
+    { name: t("navContactWakad"), path: "/contact" },
   ];
 
   const currentPath = location.pathname;
@@ -154,11 +154,11 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4 text-slate-300 shrink-0">
             <span className="flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5 text-amber-400" />
-              <span>Wakad Center, Pune • Small Batches (Max 5 Students)</span>
+              <span>{t("navTopWorkingDetails")}</span>
             </span>
             <span className="hidden lg:inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Admissions Open for New Batches</span>
+              <span>{t("navAdmissionsOpen")}</span>
             </span>
           </div>
 
@@ -172,7 +172,7 @@ export default function Navbar() {
                 className="flex items-center gap-1 hover:text-amber-400 transition-colors"
               >
                 <Phone className="w-3.5 h-3.5 text-amber-400" />
-                <span className="hidden sm:inline">+91 90219 24968</span>
+                <span className="hidden sm:inline">{t("academyPhoneDisplay")}</span>
               </a>
               <a 
                 href="https://wa.me/919021924968" 
@@ -230,10 +230,10 @@ export default function Navbar() {
             </div>
             <div>
               <span className="font-display font-black text-slate-900 text-sm md:text-lg tracking-tight block group-hover:text-orange-600 transition-colors leading-none">
-                ARNAV ABACUS ACADEMY
+                {t("navBrandTitle") || "ARNAV ABACUS ACADEMY"}
               </span>
               <span className="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase tracking-widest block mt-0.5 leading-none">
-                Wakad, Pune • Certified Mentorship
+                {t("navBrandSubtitle") || "Wakad, Pune • Certified Mentorship"}
               </span>
             </div>
           </Link>
@@ -400,7 +400,7 @@ export default function Navbar() {
                   }`}
                   aria-expanded={moreMenuOpen}
                 >
-                  <span>More</span>
+                  <span>{t("navMore")}</span>
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform ${moreMenuOpen ? "rotate-180" : ""}`} />
                 </button>
 
@@ -437,7 +437,7 @@ export default function Navbar() {
                 }}
                 className="bg-orange-600 hover:bg-orange-700 text-white px-4 xl:px-5 py-2.5 rounded-full font-bold text-xs xl:text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
               >
-                <span>Discovery Session</span>
+                <span>{t("navBookDiscoveryCta")}</span>
                 <ArrowRight className="w-3.5 h-3.5 shrink-0" />
               </button>
 
@@ -445,7 +445,7 @@ export default function Navbar() {
                 to="/login"
                 className="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-full font-bold text-xs shadow-xs active:scale-95 transition-all inline-flex items-center cursor-pointer whitespace-nowrap"
               >
-                Sign In
+                {t("navSignIn") || "Sign In"}
               </Link>
             </div>
           </div>
@@ -487,6 +487,30 @@ export default function Navbar() {
                 );
               })}
             </ul>
+            {/* Mobile Language Switcher */}
+            <div className="flex items-center justify-between px-3 py-2 bg-white rounded-xl border border-slate-200 text-xs">
+              <span className="font-bold text-slate-700 flex items-center gap-1.5">
+                <Globe className="w-4 h-4 text-orange-600" />
+                <span>{t("navSelectLanguage")}</span>
+              </span>
+              <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+                {(["en", "hi", "mr"] as Language[]).map((lang) => (
+                  <button
+                    key={lang}
+                    type="button"
+                    onClick={() => setLanguage(lang)}
+                    className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
+                      language === lang
+                        ? "bg-orange-600 text-white shadow-xs"
+                        : "text-slate-600 hover:text-slate-900"
+                    }`}
+                  >
+                    {lang === "en" ? "EN" : lang === "hi" ? "हिन्दी" : "मराठी"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="pt-2 border-t border-slate-200 flex flex-col gap-2">
               <button
                 onClick={() => {
@@ -496,7 +520,7 @@ export default function Navbar() {
                 }}
                 className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-full text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 cursor-pointer shadow-sm"
               >
-                <span>Book Parent Counselling Session</span>
+                <span>{t("navBookParentCounselling")}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

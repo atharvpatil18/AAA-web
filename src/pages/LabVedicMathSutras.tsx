@@ -23,7 +23,7 @@ import { trackPageView, trackDemoClick } from "../lib/analytics";
 import { useLanguage } from "../lib/LanguageContext";
 
 export default function LabVedicMathSutras() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   useEffect(() => {
@@ -167,10 +167,10 @@ export default function LabVedicMathSutras() {
                 Class 5 to 10 Advanced Batches
               </span>
               <h3 className="font-display font-black text-xl md:text-2xl text-white">
-                Book a Free 1-on-1 Assessment with Neha Patil
+                {language === "mr" ? "नेहा पाटील यांच्यासोबत विनामूल्य १-ऑन-१ मूल्यमापन बुक करा" : language === "hi" ? "नेहा पाटिल के साथ निःशुल्क १-ऑन-१ मूल्यांकन बुक करें" : "Book a Free 1-on-1 Assessment with Neha Patil"}
               </h3>
               <p className="text-xs text-slate-300 max-w-xl">
-                Discover your child's arithmetic calculation bottlenecks. Neha Patil designs an individualized speed-learning plan tailored to school boards and Olympiads.
+                {language === "mr" ? "आपल्या पाल्याच्या अंकगणितीय अडचणी शोधा. नेहा पाटील शालेय बोर्ड आणि ऑलिम्पियाडनुसार वैयक्तिकृत स्पीड-लर्निंग योजना तयार करतात." : language === "hi" ? "अपने बच्चे की अंकगणितीय गणना बाधाओं की पहचान करें। नेहा पाटिल स्कूली बोर्ड और ओलंपियाड के अनुसार व्यक्तिगत स्पीड-लर्निंग योजना तैयार करती हैं।" : "Discover your child's arithmetic calculation bottlenecks. Neha Patil designs an individualized speed-learning plan tailored to school boards and Olympiads."}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">

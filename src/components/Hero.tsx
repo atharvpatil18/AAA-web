@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import DemoBookingModal from "./DemoBookingModal";
 
 export default function Hero() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
   const handleCtaClick = () => {
@@ -48,33 +48,33 @@ export default function Hero() {
             {/* Brand Identifier Pill */}
             <div className="inline-flex items-center gap-2 bg-slate-900 text-amber-300 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>ARNAV ABACUS ACADEMY | WAKAD, PUNE</span>
+              <span>{t("heroBrandPill")}</span>
             </div>
 
             {/* Main Headline */}
             <h1 className="font-display font-black text-3xl sm:text-5xl lg:text-6xl text-slate-900 tracking-tight leading-[1.12]">
-              Beyond Calculation. <br className="hidden sm:inline" />
-              <span className="text-orange-600">Towards Confident Mathematical Thinking.</span>
+              {t("heroMainTitle")} <br className="hidden sm:inline" />
+              <span className="text-orange-600">{t("heroMainTitleHighlight")}</span>
             </h1>
 
             {/* Reassuring Supporting Message */}
             <p className="text-slate-700 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium">
-              Learn Abacus, Vedic Math and Mental Math through structured, personalised learning that develops accuracy, concentration, visualization and independent thinking.
+              {t("heroSupportingDesc")}
             </p>
 
             {/* Verified Pillar Checkpoints */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs font-bold text-slate-700 pt-1">
               <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-700" />
-                Small Batches (Max 5 Students)
+                {t("heroPillarSmallBatches")}
               </span>
               <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-700" />
-                Certified Trainer Mentorship
+                {t("heroPillarCertifiedTrainer")}
               </span>
               <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
                 <CheckCircle2 className="w-4 h-4 text-emerald-700" />
-                Japanese Soroban Method
+                {t("heroPillarSoroban")}
               </span>
             </div>
 
@@ -85,7 +85,7 @@ export default function Hero() {
                 onClick={handleCtaClick}
                 className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm sm:text-base px-8 py-4 rounded-full shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Book a Discovery Session</span>
+                <span>{t("heroCtaDiscovery")}</span>
                 <ArrowRight className="w-4 h-4 text-orange-100" />
               </button>
 
@@ -94,7 +94,7 @@ export default function Hero() {
                 onClick={handleProgramScroll}
                 className="w-full sm:w-auto bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 font-bold text-sm sm:text-base px-7 py-4 rounded-full shadow-xs hover:shadow-md active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Explore Our Programmes</span>
+                <span>{t("heroCtaExplore")}</span>
               </button>
             </div>
 
@@ -106,7 +106,7 @@ export default function Hero() {
                 ))}
               </div>
               <span className="font-semibold">
-                Rated 5.0/5 by 76+ Wakad Parents • Flat 3, Balaji Sagar Bungalow, Wakad
+                {t("heroRatingSnippet")}
               </span>
             </div>
 
@@ -129,10 +129,10 @@ export default function Hero() {
                 
                 <div className="absolute bottom-3 left-3 right-3 text-white">
                   <span className="bg-amber-400 text-slate-950 text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded">
-                    Authentic Classroom Training
+                    {t("heroClassroomBadge")}
                   </span>
                   <p className="text-xs sm:text-sm font-bold text-white mt-1 leading-snug">
-                    Small-group interactive math sessions in Wakad, Pune
+                    {t("heroClassroomSubtitle")}
                   </p>
                 </div>
               </div>
@@ -144,12 +144,12 @@ export default function Hero() {
                   <span className="block text-[10px] font-bold text-slate-600 uppercase leading-tight">{t("heroStatChampions")}</span>
                 </div>
                 <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  <span className="block font-black text-slate-900 text-lg sm:text-xl">Max 5</span>
-                  <span className="block text-[10px] font-bold text-slate-600 uppercase">Students Per Batch</span>
+                  <span className="block font-black text-slate-900 text-lg sm:text-xl">{t("heroStatMax5")}</span>
+                  <span className="block text-[10px] font-bold text-slate-600 uppercase">{t("heroStatPerBatch")}</span>
                 </div>
                 <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  <span className="block font-black text-emerald-700 text-lg sm:text-xl">100%</span>
-                  <span className="block text-[10px] font-bold text-slate-600 uppercase">Zero-Finger Goal</span>
+                  <span className="block font-black text-emerald-700 text-lg sm:text-xl">{t("heroStatZeroFinger")}</span>
+                  <span className="block text-[10px] font-bold text-slate-600 uppercase">{t("heroStatZeroFingerGoal")}</span>
                 </div>
               </div>
 
@@ -158,7 +158,7 @@ export default function Hero() {
                 <div className="w-12 h-12 rounded-xl bg-orange-600 text-white flex items-center justify-center font-bold text-sm shrink-0 overflow-hidden shadow-xs">
                   <img
                     src="/teacher-profile.jpg"
-                    alt="Neha Patil - Founder Arnav Abacus Academy"
+                    alt={language === "mr" ? "नेहा पाटील - संस्थापिका अर्णव ॲबॅकस अकॅडमी" : language === "hi" ? "नेहा पाटिल - संस्थापिका अर्णव एबाकस एकेडमी" : "Neha Patil - Founder Arnav Abacus Academy"}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = "none";
@@ -167,20 +167,20 @@ export default function Hero() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <span className="text-[10px] font-black uppercase tracking-wider text-orange-700 block">
-                    Personally Mentored By
+                    {t("heroMentoredBy")}
                   </span>
                   <strong className="text-xs sm:text-sm font-black text-slate-900 block truncate">
-                    Neha Patil (MCA, Certified Trainer)
+                    {t("heroMentorName")}
                   </strong>
                   <span className="text-[10.5px] text-slate-600 block truncate">
-                    Founder &amp; Academic Director • Wakad Center
+                    {t("heroMentorDirector")}
                   </span>
                 </div>
                 <Link
                   to="/mentor"
                   className="bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 text-[11px] font-bold px-3 py-1.5 rounded-lg shrink-0 transition-colors"
                 >
-                  Profile &rarr;
+                  {t("heroProfileLink")}
                 </Link>
               </div>
 
