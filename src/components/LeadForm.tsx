@@ -24,7 +24,7 @@ export default function LeadForm({ sourceCampaign, defaultProgram = "Abacus" }: 
   const [parentName, setParentName] = useState("");
   const [studentName, setStudentName] = useState("");
   const [phone, setPhone] = useState("");
-  const [childAge, setChildAge] = useState("7-9");
+  const [childAge, setChildAge] = useState("6-9");
   const [program, setProgram] = useState(defaultProgram);
   const [serviceConsent, setServiceConsent] = useState(true);
   const [marketingConsent, setMarketingConsent] = useState(false);
@@ -218,7 +218,7 @@ Founder & Director, Arnav Abacus Academy
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(9.5);
       doc.setTextColor(70, 75, 85);
-      const bioText = `Neha Patil is a highly certified IIVA (Indian Institute of Vedic Maths & Abacus) Certified Trainer and Child Psychology specialist. With over 3+ years of direct mentoring excellence, she has coached more than 200+ local students in Wakad, Pune, India, and 10+ international students from the US, UK, and Gulf countries.
+      const bioText = `Neha Patil is a highly certified IIVA (Indian Institute of Vedic Maths & Abacus) Certified Trainer and Child Psychology specialist. With over 3+ years of direct mentoring excellence, she has coached more than 300+ local students in Wakad, Pune, India, and 15+ international students from the US, UK, and Gulf countries.
 
 Arnav Abacus Academy operates in alignment with the National Education Policy (NEP) 2020 with IIVA-certified pedagogy, maintaining dedicated micro-batches of a maximum of five students per batch for focused educator attention.`;
 
@@ -561,7 +561,7 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
 
     let mappedAge = childAge;
     if (mappedAge.includes("10") || mappedAge.includes("12") || mappedAge.includes("13") || mappedAge.includes("14")) mappedAge = "10-14";
-    else if (mappedAge.includes("7") || mappedAge.includes("8") || mappedAge.includes("9")) mappedAge = "7-9";
+    else if (mappedAge.includes("6") || mappedAge.includes("7") || mappedAge.includes("8") || mappedAge.includes("9")) mappedAge = "7-9";
     else mappedAge = "4.5-6";
 
     const cleanPhoneDigits = cleanDigits;
@@ -848,10 +848,10 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 onChange={(e) => setChildAge(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
               >
-                <option value="4-6">{language === "hi" ? "4 - 6 वर्ष" : language === "mr" ? "४ - ६ वर्षे" : "4 - 6 Years"}</option>
-                <option value="7-9">{language === "hi" ? "7 - 9 वर्ष" : language === "mr" ? "७ - ९ वर्षे" : "7 - 9 Years"}</option>
-                <option value="10-12">{language === "hi" ? "10+ वर्ष" : language === "mr" ? "१०+ वर्षे" : "10+ Years"}</option>
-                <option value="13+">{language === "hi" ? "13+ वर्ष" : language === "mr" ? "१३+ वर्षे" : "13+ Years"}</option>
+                <option value="4.5-6">{language === "hi" ? "4.5 - 6 वर्ष (जूनियर एबाकस)" : language === "mr" ? "४.५ - ६ वर्षे (ज्युनियर ॲबॅकस)" : "4.5 - 6 Years (Junior Abacus)"}</option>
+                <option value="6-9">{language === "hi" ? "6 - 9 वर्ष (एबाकस / मेंटल मैथ)" : language === "mr" ? "६ - ९ वर्षे (ॲबॅकस / मेंटल मॅथ)" : "6 - 9 Years (Abacus / Mental Math)"}</option>
+                <option value="9-12">{language === "hi" ? "9 - 12 वर्ष (वैदिक मैथ / ओलंपियाड)" : language === "mr" ? "९ - १२ वर्षे (वैदिक मॅथ / ऑलिम्पियाड)" : "9 - 12 Years (Vedic Math / Olympiad)"}</option>
+                <option value="12+">{language === "hi" ? "12+ वर्ष (स्कूल मैथ / एडवांस)" : language === "mr" ? "१२+ वर्षे (शालेय गणित / ॲडव्हान्स)" : "12+ Years (School Math / Advanced)"}</option>
               </select>
             </div>
 

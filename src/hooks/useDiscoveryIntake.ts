@@ -229,6 +229,7 @@ export function useDiscoveryIntake(options: UseDiscoveryIntakeOptions = {}): Use
         ) {
           mappedAge = '10-14';
         } else if (
+          mappedAge.includes('6') ||
           mappedAge.includes('7') ||
           mappedAge.includes('8') ||
           mappedAge.includes('9') ||
