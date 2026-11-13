@@ -30,18 +30,17 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (moreMenuRef.current && !moreMenuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (moreMenuRef.current && !moreMenuRef.current.contains(target)) {
         setMoreMenuOpen(false);
       }
-      if (programMenuRef.current && !programMenuRef.current.contains(event.target as Node)) {
+      if (programMenuRef.current && !programMenuRef.current.contains(target)) {
         setProgramMenuOpen(false);
-    setLabMenuOpen(false);
-    setGuideMenuOpen(false);
       }
-      if (labMenuRef.current && !labMenuRef.current.contains(event.target as Node)) {
+      if (labMenuRef.current && !labMenuRef.current.contains(target)) {
         setLabMenuOpen(false);
       }
-      if (guideMenuRef.current && !guideMenuRef.current.contains(event.target as Node)) {
+      if (guideMenuRef.current && !guideMenuRef.current.contains(target)) {
         setGuideMenuOpen(false);
       }
     };
@@ -53,6 +52,8 @@ export default function Navbar() {
     setIsOpen(false);
     setMoreMenuOpen(false);
     setProgramMenuOpen(false);
+    setGuideMenuOpen(false);
+    setLabMenuOpen(false);
   }, [location.pathname]);
 
   if (location.pathname === "/practice/session") {
@@ -248,7 +249,12 @@ export default function Navbar() {
                     <li key={link.name} className="relative" ref={labMenuRef}>
                       <button
                         type="button"
-                        onClick={() => setLabMenuOpen(!labMenuOpen)}
+                        onClick={() => {
+                          setLabMenuOpen(!labMenuOpen);
+                          setGuideMenuOpen(false);
+                          setProgramMenuOpen(false);
+                          setMoreMenuOpen(false);
+                        }}
                         className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer relative ${
                           isAnyLabActive
                             ? "text-orange-600 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
@@ -291,7 +297,12 @@ export default function Navbar() {
                     <li key={link.name} className="relative" ref={guideMenuRef}>
                       <button
                         type="button"
-                        onClick={() => setGuideMenuOpen(!guideMenuOpen)}
+                        onClick={() => {
+                          setGuideMenuOpen(!guideMenuOpen);
+                          setLabMenuOpen(false);
+                          setProgramMenuOpen(false);
+                          setMoreMenuOpen(false);
+                        }}
                         className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer relative ${
                           isAnyGuideActive
                             ? "text-orange-600 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
@@ -334,7 +345,12 @@ export default function Navbar() {
                     <li key={link.name} className="relative" ref={programMenuRef}>
                       <button
                         type="button"
-                        onClick={() => setProgramMenuOpen(!programMenuOpen)}
+                        onClick={() => {
+                          setProgramMenuOpen(!programMenuOpen);
+                          setGuideMenuOpen(false);
+                          setLabMenuOpen(false);
+                          setMoreMenuOpen(false);
+                        }}
                         className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer relative ${
                           isAnyProgramActive
                             ? "text-orange-600 after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-orange-600 after:rounded-full"
@@ -392,7 +408,12 @@ export default function Navbar() {
               <li className="relative" ref={moreMenuRef}>
                 <button
                   type="button"
-                  onClick={() => setMoreMenuOpen(!moreMenuOpen)}
+                  onClick={() => {
+                    setMoreMenuOpen(!moreMenuOpen);
+                    setGuideMenuOpen(false);
+                    setProgramMenuOpen(false);
+                    setLabMenuOpen(false);
+                  }}
                   className={`text-xs font-bold tracking-tight py-1.5 whitespace-nowrap inline-flex items-center gap-1 transition-colors cursor-pointer ${
                     moreNavLinks.some((l) => l.path === currentPath)
                       ? "text-orange-600"

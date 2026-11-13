@@ -20,10 +20,13 @@ import {
   MessageSquare
 } from "lucide-react";
 import { trackPageView, trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 import DemoBookingModal from "../components/DemoBookingModal";
 
 export default function GuideDoesAbacusConfuseSchoolMath() {
+  const { t, language } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+
   useEffect(() => {
     trackPageView(
       "/parent-guides/does-abacus-confuse-school-math", 
@@ -52,19 +55,19 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Home",
+        "name": t("navHome"),
         "item": "https://aaa-web-b0h.pages.dev/"
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Parent Guides",
+        "name": t("g2BreadcrumbParent"),
         "item": "https://aaa-web-b0h.pages.dev/parent-guides"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "Does Abacus Confuse School Maths?",
+        "name": t("g2BreadcrumbCurrent"),
         "item": "https://aaa-web-b0h.pages.dev/parent-guides/does-abacus-confuse-school-math"
       }
     ]
@@ -85,11 +88,11 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
       {/* 1. Breadcrumb Navigation */}
       <nav aria-label="Breadcrumb" className="bg-slate-100/80 border-b border-slate-200 py-2.5 px-4 md:px-8 text-xs font-semibold text-slate-600">
         <div className="max-w-4xl mx-auto flex items-center gap-1.5 flex-wrap">
-          <Link to="/" className="hover:text-vibrant-orange transition-colors">Home</Link>
+          <Link to="/" className="hover:text-vibrant-orange transition-colors">{t("navHome")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <Link to="/parent-guides" className="hover:text-vibrant-orange transition-colors">Parent Guides</Link>
+          <Link to="/parent-guides" className="hover:text-vibrant-orange transition-colors">{t("g2BreadcrumbParent")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-vibrant-dark font-bold">Does Abacus Confuse School Maths?</span>
+          <span className="text-vibrant-dark font-bold">{t("g2BreadcrumbCurrent")}</span>
         </div>
       </nav>
 
@@ -98,27 +101,27 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
         <div className="max-w-4xl mx-auto px-4 md:px-8 space-y-4">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-amber-300 bg-amber-400/15 border border-amber-400/30 px-3 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1">
-              <Lightbulb className="w-3 h-3" /> Educational Guidance for Parents
+              <Lightbulb className="w-3 h-3" /> {t("g2HeroBadge")}
             </span>
           </div>
           
           <h1 className="font-display font-black text-2xl sm:text-4xl md:text-5xl tracking-tight leading-tight">
-            Does Abacus Confuse School Maths?
+            {t("g2HeroTitle")}
           </h1>
           
           <p className="text-slate-300 text-sm md:text-base leading-relaxed font-medium">
-            An open, evidence-grounded discussion on how bead visualization interacts with school written algorithms, why temporary calculation mixing can happen, and how parents can guide their child with clarity.
+            {t("g2HeroSubtitle")}
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-slate-300">
             <span className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg font-semibold text-amber-300">
-              Reading Time: 6 mins
+              {t("g2ReadTimeBadge")}
             </span>
             <span className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg font-semibold text-teal-300">
-              Primary School Focus: Class 1 to 5
+              {t("g2PrimaryFocusBadge")}
             </span>
             <span className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg font-semibold text-slate-300">
-              Published by Arnav Abacus Academy
+              {t("g2PublisherBadge")}
             </span>
           </div>
         </div>
@@ -131,24 +134,24 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
         <section className="bg-amber-50/70 border-2 border-amber-200 rounded-3xl p-6 md:p-8 space-y-3 shadow-xs">
           <div className="flex items-center gap-2 text-amber-900 font-display font-black text-base md:text-lg">
             <Sparkles className="w-5 h-5 text-vibrant-orange shrink-0" />
-            <h2>The Short Answer: Will It Confuse Your Child?</h2>
+            <h2>{t("g2ShortAnswerTitle")}</h2>
           </div>
           <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            Learning Abacus alongside school mathematics can involve using different calculation methods. Clear explanation and practice can help children understand when to use each method.
+            {t("g2ShortAnswerP1")}
           </p>
           <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            A helpful way to understand the two learning environments is:
+            {t("g2ShortAnswerP2")}
           </p>
           <ul className="text-xs md:text-sm text-slate-700 space-y-2 font-medium pl-4 list-disc">
             <li>
-              <strong>Abacus</strong> develops concrete tactile number sense and rapid internal visualization of quantities.
+              {t("g2ShortAnswerB1")}
             </li>
             <li>
-              <strong>School mathematics</strong> emphasizes standard written notation, linear equations, mathematical vocabulary, and step-by-step working.
+              {t("g2ShortAnswerB2")}
             </li>
           </ul>
           <p className="text-xs text-slate-600 italic pt-1 border-t border-amber-200/60 font-semibold">
-            When parents and educators treat both methods as complementary rather than conflicting, children can enjoy the calculation fluency of abacus while fulfilling the written requirements of school assignments.
+            {t("g2ShortAnswerNote")}
           </p>
         </section>
 
@@ -157,41 +160,41 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
           <div className="flex items-center gap-2 text-vibrant-dark">
             <GraduationCap className="w-6 h-6 text-vibrant-teal shrink-0" />
             <h2 className="font-display font-black text-xl md:text-2xl">
-              Distinguishing Understanding, Method, and Assessment Requirements
+              {t("g2DistinguishTitle")}
             </h2>
           </div>
           <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            Much of what parents perceive as "confusion" stems from blurring three distinct aspects of early mathematical education:
+            {t("g2DistinguishIntro")}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
             <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-teal bg-teal-50 px-2 py-0.5 rounded">Concept 1</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Mathematical Understanding</h3>
+              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-teal bg-teal-50 px-2 py-0.5 rounded">{t("g2Concept1Badge")}</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g2Concept1Title")}</h3>
               <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
-                Grasping what numbers actually represent: place value (tens and units), the meaning of addition as joining groups, and decomposition. Both school math and abacus share this identical conceptual foundation.
+                {t("g2Concept1Desc")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-orange bg-amber-50 px-2 py-0.5 rounded">Concept 2</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Calculation Method</h3>
+              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-orange bg-amber-50 px-2 py-0.5 rounded">{t("g2Concept2Badge")}</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g2Concept2Title")}</h3>
               <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
-                The specific tool or strategy used to arrive at a numerical result—such as physical beads, mental Anzan visualization, finger counting, or conventional column carryover.
+                {t("g2Concept2Desc")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-800 bg-slate-100 px-2 py-0.5 rounded">Concept 3</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Assessment Requirements</h3>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-800 bg-slate-100 px-2 py-0.5 rounded">{t("g2Concept3Badge")}</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g2Concept3Title")}</h3>
               <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
-                Some school assessments may expect students to show their working steps, depending on the question and the school's assessment expectations.
+                {t("g2Concept3Desc")}
               </p>
             </div>
           </div>
 
           <div className="bg-slate-100/70 border border-slate-200 rounded-2xl p-4 text-xs text-slate-600 leading-relaxed font-medium">
-            <strong>Key Insight for Parents:</strong> A child who solves an arithmetic sum mentally via abacus is using a valid mental strategy. However, some school assessments may expect students to show their working steps, depending on the question and the school's assessment expectations. Helping children practice writing out their working ensures they fulfill classroom expectations while keeping their mental fluency.
+            {t("g2ConceptKeyInsight")}
           </div>
         </section>
 
@@ -200,158 +203,143 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
           <div className="flex items-center gap-2 text-vibrant-dark">
             <Brain className="w-6 h-6 text-vibrant-orange shrink-0" />
             <h2 className="font-display font-black text-xl md:text-2xl">
-              Comparing Pedagogical Approaches
+              {t("g2CompareTitle")}
             </h2>
           </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white border-2 border-slate-200 p-5 md:p-6 rounded-3xl space-y-3 shadow-xs">
-              <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">
-                1
-              </div>
-              <h3 className="font-display font-black text-base text-vibrant-dark">
-                How Abacus Approaches Arithmetic
+            <div className="bg-white border-2 border-amber-300 p-6 rounded-3xl space-y-3 shadow-xs">
+              <h3 className="font-bold text-base text-vibrant-dark flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-vibrant-orange"></span>
+                {t("g2CompareAbacusTitle")}
               </h3>
-              <ul className="text-xs text-slate-600 space-y-2 font-medium list-disc pl-4 leading-relaxed">
-                <li>
-                  <strong>Left-to-Right Processing:</strong> On the Japanese Soroban, calculations often proceed from highest place value (tens/hundreds) to lowest (units), mirroring how quantities are naturally read.
+              <ul className="text-xs text-slate-600 space-y-2.5 font-medium">
+                <li className="flex items-start gap-2">
+                  <span className="text-vibrant-orange font-black">•</span>
+                  <span>{t("g2CompareAbacusP1")}</span>
                 </li>
-                <li>
-                  <strong>Bead Complements:</strong> Arithmetic uses structured 5-complements (Small Friends) and 10-complements (Big Friends) to manipulate beads systematically.
+                <li className="flex items-start gap-2">
+                  <span className="text-vibrant-orange font-black">•</span>
+                  <span>{t("g2CompareAbacusP2")}</span>
                 </li>
-                <li>
-                  <strong>Anzan Visualization:</strong> Over time, children internalize bead movements without physical instruments, conducting mental arithmetic through spatial memory.
+                <li className="flex items-start gap-2">
+                  <span className="text-vibrant-orange font-black">•</span>
+                  <span>{t("g2CompareAbacusP3")}</span>
                 </li>
               </ul>
             </div>
 
-            <div className="bg-white border-2 border-slate-200 p-5 md:p-6 rounded-3xl space-y-3 shadow-xs">
-              <div className="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs">
-                2
-              </div>
-              <h3 className="font-display font-black text-base text-vibrant-dark">
-                How School Mathematics Approaches Arithmetic
+            <div className="bg-white border-2 border-teal-300 p-6 rounded-3xl space-y-3 shadow-xs">
+              <h3 className="font-bold text-base text-vibrant-dark flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-vibrant-teal"></span>
+                {t("g2CompareSchoolTitle")}
               </h3>
-              <ul className="text-xs text-slate-600 space-y-2 font-medium list-disc pl-4 leading-relaxed">
-                <li>
-                  <strong>Right-to-Left Column Addition:</strong> Standard classroom textbooks teach column addition starting strictly from the rightmost units column, carrying over tens above the next column.
+              <ul className="text-xs text-slate-600 space-y-2.5 font-medium">
+                <li className="flex items-start gap-2">
+                  <span className="text-vibrant-teal font-black">•</span>
+                  <span>{t("g2CompareSchoolP1")}</span>
                 </li>
-                <li>
-                  <strong>Symbolic & Verbal Focus:</strong> Heavy emphasis on mathematical vocabulary ("regrouping", "borrowing", "sum", "difference") and word problems.
+                <li className="flex items-start gap-2">
+                  <span className="text-vibrant-teal font-black">•</span>
+                  <span>{t("g2CompareSchoolP2")}</span>
                 </li>
-                <li>
-                  <strong>Standardized Written Working:</strong> Emphasis on uniform formatting so teachers can inspect intermediate calculation steps.
+                <li className="flex items-start gap-2">
+                  <span className="text-vibrant-teal font-black">•</span>
+                  <span>{t("g2CompareSchoolP3")}</span>
                 </li>
               </ul>
             </div>
           </div>
         </section>
 
-        {/* 6. Practical Arithmetic Example: 28 + 17 = 45 */}
+        {/* 6. Concrete Example */}
         <section className="space-y-4">
           <div className="flex items-center gap-2 text-vibrant-dark">
-            <BookOpen className="w-6 h-6 text-vibrant-teal shrink-0" />
+            <Lightbulb className="w-6 h-6 text-amber-500 shrink-0" />
             <h2 className="font-display font-black text-xl md:text-2xl">
-              Practical Example: One Problem, Different Representations
+              {t("g2ExampleTitle")}
             </h2>
           </div>
           <p className="text-xs md:text-sm text-slate-600 font-medium">
-            To see how different representations reach the same mathematical reality, consider the addition problem: <strong>28 + 17 = 45</strong>.
+            {t("g2ExampleIntro")}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
             <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-700 bg-slate-100 px-2 py-0.5 rounded">Representation A</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Place-Value Reasoning</h3>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Conceptual Layer</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g2ExamplePlaceValueTitle")}</h3>
+              <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
+                {t("g2ExamplePlaceValueDesc")}
+              </p>
+            </div>
+
+            <div className="bg-white border-2 border-teal-200 p-4 rounded-2xl space-y-2 shadow-xs">
+              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-teal bg-teal-50 px-2 py-0.5 rounded">School Method</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g2ExampleSchoolTitle")}</h3>
               <div className="text-[11px] text-slate-600 font-medium space-y-1">
-                <p>Decomposing by tens and units:</p>
-                <div className="bg-slate-50 p-2.5 rounded-lg font-mono text-[11px] text-slate-800 border border-slate-100">
-                  28 = 20 + 8<br/>
-                  17 = 10 + 7<br/>
-                  (20 + 10) = 30<br/>
-                  (8 + 7) = 15<br/>
-                  30 + 15 = 45
-                </div>
-                <p className="text-[10px] text-slate-500 pt-1">Forms the mental conceptual foundation.</p>
+                <p>{t("g2ExampleSchoolDesc")}</p>
+                <p className="text-[10px] text-slate-500 pt-1">{t("g2ExampleSchoolSub")}</p>
               </div>
             </div>
 
-            <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-teal bg-teal-50 px-2 py-0.5 rounded">Representation B</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Conventional School Column Working</h3>
+            <div className="bg-white border-2 border-amber-200 p-4 rounded-2xl space-y-2 shadow-xs">
+              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-orange bg-amber-50 px-2 py-0.5 rounded">Abacus Method</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g2ExampleAbacusTitle")}</h3>
               <div className="text-[11px] text-slate-600 font-medium space-y-1">
-                <p>Standard right-to-left column algorithm:</p>
-                <div className="bg-slate-50 p-2.5 rounded-lg font-mono text-[11px] text-slate-800 border border-slate-100">
-                  &nbsp;&nbsp;[1] &nbsp;(carryover)<br/>
-                  &nbsp;&nbsp;&nbsp;28<br/>
-                  + &nbsp;17<br/>
-                  -----<br/>
-                  &nbsp;&nbsp;&nbsp;45
-                </div>
-                <p className="text-[10px] text-slate-500 pt-1">Units (8+7=15: write 5, carry 1); Tens (1+2+1=4).</p>
-              </div>
-            </div>
-
-            <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-orange bg-amber-50 px-2 py-0.5 rounded">Representation C</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Abacus Bead Representation</h3>
-              <div className="text-[11px] text-slate-600 font-medium space-y-1">
-                <p>Spatial bead manipulation on Soroban:</p>
-                <div className="bg-amber-50/50 p-2.5 rounded-lg text-[11px] text-slate-800 border border-amber-100 leading-relaxed font-sans">
-                  On a Soroban, the learner represents the quantities using the bead values and follows the taught calculation procedure, manipulating upper (value 5) and lower beads (value 1) across the tens and units rods to arrive at <strong>45</strong>.
-                </div>
-                <p className="text-[10px] text-slate-500 pt-1">Visual and tactile confirmation of place value.</p>
+                <p>{t("g2ExampleAbacusDesc")}</p>
+                <p className="text-[10px] text-slate-500 pt-1">{t("g2ExampleAbacusSub")}</p>
               </div>
             </div>
           </div>
 
           <div className="bg-teal-50/60 border border-teal-200 rounded-2xl p-4 text-xs text-teal-950 font-medium leading-relaxed">
-            💡 <strong>Observation:</strong> All three representations yield <strong>45</strong> because the underlying mathematics is identical. Once a child realizes that column carrying and bead complement manipulation are simply two different ways of representing the same regrouping, hesitation is reduced.
+            {t("g2ExampleObservation")}
           </div>
         </section>
 
         {/* 7. Why Children May Experience Temporary Confusion */}
         <section className="space-y-4">
           <h2 className="font-display font-black text-xl md:text-2xl text-vibrant-dark">
-            Why Some Children Experience Temporary Uncertainty
+            {t("g2UncertaintyTitle")}
           </h2>
           <p className="text-xs md:text-sm text-slate-600 font-medium">
-            When parents observe hesitation, it is usually not a sign that abacus is fundamentally incompatible with school, but rather one of these typical instructional considerations:
+            {t("g2UncertaintyIntro")}
           </p>
 
           <div className="space-y-3">
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 space-y-1.5 shadow-xs">
               <h3 className="font-bold text-xs text-vibrant-dark">
-                1. Directional Discrepancy (Left-to-Right vs. Right-to-Left)
+                {t("g2Uncertainty1Title")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                Children accustomed to calculating mentally from left to right on an abacus may occasionally attempt column addition in school from left to right, forgetting to leave room for carryover digits from the units place.
+                {t("g2Uncertainty1Desc")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 space-y-1.5 shadow-xs">
               <h3 className="font-bold text-xs text-vibrant-dark">
-                2. Rushing to Mental Calculation Before Solid Place-Value Foundations
+                {t("g2Uncertainty2Title")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                If a child tries to do complex Anzan visualization before thoroughly understanding concrete place-value concepts, they may guess bead arrangements or feel overwhelmed when asked to explain their work.
+                {t("g2Uncertainty2Desc")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 space-y-1.5 shadow-xs">
               <h3 className="font-bold text-xs text-vibrant-dark">
-                3. Resistance to Writing Down Intermediate Working Steps
+                {t("g2Uncertainty3Title")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                Because abacus training fosters rapid calculation, children often feel impatient writing out multi-line steps, rough columns, or carryover markers required by their school teachers, leading to misunderstandings during school homework.
+                {t("g2Uncertainty3Desc")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 space-y-1.5 shadow-xs">
               <h3 className="font-bold text-xs text-vibrant-dark">
-                4. Vocabulary Differences Between Classroom and Training Center
+                {t("g2Uncertainty4Title")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                Schools frequently use terms like "borrowing", "regrouping", and "carrying", whereas abacus programs use terms like "Small Friends", "Big Friends", and "complements". Without parent or mentor bridge explanations, children can wonder why the terms differ.
+                {t("g2Uncertainty4Desc")}
               </p>
             </div>
           </div>
@@ -361,38 +349,38 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
         <section className="bg-slate-100/70 border-2 border-slate-200 rounded-3xl p-6 md:p-8 space-y-4">
           <div className="flex items-center gap-2 text-vibrant-dark font-display font-black text-lg">
             <Target className="w-5 h-5 text-vibrant-orange shrink-0" />
-            <h2>What Parents Can Do If Their Child Appears Hesitant</h2>
+            <h2>{t("g2ParentActionTitle")}</h2>
           </div>
           <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            Here are practical, constructive educational steps parents can take at home:
+            {t("g2ParentActionIntro")}
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-medium text-slate-700 pt-1">
             <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-xs">
-              <strong className="block text-vibrant-dark font-bold text-xs">Ask the Child to Explain Both Methods</strong>
+              <strong className="block text-vibrant-dark font-bold text-xs">{t("g2Action1Title")}</strong>
               <p className="text-slate-600 text-[11px] leading-relaxed">
-                Invite your child to demonstrate how they solve a sum using their beads and how they solve it on paper. Verbalizing both paths strengthens conceptual mastery.
+                {t("g2Action1Desc")}
               </p>
             </div>
 
             <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-xs">
-              <strong className="block text-vibrant-dark font-bold text-xs">Support School Assignment Expectations</strong>
+              <strong className="block text-vibrant-dark font-bold text-xs">{t("g2Action2Title")}</strong>
               <p className="text-slate-600 text-[11px] leading-relaxed">
-                Parents can encourage children to follow the working format expected in their school assignments. Frame abacus as their personal mental self-checker to verify answers after writing down school steps.
+                {t("g2Action2Desc")}
               </p>
             </div>
 
             <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-xs">
-              <strong className="block text-vibrant-dark font-bold text-xs">Allow Time for Guided Practice</strong>
+              <strong className="block text-vibrant-dark font-bold text-xs">{t("g2Action3Title")}</strong>
               <p className="text-slate-600 text-[11px] leading-relaxed">
-                Cognitive segmentation takes a few weeks of consistent practice. Be patient as your child's brain organizes tactile visualization and written algorithms into distinct mental toolkits.
+                {t("g2Action3Desc")}
               </p>
             </div>
 
             <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-xs">
-              <strong className="block text-vibrant-dark font-bold text-xs">Avoid Comparing Children Solely on Speed</strong>
+              <strong className="block text-vibrant-dark font-bold text-xs">{t("g2Action4Title")}</strong>
               <p className="text-slate-600 text-[11px] leading-relaxed">
-                Prioritize conceptual clarity and neatness over raw speed drills. A child who understands why a calculation works will retain confidence longer than one pressured to rush.
+                {t("g2Action4Desc")}
               </p>
             </div>
           </div>
@@ -403,31 +391,31 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
           <div className="flex items-center gap-2 text-vibrant-dark">
             <ShieldCheck className="w-6 h-6 text-emerald-600 shrink-0" />
             <h2 className="font-display font-black text-xl md:text-2xl">
-              How Arnav Abacus Academy Addresses Method Alignment
+              {t("g2AaaApproachTitle")}
             </h2>
           </div>
           <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            AAA encourages clear working, communication about learning difficulties, and connection between supplementary practice and school mathematics:
+            {t("g2AaaApproachIntro")}
           </p>
           <div className="space-y-3 pt-1">
             <div className="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
               <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
               <div className="text-xs text-slate-700 font-medium">
-                <strong className="block text-vibrant-dark font-bold">Encouraging Written Working:</strong> Mentors explicitly instruct students that school assessments may expect written steps, and encourage children to use mental abacus calculation as a verification technique alongside their written work.
+                <strong className="block text-vibrant-dark font-bold">{t("g2Aaa1Title")}</strong> {t("g2Aaa1Desc")}
               </div>
             </div>
 
             <div className="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
               <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
               <div className="text-xs text-slate-700 font-medium">
-                <strong className="block text-vibrant-dark font-bold">Open Communication:</strong> If parents notice their child experiencing temporary uncertainty between methods, mentors offer constructive guidance during center sessions to help connect both approaches.
+                <strong className="block text-vibrant-dark font-bold">{t("g2Aaa2Title")}</strong> {t("g2Aaa2Desc")}
               </div>
             </div>
 
             <div className="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
               <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
               <div className="text-xs text-slate-700 font-medium">
-                <strong className="block text-vibrant-dark font-bold">Integrated School Maths Support:</strong> For students seeking broader curriculum practice, CBSE/ICSE word problem solving, or board exam alignment, AAA provides dedicated <Link to="/programs/school-maths" className="text-vibrant-orange font-bold hover:underline">School Maths coaching</Link> alongside foundation tracks.
+                <strong className="block text-vibrant-dark font-bold">{t("g2Aaa3Title")}</strong> {t("g2Aaa3Desc")} <Link to="/programs/school-maths" className="text-vibrant-orange font-bold hover:underline">{t("g2Aaa3Link")}</Link>.
               </div>
             </div>
           </div>
@@ -438,62 +426,62 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
           <div className="flex items-center gap-2 text-vibrant-dark">
             <HelpCircle className="w-6 h-6 text-vibrant-orange shrink-0" />
             <h2 className="font-display font-black text-xl md:text-2xl">
-              Frequently Asked Questions on Abacus & School Maths
+              {t("g2FaqTitle")}
             </h2>
           </div>
           
           <div className="space-y-3">
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                Can Abacus and school mathematics be learned together?
+                {t("g2Faq1Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                Yes. Children routinely manage different systems simultaneously (such as speaking two languages at home and school). When taught with clear context, abacus bead manipulation reinforces the place-value concepts taught in standard school textbooks.
+                {t("g2Faq1A")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                Will my child forget conventional school addition methods?
+                {t("g2Faq2Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                No. Because school assignments and daily classroom tests require pencil-and-paper column working, children receive regular practice in conventional written algorithms. Abacus strengthens the speed at which they perform internal single-digit calculations within those written steps.
+                {t("g2Faq2A")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                Should children use Abacus methods in school examinations?
+                {t("g2Faq3Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                In school exams, children should follow the specific formatting and written instructions set by their teacher (e.g. writing out column addition with carryover markers). They can use mental abacus visualization to calculate answers swiftly and check their final figures for accuracy.
+                {t("g2Faq3A")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                Why can a child calculate mentally but struggle to show written steps?
+                {t("g2Faq4Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                Mental calculation relies on spatial imagery and working memory, whereas writing out proof steps requires fine motor endurance, understanding teacher grading rubrics, and formal mathematical notation. If a child resists writing steps, guided practice focusing on layout and presentation helps bridge the gap.
+                {t("g2Faq4A")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                What should parents do if their child mixes calculation methods?
+                {t("g2Faq5Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                Gently clarify which method is expected for the specific task at hand. Ask the child to solve the problem using school column steps first, and then encourage them to verify their answer using beads or mental visualization. If uncertainty persists, speak with their abacus mentor.
+                {t("g2Faq5A")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                Does Abacus replace school mathematics?
+                {t("g2Faq6Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                No. Abacus is a supplementary mental arithmetic and focus program. It does not cover geometry, measurement, fractions, data handling, or word problems, which are core parts of the school syllabus. It serves as an arithmetic foundation, not a complete replacement.
+                {t("g2Faq6A")}
               </p>
             </div>
           </div>
@@ -503,10 +491,10 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
         <section className="bg-slate-100/60 border border-slate-200 rounded-2xl p-5 space-y-2 text-xs text-slate-600">
           <div className="flex items-center gap-1.5 text-vibrant-dark font-bold">
             <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>Educational Scope & Supplementary Notice</span>
+            <span>{t("g2DisclaimerTitle")}</span>
           </div>
           <p className="leading-relaxed">
-            Arnav Abacus Academy offers supplementary learning programs designed to build focus and arithmetic fluency. Our courses do not replace school curricula prescribed by educational authorities (CBSE, ICSE, State Boards). We do not promise guaranteed school grades or rank outcomes; academic development depends on ongoing practice, individual child readiness, and collaborative support between parents and educators.
+            {t("g2DisclaimerText")}
           </p>
         </section>
 
@@ -514,13 +502,13 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
         <section className="bg-white border-4 border-vibrant-dark rounded-[32px] p-6 md:p-8 shadow-[8px_8px_0_0_#1A2E35] space-y-5">
           <div className="space-y-2">
             <span className="text-[10px] font-black text-vibrant-orange bg-amber-50 border border-amber-200 px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-              Explore Academy Programs
+              {t("g2CtaBadge")}
             </span>
             <h2 className="font-display font-black text-2xl text-vibrant-dark">
-              Supporting Your Child's Mathematical Journey
+              {t("g2CtaTitle")}
             </h2>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed font-medium">
-              Explore our core learning programs in Wakad, Pune, tailored for different developmental stages and academic goals:
+              {t("g2CtaDesc")}
             </p>
           </div>
 
@@ -530,10 +518,10 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
               className="bg-slate-50 hover:bg-amber-50/60 border-2 border-slate-200 hover:border-vibrant-orange p-4 rounded-2xl text-center transition-all group"
             >
               <span className="text-xs font-black text-vibrant-dark block group-hover:text-vibrant-orange">
-                Abacus Learning Program
+                {t("g2CardAbacusTitle")}
               </span>
               <span className="text-[10px] text-slate-500 font-bold block mt-0.5">
-                Ages 4 to 14 Years (Peak 5–9)
+                {t("g2CardAbacusDesc")}
               </span>
             </Link>
 
@@ -542,10 +530,10 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
               className="bg-slate-50 hover:bg-amber-50/60 border-2 border-slate-200 hover:border-amber-500 p-4 rounded-2xl text-center transition-all group"
             >
               <span className="text-xs font-black text-vibrant-dark block group-hover:text-amber-600">
-                School Maths & Olympiad
+                {t("g2CardSchoolTitle")}
               </span>
               <span className="text-[10px] text-slate-500 font-bold block mt-0.5">
-                Class 1 to 10 Syllabus Synergy
+                {t("g2CardSchoolDesc")}
               </span>
             </Link>
 
@@ -554,10 +542,10 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
               className="bg-slate-50 hover:bg-teal-50/60 border-2 border-slate-200 hover:border-vibrant-teal p-4 rounded-2xl text-center transition-all group"
             >
               <span className="text-xs font-black text-vibrant-dark block group-hover:text-vibrant-teal">
-                Abacus vs Vedic Maths Guide
+                {t("g2CardCompareTitle")}
               </span>
               <span className="text-[10px] text-slate-500 font-bold block mt-0.5">
-                Compare Learning Approaches
+                {t("g2CardCompareDesc")}
               </span>
             </Link>
           </div>
@@ -565,13 +553,13 @@ export default function GuideDoesAbacusConfuseSchoolMath() {
           {/* Action CTA */}
           <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-xs text-slate-500 font-medium">
-              <strong>Center Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
+              <strong>{language === "mr" ? "केंद्राचा पत्ता: " : language === "hi" ? "केंद्र का पता: " : "Center Location: "}</strong>{t("g2LocationText")}
             </div>
             <Link
               to="/contact"
               className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase px-5 py-3 rounded-xl transition-all shadow-md shrink-0 inline-flex items-center gap-2"
             >
-              Consult with Neha Ma'am <ArrowRight className="w-3.5 h-3.5" />
+              <span>{t("g2ConsultNehaBtn")}</span> <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </section>

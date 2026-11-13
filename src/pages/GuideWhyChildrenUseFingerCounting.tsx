@@ -14,15 +14,18 @@ import {
   Sparkles, 
   Brain, 
   Lightbulb, 
-  Target,
-  ShieldCheck,
-  GraduationCap
+  Target, 
+  ShieldCheck, 
+  GraduationCap 
 } from "lucide-react";
 import { trackPageView, trackDemoClick } from "../lib/analytics";
+import { useLanguage } from "../lib/LanguageContext";
 import DemoBookingModal from "../components/DemoBookingModal";
 
 export default function GuideWhyChildrenUseFingerCounting() {
+  const { t, language } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+
   useEffect(() => {
     trackPageView(
       "/parent-guides/why-children-use-finger-counting", 
@@ -51,19 +54,19 @@ export default function GuideWhyChildrenUseFingerCounting() {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Home",
+        "name": t("navHome"),
         "item": "https://aaa-web-b0h.pages.dev/"
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Parent Guides",
+        "name": t("g3BreadcrumbParent"),
         "item": "https://aaa-web-b0h.pages.dev/parent-guides"
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "Finger Counting & Mental Calculation",
+        "name": t("g3BreadcrumbCurrent"),
         "item": "https://aaa-web-b0h.pages.dev/parent-guides/why-children-use-finger-counting"
       }
     ]
@@ -84,11 +87,11 @@ export default function GuideWhyChildrenUseFingerCounting() {
       {/* 1. Breadcrumb Navigation */}
       <nav aria-label="Breadcrumb" className="bg-slate-100/80 border-b border-slate-200 py-2.5 px-4 md:px-8 text-xs font-semibold text-slate-600">
         <div className="max-w-4xl mx-auto flex items-center gap-1.5 flex-wrap">
-          <Link to="/" className="hover:text-vibrant-orange transition-colors">Home</Link>
+          <Link to="/" className="hover:text-vibrant-orange transition-colors">{t("navHome")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <Link to="/parent-guides" className="hover:text-vibrant-orange transition-colors">Parent Guides</Link>
+          <Link to="/parent-guides" className="hover:text-vibrant-orange transition-colors">{t("g3BreadcrumbParent")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-vibrant-dark font-bold">Finger Counting & Mental Calculation</span>
+          <span className="text-vibrant-dark font-bold">{t("g3BreadcrumbCurrent")}</span>
         </div>
       </nav>
 
@@ -97,27 +100,27 @@ export default function GuideWhyChildrenUseFingerCounting() {
         <div className="max-w-4xl mx-auto px-4 md:px-8 space-y-4">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-black text-amber-300 bg-amber-400/15 border border-amber-400/30 px-3 py-1 rounded-full uppercase tracking-wider inline-flex items-center gap-1">
-              <Lightbulb className="w-3 h-3" /> Child Number Sense Guidance
+              <Lightbulb className="w-3 h-3" /> {t("g3HeroBadge")}
             </span>
           </div>
           
           <h1 className="font-display font-black text-2xl sm:text-4xl md:text-5xl tracking-tight leading-tight">
-            Why Children Use Finger Counting and How Mental Calculation Habits Develop
+            {t("g3HeroTitle")}
           </h1>
           
           <p className="text-slate-300 text-sm md:text-base leading-relaxed font-medium">
-            An educational guide for parents seeking to understand finger counting as a natural concrete foundation, how children transition toward mental arithmetic strategies, and how to encourage progress without stress.
+            {t("g3HeroSubtitle")}
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3 text-xs text-slate-300">
             <span className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg font-semibold text-amber-300">
-              Reading Time: 6 mins
+              {t("g3ReadTimeBadge")}
             </span>
             <span className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg font-semibold text-teal-300">
-              Early Foundations: Ages 4 to 9
+              {t("g3FoundationBadge")}
             </span>
             <span className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-lg font-semibold text-slate-300">
-              Published by Arnav Abacus Academy
+              {t("g3PublisherBadge")}
             </span>
           </div>
         </div>
@@ -130,16 +133,16 @@ export default function GuideWhyChildrenUseFingerCounting() {
         <section className="bg-amber-50/70 border-2 border-amber-200 rounded-3xl p-6 md:p-8 space-y-3 shadow-xs">
           <div className="flex items-center gap-2 text-amber-900 font-display font-black text-base md:text-lg">
             <Sparkles className="w-5 h-5 text-vibrant-orange shrink-0" />
-            <h2>The Short Answer: Is Finger Counting a Problem?</h2>
+            <h2>{t("g3ShortAnswerTitle")}</h2>
           </div>
           <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            Finger counting is a normal, useful concrete stage in early mathematical development. It provides young learners with an accessible, physical way to represent quantities and verify early addition and subtraction sums.
+            {t("g3ShortAnswerP1")}
           </p>
           <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            As children gain experience with number relationships, place value, and visual representations (such as ten-frames or structured abacus beads), they often begin adopting alternative mental strategies at their own pace. Strategy choice depends on the child's age, task familiarity, and conceptual understanding; not every child follows the identical developmental timeline.
+            {t("g3ShortAnswerP2")}
           </p>
           <p className="text-xs text-slate-600 italic pt-1 border-t border-amber-200/60 font-semibold">
-            Parents can support their child by exploring alternative calculation models patiently, avoiding pressure or rushing, and recognizing that concrete tools form the bedrock upon which mental fluency grows.
+            {t("g3ShortAnswerNote")}
           </p>
         </section>
 
@@ -148,192 +151,200 @@ export default function GuideWhyChildrenUseFingerCounting() {
           <div className="flex items-center gap-2 text-vibrant-dark">
             <Brain className="w-6 h-6 text-vibrant-orange shrink-0" />
             <h2 className="font-display font-black text-xl md:text-2xl">
-              Why Children Use Their Fingers When Calculating
+              {t("g3WhyFingersTitle")}
             </h2>
           </div>
           <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            Numbers are abstract symbols. When young children first encounter mathematical problems such as "4 + 3", the symbols alone do not have physical weight or spatial dimension. Fingers serve as an immediate, concrete bridge:
+            {t("g3WhyFingersIntro")}
           </p>
-
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
             <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-orange bg-amber-50 px-2 py-0.5 rounded">Tactile Anchor</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Physical One-to-One Matching</h3>
+              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-teal bg-teal-50 px-2 py-0.5 rounded">{t("g3Why1Badge")}</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g3Why1Title")}</h3>
               <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
-                Tapping or lifting fingers helps young learners maintain one-to-one correspondence between spoken counting words and physical items without losing track.
+                {t("g3Why1Desc")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-teal bg-teal-50 px-2 py-0.5 rounded">Working Memory Support</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Offloading Mental Memory</h3>
+              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-orange bg-amber-50 px-2 py-0.5 rounded">{t("g3Why2Badge")}</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g3Why2Title")}</h3>
               <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
-                Holding numbers in mind while executing an operation is demanding for developing working memory. Fingers act as an external holding space for partial counts.
+                {t("g3Why2Desc")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-800 bg-slate-100 px-2 py-0.5 rounded">Reassurance</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Verification & Confidence</h3>
+              <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">{t("g3Why3Badge")}</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g3Why3Title")}</h3>
               <p className="text-[11px] text-slate-600 font-medium leading-relaxed">
-                When encountering unfamiliar sums, children turn to their fingers to double-check their intuition before giving a verbal answer.
+                {t("g3Why3Desc")}
               </p>
-            </div>
-          </div>
-        </section>
-
-        {/* 5. The Continuum: Concrete to Visual to Mental */}
-        <section className="space-y-4">
-          <div className="flex items-center gap-2 text-vibrant-dark">
-            <GraduationCap className="w-6 h-6 text-vibrant-teal shrink-0" />
-            <h2 className="font-display font-black text-xl md:text-2xl">
-              The Relationship Between Concrete, Visual, and Mental Strategies
-            </h2>
-          </div>
-          <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            Mathematical fluency develops gradually rather than as an instant leap from memorizing facts to effortless mental recall. Educators often find it helpful to view early arithmetic along a continuum of interconnected representations:
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center gap-3 pt-2 text-xs font-bold text-slate-700">
-            <div className="bg-white border border-slate-200 p-4 rounded-2xl text-center w-full sm:w-auto flex-1 shadow-xs">
-              <span className="text-[10px] text-amber-700 uppercase block font-black">1. Concrete Manipulation</span>
-              Physical objects, counters, fingers, or tactile abacus beads.
-            </div>
-            <ArrowRight className="w-4 h-4 text-slate-400 rotate-90 sm:rotate-0 shrink-0" />
-            <div className="bg-white border border-slate-200 p-4 rounded-2xl text-center w-full sm:w-auto flex-1 shadow-xs">
-              <span className="text-[10px] text-teal-700 uppercase block font-black">2. Visual Representations</span>
-              Dot patterns, ten-frames, number lines, or mental bead pictures.
-            </div>
-            <ArrowRight className="w-4 h-4 text-slate-400 rotate-90 sm:rotate-0 shrink-0" />
-            <div className="bg-white border border-slate-200 p-4 rounded-2xl text-center w-full sm:w-auto flex-1 shadow-xs">
-              <span className="text-[10px] text-slate-600 uppercase block font-black">3. Mental Strategies</span>
-              Decomposition, making tens, derived facts, and known relations.
             </div>
           </div>
 
           <div className="bg-slate-100/70 border border-slate-200 rounded-2xl p-4 text-xs text-slate-600 leading-relaxed font-medium">
-            Finger counting is simply one of the earliest concrete manifestations on this continuum. As children gain experience with richer visual and structural models, fingers naturally become less necessary for basic single-digit sums.
+            {t("g3WhySummary")}
           </div>
         </section>
 
-        {/* 6. Practical Arithmetic Example: Approaches to 7 + 5 */}
+        {/* 5. Stages of Strategy Development */}
         <section className="space-y-4">
           <div className="flex items-center gap-2 text-vibrant-dark">
-            <BookOpen className="w-6 h-6 text-amber-600 shrink-0" />
+            <GraduationCap className="w-6 h-6 text-vibrant-teal shrink-0" />
             <h2 className="font-display font-black text-xl md:text-2xl">
-              Practical Example: Different Ways to Approach 7 + 5
+              {t("g3StagesTitle")}
+            </h2>
+          </div>
+          <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
+            {t("g3StagesIntro")}
+          </p>
+
+          <div className="space-y-3 pt-2">
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 space-y-1 shadow-xs">
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g3Stage1Title")}</h3>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                {t("g3Stage1Desc")}
+              </p>
+            </div>
+
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 space-y-1 shadow-xs">
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g3Stage2Title")}</h3>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                {t("g3Stage2Desc")}
+              </p>
+            </div>
+
+            <div className="bg-white border-2 border-slate-200 rounded-2xl p-4 space-y-1 shadow-xs">
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g3Stage3Title")}</h3>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                {t("g3Stage3Desc")}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 6. Concrete Example */}
+        <section className="space-y-4">
+          <div className="flex items-center gap-2 text-vibrant-dark">
+            <Lightbulb className="w-6 h-6 text-amber-500 shrink-0" />
+            <h2 className="font-display font-black text-xl md:text-2xl">
+              {t("g3ExampleTitle")}
             </h2>
           </div>
           <p className="text-xs md:text-sm text-slate-600 font-medium">
-            To see how strategies evolve, consider different ways a child might solve the addition problem: <strong>7 + 5 = 12</strong>.
+            {t("g3ExampleIntro")}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
             <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-700 bg-slate-100 px-2 py-0.5 rounded">Strategy A</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Counting On</h3>
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 bg-slate-100 px-2 py-0.5 rounded">Stage 1</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g3ExampleCountOnTitle")}</h3>
               <div className="text-[11px] text-slate-600 font-medium space-y-1">
-                <p>Starting with 7 and counting forward 5 times:</p>
-                <div className="bg-slate-50 p-2.5 rounded-lg font-mono text-[11px] text-slate-800 border border-slate-100">
-                  "7... 8, 9, 10, 11, 12"
-                </div>
-                <p className="text-[10px] text-slate-500 pt-1">A step beyond counting from 1, often accompanied by lifting 5 fingers sequentially.</p>
+                <p>{t("g3ExampleCountOnDesc")}</p>
+                <p className="text-[10px] text-slate-500 pt-1">{t("g3ExampleCountOnSub")}</p>
               </div>
             </div>
 
-            <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-teal bg-teal-50 px-2 py-0.5 rounded">Strategy B</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Making Ten (Decomposition)</h3>
+            <div className="bg-white border-2 border-teal-200 p-4 rounded-2xl space-y-2 shadow-xs">
+              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-teal bg-teal-50 px-2 py-0.5 rounded">Stage 2</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g3ExampleMakeTenTitle")}</h3>
               <div className="text-[11px] text-slate-600 font-medium space-y-1">
-                <p>Partitioning 5 into (3 + 2) to complete 10:</p>
-                <div className="bg-slate-50 p-2.5 rounded-lg font-mono text-[11px] text-slate-800 border border-slate-100">
-                  7 + 3 + 2 = 12
-                </div>
-                <p className="text-[10px] text-slate-500 pt-1">Uses number bonds to 10 as an anchor, reducing reliance on counting one-by-one.</p>
+                <p>{t("g3ExampleMakeTenDesc")}</p>
+                <p className="text-[10px] text-slate-500 pt-1">{t("g3ExampleMakeTenSub")}</p>
               </div>
             </div>
 
-            <div className="bg-white border-2 border-slate-200 p-4 rounded-2xl space-y-2 shadow-xs">
-              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-orange bg-amber-50 px-2 py-0.5 rounded">Strategy C</span>
-              <h3 className="font-bold text-xs text-vibrant-dark">Structured Bead Representation</h3>
+            <div className="bg-white border-2 border-amber-200 p-4 rounded-2xl space-y-2 shadow-xs">
+              <span className="text-[10px] font-black uppercase tracking-wider text-vibrant-orange bg-amber-50 px-2 py-0.5 rounded">Stage 3</span>
+              <h3 className="font-bold text-xs text-vibrant-dark">{t("g3ExampleBeadsTitle")}</h3>
               <div className="text-[11px] text-slate-600 font-medium space-y-1">
-                <p>Representing quantities with bead values:</p>
-                <div className="bg-amber-50/50 p-2.5 rounded-lg text-[11px] text-slate-800 border border-amber-100 leading-relaxed font-sans">
-                  On a Soroban, the learner represents quantities using bead values and follows the calculation procedure taught for that operation.
-                </div>
-                <p className="text-[10px] text-slate-500 pt-1">Replaces sequential finger counts with structured bead grouping.</p>
+                <p>{t("g3ExampleBeadsDesc")}</p>
+                <p className="text-[10px] text-slate-500 pt-1">{t("g3ExampleBeadsSub")}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-teal-50/60 border border-teal-200 rounded-2xl p-4 text-xs text-teal-950 font-medium leading-relaxed">
-            💡 <strong>Observation:</strong> Each strategy is mathematically correct. Children transition between these approaches as they become more comfortable recognizing that numbers can be partitioned flexibly.
+          <div className="bg-amber-50/60 border border-amber-200 rounded-2xl p-4 text-xs text-amber-950 font-medium leading-relaxed">
+            {t("g3ExampleTakeaway")}
           </div>
         </section>
 
-        {/* 7. How Abacus Practice May Provide Another Way */}
+        {/* 7. How Abacus Practice Relates to Finger Counting */}
         <section className="space-y-4">
           <div className="flex items-center gap-2 text-vibrant-dark">
-            <Target className="w-6 h-6 text-vibrant-orange shrink-0" />
+            <Brain className="w-6 h-6 text-vibrant-teal shrink-0" />
             <h2 className="font-display font-black text-xl md:text-2xl">
-              How Abacus Practice Provides an Alternative Representation
+              {t("g3AbacusBridgeTitle")}
             </h2>
           </div>
           <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            For parents wondering how children develop internal mental alternatives to fingers, the Japanese Soroban abacus provides a structured bridge:
+            {t("g3AbacusBridgeIntro")}
           </p>
-          <ul className="text-xs md:text-sm text-slate-600 space-y-2.5 font-medium list-disc pl-5 leading-relaxed">
-            <li>
-              <strong>Structured 5-and-10 Groupings:</strong> While human hands provide 10 individual fingers, a Soroban uses bi-quinary grouping (an upper bead of value 5 and lower beads of value 1). This encourages children to view numbers in structured chunks rather than isolated units.
-            </li>
-            <li>
-              <strong>Sensory-to-Visual Transition:</strong> Through systematic practice, physical bead movement transitions to Anzan—the Japanese method of mental abacus visualization—which is used within AAA's advanced training to imagine bead movements internally.
-            </li>
-            <li>
-              <strong>Expanding Beyond 10:</strong> Fingers are naturally limited to 10 unless complex multi-digit finger systems are taught. An abacus easily represents hundreds and thousands across adjacent rods, offering a consistent mental framework.
-            </li>
-          </ul>
-          <p className="text-xs text-slate-600 font-medium leading-relaxed pt-1">
-            <strong>AAA Positioning:</strong> Arnav Abacus Academy welcomes children aged <strong>4 to 14 Years</strong>, with our <strong>Peak Foundation Window between 5 and 9 Years</strong>, when spatial visualization and tactile learning are especially receptive. Abacus practice is offered as a supplementary pathway for number fluency, not an automatic or overnight replacement for early counting habits.
-          </p>
+          <div className="space-y-3 pt-1">
+            <div className="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
+              <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+              <div className="text-xs text-slate-700 font-medium">
+                <strong className="block text-vibrant-dark font-bold">{t("g3Bridge1Title")}</strong>
+                {t("g3Bridge1Desc")}
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
+              <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+              <div className="text-xs text-slate-700 font-medium">
+                <strong className="block text-vibrant-dark font-bold">{t("g3Bridge2Title")}</strong>
+                {t("g3Bridge2Desc")}
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-xs">
+              <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+              <div className="text-xs text-slate-700 font-medium">
+                <strong className="block text-vibrant-dark font-bold">{t("g3Bridge3Title")}</strong>
+                {t("g3Bridge3Desc")}
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* 8. When Parents Can Encourage Alternative Strategies Patiently */}
         <section className="bg-slate-100/70 border-2 border-slate-200 rounded-3xl p-6 md:p-8 space-y-4">
           <div className="flex items-center gap-2 text-vibrant-dark font-display font-black text-lg">
             <Lightbulb className="w-5 h-5 text-vibrant-teal shrink-0" />
-            <h2>When and How to Encourage New Strategies Without Pressure</h2>
+            <h2>{t("g3EncourageTitle")}</h2>
           </div>
           <p className="text-xs md:text-sm text-slate-700 leading-relaxed font-medium">
-            If you notice your child continuing to count on fingers for sums they might otherwise solve mentally, consider these patient, constructive educational suggestions:
+            {t("g3EncourageIntro")}
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-medium text-slate-700 pt-1">
             <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-xs">
-              <strong className="block text-vibrant-dark font-bold text-xs">Ask How They Found the Answer</strong>
+              <strong className="block text-vibrant-dark font-bold text-xs">{t("g3Tip1Title")}</strong>
               <p className="text-slate-600 text-[11px] leading-relaxed">
-                Rather than saying "don't use your fingers", ask: "Can you tell me how you worked that out?" Verbalizing their calculation makes their current thinking visible.
+                {t("g3Tip1Desc")}
               </p>
             </div>
 
             <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-xs">
-              <strong className="block text-vibrant-dark font-bold text-xs">Introduce One Strategy at a Time</strong>
+              <strong className="block text-vibrant-dark font-bold text-xs">{t("g3Tip2Title")}</strong>
               <p className="text-slate-600 text-[11px] leading-relaxed">
-                Practice small steps—such as "counting on" from the larger number (e.g. starting at 8 and counting up 3) before introducing complex decomposition.
+                {t("g3Tip2Desc")}
               </p>
             </div>
 
             <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-xs">
-              <strong className="block text-vibrant-dark font-bold text-xs">Use Varied Visual Supports</strong>
+              <strong className="block text-vibrant-dark font-bold text-xs">{t("g3Tip3Title")}</strong>
               <p className="text-slate-600 text-[11px] leading-relaxed">
-                Incorporate physical counters, ten-frames, drawings, or an abacus frame so the child experiences different visual ways of grouping quantities.
+                {t("g3Tip3Desc")}
               </p>
             </div>
 
             <div className="bg-white p-4 rounded-2xl border border-slate-200 space-y-1 shadow-xs">
-              <strong className="block text-vibrant-dark font-bold text-xs">Avoid Shaming or Speed Comparisons</strong>
+              <strong className="block text-vibrant-dark font-bold text-xs">{t("g3Tip4Title")}</strong>
               <p className="text-slate-600 text-[11px] leading-relaxed">
-                Forcing hands into pockets or rushing calculation can provoke math hesitation. Focus on conceptual understanding and accuracy before speed.
+                {t("g3Tip4Desc")}
               </p>
             </div>
           </div>
@@ -344,53 +355,53 @@ export default function GuideWhyChildrenUseFingerCounting() {
           <div className="flex items-center gap-2 text-vibrant-dark">
             <HelpCircle className="w-6 h-6 text-vibrant-orange shrink-0" />
             <h2 className="font-display font-black text-xl md:text-2xl">
-              Frequently Asked Questions from Parents
+              {t("g3FaqTitle")}
             </h2>
           </div>
           
           <div className="space-y-3">
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                At what age do children typically move beyond finger counting?
+                {t("g3Faq1Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                There is no fixed universal cutoff age. Many children use fingers extensively in Kindergarten and Class 1, and gradually shift to mental strategies between ages 6 and 9 as their familiarity with number bonds and arithmetic patterns grows. Even older students or adults may occasionally use fingers when verifying complex steps.
+                {t("g3Faq1A")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                Is finger counting a sign of a math learning difficulty?
+                {t("g3Faq2Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                In itself, no. Finger counting is widely recognized by cognitive psychologists as an active, helpful stage of embodied numerical learning. It demonstrates that the child understands that symbols represent physical quantities. If a child continues to rely solely on counting from one on fingers into later primary grades without grasping grouping, discussing this with their teacher can help identify areas for guided support.
+                {t("g3Faq2A")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                Does learning Abacus mean my child will never use their fingers?
+                {t("g3Faq3Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                Abacus training uses the thumb and index finger to physically move beads on the instrument. As children transition to Anzan (mental abacus), they may still move their fingers slightly in the air to simulate bead movements. This "finger simulation" is a visual-spatial memory aid, not traditional one-by-one counting.
+                {t("g3Faq3A")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                How does Abacus compare to other supplementary math approaches?
+                {t("g3Faq4Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                Abacus focuses specifically on concrete-to-visual bead representations for arithmetic fluency in children aged 4 to 14. For older learners (ages 10+), Vedic Maths provides algebraic and mental shortcut strategies. To understand how both methods fit different learning stages, read our guide on <Link to="/parent-guides/abacus-vs-vedic-maths" className="text-vibrant-orange font-bold hover:underline">Abacus vs Vedic Maths</Link>.
+                {t("g3Faq4A")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2 shadow-xs">
               <h3 className="font-bold text-sm text-vibrant-dark">
-                Will abacus training conflict with how my child learns arithmetic at school?
+                {t("g3Faq5Q")}
               </h3>
               <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                When taught with clear context, the two systems complement each other. Abacus strengthens internal mental calculation, while schools teach formal written steps and mathematical vocabulary. For an in-depth exploration, see our parent guide on <Link to="/parent-guides/does-abacus-confuse-school-math" className="text-vibrant-orange font-bold hover:underline">whether abacus confuses school maths</Link>.
+                {t("g3Faq5A")}
               </p>
             </div>
           </div>
@@ -400,10 +411,10 @@ export default function GuideWhyChildrenUseFingerCounting() {
         <section className="bg-slate-100/60 border border-slate-200 rounded-2xl p-5 space-y-2 text-xs text-slate-600">
           <div className="flex items-center gap-1.5 text-vibrant-dark font-bold">
             <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>Educational Scope & Supplementary Notice</span>
+            <span>{t("g3DisclaimerTitle")}</span>
           </div>
           <p className="leading-relaxed">
-            Arnav Abacus Academy offers supplementary learning programs designed to build focus and arithmetic fluency. Our courses do not replace school curricula prescribed by educational authorities (CBSE, ICSE, State Boards). We do not promise guaranteed school grades or rank outcomes; academic development depends on ongoing practice, individual child readiness, and collaborative support between parents and educators.
+            {t("g3DisclaimerText")}
           </p>
         </section>
 
@@ -411,13 +422,13 @@ export default function GuideWhyChildrenUseFingerCounting() {
         <section className="bg-white border-4 border-vibrant-dark rounded-[32px] p-6 md:p-8 shadow-[8px_8px_0_0_#1A2E35] space-y-5">
           <div className="space-y-2">
             <span className="text-[10px] font-black text-vibrant-orange bg-amber-50 border border-amber-200 px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-              Explore Academy Programs
+              {t("g3CtaBadge")}
             </span>
             <h2 className="font-display font-black text-2xl text-vibrant-dark">
-              Supporting Your Child's Mathematical Journey
+              {t("g3CtaTitle")}
             </h2>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed font-medium">
-              Explore our core learning programs in Wakad, Pune, tailored for different developmental stages and academic goals:
+              {t("g3CtaDesc")}
             </p>
           </div>
 
@@ -427,10 +438,10 @@ export default function GuideWhyChildrenUseFingerCounting() {
               className="bg-slate-50 hover:bg-amber-50/60 border-2 border-slate-200 hover:border-vibrant-orange p-4 rounded-2xl text-center transition-all group"
             >
               <span className="text-xs font-black text-vibrant-dark block group-hover:text-vibrant-orange">
-                Abacus Learning Program
+                {t("g3CardAbacusTitle")}
               </span>
               <span className="text-[10px] text-slate-500 font-bold block mt-0.5">
-                Ages 4 to 14 Years (Peak 5–9)
+                {t("g3CardAbacusDesc")}
               </span>
             </Link>
 
@@ -439,10 +450,10 @@ export default function GuideWhyChildrenUseFingerCounting() {
               className="bg-slate-50 hover:bg-amber-50/60 border-2 border-slate-200 hover:border-amber-500 p-4 rounded-2xl text-center transition-all group"
             >
               <span className="text-xs font-black text-vibrant-dark block group-hover:text-amber-600">
-                School Maths & Olympiad
+                {t("g3CardSchoolTitle")}
               </span>
               <span className="text-[10px] text-slate-500 font-bold block mt-0.5">
-                Class 1 to 10 Syllabus Synergy
+                {t("g3CardSchoolDesc")}
               </span>
             </Link>
 
@@ -451,10 +462,10 @@ export default function GuideWhyChildrenUseFingerCounting() {
               className="bg-slate-50 hover:bg-teal-50/60 border-2 border-slate-200 hover:border-vibrant-teal p-4 rounded-2xl text-center transition-all group"
             >
               <span className="text-xs font-black text-vibrant-dark block group-hover:text-vibrant-teal">
-                School Math Harmony Guide
+                {t("g3CardHarmonyTitle")}
               </span>
               <span className="text-[10px] text-slate-500 font-bold block mt-0.5">
-                Addressing Method Differences
+                {t("g3CardHarmonyDesc")}
               </span>
             </Link>
           </div>
@@ -462,7 +473,7 @@ export default function GuideWhyChildrenUseFingerCounting() {
           {/* Action CTA */}
           <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-xs text-slate-500 font-medium">
-              <strong>Center Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
+              <strong>{language === "mr" ? "केंद्राचा पत्ता: " : language === "hi" ? "केंद्र का पता: " : "Center Location: "}</strong>{t("g3LocationText")}
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-2.5 shrink-0">
               <button
@@ -473,14 +484,14 @@ export default function GuideWhyChildrenUseFingerCounting() {
                 }}
                 className="w-full sm:w-auto bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase px-5 py-3 rounded-xl transition-all shadow-md inline-flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Book Discovery Session</span>
+                <span>{t("g3BookDiscoveryBtn")}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
               <Link
                 to="/contact"
                 className="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase px-4 py-3 rounded-xl transition-all shadow-md inline-flex items-center justify-center gap-2"
               >
-                <span>Contact Wakad Center</span>
+                <span>{t("g3ContactCenterBtn")}</span>
               </Link>
             </div>
           </div>
