@@ -624,6 +624,14 @@ export const translations = {
     t23Role: "Father of Spriha (Best Student of the Year 2025-26)",
     t23Content: "Dear Neha Mam,\n\nI wanted to sincerely thank you for your dedicated efforts in teaching our daughter (Spriha) Abacus. We are delighted to share that she secured 100% in Runner Level 1 – a proud moment for us as parents!\nYour guidance, patience, and consistent encouragement have played a key role in her achievement. It’s truly motivating to see her not only perform well but also enjoy learning Abacus under your mentorship.\nWe’re excited for the journey ahead and look forward to many more milestones together. Thank you once again for laying such a foundation.\n\nThanks & Regards\nSameer & Priya Kamath",
 
+    t24Author: "Mr. Pawan Kumar",
+    t24Role: "Father of Akshada",
+    t24Content: "We are extremely happy and satisfied with the guidance and support provided by Nitin Sir and Neha Ma'am. They have been wonderful mentors, guiding the students with so much dedication and going beyond expectations to help them learn and improve.\n\nTheir continuous feedback, personal attention, and encouragement have played a great role in boosting the children's confidence and helping them prepare for the National Level Abacus Exam. They not only focus on teaching but also ensure that every student gets the right guidance and support to perform better.\n\nA big thank you to both of them for their commitment, patience, and genuine efforts. We truly appreciate everything they do for the students. Keep up the excellent work!",
+
+    t25Author: "Mr. Rajesh Vora",
+    t25Role: "Grandfather of Aarav & Ovi Vora",
+    t25Content: "AAA is exceptional Gurukul who has transformed my Grand Children, Aarav and Ovi, from Maths Hating to Maths Loving students. Academy patiently followed up the routine and gradually created liking for Maths in their minds. Thanks a lot Patil Sir and Madam for this transformation. 🙏🙏",
+
     news1Title: "Launching Our Parent-Student Mobile App!",
     news1Date: "Rolling Out Oct'26 End",
     news1Tag: "Digital Ecosystem",
@@ -1560,6 +1568,14 @@ export const translations = {
     t23Role: "स्पृहा के पिता (वर्ष २०२५-२६ की सर्वश्रेष्ठ छात्रा)",
     t23Content: "प्रिय नेहा मैम,\n\nहमारी बेटी (स्पृहा) को एबाकस सिखाने में आपके समर्पित प्रयासों के लिए मैं ईमानदारी से आपको धन्यवाद देना चाहता हूँ। हमें यह साझा करते हुए बहुत खुशी हो रही है कि उसने रनर लेवल १ में १००% अंक प्राप्त किए हैं – माता-पिता के रूप में हमारे लिए एक गर्व का क्षण !\nआपके मार्गदर्शन, धैर्य और निरंतर प्रोत्साहन ने उसकी इस उपलब्धि में महत्वपूर्ण भूमिका निभाई है। उसे आपके मार्गदर्शन में न केवल अच्छा प्रदर्शन करते हुए बल्कि एबाकस सीखने का आनंद लेते हुए देखना वास्तव में प्रेरक है।\nहम आगे की यात्रा के लिए उत्साहित हैं और एक साथ कई और मील के पत्थर देखने के लिए उत्सुक हैं। ऐसी नींव रखने के लिए एक बार फिर से धन्यवाद।\n\nधन्यवाद और सादर\nसमीर और प्रिया कामथ",
 
+    t24Author: "श्री पवन कुमार",
+    t24Role: "अक्षदा के पिता",
+    t24Content: "नितिन सर और नेहा मैम द्वारा दिए गए मार्गदर्शन और सहयोग से हम बेहद खुश और संतुष्ट हैं। वे अद्भुत शिक्षक रहे हैं, जो पूरी निष्ठा से बच्चों का मार्गदर्शन करते हैं और उन्हें सीखने व सुधार करने में अपेक्षाओं से बढ़कर मदद करते हैं।\n\nउनके निरंतर फीडबैक, व्यक्तिगत ध्यान और प्रोत्साहन ने बच्चों के आत्मविश्वास को बढ़ाने और उन्हें राष्ट्रीय स्तर की एबाकस परीक्षा के लिए तैयार करने में बहुत बड़ी भूमिका निभाई है। वे केवल पढ़ाने पर ही ध्यान नहीं देते, बल्कि यह भी सुनिश्चित करते हैं कि प्रत्येक छात्र को बेहतर प्रदर्शन करने के लिए सही मार्गदर्शन मिले।\n\nदोनों को उनकी प्रतिबद्धता, धैर्य और सच्चे प्रयासों के लिए बहुत-बहुत धन्यवाद। छात्रों के लिए वे जो कुछ भी करते हैं, हम उसकी तहे दिल से सराहना करते हैं। उत्कृष्ट कार्य जारी रखें!",
+
+    t25Author: "श्री राजेश वोरा",
+    t25Role: "आरव और ओवी वोरा के दादाजी",
+    t25Content: "AAA एक असाधारण गुरुकुल है जिसने मेरे पोते-पोती, आरव और ओवी को गणित से डरने वाले बच्चों से गणित से प्यार करने वाले छात्रों में बदल दिया है। अकादमी ने धैर्यपूर्वक दिनचर्या का पालन किया और धीरे-धीरे उनके मन में गणित के प्रति रुचि पैदा की। इस बदलाव के लिए पाटिल सर और मैडम का बहुत-बहुत धन्यवाद। 🙏🙏",
+
     news1Title: "हमारा पैरेंट-स्टूडेंट मोबाइल ऐप लॉन्च हो रहा है !",
     news1Date: "अक्टूबर 2026 के अंत तक उपलब्ध",
     news1Tag: "डिजिटल इकोसिस्टम",
@@ -2494,6 +2510,14 @@ export const translations = {
     t23Author: "समीर कामथ",
     t23Role: "स्पृहाचे वडील (वर्ष २०२५-२६ ची सर्वोत्तम विद्यार्थिनी)",
     t23Content: "प्रिय नेहा मॅडम,\n\nआमची मुलगा (स्पृहा) हिला ॲबॅकस शिकवण्यासाठी तुम्ही घेतलेल्या परिश्रमांबद्दल मी मनापासून आभार मानतो। आम्हाला हे सांगताना अत्यंत आनंद होत आहे की तिने रनर लेव्हल १ मध्ये १००% गुण मिळवून यश संपादन केले आहे – पालक म्हणून आमच्यासाठी हा अत्यंत अभिमानाचा क्षण आहे !\nतुमचे मार्गदर्शन, संयम आणि सातत्यपूर्ण प्रोत्साहन यांमुळेच तिला हे यश मिळवता आले। तुमच्या मार्गदर्शनाखाली ती केवळ चांगली प्रगतीच करत नाही तर ॲबॅकस शिकण्याचा आनंद घेत आहे।\nआम्ही पुढील प्रवासासाठी खूप उत्सुक आहोत। असा भक्कम पाया रचल्याबद्दल पुन्हा एकदा धन्यवाद।\n\nधन्यवाद आणि सादर\nसमीर आणि प्रिया कामथ",
+
+    t24Author: "श्री पवन कुमार",
+    t24Role: "अक्षदा यांचे वडील",
+    t24Content: "नितीन सर आणि नेहा मॅडम यांनी दिलेल्या मार्गदर्शन आणि पाठिंब्याबद्दल आम्ही अत्यंत आनंदी आणि समाधानी आहोत। ते एक उत्तम मार्गदर्शक आहेत, जे विद्यार्थ्यांना पूर्ण समर्पणाने मार्गदर्शन करतात आणि त्यांना शिकण्यास व प्रगती करण्यास अपेक्षेपेक्षा जास्त मदत करतात।\n\nत्यांचा सततचा अभिप्राय, वैयक्तिक लक्ष आणि प्रोत्साहन यामुळे मुलांचा आत्मविश्वास वाढवण्यात आणि त्यांना राष्ट्रीय पातळीवरील ॲबॅकस परीक्षेसाठी तयार करण्यात मोलाचा वाटा राहिला आहे। ते केवळ शिकवण्यावरच भर देत नाहीत तर प्रत्येक विद्यार्थ्याला चांगली कामगिरी करण्यासाठी योग्य मार्गदर्शन मिळेल याची खात्री करतात।\n\nत्यांच्या निष्ठा, संयम आणि प्रामाणिक प्रयत्नांसाठी दोघांचेही मनापासून आभार। विद्यार्थ्यांसाठी ते जे काही करतात त्याचे आम्ही मनापासून कौतुक करतो। असेच उत्कृष्ट कार्य सुरू ठेवा!",
+
+    t25Author: "श्री राजेश व्होरा",
+    t25Role: "आरव आणि ओवी व्होरा यांचे आजोबा",
+    t25Content: "AAA हे एक अद्वितीय गुरुकुल आहे ज्याने माझे नातवंडे, आरव आणि ओवी यांना गणिताची भीती वाटणाऱ्या मुलांमधून गणिताची आवड असणाऱ्या विद्यार्थ्यांमध्ये रूपांतरित केले आहे। अकादमीने अत्यंत संयमाने दैनंदिन सरावाचा पाठपुरावा केला आणि त्यांच्या मनात गणिताबद्दल आवड निर्माण केली। या सुंदर बदलासाठी पाटील सर आणि मॅडम यांचे मनापासून खूप खूप आभार। 🙏🙏",
 
     news1Title: "आमचे पैरेंट-स्टूडेंट मोबाईल ॲप लवकरच उपलब्ध !",
     news1Date: "ऑक्टोबर २०२६ च्या शेवटी उपलब्ध",
