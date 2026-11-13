@@ -4,6 +4,7 @@
  */
 
 import { parentGuidesEn, parentGuidesHi, parentGuidesMr } from "./translations_parent_guides";
+import { interactiveLabsEn, interactiveLabsHi, interactiveLabsMr } from "./translations_interactive_labs";
 
 export type Language = "en" | "hi" | "mr";
 
@@ -1725,6 +1726,7 @@ export const translations = {
     modalDiscoverySubmitBtn: "Confirm Discovery Session on WhatsApp",
     modalDiscoverySecurityNote: "Zero spam policy. Small batches (maximum 5 students). No obligation.",
     ...parentGuidesEn,
+    ...interactiveLabsEn,
   },
   hi: {
     // Navbar
@@ -3443,6 +3445,7 @@ export const translations = {
     modalDiscoverySubmitBtn: "व्हाट्सएप पर डिस्कवरी सत्र की पुष्टि करें",
     modalDiscoverySecurityNote: "शून्य स्पैम नीति। छोटे बैच (अधिकतम ५ छात्र)। कोई बाध्यता नहीं।",
     ...parentGuidesHi,
+    ...interactiveLabsHi,
   },
   mr: {
     // Navbar
@@ -5161,6 +5164,7 @@ export const translations = {
     modalDiscoverySubmitBtn: "व्हॉट्सॲपवर डिस्कव्हरी सत्राची खात्री करा",
     modalDiscoverySecurityNote: "शून्य स्पॅम धोरण. लहान बॅच (कमाल ५ विद्यार्थी). कोणतीही सक्ती नाही.",
     ...parentGuidesMr,
+    ...interactiveLabsMr,
   }
 };
 
