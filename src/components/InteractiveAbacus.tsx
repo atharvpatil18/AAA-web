@@ -199,12 +199,12 @@ export default function InteractiveAbacus({ onBookDemo }: InteractiveAbacusProps
   };
 
   const examples = [
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ०.०५" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ०.०५" : "Number 0.05"}`, val: 0.05 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ७.५" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ७.५" : "Number 7.5"}`, val: 7.5 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या १२.३४" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या १२.३४" : "Number 12.34"}`, val: 12.34 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ३५०.१" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ३५०.१" : "Number 350.1"}`, val: 350.1 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या २,०२६" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या २,०२६" : "Number 2,026"}`, val: 2026 },
-    { label: `${t("abacusExamplesTitle").includes("उदाहरण") ? "संख्या ९,९९९.९९९" : t("abacusExamplesTitle").includes("उदाहरणे") ? "संख्या ९,९९९.९९९" : "Number 9,999.999"}`, val: 9999.999 },
+    { label: `${t("abacusExamplePrefix")} ${formatNumber(0.05)}`, val: 0.05 },
+    { label: `${t("abacusExamplePrefix")} ${formatNumber(7.5)}`, val: 7.5 },
+    { label: `${t("abacusExamplePrefix")} ${formatNumber(12.34)}`, val: 12.34 },
+    { label: `${t("abacusExamplePrefix")} ${formatNumber(350.1)}`, val: 350.1 },
+    { label: `${t("abacusExamplePrefix")} ${formatNumber("2,026")}`, val: 2026 },
+    { label: `${t("abacusExamplePrefix")} ${formatNumber("9,999.999")}`, val: 9999.999 },
   ];
 
   // Helper for rod-specific colors as requested: 1st=pink, 2nd=red, 3rd=green, 4th=yellow, 5th=orange, 6th=blue, 7th=white
@@ -320,18 +320,18 @@ export default function InteractiveAbacus({ onBookDemo }: InteractiveAbacusProps
         }`}>
           {/* Header Name on tool */}
           <div className="text-center font-display font-black text-white text-xs sm:text-sm tracking-wider uppercase mb-3">
-            Arnav Abacus Academy
+            {t("abacusBrandHeader")}
           </div>
           
           {/* Column Place Value Labels */}
           <div className="w-full flex justify-around mb-2 px-1 text-center font-black select-none text-white/70">
-            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider">{language === "hi" ? "हजार" : language === "mr" ? "हजार" : "Th"}</div>
-            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider">{language === "hi" ? "सैकड़ा" : language === "mr" ? "शतक" : "H"}</div>
-            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider">{language === "hi" ? "दहाई" : language === "mr" ? "दशक" : "T"}</div>
-            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-vibrant-gold">{language === "hi" ? "इकाई •" : language === "mr" ? "एकक •" : "O •"}</div>
-            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-white/50">{language === "hi" ? "दशांश" : language === "mr" ? "दशांश" : "t"}</div>
-            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-white/50">{language === "hi" ? "शतांश" : language === "mr" ? "शतांश" : "h"}</div>
-            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-vibrant-gold">{language === "hi" ? "हजारवां •" : language === "mr" ? "हजारवा •" : "th •"}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider">{t("abacusColTh")}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider">{t("abacusColH")}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider">{t("abacusColT")}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-vibrant-gold">{t("abacusColO")}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-white/50">{t("abacusColTenth")}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-white/50">{t("abacusColHundredth")}</div>
+            <div className="w-9 xs:w-11 sm:w-14 text-[9px] sm:text-[10px] uppercase tracking-wider text-vibrant-gold">{t("abacusColThousandth")}</div>
           </div>
 
           {/* Rods and Frame container with Light Sky Blue Background */}
@@ -437,30 +437,18 @@ export default function InteractiveAbacus({ onBookDemo }: InteractiveAbacusProps
               </div>
               <h4 className="font-display font-black text-lg text-vibrant-dark mb-1">
                 {flashcardAttempts === 0 
-                  ? (language === "hi" ? "फोटोग्राफिक मेमोरी टेस्ट" : language === "mr" ? "फोटोग्राफिक मेमरी चाचणी" : "Photographic Memory Test")
+                  ? t("abacusFlashInitialTitle")
                   : flashcardAttempts === 5 && flashcardFeedback !== ""
-                  ? (language === "hi" ? "सत्र पूर्ण हुआ!" : language === "mr" ? "सत्र पूर्ण झाले!" : "Session Completed!")
-                  : (language === "hi" ? "मोतियाँ छिपी हुई हैं!" : language === "mr" ? "मणी लपविलेले आहेत!" : "Beads Hidden!")
+                  ? t("abacusFlashFinishedTitle")
+                  : t("abacusFlashHiddenTitle")
                 }
               </h4>
               <p className="text-xs text-gray-550 font-semibold max-w-md">
                 {flashcardAttempts === 0 
-                  ? (language === "hi" 
-                      ? "क्या आप गिल्टियों का मान याद रखकर सही संख्या का अनुमान लगा सकते हैं? चुनौती शुरू करने के लिए दाएँ पैनल का उपयोग करें।" 
-                      : language === "mr" 
-                      ? "तुम्ही मणी लक्षात ठेवून अचूक संख्या ओळखू शकता का? चाचणी सुरू करण्यासाठी उजवे पॅनेल वापरा." 
-                      : "Can you memorize the beads and guess the correct value? Use the right panel to start the challenge.")
+                  ? t("abacusFlashInitialDesc")
                   : flashcardAttempts === 5 && flashcardFeedback !== ""
-                  ? (language === "hi"
-                      ? `आपने 5 में से ${flashcardScore} सही उत्तर दिए। नया सेट खेलने के लिए दाएँ पैनल का उपयोग करें।`
-                      : language === "mr"
-                      ? `तुम्ही 5 पैकी ${flashcardScore} अचूक उत्तरे दिली. नवीन संच सुरू करण्यासाठी उजवे पॅनेल वापरा.`
-                      : `You got ${flashcardScore} out of 5 correct. Use the right panel to start the next set of challenges!`)
-                  : (language === "hi"
-                      ? "दाएँ पैनल में अपना अनुमान सबमिट करें!"
-                      : language === "mr"
-                      ? "उजव्या पॅनेलमध्ये तुमचे उत्तर द्या!"
-                      : "Submit your guess in the panel on the right!")
+                  ? t("abacusFlashResultScore").replace("{score}", formatNumber(flashcardScore))
+                  : t("abacusFlashSubmitPrompt")
                 }
               </p>
             </div>
@@ -525,29 +513,25 @@ export default function InteractiveAbacus({ onBookDemo }: InteractiveAbacusProps
               {flashcardAttempts === 0 ? (
                 <div className="text-center py-2 space-y-3">
                   <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-orange bg-[#FFEEE5] px-3 py-1 rounded-full uppercase tracking-wider font-bold">
-                    {language === "hi" ? "मेमोरी गेम" : language === "mr" ? "मेमरी गेम" : "Memory Game"}
+                    {t("abacusFlashBadge")}
                   </span>
                   <p className="text-[11px] text-gray-500 font-semibold leading-relaxed">
-                    {language === "hi"
-                      ? "एबाकस की गिल्टियाँ १.५ सेकंड के लिए फ्लैश होंगी। ५ चुनौतियों के इस सत्र में क्या आप सही संख्या का अनुमान लगा सकते हैं ?"
-                      : language === "mr"
-                      ? "ॲबॅकस मणी १.५ सेकंदांसाठी दिसतील. ५ आव्हानांच्या या सत्रात तुम्ही अचूक संख्या ओळखू शकता का ?"
-                      : "Abacus beads will flash for exactly 1.5 seconds. Can you memorize them and guess the correct value in a session of 5 challenges ?"}
+                    {t("abacusFlashInitialDesc")}
                   </p>
                   <button
                     onClick={startFlashcardChallenge}
                     className="w-full bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold py-2.5 rounded-full shadow-xs active:scale-97 transition-all text-xs uppercase tracking-wider cursor-pointer"
                   >
-                    {language === "hi" ? "चुनौती शुरू करें" : language === "mr" ? "चाचणी सुरू करा" : "Start Challenge"}
+                    {t("abacusFlashStartBtn")}
                   </button>
                 </div>
               ) : isCountingDown && showFlashcardBeads ? (
                 <div className="text-center py-6 space-y-3 animate-pulse">
                   <span className="inline-flex bg-vibrant-orange text-white font-mono font-bold text-xs px-4 py-1.5 rounded-full uppercase tracking-wider">
-                    {language === "hi" ? `चुनौती ${formatNumber(flashcardAttempts)} / ५` : language === "mr" ? `चाचणी ${formatNumber(flashcardAttempts)} / ५` : `Challenge ${flashcardAttempts} / 5`}
+                    {t("abacusFlashChallengeNum").replace("{num}", formatNumber(flashcardAttempts))}
                   </span>
                   <p className="text-xs font-bold text-vibrant-dark">
-                    {language === "hi" ? "समय सीमित है!" : language === "mr" ? "वेळ मर्यादित आहे!" : "Look at the abacus!"}
+                    {t("abacusFlashTimeLimited")}
                   </p>
                 </div>
               ) : (
@@ -555,10 +539,10 @@ export default function InteractiveAbacus({ onBookDemo }: InteractiveAbacusProps
                 <div className="space-y-4">
                   <div className="text-center flex justify-between items-center px-1">
                     <span className="inline-flex items-center gap-1 text-[10px] text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3 py-1 rounded-full uppercase tracking-wider font-bold">
-                      {language === "hi" ? `चुनौती ${formatNumber(flashcardAttempts)} / ५` : language === "mr" ? `चाचणी ${formatNumber(flashcardAttempts)} / ५` : `Challenge ${flashcardAttempts} / 5`}
+                      {t("abacusFlashChallengeNum").replace("{num}", formatNumber(flashcardAttempts))}
                     </span>
                     <span className="text-[10px] font-bold text-vibrant-dark">
-                      {language === "hi" ? `स्कोर: ${formatNumber(flashcardScore)}` : language === "mr" ? `स्कोअर: ${formatNumber(flashcardScore)}` : `Score: ${flashcardScore}`}
+                      {t("abacusFlashScoreLabel").replace("{score}", formatNumber(flashcardScore))}
                     </span>
                   </div>
                   
@@ -567,7 +551,7 @@ export default function InteractiveAbacus({ onBookDemo }: InteractiveAbacusProps
                     <form onSubmit={handleGuessSubmit} className="flex gap-2">
                       <input
                         type="number"
-                        placeholder="e.g. 42"
+                        placeholder={t("abacusFlashInputPlaceholder")}
                         value={flashcardGuess}
                         onChange={(e) => setFlashcardGuess(e.target.value)}
                         className="flex-1 min-w-0 bg-white border border-slate-200 px-3 py-2 rounded-xl text-xs font-bold text-vibrant-dark focus:outline-none focus:border-vibrant-orange focus:ring-1 focus:ring-vibrant-orange"
@@ -576,7 +560,7 @@ export default function InteractiveAbacus({ onBookDemo }: InteractiveAbacusProps
                         type="submit"
                         className="bg-vibrant-orange hover:bg-vibrant-orange/95 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-xs active:scale-97 transition-all cursor-pointer"
                       >
-                        {language === "hi" ? "जांचें" : language === "mr" ? "तपासा" : "Submit"}
+                        {t("abacusFlashSubmitBtn")}
                       </button>
                     </form>
                   )}
@@ -589,9 +573,9 @@ export default function InteractiveAbacus({ onBookDemo }: InteractiveAbacusProps
                         : "bg-red-50 text-red-700 border-red-200 shadow-xs"
                     }`}>
                       {flashcardFeedback === "correct" ? (
-                        <span>🎯 {language === "hi" ? "सही जवाब!" : language === "mr" ? "अचूक उत्तर!" : "Correct!"}</span>
+                        <span>{t("abacusFlashCorrect")}</span>
                       ) : (
-                        <span>❌ {language === "hi" ? `गलत! सही ${flashcardTarget} था।` : language === "mr" ? `चूक! अचूक ${flashcardTarget} होते.` : `Wrong! Target was ${flashcardTarget}.`}</span>
+                        <span>{t("abacusFlashWrong").replace("{target}", formatNumber(flashcardTarget || 0))}</span>
                       )}
                     </div>
                   )}
@@ -605,27 +589,23 @@ export default function InteractiveAbacus({ onBookDemo }: InteractiveAbacusProps
                             onClick={startFlashcardChallenge}
                             className="flex-1 bg-vibrant-teal hover:bg-vibrant-teal/95 text-white font-bold py-2 rounded-full shadow-xs active:scale-97 transition-all text-xs cursor-pointer text-center"
                           >
-                            {language === "hi" ? "अगली चुनौती" : language === "mr" ? "पुढचे आव्हान" : "Next Challenge"}
+                            {t("abacusFlashNextBtn")}
                           </button>
                           <button
                             onClick={resetFlashcardSession}
                             className="flex-1 bg-white hover:bg-slate-50 text-vibrant-dark border border-slate-200 font-bold py-2 rounded-full shadow-xs active:scale-97 transition-all text-xs cursor-pointer text-center"
                           >
-                            {language === "hi" ? "रीसेट सत्र" : language === "mr" ? "रीसेट सत्र" : "Reset Session"}
+                            {t("abacusFlashResetSessionBtn")}
                           </button>
                         </div>
                       ) : (
                         /* Session complete results card */
                         <div className="bg-white border border-slate-100 rounded-2xl p-4 text-center space-y-3 shadow-md shadow-slate-100/50 animate-fade-in">
                           <p className="text-xs font-black text-vibrant-dark uppercase tracking-wider">
-                            {language === "hi" ? "🏆 सत्र समाप्त 🏆" : language === "mr" ? "🏆 सत्र पूर्ण झाले 🏆" : "🏆 Session Finished 🏆"}
+                            {t("abacusFlashFinishedTitle")}
                           </p>
                           <p className="text-xs text-gray-550 font-bold leading-normal">
-                            {language === "hi"
-                              ? `परिणाम: आपने ५ में से ${formatNumber(flashcardScore)} सही अनुमान लगाए!`
-                              : language === "mr"
-                              ? `निकाल: तुम्ही ५ पैकी ${formatNumber(flashcardScore)} अचूक अंदाज लावले!`
-                              : `Result: You guessed ${flashcardScore} / 5 challenges correctly!`}
+                            {t("abacusFlashResultScore").replace("{score}", formatNumber(flashcardScore))}
                           </p>
                           <button
                             onClick={() => {

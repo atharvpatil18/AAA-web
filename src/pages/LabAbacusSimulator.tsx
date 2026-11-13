@@ -88,24 +88,24 @@ export default function LabAbacusSimulator() {
       {/* Breadcrumb Navigation Bar */}
       <nav aria-label="Breadcrumb" className="bg-[#FAF7F2] border-b border-slate-200 py-3 px-4 md:px-8">
         <div className="max-w-6xl mx-auto flex items-center gap-1.5 text-xs text-slate-500 font-medium overflow-x-auto whitespace-nowrap">
-          <Link to="/" className="hover:text-vibrant-orange transition-colors">Home</Link>
+          <Link to="/" className="hover:text-vibrant-orange transition-colors">{t("labAbacusBreadcrumbHome")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-          <span className="text-slate-400">Interactive Learning Labs</span>
+          <span className="text-slate-400">{t("labAbacusBreadcrumbLabs")}</span>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-          <span className="text-vibrant-dark font-bold">Soroban Abacus Simulator</span>
+          <span className="text-vibrant-dark font-bold">{t("labAbacusBreadcrumbSimulator")}</span>
         </div>
       </nav>
 
       {/* Hero Header Section */}
       <section className="py-12 md:py-16 px-4 md:px-8 max-w-5xl mx-auto text-center space-y-4">
         <div className="inline-flex items-center gap-1.5 bg-vibrant-teal/10 border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full text-xs font-bold text-vibrant-teal uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5 fill-current" /> Authentic Japanese Soroban Tool
+          <Sparkles className="w-3.5 h-3.5 fill-current" /> {t("labAbacusHeroBadge")}
         </div>
         <h1 className="font-display font-black text-3xl md:text-5xl text-vibrant-dark tracking-tight leading-tight">
-          Interactive Soroban Abacus Simulator
+          {t("labAbacusHeroTitle")}
         </h1>
         <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Slide the beads below to discover how tactile abacus training activates photographic memory, spatial visualization, and finger-free arithmetic speed for children aged 4.5 to 14.
+          {t("labAbacusHeroSubtitle")}
         </p>
       </section>
 
@@ -119,13 +119,13 @@ export default function LabAbacusSimulator() {
         <div className="max-w-5xl mx-auto space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <span className="text-xs font-bold text-vibrant-orange uppercase tracking-widest">
-              The Neuroscience of Mental Arithmetic
+              {t("labAbacusNeuroBadge")}
             </span>
             <h2 className="font-display font-black text-2xl md:text-3xl text-vibrant-dark">
-              Why Tactile Bead Movement Builds Photographic Memory
+              {t("labAbacusNeuroTitle")}
             </h2>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
-              When children slide physical beads on a Soroban, sensory input travels through fine-motor fingertips into both cerebral hemispheres. With regular practice, the physical frame is internalized into a vivid mental image.
+              {t("labAbacusNeuroDesc")}
             </p>
           </div>
 
@@ -134,9 +134,9 @@ export default function LabAbacusSimulator() {
               <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-vibrant-teal">
                 <Eye className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-base text-vibrant-dark">Spatial Visualization</h3>
+              <h3 className="font-bold text-base text-vibrant-dark">{t("labAbacusNeuroPillar1Title")}</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Rather than memorizing abstract numbers on paper, children visualize bead formations as spatial patterns, engaging right-hemisphere pictorial circuits.
+                {t("labAbacusNeuroPillar1Desc")}
               </p>
             </div>
 
@@ -144,9 +144,9 @@ export default function LabAbacusSimulator() {
               <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-vibrant-orange">
                 <Brain className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-base text-vibrant-dark">Working Memory Buffer</h3>
+              <h3 className="font-bold text-base text-vibrant-dark">{t("labAbacusNeuroPillar2Title")}</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                In our Flashcard mode, children store multi-digit configurations for 1.5 seconds, systematically expanding their mental RAM for complex school problems.
+                {t("labAbacusNeuroPillar2Desc")}
               </p>
             </div>
 
@@ -154,9 +154,9 @@ export default function LabAbacusSimulator() {
               <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
                 <Target className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-base text-vibrant-dark">Permanent Accuracy</h3>
+              <h3 className="font-bold text-base text-vibrant-dark">{t("labAbacusNeuroPillar3Title")}</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Base-10 and base-5 complements eliminate careless procedural slips, building unwavering confidence in school examinations and Olympiads.
+                {t("labAbacusNeuroPillar3Desc")}
               </p>
             </div>
           </div>
@@ -165,13 +165,13 @@ export default function LabAbacusSimulator() {
           <div className="bg-vibrant-dark text-white rounded-3xl p-8 md:p-10 border-2 border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-2 text-center md:text-left">
               <span className="text-xs font-bold text-vibrant-gold uppercase tracking-wider block">
-                Offline Center in Wakad & Global Online Batches
+                {t("labAbacusCtaBadge")}
               </span>
               <h3 className="font-display font-black text-xl md:text-2xl text-white">
-                {language === "mr" ? "संस्थापिका नेहा पाटील यांच्या मायक्रो-बॅचचा प्रत्यक्ष अनुभव घ्या" : language === "hi" ? "संस्थापिका नेहा पाटिल के माइक्रो-बैच का अनुभव करें" : "Experience Neha Patil's Micro-Batch Classroom"}
+                {t("labAbacusCtaTitle")}
               </h3>
               <p className="text-xs text-slate-300 max-w-xl">
-                Every child receives a personalized 1-on-1 diagnostic assessment at our Wakad center. Small batches of maximum 5 students ensure individualized attention.
+                {t("labAbacusCtaDesc")}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">
@@ -183,13 +183,13 @@ export default function LabAbacusSimulator() {
                 }}
                 className="w-full sm:w-auto bg-vibrant-orange hover:bg-vibrant-orange/90 text-white font-black text-xs uppercase tracking-wider px-6 py-3.5 rounded-xl transition-all shadow-md active:translate-y-0.5 cursor-pointer text-center"
               >
-                Book Parent Counselling
+                {t("labAbacusCtaBookBtn")}
               </button>
               <Link
                 to="/programs/abacus"
                 className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs uppercase tracking-wider px-5 py-3.5 rounded-xl transition-all text-center flex items-center justify-center gap-1.5"
               >
-                <span>Curriculum Outline</span> <ArrowRight className="w-4 h-4" />
+                <span>{t("labAbacusCtaCurriculumBtn")}</span> <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>

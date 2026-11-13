@@ -222,13 +222,13 @@ export default function SpeedChallengeWidget() {
             <Trophy className="w-4 h-4 text-white" />
           </div>
           <div>
-            <span className="font-display font-black text-sm block tracking-wide text-white">Arnav Speed Challenge</span>
+            <span className="font-display font-black text-sm block tracking-wide text-white">{t("speedWidgetBrand")}</span>
             <span className="text-[9px] text-[#9ACAC1] font-bold block tracking-widest uppercase">{t("quizMentalPowerTest")}</span>
           </div>
         </div>
         <div className="text-right">
           <span className="text-[10px] text-vibrant-gold bg-vibrant-gold/15 border border-vibrant-gold/20 px-2.5 py-1 rounded-full font-black uppercase tracking-wider">
-            ★ INTERACTIVE
+            {t("speedWidgetBadgeInteractive")}
           </span>
         </div>
       </div>
@@ -268,7 +268,7 @@ export default function SpeedChallengeWidget() {
                     value={ageInput}
                     onChange={(e) => setAgeInput(e.target.value)}
                     className="flex-1 bg-[#102227] border-2 border-[#233C45] focus:border-vibrant-orange rounded-2xl px-4 py-3 text-sm text-white outline-none transition-all duration-200"
-                    placeholder={language === "hi" ? "जैसे: 8" : language === "mr" ? "उदा. ८" : "e.g., 8"}
+                    placeholder={t("speedWidgetAgePlaceholder")}
                   />
                   <button
                     type="submit"
@@ -338,7 +338,7 @@ export default function SpeedChallengeWidget() {
                 {formatNumber(currentQuestion.text)}
               </span>
               <span className="text-[9px] text-[#89B5BC] font-bold select-none block">
-                {language === "hi" ? "मोतियों की कल्पना मन में करें!" : language === "mr" ? "मनातल्या मनात मण्यांची विजुअलाइज करा!" : "Visualize the abacus beads mentally!"}
+                {t("speedWidgetVisualizePrompt")}
               </span>
             </div>
 
@@ -423,11 +423,7 @@ export default function SpeedChallengeWidget() {
                 {t("quizBookConsult")}
               </h5>
               <p className="text-xs text-[#A2C4C9] leading-relaxed max-w-md mx-auto">
-                {language === "hi" 
-                  ? "क्या आप बच्चे के लिए 1-on-1 डायग्नोस्टिक ब्रेन व मैथ्स असेसमेंट चाहते हैं? हमारे वाकड सेंटर या ऑनलाइन पर फ्री ट्रायल बुक करें।" 
-                  : language === "mr"
-                  ? "आपल्या पाल्यासाठी 1-on-1 डायग्नोस्टिक गणित व मेंदू चाचणी हवी आहे का? आमच्या वाकड सेंटर किंवा ऑनलाईनवर मोफत ट्रायल बुक करा."
-                  : "Want a complete 1-on-1 diagnostic brain & math assessment? Book your free offline trial at our Wakad center or online."}
+                {t("speedWidgetDiagnosticOffer")}
               </p>
               <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
                 <button

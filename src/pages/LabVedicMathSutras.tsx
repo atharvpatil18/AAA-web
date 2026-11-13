@@ -87,24 +87,24 @@ export default function LabVedicMathSutras() {
       {/* Breadcrumb Navigation Bar */}
       <nav aria-label="Breadcrumb" className="bg-[#FAF7F2] border-b border-slate-200 py-3 px-4 md:px-8">
         <div className="max-w-6xl mx-auto flex items-center gap-1.5 text-xs text-slate-500 font-medium overflow-x-auto whitespace-nowrap">
-          <Link to="/" className="hover:text-vibrant-orange transition-colors">Home</Link>
+          <Link to="/" className="hover:text-vibrant-orange transition-colors">{t("labVedicBreadcrumbHome")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-          <span className="text-slate-400">Interactive Learning Labs</span>
+          <span className="text-slate-400">{t("labVedicBreadcrumbLabs")}</span>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-          <span className="text-vibrant-dark font-bold">Vedic Maths Sutras</span>
+          <span className="text-vibrant-dark font-bold">{t("labVedicBreadcrumbSutras")}</span>
         </div>
       </nav>
 
       {/* Hero Header Section */}
       <section className="py-12 md:py-16 px-4 md:px-8 max-w-5xl mx-auto text-center space-y-4">
         <div className="inline-flex items-center gap-1.5 bg-orange-500/10 border border-orange-500/20 px-3.5 py-1.5 rounded-full text-xs font-bold text-vibrant-orange uppercase tracking-wider">
-          <Zap className="w-3.5 h-3.5 fill-current" /> High-Speed Mental Calculation
+          <Zap className="w-3.5 h-3.5 fill-current" /> {t("labVedicHeroBadge")}
         </div>
         <h1 className="font-display font-black text-3xl md:text-5xl text-vibrant-dark tracking-tight leading-tight">
-          Interactive Vedic Mathematics Sutra Lab
+          {t("labVedicHeroTitle")}
         </h1>
         <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Test 3 authentic Vedic Sutras below. See how cross-multiplication vector paths and algebraic deficiency patterns turn multi-step column calculations into single-line mental answers.
+          {t("labVedicHeroSubtitle")}
         </p>
       </section>
 
@@ -118,13 +118,13 @@ export default function LabVedicMathSutras() {
         <div className="max-w-5xl mx-auto space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <span className="text-xs font-bold text-vibrant-teal uppercase tracking-widest">
-              CBSE, ICSE & Olympiad Exam Benefits
+              {t("labVedicBenefitsBadge")}
             </span>
             <h2 className="font-display font-black text-2xl md:text-3xl text-vibrant-dark">
-              How Vedic Mathematics Solves the "Exam Time Pressure" Problem
+              {t("labVedicBenefitsTitle")}
             </h2>
             <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
-              In Class 6 to 10 board curricula, students spend up to 70% of exam time on raw arithmetic computations. Vedic Mathematics provides lightning-fast verification shortcuts, eliminating careless arithmetic slips.
+              {t("labVedicBenefitsDesc")}
             </p>
           </div>
 
@@ -133,9 +133,9 @@ export default function LabVedicMathSutras() {
               <div className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-vibrant-orange">
                 <Calculator className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-base text-vibrant-dark">Single-Line Vector Math</h3>
+              <h3 className="font-bold text-base text-vibrant-dark">{t("labVedicBenefit1Title")}</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                The Urdhva-Tiryagbhyam sutra bypasses multiple rows of partial products, writing the final product in one horizontal stroke directly.
+                {t("labVedicBenefit1Desc")}
               </p>
             </div>
 
@@ -143,9 +143,9 @@ export default function LabVedicMathSutras() {
               <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-100 flex items-center justify-center text-vibrant-teal">
                 <Target className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-base text-vibrant-dark">Instant Result Checking</h3>
+              <h3 className="font-bold text-base text-vibrant-dark">{t("labVedicBenefit2Title")}</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Using digital root sutras (Beejank), students verify answers in under 3 seconds without having to recalculate lengthy long division or squaring.
+                {t("labVedicBenefit2Desc")}
               </p>
             </div>
 
@@ -153,9 +153,9 @@ export default function LabVedicMathSutras() {
               <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
                 <Brain className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-base text-vibrant-dark">Algebraic Grounding</h3>
+              <h3 className="font-bold text-base text-vibrant-dark">{t("labVedicBenefit3Title")}</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Unlike rote tricks, every Vedic shortcut has an elegant algebraic proof ($(a-b)^2$, $(10x+5)^2$), deepening high school algebraic maturity.
+                {t("labVedicBenefit3Desc")}
               </p>
             </div>
           </div>
@@ -164,13 +164,13 @@ export default function LabVedicMathSutras() {
           <div className="bg-vibrant-dark text-white rounded-3xl p-8 md:p-10 border-2 border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-2 text-center md:text-left">
               <span className="text-xs font-bold text-vibrant-gold uppercase tracking-wider block">
-                Class 5 to 10 Advanced Batches
+                {t("labVedicCtaBadge")}
               </span>
               <h3 className="font-display font-black text-xl md:text-2xl text-white">
-                {language === "mr" ? "नेहा पाटील यांच्यासोबत विनामूल्य १-ऑन-१ मूल्यमापन बुक करा" : language === "hi" ? "नेहा पाटिल के साथ निःशुल्क १-ऑन-१ मूल्यांकन बुक करें" : "Book a Free 1-on-1 Assessment with Neha Patil"}
+                {t("labVedicCtaTitle")}
               </h3>
               <p className="text-xs text-slate-300 max-w-xl">
-                {language === "mr" ? "आपल्या पाल्याच्या अंकगणितीय अडचणी शोधा. नेहा पाटील शालेय बोर्ड आणि ऑलिम्पियाडनुसार वैयक्तिकृत स्पीड-लर्निंग योजना तयार करतात." : language === "hi" ? "अपने बच्चे की अंकगणितीय गणना बाधाओं की पहचान करें। नेहा पाटिल स्कूली बोर्ड और ओलंपियाड के अनुसार व्यक्तिगत स्पीड-लर्निंग योजना तैयार करती हैं।" : "Discover your child's arithmetic calculation bottlenecks. Neha Patil designs an individualized speed-learning plan tailored to school boards and Olympiads."}
+                {t("labVedicCtaDesc")}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full md:w-auto">
@@ -182,13 +182,13 @@ export default function LabVedicMathSutras() {
                 }}
                 className="w-full sm:w-auto bg-vibrant-teal hover:bg-vibrant-teal/90 text-white font-black text-xs uppercase tracking-wider px-6 py-3.5 rounded-xl transition-all shadow-md active:translate-y-0.5 cursor-pointer text-center"
               >
-                Book Parent Counselling
+                {t("labVedicCtaBookBtn")}
               </button>
               <Link
                 to="/programs/vedic-maths"
                 className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-xs uppercase tracking-wider px-5 py-3.5 rounded-xl transition-all text-center flex items-center justify-center gap-1.5"
               >
-                <span>Examine Course Levels</span> <ArrowRight className="w-4 h-4" />
+                <span>{t("labVedicCtaLevelsBtn")}</span> <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
