@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { SuccessStory, getSuccessStories, saveSuccessStory, deleteSuccessStory, formatDateToDdMmmYy, syncSuccessStoriesToCloud, getCloudUrl } from "../lib/successStories";
+import { SuccessStory, getSuccessStories, saveSuccessStory, deleteSuccessStory, formatDateToDdMmmYy, syncSuccessStoriesToCloud, getCloudUrl, resolveStudentPhoto } from "../lib/successStories";
 import { generateAISuccessStory } from "../lib/aiStoryGenerator";
 import { Sparkles, Plus, Trash2, Edit3, Trophy, Calendar, MapPin, School, X, RefreshCw } from "lucide-react";
 
@@ -204,7 +204,8 @@ export default function AdminSuccessStoryManager() {
     const formattedDate = formatDateToDdMmmYy(rawDate);
 
     // Ensure photo URL is downscaled/compressed so cloud upload never exceeds size limits
-    const photoUrlToSave = await compressImageBase64(studentPhotoUrl || "/logo.png");
+    const compressed = await compressImageBase64(studentPhotoUrl || "/logo.png");
+    const photoUrlToSave = resolveStudentPhoto(compressed, studentName);
 
     saveSuccessStory({
       id: editingId || undefined,
