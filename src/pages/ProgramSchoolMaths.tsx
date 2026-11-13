@@ -89,11 +89,11 @@ export default function ProgramSchoolMaths() {
       {/* 1. Breadcrumb Navigation */}
       <nav aria-label="Breadcrumb" className="bg-slate-100/80 border-b border-slate-200 py-2.5 px-4 md:px-8 text-xs font-semibold text-slate-600">
         <div className="max-w-7xl mx-auto flex items-center gap-1.5 flex-wrap">
-          <Link to="/" className="hover:text-vibrant-orange transition-colors">Home</Link>
+          <Link to="/" className="hover:text-vibrant-orange transition-colors">{t("navHome")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <Link to="/programs" className="hover:text-vibrant-orange transition-colors">Programs</Link>
+          <Link to="/programs" className="hover:text-vibrant-orange transition-colors">{t("navPrograms")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-vibrant-dark font-bold">School Maths & Competitive Excellence</span>
+          <span className="text-vibrant-dark font-bold">{t("progSchoolBreadcrumb")}</span>
         </div>
       </nav>
 
@@ -111,19 +111,19 @@ export default function ProgramSchoolMaths() {
                 School Maths Coaching & Olympiad Prep in Wakad
               </h1>
               <p className="text-slate-300 text-sm md:text-base leading-relaxed font-medium">
-                Comprehensive mathematics support aligned with CBSE, ICSE, and Maharashtra State Board standards. Building foundational clarity, word-problem comprehension, and competitive problem-solving readiness for IPM and Olympiad exams.
+                {t("progSchoolHeroDesc")}
               </p>
 
               {/* Quick Spec Pills */}
               <div className="flex flex-wrap gap-2.5 pt-2">
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-amber-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <GraduationCap className="w-3.5 h-3.5" /> Target Grade: Class 1 to 10
+                  <GraduationCap className="w-3.5 h-3.5" /> {t("progSchoolSpecGrade")}
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-emerald-300 text-xs px-3 py-1.5 rounded-xl font-bold">
                   <ShieldCheck className="w-3.5 h-3.5" /> CBSE, ICSE & State Board
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-sky-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <MapPin className="w-3.5 h-3.5" /> Wakad Center, Pune
+                  <MapPin className="w-3.5 h-3.5" /> {t("progSchoolSpecLoc")}
                 </span>
               </div>
 
@@ -136,7 +136,7 @@ export default function ProgramSchoolMaths() {
                   }}
                   className="bg-amber-600 hover:bg-amber-700 text-white font-black text-xs uppercase px-6 py-3.5 rounded-full shadow-md transition-all inline-flex items-center gap-2 cursor-pointer"
                 >
-                  <span>Book a Discovery Session</span>
+                  <span>{t("progSchoolBookDiscovery")}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -145,7 +145,7 @@ export default function ProgramSchoolMaths() {
               <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 text-xs text-slate-300 flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-vibrant-orange shrink-0 mt-0.5" />
                 <span>
-                  <strong>Classroom Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
+                  <strong>{t("progSchoolLocTitle")}</strong> {t("progSchoolLocDesc")}
                 </span>
               </div>
             </div>
@@ -154,13 +154,13 @@ export default function ProgramSchoolMaths() {
             <div className="lg:col-span-5 bg-white text-slate-900 rounded-3xl p-6 md:p-8 shadow-2xl border-4 border-vibrant-dark">
               <div className="mb-4">
                 <span className="text-[10px] font-black text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                  Book A Trial Session
+                  {t("progSchoolLeadBadge")}
                 </span>
                 <h2 className="text-xl font-black text-vibrant-dark mt-2">
-                  AAA Personalised Learning Discovery Session
+                  {t("progSchoolLeadTitle")}
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
-                  Review your child's syllabus needs, concept clarity, and competitive exam goals with our mentors.
+                  {t("progSchoolLeadDesc")}
                 </p>
               </div>
               <LeadForm sourceCampaign="programs_school_maths_page" defaultProgram="School Math" />
@@ -174,47 +174,47 @@ export default function ProgramSchoolMaths() {
       <section className="py-14 md:py-18 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
           <span className="text-[10px] font-black text-amber-700 bg-amber-50 border border-amber-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Target Stages
+            {t("progSchoolWhoBadge")}
           </span>
           <h2 className="font-display font-black text-3xl text-vibrant-dark">
-            Who Can Benefit From Our School Math Coaching?
+            {t("progSchoolWhoTitle")}
           </h2>
           <p className="text-slate-600 text-xs md:text-sm font-semibold">
-            Serving students across primary, middle, and secondary school grades.
+            {t("progSchoolWhoSubtitle")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white border-2 border-slate-200 p-6 rounded-3xl space-y-3 shadow-xs hover:border-amber-400 transition-colors">
             <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-black text-sm">
-              Class 1–4
+              {t("progSchoolStage1Grade")}
             </div>
-            <h3 className="font-display font-black text-base text-vibrant-dark">Primary Foundation Track</h3>
+            <h3 className="font-display font-black text-base text-vibrant-dark">{t("progSchoolStage1Title")}</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              Reinforcing fundamental number concepts, times tables, and word-problem visualization. Building confidence and reducing hesitation around mathematics while matching school textbook lessons.
+              {t("progSchoolStage1Desc")}
             </p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-6 rounded-3xl space-y-3 shadow-xs hover:border-amber-400 transition-colors">
             <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-800 flex items-center justify-center font-black text-sm">
-              Class 5–8
+              {t("progSchoolStage2Grade")}
             </div>
-            <h3 className="font-display font-black text-base text-vibrant-dark">Middle School Conceptual Core</h3>
+            <h3 className="font-display font-black text-base text-vibrant-dark">{t("progSchoolStage2Title")}</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              Bridging arithmetic with introductory algebra, fractions, geometry, and mensuration. Equipping students with step-by-step written proof habits required for full exam marks.
+              {t("progSchoolStage2Desc")}
             </p>
           </div>
 
           <div className="bg-white border-2 border-amber-300 p-6 rounded-3xl space-y-3 shadow-md relative">
             <span className="absolute -top-3 right-4 bg-amber-600 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-              Competitive Focus
+              {t("progSchoolStage3Badge")}
             </span>
             <div className="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-800 flex items-center justify-center font-black text-sm">
-              Class 2–8
+              {t("progSchoolStage3Grade")}
             </div>
-            <h3 className="font-display font-black text-base text-vibrant-dark">IPM & Olympiad Preparation</h3>
+            <h3 className="font-display font-black text-base text-vibrant-dark">{t("progSchoolStage3Title")}</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              Specialized coaching for competitive benchmarks including IPM (Institute for Promotion of Mathematics) and National/International Mathematics Olympiads without school curriculum clash.
+              {t("progSchoolStage3Desc")}
             </p>
           </div>
         </div>
@@ -227,45 +227,45 @@ export default function ProgramSchoolMaths() {
             
             <div className="space-y-6">
               <span className="text-[10px] font-black text-vibrant-orange bg-[#FFF0E0] border border-[#FFD8B1] px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-                Curriculum Integration
+                {t("progSchoolMethodBadge")}
               </span>
               <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-                Aligning School Syllabus With Logic Mastery
+                {t("progSchoolMethodTitle")}
               </h2>
               <p className="text-slate-600 text-xs md:text-sm font-semibold leading-relaxed">
-                Rather than treating math coaching as routine homework repetition, AAA trains students to understand mathematical relationships conceptually and express solutions cleanly.
+                {t("progSchoolMethodSubtitle")}
               </p>
 
               <div className="space-y-4 pt-2">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-xs font-black text-vibrant-dark">Board Curriculum Compliance</strong>
-                    <span className="text-xs text-slate-600 font-medium">Strict alignment with CBSE, ICSE, and Maharashtra State Board syllabi ensures no conflicting notation or terminology.</span>
+                    <strong className="block text-xs font-black text-vibrant-dark">{t("progSchoolMethodP1Title")}</strong>
+                    <span className="text-xs text-slate-600 font-medium">{t("progSchoolMethodP1Desc")}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-xs font-black text-vibrant-dark">Word-Problem Deconstruction</strong>
-                    <span className="text-xs text-slate-600 font-medium">Teaching children how to break complex multi-sentence questions into clear numerical equations systematically.</span>
+                    <strong className="block text-xs font-black text-vibrant-dark">{t("progSchoolMethodP2Title")}</strong>
+                    <span className="text-xs text-slate-600 font-medium">{t("progSchoolMethodP2Desc")}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-xs font-black text-vibrant-dark">Step-by-Step Proof Discipline</strong>
-                    <span className="text-xs text-slate-600 font-medium">Writing out complete mathematical steps to secure full method marks in terminal and board examinations.</span>
+                    <strong className="block text-xs font-black text-vibrant-dark">{t("progSchoolMethodP3Title")}</strong>
+                    <span className="text-xs text-slate-600 font-medium">{t("progSchoolMethodP3Desc")}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-xs font-black text-vibrant-dark">Regular Progress Check-ins</strong>
-                    <span className="text-xs text-slate-600 font-medium">Diagnostic assessments and periodic reviews with parents to ensure school report card improvement is steady.</span>
+                    <strong className="block text-xs font-black text-vibrant-dark">{t("progSchoolMethodP4Title")}</strong>
+                    <span className="text-xs text-slate-600 font-medium">{t("progSchoolMethodP4Desc")}</span>
                   </div>
                 </div>
               </div>
@@ -278,34 +278,34 @@ export default function ProgramSchoolMaths() {
                 School & Competitive Pillars
               </h3>
               <p className="text-xs text-slate-500 font-semibold">
-                Balancing day-to-day school board requirements with high-order logical thinking.
+                {t("progSchoolPillarsSub")}
               </p>
 
               <div className="divide-y divide-slate-100 text-xs">
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="font-bold text-slate-800">Concept Clarity Drills</span>
-                  <span className="text-slate-500 font-medium">Fractions, Decimals, Ratios & Percentages</span>
+                  <span className="font-bold text-slate-800">{t("progSchoolPillars1Title")}</span>
+                  <span className="text-slate-500 font-medium">{t("progSchoolPillars1Desc")}</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="font-bold text-slate-800">Algebraic Foundations</span>
-                  <span className="text-slate-500 font-medium">Variables, Expressions & Simple Equations</span>
+                  <span className="font-bold text-slate-800">{t("progSchoolPillars2Title")}</span>
+                  <span className="text-slate-500 font-medium">{t("progSchoolPillars2Desc")}</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="font-bold text-slate-800">Geometry & Mensuration</span>
-                  <span className="text-slate-500 font-medium">Perimeter, Area, Angles & Spatial Proofs</span>
+                  <span className="font-bold text-slate-800">{t("progSchoolPillars3Title")}</span>
+                  <span className="text-slate-500 font-medium">{t("progSchoolPillars3Desc")}</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="font-bold text-slate-800">IPM & Olympiad Prep</span>
-                  <span className="text-slate-500 font-medium">Pattern Recognition, Logical Puzzles & Mock Tests</span>
+                  <span className="font-bold text-slate-800">{t("progSchoolPillars4Title")}</span>
+                  <span className="text-slate-500 font-medium">{t("progSchoolPillars4Desc")}</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="font-bold text-slate-800">Vedic Speed Applications</span>
-                  <span className="text-slate-500 font-medium">Rough-work verification and time-saving checks</span>
+                  <span className="font-bold text-slate-800">{t("progSchoolPillars5Title")}</span>
+                  <span className="text-slate-500 font-medium">{t("progSchoolPillars5Desc")}</span>
                 </div>
               </div>
 
               <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 text-[11px] text-amber-900 font-semibold">
-                💡 Note: Arnav Abacus Academy provides independent academic coaching and preparation. We are not officially affiliated with or endorsed by examination boards or competition bodies.
+                {t("progSchoolPillarsTip")}
               </div>
             </div>
 
@@ -317,39 +317,39 @@ export default function ProgramSchoolMaths() {
       <section className="py-14 md:py-18 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
           <span className="text-[10px] font-black text-amber-700 bg-amber-50 border border-amber-200 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Expected Outcomes
+            {t("progSchoolOutBadge")}
           </span>
           <h2 className="font-display font-black text-3xl text-vibrant-dark">
-            What Outcomes Can Parents Reasonably Expect?
+            {t("progSchoolOutTitle")}
           </h2>
           <p className="text-slate-600 text-xs md:text-sm font-semibold">
-            Realistic academic progress fostered through structured practice and personalized attention.
+            {t("progSchoolOutSubtitle")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">📖</span>
-            <h3 className="font-bold text-sm text-vibrant-dark">Clear Conceptual Logic</h3>
-            <p className="text-xs text-slate-600 font-medium">Students understand why formulas work rather than attempting to memorize patterns blindly.</p>
+            <h3 className="font-bold text-sm text-vibrant-dark">{t("progSchoolOut1Title")}</h3>
+            <p className="text-xs text-slate-600 font-medium">{t("progSchoolOut1Desc")}</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">✍️</span>
-            <h3 className="font-bold text-sm text-vibrant-dark">Step-Mark Discipline</h3>
-            <p className="text-xs text-slate-600 font-medium">Writing out organized solutions prevents avoidable mark deductions on subjective exam sheets.</p>
+            <h3 className="font-bold text-sm text-vibrant-dark">{t("progSchoolOut2Title")}</h3>
+            <p className="text-xs text-slate-600 font-medium">{t("progSchoolOut2Desc")}</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">🏆</span>
-            <h3 className="font-bold text-sm text-vibrant-dark">Competitive Preparedness</h3>
-            <p className="text-xs text-slate-600 font-medium">Familiarity with non-routine problem formats builds confidence for IPM and Olympiad competitions.</p>
+            <h3 className="font-bold text-sm text-vibrant-dark">{t("progSchoolOut3Title")}</h3>
+            <p className="text-xs text-slate-600 font-medium">{t("progSchoolOut3Desc")}</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">😊</span>
-            <h3 className="font-bold text-sm text-vibrant-dark">Reduced Homework Tears</h3>
-            <p className="text-xs text-slate-600 font-medium">Independent comprehension relieves daily academic frustration and restores parental peace of mind.</p>
+            <h3 className="font-bold text-sm text-vibrant-dark">{t("progSchoolOut4Title")}</h3>
+            <p className="text-xs text-slate-600 font-medium">{t("progSchoolOut4Desc")}</p>
           </div>
         </div>
       </section>
@@ -359,10 +359,10 @@ export default function ProgramSchoolMaths() {
         <div className="max-w-4xl mx-auto px-4 md:px-8 space-y-8">
           <div className="text-center space-y-2">
             <span className="text-[10px] font-black text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-              Frequently Asked Questions
+              {t("progSchoolFaqBadge")}
             </span>
             <h2 className="font-display font-black text-2xl md:text-3xl text-vibrant-dark">
-              Common Parent Questions on School Maths
+              {t("progSchoolFaqTitle")}
             </h2>
           </div>
 
@@ -370,30 +370,30 @@ export default function ProgramSchoolMaths() {
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2">
               <h3 className="font-bold text-sm text-vibrant-dark flex items-center gap-2">
                 <HelpCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                Does this coaching follow my child's specific school textbook?
+                {t("progSchoolQ1")}
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed pl-6">
-                Yes. Our teaching directly aligns with NCERT, CBSE, ICSE, and Maharashtra State Board curriculum standards, ensuring that classroom topics and homework assignments reinforce what is being taught at school.
+                {t("progSchoolA1")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2">
               <h3 className="font-bold text-sm text-vibrant-dark flex items-center gap-2">
                 <HelpCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                How are IPM and Olympiad preparations conducted?
+                {t("progSchoolQ2")}
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed pl-6">
-                In addition to standard textbook exercises, students practice diagnostic problem sheets featuring higher-order thinking skills, logical patterns, and mock timing drills designed specifically for competitive benchmarks.
+                {t("progSchoolA2")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2">
               <h3 className="font-bold text-sm text-vibrant-dark flex items-center gap-2">
                 <HelpCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                How do mental math shortcuts fit into school math?
+                {t("progSchoolQ3")}
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed pl-6">
-                Students write down all required curriculum proof steps for the teacher, while using mental shortcuts and Vedic checks internally to compute answers accurately and cross-verify solutions before submitting their paper. For guidance on why children make procedural calculation errors despite understanding concepts, see our parent guide on <Link to="/parent-guides/why-smart-children-make-silly-math-mistakes" className="text-amber-600 font-bold hover:underline">understanding calculation mistakes</Link>.
+                {t("progSchoolA3Part1")}<Link to="/parent-guides/why-smart-children-make-silly-math-mistakes" className="text-amber-600 font-bold hover:underline">{t("progSchoolA3Link")}</Link>{t("progSchoolA3Part2")}
               </p>
             </div>
           </div>
@@ -406,18 +406,18 @@ export default function ProgramSchoolMaths() {
           
           <div className="lg:col-span-8 space-y-4">
             <span className="text-[10px] font-black text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-              Dedicated Mentorship
+              {t("progSchoolTrustBadge")}
             </span>
             <h3 className="font-display font-black text-2xl text-vibrant-dark">
-              Supportive Wakad Classroom Environment
+              {t("progSchoolTrustTitle")}
             </h3>
             <p className="text-xs md:text-sm text-slate-600 font-medium leading-relaxed">
-              Arnav Abacus Academy offers personalized academic coaching led by Founder Neha Patil and Nitin Sir. Located conveniently near Park Street, behind Wisdom World School in Wakad, Pune.
+              {t("progSchoolTrustDesc")}
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2 text-xs font-bold text-slate-700">
               <span className="flex items-center gap-1.5">
-                <Award className="w-4 h-4 text-vibrant-gold" /> Small Batch Coaching
+                <Award className="w-4 h-4 text-vibrant-gold" /> {t("progSchoolTrustPill1")}
               </span>
               <span className="flex items-center gap-1.5">
                 <Trophy className="w-4 h-4 text-amber-600" /> Competition & Olympiad Mentorship
@@ -439,7 +439,7 @@ export default function ProgramSchoolMaths() {
               to="/contact"
               className="bg-vibrant-cream hover:bg-white text-vibrant-dark border-2 border-vibrant-dark font-black text-xs uppercase px-5 py-3.5 rounded-2xl text-center shadow-sm transition-all"
             >
-              Contact Wakad Center
+              {t("progSchoolTrustBtnContact")}
             </Link>
           </div>
 
@@ -450,28 +450,28 @@ export default function ProgramSchoolMaths() {
       <section className="py-12 bg-slate-100/60 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center space-y-6">
           <h3 className="font-display font-black text-lg text-vibrant-dark">
-            Explore Other Academy Learning Tracks
+            {t("progSchoolRelTitle")}
           </h3>
           <div className="flex flex-wrap justify-center gap-4 text-xs font-bold">
             <Link
               to="/programs/abacus"
               className="bg-white border-2 border-slate-200 hover:border-vibrant-orange px-5 py-3 rounded-2xl text-vibrant-dark transition-all flex items-center gap-2 shadow-xs"
             >
-              <span>Abacus Learning Program (Ages 4–14)</span>
+              <span>{t("progSchoolRelAbacus")}</span>
               <ArrowRight className="w-3.5 h-3.5 text-vibrant-orange" />
             </Link>
             <Link
               to="/programs/vedic-maths"
               className="bg-white border-2 border-slate-200 hover:border-vibrant-orange px-5 py-3 rounded-2xl text-vibrant-dark transition-all flex items-center gap-2 shadow-xs"
             >
-              <span>Vedic Mathematics (Ages 10+)</span>
+              <span>{t("progSchoolRelVedic")}</span>
               <ArrowRight className="w-3.5 h-3.5 text-vibrant-orange" />
             </Link>
             <Link
               to="/programs"
               className="bg-slate-800 text-white hover:bg-slate-900 px-5 py-3 rounded-2xl transition-all flex items-center gap-2 shadow-xs"
             >
-              <span>All Programs Overview</span>
+              <span>{t("progSchoolRelAll")}</span>
             </Link>
           </div>
         </div>

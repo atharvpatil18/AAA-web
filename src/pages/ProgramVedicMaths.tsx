@@ -89,11 +89,11 @@ export default function ProgramVedicMaths() {
       {/* 1. Breadcrumb Navigation */}
       <nav aria-label="Breadcrumb" className="bg-slate-100/80 border-b border-slate-200 py-2.5 px-4 md:px-8 text-xs font-semibold text-slate-600">
         <div className="max-w-7xl mx-auto flex items-center gap-1.5 flex-wrap">
-          <Link to="/" className="hover:text-vibrant-orange transition-colors">Home</Link>
+          <Link to="/" className="hover:text-vibrant-orange transition-colors">{t("navHome")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <Link to="/programs" className="hover:text-vibrant-orange transition-colors">Programs</Link>
+          <Link to="/programs" className="hover:text-vibrant-orange transition-colors">{t("navPrograms")}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-vibrant-dark font-bold">Vedic Mathematics Program</span>
+          <span className="text-vibrant-dark font-bold">{t("progVedicBreadcrumb")}</span>
         </div>
       </nav>
 
@@ -105,25 +105,25 @@ export default function ProgramVedicMaths() {
             
             <div className="lg:col-span-7 space-y-5">
               <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5]/15 border border-vibrant-teal/30 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-                Academic Speed & Accuracy
+                {t("progVedicHeroBadge")}
               </span>
               <h1 className="font-display font-black text-3xl md:text-5xl tracking-tight leading-tight">
-                Vedic Maths Classes in Wakad, Pune
+                {t("progVedicHeroTitle")}
               </h1>
               <p className="text-slate-300 text-sm md:text-base leading-relaxed font-medium">
-                High-speed mental calculation shortcuts based on foundational Sutras. Helping middle and high school students save examination time, reduce messy rough-work scribbles, and verify answers with confidence.
+                {t("progVedicHeroDesc")}
               </p>
 
               {/* Quick Spec Pills */}
               <div className="flex flex-wrap gap-2.5 pt-2">
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-teal-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <Clock className="w-3.5 h-3.5" /> Target Age: 9 to 14 Years (Grades 5–10)
+                  <Clock className="w-3.5 h-3.5" /> {t("progVedicSpecAge")}
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-amber-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <Zap className="w-3.5 h-3.5" /> Speed Sutras & Checking Habits
+                  <Zap className="w-3.5 h-3.5" /> {t("progVedicSpecSutras")}
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-sky-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <MapPin className="w-3.5 h-3.5" /> Wakad Center, Pune
+                  <MapPin className="w-3.5 h-3.5" /> {t("progVedicSpecLoc")}
                 </span>
               </div>
 
@@ -136,7 +136,7 @@ export default function ProgramVedicMaths() {
                   }}
                   className="bg-teal-600 hover:bg-teal-700 text-white font-black text-xs uppercase px-6 py-3.5 rounded-full shadow-md transition-all inline-flex items-center gap-2 cursor-pointer"
                 >
-                  <span>Book a Discovery Session</span>
+                  <span>{t("bookFreeDemo")}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -145,7 +145,7 @@ export default function ProgramVedicMaths() {
               <div className="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 text-xs text-slate-300 flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-vibrant-orange shrink-0 mt-0.5" />
                 <span>
-                  <strong>Classroom Location:</strong> Flat No. 3, 1st Floor, Advocate Balaji Sagar Bungalow, Opp. Creative Cameo, Near Park Street, behind WISDOM WORLD SCHOOL, Wakad, Pune (Serving Wakad, Pimple Saudagar, Hinjawadi, Tathawade & Baner).
+                  <strong>{t("progAbacusLocLabel")}</strong> {t("progAbacusLocText")}
                 </span>
               </div>
             </div>
@@ -154,13 +154,13 @@ export default function ProgramVedicMaths() {
             <div className="lg:col-span-5 bg-white text-slate-900 rounded-3xl p-6 md:p-8 shadow-2xl border-4 border-vibrant-dark">
               <div className="mb-4">
                 <span className="text-[10px] font-black text-vibrant-teal bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full uppercase tracking-wider">
-                  Personalised Learning
+                  {t("progVedicLeadBadge")}
                 </span>
                 <h2 className="text-xl font-black text-vibrant-dark mt-2">
-                  AAA Personalised Learning Discovery Session
+                  {t("progVedicLeadTitle")}
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
-                  Meet Founder Neha Patil for an encouraging, educator-led exploration of numerical agility, mental cross-multiplication, and error-verification habits.
+                  {t("progVedicLeadDesc")}
                 </p>
               </div>
               <LeadForm sourceCampaign="programs_vedic_maths_page" defaultProgram="Vedic Maths" />
@@ -174,47 +174,47 @@ export default function ProgramVedicMaths() {
       <section className="py-14 md:py-18 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
           <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Learner Profile
+            {t("progVedicWhoBadge")}
           </span>
           <h2 className="font-display font-black text-3xl text-vibrant-dark">
-            Who Can Benefit From Vedic Mathematics?
+            {t("progVedicWhoTitle")}
           </h2>
           <p className="text-slate-600 text-xs md:text-sm font-semibold">
-            Tailored for students who already possess basic school arithmetic and seek speed, checking habits, and exam efficiency.
+            {t("progVedicWhoSubtitle")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white border-2 border-slate-200 p-6 rounded-3xl space-y-3 shadow-xs hover:border-vibrant-teal transition-colors">
             <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center font-black text-sm">
-              Class 5–7
+              {t("progVedicAge1Grade")}
             </div>
-            <h3 className="font-display font-black text-base text-vibrant-dark">Primary to Middle Transition</h3>
+            <h3 className="font-display font-black text-base text-vibrant-dark">{t("progVedicAge1Title")}</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              Students encountering multi-digit multiplication, division, and fractions for the first time. Vedic shortcuts transform tedious multi-step grids into manageable mental routines.
+              {t("progVedicAge1Desc")}
             </p>
           </div>
 
           <div className="bg-white border-2 border-vibrant-teal/40 p-6 rounded-3xl space-y-3 shadow-md relative">
             <span className="absolute -top-3 right-4 bg-vibrant-teal text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-              Exam Advantage
+              {t("progVedicAge2Badge")}
             </span>
             <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-sm">
-              Class 8–10
+              {t("progVedicAge2Grade")}
             </div>
-            <h3 className="font-display font-black text-base text-vibrant-dark">Board Exam Candidates</h3>
+            <h3 className="font-display font-black text-base text-vibrant-dark">{t("progVedicAge2Title")}</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              Secondary students facing strict 2-hour or 3-hour examination deadlines. Vedic methods serve as a fast reverse-checking system without erasing or conflicting with standard board proof steps.
+              {t("progVedicAge2Desc")}
             </p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-6 rounded-3xl space-y-3 shadow-xs hover:border-vibrant-teal transition-colors">
             <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-black text-sm">
-              Olympiad
+              {t("progVedicAge3Grade")}
             </div>
-            <h3 className="font-display font-black text-base text-vibrant-dark">Competitive Exam Aspirants</h3>
+            <h3 className="font-display font-black text-base text-vibrant-dark">{t("progVedicAge3Title")}</h3>
             <p className="text-xs text-slate-600 leading-relaxed font-medium">
-              Students preparing for IPM, IMO, NTSE, and scholarship tests where mental computation speed directly influences test completion rates and overall accuracy.
+              {t("progVedicAge3Desc")}
             </p>
           </div>
         </div>
@@ -227,45 +227,45 @@ export default function ProgramVedicMaths() {
             
             <div className="space-y-6">
               <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-                Pedagogical Framework
+                {t("progVedicMethodBadge")}
               </span>
               <h2 className="font-display font-black text-3xl text-vibrant-dark leading-tight">
-                Vedic Arithmetic As A School Checking Engine
+                {t("progVedicMethodTitle")}
               </h2>
               <p className="text-slate-600 text-xs md:text-sm font-semibold leading-relaxed">
-                Vedic Maths at AAA is not taught as an alternative to school steps. Instead, it serves as a powerful "speed catalyst" and self-verification habit that prevents careless calculation errors during written exams.
+                {t("progVedicMethodSubtitle")}
               </p>
 
               <div className="space-y-4 pt-2">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-xs font-black text-vibrant-dark">The 16 Foundational Sutras</strong>
-                    <span className="text-xs text-slate-600 font-medium">Word formulas (such as <em>Urdhva Tiryagbhyam</em> and <em>Nikhilam</em>) enabling mental cross-multiplication in a single line.</span>
+                    <strong className="block text-xs font-black text-vibrant-dark">{t("progVedicMethodP1Title")}</strong>
+                    <span className="text-xs text-slate-600 font-medium">{t("progVedicMethodP1Desc")}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-xs font-black text-vibrant-dark">Beejank (Digit-Sum) Reverse Checks</strong>
-                    <span className="text-xs text-slate-600 font-medium">Single-digit root checking techniques allow students to verify complex calculations in seconds without reworking the entire problem.</span>
+                    <strong className="block text-xs font-black text-vibrant-dark">{t("progVedicMethodP2Title")}</strong>
+                    <span className="text-xs text-slate-600 font-medium">{t("progVedicMethodP2Desc")}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-xs font-black text-vibrant-dark">Minimizing Margin Scribbles & Calculation Slips</strong>
-                    <span className="text-xs text-slate-600 font-medium">Organized mental calculation keeps exam margins tidy and prevents transcription errors common in stressful timed exams.</span>
+                    <strong className="block text-xs font-black text-vibrant-dark">{t("progVedicMethodP3Title")}</strong>
+                    <span className="text-xs text-slate-600 font-medium">{t("progVedicMethodP3Desc")}</span>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-vibrant-teal shrink-0 mt-0.5" />
                   <div>
-                    <strong className="block text-xs font-black text-vibrant-dark">Step-Mark Integrity for Board Papers</strong>
-                    <span className="text-xs text-slate-600 font-medium">Students learn to write complete CBSE/ICSE required steps while using Vedic methods internally to calculate and verify results immediately.</span>
+                    <strong className="block text-xs font-black text-vibrant-dark">{t("progVedicMethodP4Title")}</strong>
+                    <span className="text-xs text-slate-600 font-medium">{t("progVedicMethodP4Desc")}</span>
                   </div>
                 </div>
               </div>
@@ -275,53 +275,53 @@ export default function ProgramVedicMaths() {
             <div className="bg-white border-4 border-vibrant-dark p-6 md:p-8 rounded-[32px] shadow-[8px_8px_0_0_#1A2E35] space-y-4">
               <h3 className="font-display font-black text-lg text-vibrant-dark flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-vibrant-teal" />
-                Vedic Maths Curriculum Modules
+                {t("progVedicModTitle")}
               </h3>
               <p className="text-xs text-slate-500 font-semibold">
-                Structured modules progressing from foundational arithmetic shortcuts to algebraic factoring.
+                {t("progVedicModSub")}
               </p>
 
               <div className="divide-y divide-slate-100 text-xs">
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="font-bold text-slate-800">Module 1: High-Speed Multiplication</span>
-                  <span className="text-slate-500 font-medium">Base 10, 100, 1000 & Crosswise Multiplication</span>
+                  <span className="font-bold text-slate-800">{t("progVedicMod1Title")}</span>
+                  <span className="text-slate-500 font-medium">{t("progVedicMod1Desc")}</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="font-bold text-slate-800">Module 2: Rapid Division & Decimals</span>
-                  <span className="text-slate-500 font-medium">Straight Division (Paravartya Yojayet)</span>
+                  <span className="font-bold text-slate-800">{t("progVedicMod2Title")}</span>
+                  <span className="text-slate-500 font-medium">{t("progVedicMod2Desc")}</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="font-bold text-slate-800">Module 3: Squares, Cubes & Roots</span>
-                  <span className="text-slate-500 font-medium">Square roots & cube roots of perfect numbers</span>
+                  <span className="font-bold text-slate-800">{t("progVedicMod3Title")}</span>
+                  <span className="text-slate-500 font-medium">{t("progVedicMod3Desc")}</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="font-bold text-slate-800">Module 4: Algebraic Shortcuts</span>
-                  <span className="text-slate-500 font-medium">Linear & quadratic equation quick-factoring</span>
+                  <span className="font-bold text-slate-800">{t("progVedicMod4Title")}</span>
+                  <span className="text-slate-500 font-medium">{t("progVedicMod4Desc")}</span>
                 </div>
                 <div className="py-2.5 flex justify-between items-center">
-                  <span className="font-bold text-slate-800">Module 5: Beejank & Divisibility</span>
-                  <span className="text-slate-500 font-medium">Automatic verification and digit-sum checks</span>
+                  <span className="font-bold text-slate-800">{t("progVedicMod5Title")}</span>
+                  <span className="text-slate-500 font-medium">{t("progVedicMod5Desc")}</span>
                 </div>
               </div>
 
               {/* Public Vedic Math Lab Discovery Card */}
               <div className="bg-gradient-to-r from-teal-50 to-emerald-50 border-2 border-teal-200 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
                 <div className="space-y-0.5 text-center sm:text-left">
-                  <span className="text-[9px] font-black text-teal-700 uppercase tracking-widest block">Interactive Tool</span>
-                  <h4 className="font-display font-black text-xs text-slate-900">Explore Vedic Sutras In Motion</h4>
-                  <p className="text-[11px] text-slate-600 font-medium">See interactive vector steppers for Yāvadūnam, Ekādhikena, and Urdhva-Tiryakbhyam calculations.</p>
+                  <span className="text-[9px] font-black text-teal-700 uppercase tracking-widest block">{t("progVedicLabBadge")}</span>
+                  <h4 className="font-display font-black text-xs text-slate-900">{t("progVedicLabTitle")}</h4>
+                  <p className="text-[11px] text-slate-600 font-medium">{t("progVedicLabDesc")}</p>
                 </div>
                 <Link
                   to="/vedic-maths-sutras"
                   className="bg-slate-900 hover:bg-teal-700 text-white text-[11px] font-bold px-3.5 py-2 rounded-xl transition-colors shadow-xs shrink-0 flex items-center gap-1.5"
                 >
-                  <span>Open Sutras Lab</span>
+                  <span>{t("progVedicLabBtn")}</span>
                   <ArrowRight className="w-3 h-3" />
                 </Link>
               </div>
 
               <div className="bg-teal-50 border border-teal-200 rounded-2xl p-3.5 text-[11px] text-teal-900 font-semibold">
-                💡 Taught under the guidance of IIVA-certified educators with direct focus on school syllabus synergy.
+                {t("progVedicTip")}
               </div>
             </div>
 
@@ -333,39 +333,39 @@ export default function ProgramVedicMaths() {
       <section className="py-14 md:py-18 max-w-7xl mx-auto px-4 md:px-8">
         <div className="text-center space-y-3 max-w-2xl mx-auto mb-12">
           <span className="text-[10px] font-black text-vibrant-teal bg-[#E0FAF5] border border-vibrant-teal/20 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-            Expected Outcomes
+            {t("progVedicOutBadge")}
           </span>
           <h2 className="font-display font-black text-3xl text-vibrant-dark">
-            What Outcomes Can Parents Reasonably Expect?
+            {t("progVedicOutTitle")}
           </h2>
           <p className="text-slate-600 text-xs md:text-sm font-semibold">
-            Realistic habits developed through regular practice and active problem-solving drills.
+            {t("progVedicOutSubtitle")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">⚡</span>
-            <h3 className="font-bold text-sm text-vibrant-dark">Faster Exam Checks</h3>
-            <p className="text-xs text-slate-600 font-medium">Students save valuable minutes by completing routine calculations mentally rather than writing full grids.</p>
+            <h3 className="font-bold text-sm text-vibrant-dark">{t("progVedicOut1Title")}</h3>
+            <p className="text-xs text-slate-600 font-medium">{t("progVedicOut1Desc")}</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">🎯</span>
-            <h3 className="font-bold text-sm text-vibrant-dark">Self-Verification Habits</h3>
-            <p className="text-xs text-slate-600 font-medium">Beejank checks provide students with independent habits to verify answers before turning in exam sheets.</p>
+            <h3 className="font-bold text-sm text-vibrant-dark">{t("progVedicOut2Title")}</h3>
+            <p className="text-xs text-slate-600 font-medium">{t("progVedicOut2Desc")}</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">📝</span>
-            <h3 className="font-bold text-sm text-vibrant-dark">Cleaner Rough Work</h3>
-            <p className="text-xs text-slate-600 font-medium">Minimizing sprawling margin scribbles prevents careless transcription and misread digit errors.</p>
+            <h3 className="font-bold text-sm text-vibrant-dark">{t("progVedicOut3Title")}</h3>
+            <p className="text-xs text-slate-600 font-medium">{t("progVedicOut3Desc")}</p>
           </div>
 
           <div className="bg-white border-2 border-slate-200 p-5 rounded-2xl space-y-2">
             <span className="text-2xl">🧘</span>
-            <h3 className="font-bold text-sm text-vibrant-dark">Exam Composure</h3>
-            <p className="text-xs text-slate-600 font-medium">Knowing how to handle heavy multi-digit calculations relieves time pressure and test day anxiety.</p>
+            <h3 className="font-bold text-sm text-vibrant-dark">{t("progVedicOut4Title")}</h3>
+            <p className="text-xs text-slate-600 font-medium">{t("progVedicOut4Desc")}</p>
           </div>
         </div>
       </section>
@@ -375,10 +375,10 @@ export default function ProgramVedicMaths() {
         <div className="max-w-4xl mx-auto px-4 md:px-8 space-y-8">
           <div className="text-center space-y-2">
             <span className="text-[10px] font-black text-vibrant-teal bg-teal-50 border border-teal-200 px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-              Frequently Asked Questions
+              {t("progVedicFaqBadge")}
             </span>
             <h2 className="font-display font-black text-2xl md:text-3xl text-vibrant-dark">
-              Common Parent Questions on Vedic Maths
+              {t("progVedicFaqTitle")}
             </h2>
           </div>
 
@@ -386,30 +386,30 @@ export default function ProgramVedicMaths() {
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2">
               <h3 className="font-bold text-sm text-vibrant-dark flex items-center gap-2">
                 <HelpCircle className="w-4 h-4 text-vibrant-teal shrink-0" />
-                Will school teachers deduct marks for using Vedic shortcuts?
+                {t("progVedicQ1")}
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed pl-6">
-                No. In subjective school exams (CBSE/ICSE), students write out all standard curriculum steps for full method marks. They use Vedic Maths to calculate answers rapidly and verify their accuracy, saving time and preventing calculation errors.
+                {t("progVedicA1")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2">
               <h3 className="font-bold text-sm text-vibrant-dark flex items-center gap-2">
                 <HelpCircle className="w-4 h-4 text-vibrant-teal shrink-0" />
-                What is the difference between Abacus and Vedic Maths?
+                {t("progVedicQ2")}
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed pl-6">
-                Abacus uses a physical tactile instrument for younger children (ages 4–14) to develop spatial visualization and number sense. Vedic Maths uses mental Sutras for students aged 10+ to solve mental arithmetic, squares, and algebraic equations without physical tools. For an in-depth breakdown, read our <Link to="/parent-guides/abacus-vs-vedic-maths" className="text-vibrant-teal font-bold hover:underline">detailed Abacus vs Vedic Maths guide</Link>.
+                {t("progVedicA2Part1")}<Link to="/parent-guides/abacus-vs-vedic-maths" className="text-vibrant-teal font-bold hover:underline">{t("progVedicA2Link")}</Link>{t("progVedicA2Part2")}
               </p>
             </div>
 
             <div className="bg-white border-2 border-slate-200 rounded-2xl p-5 space-y-2">
               <h3 className="font-bold text-sm text-vibrant-dark flex items-center gap-2">
                 <HelpCircle className="w-4 h-4 text-vibrant-teal shrink-0" />
-                Does my child need prior Abacus training to learn Vedic Maths?
+                {t("progVedicQ3")}
               </h3>
               <p className="text-xs text-slate-600 font-medium leading-relaxed pl-6">
-                Not at all. Vedic Maths is an independent system. Any student in Class 5 or above with a basic understanding of primary school arithmetic and times tables can learn Vedic techniques smoothly.
+                {t("progVedicA3")}
               </p>
             </div>
           </div>
@@ -422,24 +422,24 @@ export default function ProgramVedicMaths() {
           
           <div className="lg:col-span-8 space-y-4">
             <span className="text-[10px] font-black text-vibrant-teal bg-teal-50 border border-teal-200 px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-              Wakad Classroom Academy
+              {t("progVedicTrustBadge")}
             </span>
             <h3 className="font-display font-black text-2xl text-vibrant-dark">
-              Certified Mentorship with Neha Patil & Nitin Sir
+              {t("progVedicTrustTitle")}
             </h3>
             <p className="text-xs md:text-sm text-slate-600 font-medium leading-relaxed">
-              Arnav Abacus Academy provides structured offline and online micro-batches guided directly by certified faculty. Our center is conveniently located near Park Street, behind Wisdom World School in Wakad, Pune.
+              {t("progVedicTrustDesc")}
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2 text-xs font-bold text-slate-700">
               <span className="flex items-center gap-1.5">
-                <Award className="w-4 h-4 text-vibrant-teal" /> IIVA Certified Training
+                <Award className="w-4 h-4 text-vibrant-teal" /> {t("progVedicTrustPill1")}
               </span>
               <span className="flex items-center gap-1.5">
-                <Target className="w-4 h-4 text-amber-600" /> Exam Time Management Focus
+                <Target className="w-4 h-4 text-amber-600" /> {t("progVedicTrustPill2")}
               </span>
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" /> CBSE & ICSE Syllabus Synergy
+                <ShieldCheck className="w-4 h-4 text-emerald-600" /> {t("progVedicTrustPill3")}
               </span>
             </div>
           </div>
@@ -449,13 +449,13 @@ export default function ProgramVedicMaths() {
               to="/showcase"
               className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase px-5 py-3.5 rounded-2xl text-center shadow-md transition-all flex items-center justify-center gap-2"
             >
-              View Student Results <ArrowRight className="w-4 h-4" />
+              {t("progVedicTrustBtnResults")} <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               to="/contact"
               className="bg-vibrant-cream hover:bg-white text-vibrant-dark border-2 border-vibrant-dark font-black text-xs uppercase px-5 py-3.5 rounded-2xl text-center shadow-sm transition-all"
             >
-              Visit Wakad Center
+              {t("progVedicTrustBtnVisit")}
             </Link>
           </div>
 
@@ -466,28 +466,28 @@ export default function ProgramVedicMaths() {
       <section className="py-12 bg-slate-100/60 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center space-y-6">
           <h3 className="font-display font-black text-lg text-vibrant-dark">
-            Explore Other Academy Learning Tracks
+            {t("progVedicRelTitle")}
           </h3>
           <div className="flex flex-wrap justify-center gap-4 text-xs font-bold">
             <Link
               to="/programs/abacus"
               className="bg-white border-2 border-slate-200 hover:border-vibrant-orange px-5 py-3 rounded-2xl text-vibrant-dark transition-all flex items-center gap-2 shadow-xs"
             >
-              <span>Abacus Learning Program (Ages 4–14)</span>
+              <span>{t("progVedicRelAbacus")}</span>
               <ArrowRight className="w-3.5 h-3.5 text-vibrant-orange" />
             </Link>
             <Link
               to="/programs/school-maths"
               className="bg-white border-2 border-slate-200 hover:border-vibrant-orange px-5 py-3 rounded-2xl text-vibrant-dark transition-all flex items-center gap-2 shadow-xs"
             >
-              <span>School Maths & Olympiad Prep (Class 1–10)</span>
+              <span>{t("progVedicRelSchool")}</span>
               <ArrowRight className="w-3.5 h-3.5 text-vibrant-orange" />
             </Link>
             <Link
               to="/programs"
               className="bg-slate-800 text-white hover:bg-slate-900 px-5 py-3 rounded-2xl transition-all flex items-center gap-2 shadow-xs"
             >
-              <span>All Programs Overview</span>
+              <span>{t("progVedicRelAll")}</span>
             </Link>
           </div>
         </div>
