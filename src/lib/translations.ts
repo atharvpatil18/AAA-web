@@ -5,6 +5,7 @@
 
 import { parentGuidesEn, parentGuidesHi, parentGuidesMr } from "./translations_parent_guides";
 import { interactiveLabsEn, interactiveLabsHi, interactiveLabsMr } from "./translations_interactive_labs";
+import { blogEn, blogHi, blogMr } from "./translations_blog";
 
 export type Language = "en" | "hi" | "mr";
 
@@ -1727,6 +1728,7 @@ export const translations = {
     modalDiscoverySecurityNote: "Zero spam policy. Small batches (maximum 5 students). No obligation.",
     ...parentGuidesEn,
     ...interactiveLabsEn,
+    ...blogEn,
   },
   hi: {
     // Navbar
@@ -3446,6 +3448,7 @@ export const translations = {
     modalDiscoverySecurityNote: "शून्य स्पैम नीति। छोटे बैच (अधिकतम ५ छात्र)। कोई बाध्यता नहीं।",
     ...parentGuidesHi,
     ...interactiveLabsHi,
+    ...blogHi,
   },
   mr: {
     // Navbar
@@ -5165,6 +5168,7 @@ export const translations = {
     modalDiscoverySecurityNote: "शून्य स्पॅम धोरण. लहान बॅच (कमाल ५ विद्यार्थी). कोणतीही सक्ती नाही.",
     ...parentGuidesMr,
     ...interactiveLabsMr,
+    ...blogMr,
   }
 };
 

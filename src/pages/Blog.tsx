@@ -244,7 +244,7 @@ export default function Blog() {
         {/* Interactive Parent & Student Newsletter CTA */}
         <div className="bg-gradient-to-r from-amber-500 to-vibrant-orange text-white rounded-3xl p-8 sm:p-12 shadow-xl text-center space-y-6 max-w-4xl mx-auto">
           <div className="inline-block bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-            🧠 {formatNumber("5,000+")} Smart Parents
+            {t("blogNewsletterBadge")}
           </div>
           <h2 className="text-2xl sm:text-4xl font-black leading-tight">
             {t("blogHubSubtitle")}
@@ -260,7 +260,7 @@ export default function Blog() {
                 subs.push({ email: subscriberEmail, subscribedAt: new Date().toISOString() });
                 localStorage.setItem("aaa_newsletter_subscribers", JSON.stringify(subs));
 
-                alert(`📩 Welcome Confirmation Dispatched to ${subscriberEmail}!`);
+                alert(`📩 ${t("blogNewsletterSubscribed")} (${subscriberEmail})`);
                 setIsChallengeModalOpen(true);
                 input.value = "";
               }
@@ -334,7 +334,7 @@ export default function Blog() {
                 <input
                   type="number"
                   required
-                  placeholder="Enter answer..."
+                  placeholder={t("blogMathChallengePlaceholder")}
                   value={userChallengeAns}
                   onChange={(e) => {
                     setUserChallengeAns(e.target.value);
@@ -371,7 +371,7 @@ export default function Blog() {
                 }}
                 className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-4 py-2 rounded-xl uppercase tracking-wider cursor-pointer"
               >
-                Close
+                {t("blogModalClose")}
               </button>
             </div>
           </div>
