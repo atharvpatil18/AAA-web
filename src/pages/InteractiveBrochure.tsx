@@ -167,10 +167,10 @@ export default function InteractiveBrochure() {
 
             <div className="p-4 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-teal-500/10 border-2 border-dashed border-amber-300 rounded-2xl text-xs md:text-sm text-slate-800 font-bold flex flex-wrap items-center gap-2">
               <span className="text-vibrant-orange font-black">{t("manualSyllabusSynergy")}</span>
-              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Abacus Classes in Wakad Pune</span>
-              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Speed Math Simulator</span>
-              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Vedic Math Shortcuts</span>
-              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">Cambridge & IB Synergy</span>
+              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">{t("manualSyllabusTag1")}</span>
+              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">{t("manualSyllabusTag2")}</span>
+              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">{t("manualSyllabusTag3")}</span>
+              <span className="bg-white px-2.5 py-1 rounded-xl shadow-xs border border-amber-200 text-slate-800 font-extrabold">{t("manualSyllabusTag4")}</span>
             </div>
           </div>
 
@@ -207,7 +207,7 @@ export default function InteractiveBrochure() {
                 </div>
                 <div className="pt-3 border-t border-orange-200/60 text-[11px] font-bold text-vibrant-orange flex items-center gap-1">
                   <CheckCircle2 className="w-4 h-4 text-vibrant-orange shrink-0" />
-                  <span>Builds Calculation Stamina</span>
+                  <span>{t("manualMode1Benefit")}</span>
                 </div>
               </div>
 
@@ -227,7 +227,7 @@ export default function InteractiveBrochure() {
                 </div>
                 <div className="pt-3 border-t border-teal-200/60 text-[11px] font-bold text-vibrant-teal flex items-center gap-1">
                   <CheckCircle2 className="w-4 h-4 text-vibrant-teal shrink-0" />
-                  <span>Trains Spatial Bead Memory</span>
+                  <span>{t("manualMode2Benefit")}</span>
                 </div>
               </div>
 
@@ -236,18 +236,18 @@ export default function InteractiveBrochure() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-black bg-purple-600 text-white px-3 py-1 rounded-full uppercase tracking-wider shadow-xs">
-                      MODE 3
+                      {t("manualMode3")}
                     </span>
                     <span className="text-xl">⏱️</span>
                   </div>
-                  <h4 className="font-black text-base md:text-lg text-slate-900">Set Your Race Clock!</h4>
+                  <h4 className="font-black text-base md:text-lg text-slate-900">{t("manualMode3Title")}</h4>
                   <p className="text-xs md:text-sm text-slate-600 font-semibold leading-relaxed">
-                    Select Time as <strong>2 Min, 4 Min, 5 Min, 10 Min, or 20 Min</strong>! Race against the countdown timer to build instant accuracy under exam pressure!
+                    {t("manualMode3Desc")}
                   </p>
                 </div>
                 <div className="pt-3 border-t border-purple-200/60 text-[11px] font-bold text-purple-700 flex items-center gap-1">
                   <CheckCircle2 className="w-4 h-4 text-purple-700 shrink-0" />
-                  <span>Enforces Rapid Exam Speed</span>
+                  <span>{t("manualMode3Benefit")}</span>
                 </div>
               </div>
             </div>
@@ -261,10 +261,10 @@ export default function InteractiveBrochure() {
               </div>
               <div>
                 <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider">
-                  📄 STEP 3: OFFLINE HOME PRACTICE
+                  📄 {t("manualStep3Badge")}
                 </span>
                 <h3 className="text-lg md:text-xl font-black text-vibrant-dark mt-1">
-                  3. Printable PDF Worksheets & Parent Evaluation Workflow
+                  {t("manualStep3Title")}
                 </h3>
               </div>
             </div>
@@ -272,28 +272,28 @@ export default function InteractiveBrochure() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-2xl space-y-1">
                 <h4 className="font-black text-xs md:text-sm text-slate-900 flex items-center gap-1.5">
-                  <span>📄</span> 1-Click PDF Generation
+                  <span>📄</span> {t("manualStep3Feature1Title")}
                 </h4>
                 <p className="text-xs text-slate-600 font-semibold leading-relaxed">
-                  Generate print-ready A4 worksheets with centered calculation columns for offline home drills.
+                  {t("manualStep3Feature1Desc")}
                 </p>
               </div>
 
               <div className="p-4 bg-amber-50/50 border border-amber-100 rounded-2xl space-y-1">
                 <h4 className="font-black text-xs md:text-sm text-slate-900 flex items-center gap-1.5">
-                  <span>📑</span> Attached Academy Brochure
+                  <span>📑</span> {t("manualStep3Feature2Title")}
                 </h4>
                 <p className="text-xs text-slate-600 font-semibold leading-relaxed">
-                  Every downloaded PDF worksheet automatically includes the Academy Brochure & contact info for reference.
+                  {t("manualStep3Feature2Desc")}
                 </p>
               </div>
 
               <div className="p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl space-y-1">
                 <h4 className="font-black text-xs md:text-sm text-slate-900 flex items-center gap-1.5">
-                  <span>✍️</span> Parent Evaluation Boxes
+                  <span>✍️</span> {t("manualStep3Feature3Title")}
                 </h4>
                 <p className="text-xs text-slate-600 font-semibold leading-relaxed">
-                  Each question card includes dedicated Ans: entry boxes and Eval: check/crossmark boxes to track score accuracy.
+                  {t("manualStep3Feature3Desc")}
                 </p>
               </div>
             </div>
@@ -303,13 +303,13 @@ export default function InteractiveBrochure() {
           <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-amber-400 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
             <div className="space-y-2">
               <span className="text-[10px] font-black text-amber-400 bg-amber-400/10 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block border border-amber-400/20">
-                🏆 READY TO TEST YOUR MATH AGILITY?
+                🏆 {t("manualCtaBadge")}
               </span>
               <h3 className="text-xl md:text-2xl font-black text-white tracking-tight">
-                Try the 10 Questions in 2 Minutes Speed Sprint Right Now!
+                {t("manualCtaTitle")}
               </h3>
               <p className="text-xs md:text-sm text-slate-300 font-semibold">
-                No passwords required. Experience live timer drills and record your score on the leaderboard!
+                {t("manualCtaDesc")}
               </p>
             </div>
 
@@ -320,7 +320,7 @@ export default function InteractiveBrochure() {
                 className="w-full sm:w-auto bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-950 font-black px-6 py-4 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer border-2 border-amber-300"
               >
                 <Zap className="w-4 h-4 fill-slate-950" />
-                <span>START FREE GUEST SPRINT DRILL</span>
+                <span>{t("manualCtaBtn")}</span>
               </button>
             </div>
           </div>
