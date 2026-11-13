@@ -39,6 +39,9 @@ const BlogPostDetail = React.lazy(() => import("./pages/BlogPostDetail"));
 const WorksheetVault = React.lazy(() => import("./pages/WorksheetVault"));
 const TeacherFranchise = React.lazy(() => import("./pages/TeacherFranchise"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
+const LabAbacusSimulator = React.lazy(() => import("./pages/LabAbacusSimulator"));
+const LabVedicMathSutras = React.lazy(() => import("./pages/LabVedicMathSutras"));
+const LabSpeedChallenge = React.lazy(() => import("./pages/LabSpeedChallenge"));
 
 import SEOHead from "./components/SEOHead";
 import { LanguageProvider } from "./lib/LanguageContext";
@@ -218,6 +221,15 @@ export default function App() {
                 <Route path="/faqs" element={<Faqs />} />
                 <Route path="/brochure" element={<InteractiveBrochure />} />
                 <Route path="/campaigns/:slug" element={<CampaignPage />} />
+
+                {/* Public Interactive Learning Labs */}
+                <Route path="/abacus-simulator" element={<LabAbacusSimulator />} />
+                <Route path="/labs/abacus" element={<Navigate to="/abacus-simulator" replace />} />
+                <Route path="/vedic-maths-sutras" element={<LabVedicMathSutras />} />
+                <Route path="/labs/vedic-maths" element={<Navigate to="/vedic-maths-sutras" replace />} />
+                <Route path="/speed-challenge" element={<LabSpeedChallenge />} />
+                <Route path="/math-quiz" element={<Navigate to="/speed-challenge" replace />} />
+                <Route path="/labs/math-challenge" element={<Navigate to="/speed-challenge" replace />} />
                 {/* 404 Fallback routing for invalid URLs */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

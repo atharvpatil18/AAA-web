@@ -69,8 +69,9 @@ export default function SpeedChallengeWidget() {
           answer: num1 + num2 - num3,
         };
       } else {
-        const num1 = Math.floor(Math.random() * 15) + 6; // 6 to 20
-        const num2 = Math.floor(Math.random() * 10) + 2; // 2 to 11
+        // Enforce strictly positive subtraction: minuend 8..19, subtrahend 2..(minuend-3)
+        const num1 = Math.floor(Math.random() * 12) + 8; // 8 to 19
+        const num2 = Math.floor(Math.random() * (num1 - 4)) + 2; // 2 to (num1 - 3)
         return {
           text: `${num1} - ${num2}`,
           answer: num1 - num2,
@@ -369,6 +370,7 @@ export default function SpeedChallengeWidget() {
         {step === "RESULT" && (
           <motion.div
             key="result-step"
+            aria-live="polite"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}

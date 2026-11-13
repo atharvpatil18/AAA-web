@@ -204,14 +204,14 @@ export default function VedicMathDemo() {
               </div>
               <input
                 type="range"
-                min="90"
+                min="91"
                 max="99"
                 value={squareNum}
                 onChange={(e) => setSquareNum(parseInt(e.target.value))}
                 className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-vibrant-teal"
               />
               <div className="flex justify-between text-[10px] text-gray-400 font-bold">
-                <span>{formatNumber(90)}</span>
+                <span>{formatNumber(91)}</span>
                 <span>{formatNumber(95)}</span>
                 <span>{formatNumber(99)}</span>
               </div>
@@ -257,7 +257,7 @@ export default function VedicMathDemo() {
             </div>
 
             {/* Formula Block */}
-            <div className="bg-slate-900 text-white p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 border border-slate-800 shadow-sm">
+            <div aria-live="polite" className="bg-slate-900 text-white p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 border border-slate-800 shadow-sm">
               <div className="space-y-1">
                 <span className="text-[10px] font-black text-vibrant-gold uppercase tracking-wider block animate-pulse">
                   {language === "hi" ? "भागों को मिलाएं" : language === "mr" ? "भाग एकत्र करा" : "Combine Parts"}
@@ -487,6 +487,7 @@ export default function VedicMathDemo() {
         <div className="pt-4 border-t border-slate-100">
           <button
             onClick={() => setShowFormula(!showFormula)}
+            aria-expanded={showFormula}
             className="text-xs font-black text-vibrant-teal hover:text-vibrant-teal/80 transition-colors flex items-center gap-1.5 cursor-pointer focus:outline-none"
           >
             <HelpCircle className="w-4 h-4 shrink-0" />
