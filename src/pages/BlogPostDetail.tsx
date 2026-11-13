@@ -81,14 +81,6 @@ export default function BlogPostDetail() {
     const found = allPosts.find((p) => p.slug === slug) || INITIAL_BLOG_POSTS.find((p) => p.slug === slug) || allPosts[0];
     setPost(found);
 
-    if (found) {
-      document.title = `${found.title} | Arnav Abacus Academy Pune`;
-      const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) {
-        metaDesc.setAttribute("content", found.excerpt);
-      }
-    }
-
     // Check if user already voted on poll
     if (found?.poll) {
       const pollKey = `aaa_poll_voted_${found.poll.id}`;
@@ -98,6 +90,18 @@ export default function BlogPostDetail() {
       }
     }
   }, [slug]);
+
+  const displayPost = post ? getLocalizedBlogPost(post, language) : null;
+
+  useEffect(() => {
+    if (displayPost) {
+      document.title = `${displayPost.title} | Arnav Abacus Academy Pune`;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute("content", displayPost.excerpt);
+      }
+    }
+  }, [displayPost?.title, displayPost?.excerpt, language]);
 
   // Scroll Progress Bar listener
   useEffect(() => {
@@ -111,7 +115,7 @@ export default function BlogPostDetail() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (!post) {
+  if (!post || !displayPost) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-vibrant-orange border-t-transparent rounded-full animate-spin"></div>
@@ -185,13 +189,13 @@ export default function BlogPostDetail() {
     // Security & Anti-Vulgarity / Anti-Spam checks
     const nameVal = validateSanitizedName(commentName);
     if (!nameVal.valid) {
-      setCommentError(nameVal.error || "Please enter a valid name.");
+      setCommentError(t("blogErrValidName"));
       return;
     }
 
     const msgVal = validateSanitizedMessage(commentText);
     if (!msgVal.valid) {
-      setCommentError(msgVal.error || "Please enter a constructive, respectful comment.");
+      setCommentError(t("blogErrRespectful"));
       return;
     }
 
@@ -267,37 +271,37 @@ export default function BlogPostDetail() {
           
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-300">
             <span className="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-full font-bold border border-amber-500/30">
-              {post.category}
+              {displayPost.category}
             </span>
             <span>•</span>
-            <span>⏱️ {formatNumber(post.readTime)}</span>
+            <span>⏱️ {formatNumber(displayPost.readTime)}</span>
             <span>•</span>
-            <span>📅 {formatNumber(post.publishedAt)}</span>
+            <span>📅 {formatNumber(displayPost.publishedAt)}</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight">
-            {post.title}
+            {displayPost.title}
           </h1>
 
           {/* Author info */}
           <div className="flex items-center gap-4 pt-4 border-t border-slate-800">
-            {post.author.name.includes("Neha Patil") ? (
+            {displayPost.author.name.includes("Neha Patil") ? (
               <img
                 src="/neha_patil_director.jpg"
-                alt={language === "mr" ? "नेहा पाटील - संचालिका व संस्थापिका" : language === "hi" ? "नेहा पाटिल - निदेशिका व संस्थापिका" : "Neha Patil - Director & Founder"}
+                alt={language === "mr" ? "नेहा पाटील - संस्थापिका व संचालिका" : language === "hi" ? "नेहा पाटिल - संस्थापिका व निदेशिका" : "Neha Patil - Founder & Academic Director"}
                 className="w-13 h-13 rounded-full object-cover border-2 border-amber-400 shadow-md bg-white shrink-0 ring-2 ring-amber-400/40"
               />
             ) : (
               <div className="w-12 h-12 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl shadow-inner">
-                {post.author.avatar}
+                {displayPost.author.avatar}
               </div>
             )}
             <div>
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <span>{post.author.name.includes("Neha Patil") ? (language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil") : post.author.name}</span>
-                {post.author.name.includes("Neha Patil") && (
+                <span>{displayPost.author.name.includes("Neha Patil") ? (language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil") : displayPost.author.name}</span>
+                {displayPost.author.name.includes("Neha Patil") && (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">
-                    O+ Certified
+                    {t("blogCertifiedBadge")}
                   </span>
                 )}
               </h3>
@@ -312,8 +316,8 @@ export default function BlogPostDetail() {
         {/* Cover Image Banner with Crystal-Clear Aspect Ratio & Sharp Text Legibility */}
         <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-slate-950 flex flex-col items-center justify-center">
           <img
-            src={post.coverImage}
-            alt={post.title}
+            src={displayPost.coverImage}
+            alt={displayPost.title}
             className="w-full h-auto object-contain block"
             loading="eager"
           />
@@ -323,7 +327,7 @@ export default function BlogPostDetail() {
         {(() => {
           // Extract section titles from content
           const sections: { id: string; title: string; icon: string }[] = [];
-          const headingMatches = post.content.match(/^###?\s+(.+)$/gm) || [];
+          const headingMatches = displayPost.content.match(/^###?\s+(.+)$/gm) || [];
           
           headingMatches.forEach((h, i) => {
             const rawTitle = h.replace(/^###?\s+/, "").trim();
@@ -356,19 +360,19 @@ export default function BlogPostDetail() {
                 <div className="space-y-1">
                   <div className="inline-flex items-center gap-2 bg-amber-400/15 text-amber-300 border border-amber-400/30 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider">
                     <Compass className="w-3.5 h-3.5 text-amber-400 animate-spin-slow" />
-                    Story At A Glance • Instant Navigation
+                    {t("blogGlanceBadge")}
                   </div>
                   <h3 className="text-lg sm:text-xl font-black text-white flex items-center gap-2">
-                    <span>Explore All {sections.length} Chapters</span>
+                    <span>{t("blogGlanceExploreChapters").replace("{count}", formatNumber(sections.length))}</span>
                   </h3>
                   <p className="text-xs text-slate-300 font-medium">
-                    Tap any topic below to jump directly to its details—no need to scroll through the full article!
+                    {t("blogGlanceTip")}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
                   <span className="text-[11px] font-mono text-amber-300/80 bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700">
-                    ⏱️ {formatNumber(post.readTime)}
+                    ⏱️ {formatNumber(displayPost.readTime)}
                   </span>
                 </div>
               </div>
@@ -395,7 +399,7 @@ export default function BlogPostDetail() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-1">
                           <span className={`text-[10px] font-bold uppercase tracking-wider font-mono ${isActive ? "text-slate-800" : "text-amber-400/90"}`}>
-                            Chapter {idx + 1}
+                            {t("blogGlanceChapter")} {formatNumber(idx + 1)}
                           </span>
                           <ChevronRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 ${isActive ? "text-slate-950" : "text-slate-400"}`} />
                         </div>
@@ -410,7 +414,7 @@ export default function BlogPostDetail() {
 
               <div className="pt-2 text-center border-t border-slate-800/80">
                 <p className="text-[11px] text-slate-400">
-                  💡 <strong>Tip:</strong> Each section heading below also includes an expand/collapse toggle so you can view only what you want!
+                  {t("blogGlanceHeadingTip")}
                 </p>
               </div>
             </div>
@@ -694,8 +698,8 @@ export default function BlogPostDetail() {
                 );
               };
 
-              // Parse post.content into Intro Blocks and Chapter Sections
-              const blocks = post.content.split("\n\n").map(b => b.trim()).filter(Boolean);
+              // Parse displayPost.content into Intro Blocks and Chapter Sections
+              const blocks = displayPost.content.split("\n\n").map(b => b.trim()).filter(Boolean);
               const introBlocks: string[] = [];
               interface SectionData {
                 id: string;
@@ -972,13 +976,13 @@ export default function BlogPostDetail() {
                         </span>
                         <div>
                           <h4 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                            <span>All {sections.length} Chapters In One Glance</span>
+                            <span>{t("blogGlanceAllChapters").replace("{count}", formatNumber(sections.length))}</span>
                             <span className="text-[10px] font-bold bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                              Time-Saver Mode
+                              {t("blogGlanceTimeSaver")}
                             </span>
                           </h4>
                           <p className="text-xs text-slate-600 font-medium">
-                            Scan highlights in seconds. Tap <strong>"✨ Deep Dive"</strong> on any chapter to read its complete details, or unfold everything below.
+                            {t("blogGlanceToolbarSubtitle")}
                           </p>
                         </div>
                       </div>
@@ -992,12 +996,12 @@ export default function BlogPostDetail() {
                           {areAllExpanded ? (
                             <>
                               <Minus className="w-3.5 h-3.5 text-vibrant-orange stroke-[2.5]" />
-                              <span>Fold All to Glance View</span>
+                              <span>{t("blogGlanceFoldAll")}</span>
                             </>
                           ) : (
                             <>
                               <Sparkles className="w-3.5 h-3.5 text-vibrant-orange stroke-[2.5]" />
-                              <span>✨ Unfold All Deep Dives ({sections.length})</span>
+                              <span>{t("blogGlanceUnfoldAll").replace("{count}", formatNumber(sections.length))}</span>
                             </>
                           )}
                         </button>
@@ -1040,7 +1044,7 @@ export default function BlogPostDetail() {
                             <div className="space-y-1.5 flex-1 min-w-0">
                               <div className="flex flex-wrap items-center gap-2">
                                 <span className="text-[10px] sm:text-[11px] font-mono font-black uppercase tracking-wider px-2.5 py-0.5 rounded-lg bg-slate-900 text-amber-400">
-                                  Chapter {sec.chapterIndex}
+                                  {t("blogGlanceChapter")} {formatNumber(sec.chapterIndex)}
                                 </span>
                                 <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-lg">
                                   ⏱️ {glance.readTime}
@@ -1074,12 +1078,12 @@ export default function BlogPostDetail() {
                                 {isExpanded ? (
                                   <>
                                     <Minus className="w-4 h-4 stroke-[2.5]" />
-                                    <span>Fold Chapter</span>
+                                    <span>{t("blogGlanceFoldChapter")}</span>
                                   </>
                                 ) : (
                                   <>
                                     <Sparkles className="w-4 h-4 stroke-[2.5]" />
-                                    <span>✨ Deep Dive</span>
+                                    <span>{t("blogGlanceDeepDive")}</span>
                                   </>
                                 )}
                               </button>
@@ -1099,18 +1103,18 @@ export default function BlogPostDetail() {
                                     />
                                     <div>
                                       <h5 className="text-xs sm:text-sm font-black text-slate-900 flex items-center gap-1.5">
-                                        <span>{language === "mr" ? "नेहा पाटील यांचा थेट संदेश" : language === "hi" ? "नेहा पाटिल का सीधा संदेश" : "Neha Patil's Direct Message"}</span>
+                                        <span>{t("blogDirectorDirectMessage")}</span>
                                         <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-200/80 text-amber-900">
-                                          O+ Certified
+                                          {t("blogCertifiedBadge")}
                                         </span>
                                       </h5>
-                                      <p className="text-[11px] text-vibrant-orange font-bold">Founder & Director • Arnav Abacus Academy</p>
+                                      <p className="text-[11px] text-vibrant-orange font-bold">{t("blogDirectorRoleBadge")}</p>
                                     </div>
                                   </div>
                                 )}
                                 <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-vibrant-orange">
                                   <Sparkles className="w-3.5 h-3.5" />
-                                  <span>Glance Summary & Key Takeaways</span>
+                                  <span>{t("blogGlanceKeyTakeaways")}</span>
                                 </div>
                                 <ul className="space-y-2">
                                   {glance.highlights.map((h, hIdx) => (
@@ -1132,10 +1136,10 @@ export default function BlogPostDetail() {
                               <div className="flex items-center justify-between text-xs text-slate-500 pt-1 px-1 font-semibold">
                                 <span className="text-vibrant-orange flex items-center gap-1.5 font-bold">
                                   <Sparkles className="w-3.5 h-3.5 text-vibrant-orange shrink-0" />
-                                  Tap card or click "✨ Deep Dive" to unlock full guides, formulas & action steps
+                                  {t("blogGlanceTapToUnlock")}
                                 </span>
                                 <span className="hidden sm:inline text-slate-400 font-mono text-[11px]">
-                                  {sec.blocks.length} detailed blocks
+                                  {formatNumber(sec.blocks.length)} {t("blogGlanceDetailedBlocks")}
                                 </span>
                               </div>
                             </div>
@@ -1149,7 +1153,7 @@ export default function BlogPostDetail() {
                               {/* Bottom of Section: Quick Collapse Button */}
                               <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                                 <span className="text-xs text-slate-400 font-medium">
-                                  End of Chapter {sec.chapterIndex}
+                                  {t("blogGlanceEndOfChapter")} {formatNumber(sec.chapterIndex)}
                                 </span>
                                 <button
                                   type="button"
@@ -1160,7 +1164,7 @@ export default function BlogPostDetail() {
                                   className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-vibrant-orange hover:bg-slate-100 px-3.5 py-1.5 rounded-xl transition-colors cursor-pointer border border-slate-200"
                                 >
                                   <ChevronUp className="w-3.5 h-3.5" />
-                                  <span>Back to Glance View</span>
+                                  <span>{t("blogGlanceBackToGlance")}</span>
                                 </button>
                               </div>
                             </div>
@@ -1176,20 +1180,20 @@ export default function BlogPostDetail() {
 
 
           {/* Interactive In-Article Mini Vedic Math Game Widget if on Vedic Post */}
-          {post.category === "Vedic Math" && (
+          {(displayPost.category === "Vedic Math" || displayPost.category === "वैदिक गणित") && (
             <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-6 space-y-4">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">⚡</span>
                 <div>
-                  <h4 className="text-sm font-black text-slate-900">Try It Yourself! Interactive Quick Math Challenge</h4>
-                  <p className="text-xs text-slate-600">Use the <i>Vertically and Crosswise</i> trick on: <strong>97 × 93</strong></p>
+                  <h4 className="text-sm font-black text-slate-900">{t("blogMathChallengeTitle")}</h4>
+                  <p className="text-xs text-slate-600">{t("blogMathChallengeSubtitle")}</p>
                 </div>
               </div>
               
               <form onSubmit={handleVerifyMath} className="flex gap-3">
                 <input
                   type="number"
-                  placeholder="Enter answer..."
+                  placeholder={t("blogMathChallengePlaceholder")}
                   value={userMathAns}
                   onChange={(e) => {
                     setUserMathAns(e.target.value);
@@ -1201,18 +1205,18 @@ export default function BlogPostDetail() {
                   type="submit"
                   className="bg-vibrant-orange hover:bg-vibrant-orange/90 text-white font-black px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition-all cursor-pointer"
                 >
-                  Verify
+                  {t("blogMathChallengeVerify")}
                 </button>
               </form>
 
               {mathSolved === true && (
                 <div className="p-3 bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold rounded-xl flex items-center gap-2">
-                  🎉 Correct! 97 × 93 = 9021. You calculated it mentally in seconds!
+                  {t("blogMathChallengeCorrect")}
                 </div>
               )}
               {mathSolved === false && (
                 <div className="p-3 bg-rose-100 border border-rose-300 text-rose-800 text-xs font-bold rounded-xl flex items-center gap-2">
-                  ❌ Incorrect. Hint: (97 - 7 = 90) and (3 x 7 = 21) &rarr; 9021.
+                  {t("blogMathChallengeIncorrect")}
                 </div>
               )}
 
@@ -1220,21 +1224,21 @@ export default function BlogPostDetail() {
           )}
 
           {/* Interactive Poll Widget */}
-          {post.poll && (
+          {displayPost.poll && (
             <div className="bg-slate-900 text-white rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
               <div className="flex items-center gap-2">
                 <span className="text-xl">📊</span>
                 <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                  {t("blogPollTitle")} ({formatNumber(post.poll.totalVotes)} {t("blogPollTotalVotes")})
+                  {t("blogPollTitle")} ({formatNumber(displayPost.poll.totalVotes)} {t("blogPollTotalVotes")})
                 </span>
               </div>
-              <h3 className="text-lg sm:text-xl font-bold">{post.poll.question}</h3>
+              <h3 className="text-lg sm:text-xl font-bold">{displayPost.poll.question}</h3>
 
               <div className="space-y-3">
-                {post.poll.options.map((opt) => {
+                {displayPost.poll.options.map((opt) => {
                   const percentage =
-                    post.poll!.totalVotes > 0
-                      ? Math.round((opt.votes / post.poll!.totalVotes) * 100)
+                    displayPost.poll!.totalVotes > 0
+                      ? Math.round((opt.votes / displayPost.poll!.totalVotes) * 100)
                       : 0;
                   const isSelected = votedOptionId === opt.id;
 
@@ -1279,7 +1283,7 @@ export default function BlogPostDetail() {
           {/* Reader Reactions Bar */}
           <div className="pt-6 border-t border-slate-100 space-y-4">
             <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider text-center sm:text-left">
-              Article Reactions:
+              {t("blogShareArticle")}:
             </h4>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <button
@@ -1287,28 +1291,28 @@ export default function BlogPostDetail() {
                 className="p-3 bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-300 rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-800"
               >
                 <span>💡</span>
-                <span className="text-xs font-bold">{t("blogReactionInsightful")} ({formatNumber(post.reactions.insightful)})</span>
+                <span className="text-xs font-bold">{t("blogReactionInsightful")} ({formatNumber(displayPost.reactions.insightful)})</span>
               </button>
               <button
                 onClick={() => handleReaction("mindBlowing")}
                 className="p-3 bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-800"
               >
                 <span>🧠</span>
-                <span className="text-xs font-bold">{t("blogReactionMindBlowing")} ({formatNumber(post.reactions.mindBlowing)})</span>
+                <span className="text-xs font-bold">{t("blogReactionMindBlowing")} ({formatNumber(displayPost.reactions.mindBlowing)})</span>
               </button>
               <button
                 onClick={() => handleReaction("inspiring")}
                 className="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-800"
               >
                 <span>👏</span>
-                <span className="text-xs font-bold">{t("blogReactionInspiring")} ({formatNumber(post.reactions.inspiring)})</span>
+                <span className="text-xs font-bold">{t("blogReactionInspiring")} ({formatNumber(displayPost.reactions.inspiring)})</span>
               </button>
               <button
                 onClick={() => handleReaction("helpful")}
                 className="p-3 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-300 rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-800"
               >
                 <span>❤️</span>
-                <span className="text-xs font-bold">{t("blogReactionHelpful")} ({formatNumber(post.reactions.helpful)})</span>
+                <span className="text-xs font-bold">{t("blogReactionHelpful")} ({formatNumber(displayPost.reactions.helpful)})</span>
               </button>
             </div>
           </div>
@@ -1316,11 +1320,11 @@ export default function BlogPostDetail() {
           {/* Social Share & Action Bar */}
           <div className="pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-500">Share Story:</span>
+              <span className="text-xs font-bold text-slate-500">{t("blogShareArticle")}:</span>
               {(() => {
                 const liveBaseUrl = "https://aaa-web-b0h.pages.dev";
-                const shareUrl = `${liveBaseUrl}/blog/${post.slug}`;
-                const shareText = `${post.title}\n\nRead the official story at:\n${shareUrl}`;
+                const shareUrl = `${liveBaseUrl}/blog/${displayPost.slug}`;
+                const shareText = `${displayPost.title}\n\nRead the official story at:\n${shareUrl}`;
 
                 const handleCopy = async () => {
                   let success = false;
@@ -1355,7 +1359,7 @@ export default function BlogPostDetail() {
                     setCopiedLink(true);
                     setTimeout(() => setCopiedLink(false), 3000);
                   } else {
-                    prompt("Copy the article link below:", shareUrl);
+                    prompt(t("blogPromptCopy"), shareUrl);
                   }
                 };
 
@@ -1366,9 +1370,9 @@ export default function BlogPostDetail() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 px-3 py-2 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-xl text-xs font-black shadow-sm transition-all cursor-pointer"
-                      title="Share on WhatsApp"
+                      title={t("blogShareWhatsApp")}
                     >
-                      <span className="text-sm">💬</span> WhatsApp
+                      <span className="text-sm">💬</span> {t("blogShareWhatsApp")}
                     </a>
                     <button
                       onClick={handleCopy}
@@ -1379,7 +1383,7 @@ export default function BlogPostDetail() {
                       }`}
                     >
                       <span>{copiedLink ? "✓" : "🔗"}</span>
-                      {copiedLink ? "Link Copied!" : "Copy Link"}
+                      {copiedLink ? t("blogCopiedLink") : t("blogCopyLink")}
                     </button>
                   </div>
                 );
@@ -1391,19 +1395,19 @@ export default function BlogPostDetail() {
                 to="/worksheets"
                 className="bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm transition-all uppercase tracking-wider inline-flex items-center gap-1.5 border border-slate-700 hover:scale-105"
               >
-                <span>📝</span> Explore Worksheets
+                <span>📝</span> {t("blogLinkWorksheets")}
               </Link>
               <Link
                 to="/showcase"
                 className="bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm transition-all uppercase tracking-wider inline-flex items-center gap-1.5 hover:scale-105"
               >
-                <span>🏆</span> Our Success
+                <span>🏆</span> {t("blogLinkShowcase")}
               </Link>
               <Link
                 to="/practice"
                 className="bg-vibrant-orange hover:bg-orange-600 text-white font-black text-xs px-5 py-2.5 rounded-xl shadow-md transition-all uppercase tracking-wider inline-flex items-center gap-1.5 hover:scale-105"
               >
-                <span>🚀</span> Try Practice Hub
+                <span>🚀</span> {t("blogLinkPracticeHub")}
               </Link>
             </div>
           </div>
@@ -1413,9 +1417,9 @@ export default function BlogPostDetail() {
         <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-slate-200 space-y-8">
           <div className="flex items-center justify-between border-b border-slate-100 pb-4">
             <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
-              <span>💬 Reader Discussions</span>
+              <span>💬 {t("blogDiscussionsHeading")}</span>
               <span className="px-2.5 py-0.5 bg-slate-100 text-slate-600 rounded-full text-xs font-bold">
-                {post.comments.length}
+                {formatNumber(displayPost.comments.length)}
               </span>
             </h3>
           </div>
@@ -1440,12 +1444,12 @@ export default function BlogPostDetail() {
               </div>
             )}
 
-            <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">Leave your thoughts or ask a mentor</h4>
+            <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider">{t("blogDiscussionsSubheading")}</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <input
                 type="text"
                 required
-                placeholder="Your Name (e.g. Rahul Sharma)"
+                placeholder={t("blogCommentNamePlaceholder")}
                 value={commentName}
                 onChange={(e) => setCommentName(e.target.value)}
                 className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-vibrant-orange text-slate-800"
@@ -1455,16 +1459,16 @@ export default function BlogPostDetail() {
                 onChange={(e) => setCommentRole(e.target.value as any)}
                 className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:outline-none focus:border-vibrant-orange"
               >
-                <option value="Parent">Parent</option>
-                <option value="Student">Student</option>
-                <option value="Educator">Educator / Teacher</option>
-                <option value="Visitor">General Visitor</option>
+                <option value="Parent">{t("blogCommentRoleParent")}</option>
+                <option value="Student">{t("blogCommentRoleStudent")}</option>
+                <option value="Educator">{t("blogCommentRoleEducator")}</option>
+                <option value="Visitor">{t("blogCommentRoleVisitor")}</option>
               </select>
             </div>
             <textarea
               required
               rows={3}
-              placeholder="Share your experience or ask a question about this article..."
+              placeholder={t("blogCommentTextPlaceholder")}
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:outline-none focus:border-vibrant-orange text-slate-800"
@@ -1473,14 +1477,14 @@ export default function BlogPostDetail() {
               type="submit"
               className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase px-5 py-2.5 rounded-xl shadow-md transition-all cursor-pointer"
             >
-              Post Comment
+              {t("blogPostCommentBtn")}
             </button>
           </form>
 
           {/* Comments List */}
           <div className="space-y-4">
-            {post.comments.length > 0 ? (
-              post.comments.map((comment) => (
+            {displayPost.comments.length > 0 ? (
+              displayPost.comments.map((comment) => (
                 <div
                   key={comment.id}
                   className="p-4 rounded-2xl bg-white border border-slate-100 space-y-3 hover:bg-slate-50/50 transition-colors"
@@ -1514,7 +1518,7 @@ export default function BlogPostDetail() {
               ))
             ) : (
               <p className="text-xs text-slate-400 text-center py-6">
-                Be the first to leave a comment on this article!
+                {t("blogBeFirstComment")}
               </p>
             )}
           </div>
