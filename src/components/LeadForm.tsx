@@ -848,10 +848,10 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 onChange={(e) => setChildAge(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
               >
-                <option value="4.5-6">{language === "hi" ? "4.5 - 6 वर्ष (जूनियर एबाकस)" : language === "mr" ? "४.५ - ६ वर्षे (ज्युनियर ॲबॅकस)" : "4.5 - 6 Years (Junior Abacus)"}</option>
-                <option value="6-9">{language === "hi" ? "6 - 9 वर्ष (एबाकस / मेंटल मैथ)" : language === "mr" ? "६ - ९ वर्षे (ॲबॅकस / मेंटल मॅथ)" : "6 - 9 Years (Abacus / Mental Math)"}</option>
-                <option value="9-12">{language === "hi" ? "9 - 12 वर्ष (वैदिक मैथ / ओलंपियाड)" : language === "mr" ? "९ - १२ वर्षे (वैदिक मॅथ / ऑलिम्पियाड)" : "9 - 12 Years (Vedic Math / Olympiad)"}</option>
-                <option value="12+">{language === "hi" ? "12+ वर्ष (स्कूल मैथ / एडवांस)" : language === "mr" ? "१२+ वर्षे (शालेय गणित / ॲडव्हान्स)" : "12+ Years (School Math / Advanced)"}</option>
+                <option value="4.5-6">{language === "hi" ? "४.५ - ६ वर्ष (जूनियर)" : language === "mr" ? "४.५ - ६ वर्षे (ज्युनियर)" : "4.5 - 6 Yrs (Junior)"}</option>
+                <option value="6-9">{language === "hi" ? "६ - ९ वर्ष (एबाकस)" : language === "mr" ? "६ - ९ वर्षे (ॲबॅकस)" : "6 - 9 Yrs (Abacus)"}</option>
+                <option value="9-12">{language === "hi" ? "९ - १२ वर्ष (वैदिक गणित)" : language === "mr" ? "९ - १२ वर्षे (वैदिक गणित)" : "9 - 12 Yrs (Vedic Math)"}</option>
+                <option value="12+">{language === "hi" ? "१२+ वर्ष (स्कूल मैथ)" : language === "mr" ? "१२+ वर्षे (शालेय गणित)" : "12+ Yrs (School Math)"}</option>
               </select>
             </div>
 
@@ -906,12 +906,12 @@ Arnav Abacus Academy operates in alignment with the National Education Policy (N
                 onChange={(e) => setSchoolCurriculum(e.target.value)}
                 className="w-full px-4 py-3 rounded-2xl bg-gray-100 border-2 border-transparent focus:border-vibrant-orange focus:bg-white outline-none text-sm text-gray-800 transition cursor-pointer shadow-sm"
               >
-                <option value="CBSE/ICSE">CBSE / ICSE</option>
-                <option value="State Board">{language === "hi" ? "स्टेट बोर्ड (State Board)" : language === "mr" ? "स्टेट बोर्ड (State Board)" : "State Board"}</option>
-                <option value="IB">IB (International Baccalaureate)</option>
+                <option value="CBSE/ICSE">{language === "hi" ? "CBSE / ICSE बोर्ड" : language === "mr" ? "CBSE / ICSE मंडळ" : "CBSE / ICSE"}</option>
+                <option value="State Board">{language === "hi" ? "स्टेट बोर्ड (State Board)" : language === "mr" ? "राज्य मंडळ (State Board)" : "State Board"}</option>
+                <option value="IB">{language === "hi" ? "IB (अंतर्राष्ट्रीय)" : language === "mr" ? "IB (आंतरराष्ट्रीय)" : "IB (International)"}</option>
                 <option value="IGCSE">Cambridge IGCSE</option>
                 <option value="US Common Core">US Common Core</option>
-                <option value="Other">{language === "hi" ? "अन्य / अंतर्राष्ट्रीय (Other)" : language === "mr" ? "इतर / आंतरराष्ट्रीय (Other)" : "Other / International"}</option>
+                <option value="Other">{language === "hi" ? "अन्य (Other)" : language === "mr" ? "इतर (Other)" : "Other"}</option>
               </select>
             </div>
           </div>

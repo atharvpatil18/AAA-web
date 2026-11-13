@@ -105,10 +105,10 @@ export default function ProgramSchoolMaths() {
             
             <div className="lg:col-span-7 space-y-5">
               <span className="text-[10px] font-black text-amber-300 bg-amber-400/15 border border-amber-400/30 px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
-                Curriculum Mastery & Competitive Edge
+                {t("progSchoolHeroBadge")}
               </span>
               <h1 className="font-display font-black text-3xl md:text-5xl tracking-tight leading-tight">
-                School Maths Coaching & Olympiad Prep in Wakad
+                {t("progSchoolHeroTitle")}
               </h1>
               <p className="text-slate-300 text-sm md:text-base leading-relaxed font-medium">
                 {t("progSchoolHeroDesc")}
@@ -120,7 +120,7 @@ export default function ProgramSchoolMaths() {
                   <GraduationCap className="w-3.5 h-3.5" /> {t("progSchoolSpecGrade")}
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-emerald-300 text-xs px-3 py-1.5 rounded-xl font-bold">
-                  <ShieldCheck className="w-3.5 h-3.5" /> CBSE, ICSE & State Board
+                  <ShieldCheck className="w-3.5 h-3.5" /> {t("progSchoolSpecBoards")}
                 </span>
                 <span className="inline-flex items-center gap-1.5 bg-slate-800 border border-slate-700 text-sky-300 text-xs px-3 py-1.5 rounded-xl font-bold">
                   <MapPin className="w-3.5 h-3.5" /> {t("progSchoolSpecLoc")}
@@ -275,7 +275,7 @@ export default function ProgramSchoolMaths() {
             <div className="bg-white border-4 border-vibrant-dark p-6 md:p-8 rounded-[32px] shadow-[8px_8px_0_0_#1A2E35] space-y-4">
               <h3 className="font-display font-black text-lg text-vibrant-dark flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-amber-600" />
-                School & Competitive Pillars
+                {t("progSchoolPillarsTitle")}
               </h3>
               <p className="text-xs text-slate-500 font-semibold">
                 {t("progSchoolPillarsSub")}
@@ -420,10 +420,10 @@ export default function ProgramSchoolMaths() {
                 <Award className="w-4 h-4 text-vibrant-gold" /> {t("progSchoolTrustPill1")}
               </span>
               <span className="flex items-center gap-1.5">
-                <Trophy className="w-4 h-4 text-amber-600" /> Competition & Olympiad Mentorship
+                <Trophy className="w-4 h-4 text-amber-600" /> {t("progSchoolTrustPill2")}
               </span>
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-600" /> CBSE & ICSE Board Synergy
+                <ShieldCheck className="w-4 h-4 text-emerald-600" /> {t("progSchoolTrustPill3")}
               </span>
             </div>
           </div>
@@ -433,7 +433,7 @@ export default function ProgramSchoolMaths() {
               to="/mentor"
               className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase px-5 py-3.5 rounded-2xl text-center shadow-md transition-all flex items-center justify-center gap-2"
             >
-              Meet Founder Neha Patil (Certified Trainer of Abacus & Vedic Mathematics) <ArrowRight className="w-4 h-4" />
+              {t("progSchoolTrustBtnMentor")} <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               to="/contact"

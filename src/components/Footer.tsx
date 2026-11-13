@@ -43,7 +43,7 @@ export default function Footer() {
               </div>
               <div>
                 <span className="font-display font-black text-white text-sm tracking-tight block leading-tight">
-                  Arnav Abacus Academy
+                  {t("footerBrandTitle")}
                 </span>
                 <span className="text-[9px] text-slate-500 font-medium tracking-wider uppercase block leading-none">
                   &amp; {t("footerVedicClasses")}
