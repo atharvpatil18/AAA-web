@@ -55,14 +55,25 @@ export default defineConfig(() => {
       chunkSizeWarningLimit: 600,
       modulePreload: {
         resolveDependencies: (filename, deps, { hostType }) => {
-          return deps.filter(dep => !dep.includes('vendor-pdf') && !dep.includes('vendor-purify'));
+          return deps.filter(dep => 
+            !dep.includes('vendor-pdf') && 
+            !dep.includes('vendor-purify') &&
+            !dep.includes('locale-parent-guides') &&
+            !dep.includes('locale-blog-content')
+          );
         },
       },
       rollupOptions: {
         output: {
           manualChunks(id) {
+            if (id.includes('translations_parent_guides') || id.includes('translations_guide_')) {
+              return 'locale-parent-guides';
+            }
+            if (id.includes('blogContentTranslations') || id.includes('blogChapterGlances')) {
+              return 'locale-blog-content';
+            }
             if (id.includes('translations')) {
-              return 'locale-translations';
+              return 'locale-core';
             }
             if (id.includes('node_modules')) {
               if (id.includes('jspdf') || id.includes('html2canvas')) {
