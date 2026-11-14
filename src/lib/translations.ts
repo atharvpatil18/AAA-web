@@ -1127,6 +1127,10 @@ export const translations = {
     t26Role: "Mother of Shantanu (Junior Vedic Math Champ)",
     t26Content: "Our experience with AAA has been wonderful! The demo classes and onboarding process were smooth and well-organized. The teaching quality is excellent, and the team maintains good communication with parents.\n\nI especially appreciate the guidance and support provided for competitions. They encourage children to explore their potential, build confidence, and develop their skills. The way they handle and support my highly active child with patience, understanding, and encouragement is truly commendable.\n\nThank you to the entire AAA team for your dedication, continuous support, and efforts in making learning enjoyable and meaningful for children. We are happy to be part of the AAA family! ❤️🙏",
 
+    t27Author: "Mr. Nakul Waghe",
+    t27Role: "Father of Purab",
+    t27Content: "Arnav Abacus Academy is doing a phenomenal job of shaping children's futures. They build strong foundational concepts in a way that nurtures logical thinking and noticeably improves the kids' ability to solve mathematical problems.\n\nThe mentors are always eager to connect with parents. They spend quality time discussing the challenges each child is facing and the specific steps to improve their performance. Their approach prioritizes accuracy first, then speed, which helps students build a solid conceptual base before working on pace.\n\nThe academy also encourages students and parents to take part in multiple olympiads and competitions. They prepare students systematically and well in advance, and they give timely guidance to both students and parents throughout.\n\nThe mentors are always smiling and welcoming, creating a comfortable atmosphere where children enjoy learning. We are very happy with our child's growth and highly recommend Arnav Abacus Academy.",
+
     news1Title: "Launching Our Parent-Student Mobile App!",
     news1Date: "Rolling Out Oct'26 End",
     news1Tag: "Digital Ecosystem",
@@ -2848,6 +2852,10 @@ export const translations = {
     t26Role: "शांतनु की माताजी (जूनियर वैदिक मैथ चैंप)",
     t26Content: "AAA के साथ हमारा अनुभव बेहद शानदार रहा है! डेमो क्लासेस और ऑनबोर्डिंग की प्रक्रिया बहुत ही सहज और सुव्यवस्थित थी। शिक्षण की गुणवत्ता उत्कृष्ट है, और पूरी टीम माता-पिता के साथ निरंतर बेहतरीन संवाद बनाए रखती है।\n\nप्रतियोगिताओं के लिए प्रदान किए गए मार्गदर्शन और सहयोग की मैं विशेष रूप से सराहना करती हूँ। वे बच्चों को अपनी क्षमताओं को पहचानने, आत्मविश्वास बढ़ाने और अपने कौशल विकसित करने के लिए प्रोत्साहित करते हैं। जिस धैर्य, समझ और प्रोत्साहन के साथ वे मेरे अत्यधिक सक्रिय बच्चे को संभालते हैं और उसका मार्गदर्शन करते हैं, वह वास्तव में सराहनीय है।\n\nबच्चों के लिए सीखने को आनंददायक और सार्थक बनाने में समर्पण, निरंतर सहयोग और प्रयासों के लिए पूरी AAA टीम को हार्दिक धन्यवाद। हमें AAA परिवार का हिस्सा बनने पर बहुत खुशी है! ❤️🙏",
 
+    t27Author: "श्री नकुल वाघे",
+    t27Role: "पूरब के पिता",
+    t27Content: "अर्णव एबाकस एकेडमी बच्चों के भविष्य को संवारने का अभूतपूर्व कार्य कर रही है। वे मजबूत बुनियादी अवधारणाओं का निर्माण इस तरह करते हैं जिससे तार्किक सोच विकसित होती है और गणितीय समस्याओं को हल करने की बच्चों की क्षमता में उल्लेखनीय सुधार होता है।\n\nमेंटर्स हमेशा माता-पिता से जुड़ने के लिए तत्पर रहते हैं। वे प्रत्येक बच्चे के सामने आने वाली चुनौतियों और उनके प्रदर्शन को बेहतर बनाने के विशिष्ट कदमों पर चर्चा करने के लिए गुणवत्तापूर्ण समय बिताते हैं। उनका दृष्टिकोण पहले सटीकता और फिर गति को प्राथमिकता देता है, जिससे छात्रों को गति पर काम करने से पहले एक मजबूत वैचारिक आधार बनाने में मदद मिलती है।\n\nएकेडमी छात्रों और अभिभावकों को कई ओलंपियाड और प्रतियोगिताओं में भाग लेने के लिए भी प्रोत्साहित करती है। वे छात्रों को व्यवस्थित रूप से और काफी पहले से तैयार करते हैं, तथा पूरे समय छात्रों और अभिभावकों दोनों को समय पर मार्गदर्शन देते हैं।\n\nमेंटर्स हमेशा मुस्कुराते और स्वागत करने वाले रहते हैं, जिससे एक आरामदायक वातावरण बनता है जहाँ बच्चे सीखने का आनंद लेते हैं। हम अपने बच्चे के विकास से बहुत खुश हैं और अर्णव एबाकस एकेडमी की अत्यधिक अनुशंसा करते हैं।",
+
     news1Title: "हमारा पैरेंट-स्टूडेंट मोबाइल ऐप लॉन्च हो रहा है !",
     news1Date: "अक्टूबर 2026 के अंत तक उपलब्ध",
     news1Tag: "डिजिटल इकोसिस्टम",
@@ -4568,6 +4576,10 @@ export const translations = {
     t26Author: "सौ. संध्या घोरपडे",
     t26Role: "शांतनू यांची आई (ज्युनियर वैदिक मॅथ चॅम्प)",
     t26Content: "AAA सोबतचा आमचा अनुभव अत्यंत अप्रतिम राहिला आहे! डेमो क्लासेस आणि प्रवेश प्रक्रिया अत्यंत सोपी व सुव्यवस्थित होती. शिकवण्याची गुणवत्ता उत्कृष्ट असून संपूर्ण टीम पालकांशी उत्तम संवाद ठेवते.\n\nस्पर्धांसाठी दिलेले मार्गदर्शन आणि पाठिंब्याचे मी विशेष कौतुक करते. ते मुलांना त्यांच्यातील सुप्त गुण ओळखण्यासाठी, आत्मविश्वास वाढवण्यासाठी आणि कौशल्ये विकसित करण्यासाठी सतत प्रोत्साहन देतात. माझ्या अत्यंत चंचल आणि उत्साही मुलाला ज्या संयमाने, समजुतीने आणि प्रेमाने त्यांनी सांभाळले व मार्गदर्शन केले, ते खरोखरच प्रशंसनीय आहे.\n\nमुलांसाठी शिक्षण आनंददायी आणि अर्थपूर्ण बनवण्यासाठी घेतलेले परिश्रम, सातत्यपूर्ण सहकार्य आणि समर्पणाबद्दल संपूर्ण AAA टीमचे मनापासून आभार. AAA परिवाराचा भाग असल्याचा आम्हाला मनस्वी आनंद आहे! ❤️🙏",
+
+    t27Author: "श्री नकुल वाघे",
+    t27Role: "पूरबचे वडील",
+    t27Content: "अर्णव ॲबॅकस अकॅडमी मुलांचे भविष्य घडवण्याचे अत्यंत अप्रतिम कार्य करत आहे. ते अशा पद्धतीने भक्कम पायाभूत संकल्पना तयार करतात ज्यामुळे तार्किक विचारसरणीला चालना मिळते आणि गणितीय समस्या सोडवण्याच्या मुलांच्या क्षमतेमध्ये लक्षणीय सुधारणा होते.\n\nमार्गदर्शक नेहमी पालकांशी संवाद साधण्यासाठी उत्सुक असतात. प्रत्येक मुलाला भेडसावणारी आव्हाने आणि त्यांची कामगिरी सुधारण्यासाठीच्या विशिष्ट उपाययोजनांवर चर्चा करण्यासाठी ते पुरेसा वेळ देतात. त्यांची शिकवण्याची पद्धत आधी अचूकता आणि नंतर वेग याला प्राधान्य देते, ज्यामुळे विद्यार्थ्यांना वेगावर काम करण्यापूर्वी एक भक्कम वैचारिक पाया तयार करण्यास मदत होते.\n\nअकॅडमी विद्यार्थी आणि पालकांना विविध ऑलिम्पियाड्स आणि स्पर्धांमध्ये सहभागी होण्यासाठी प्रोत्साहित करते. ते विद्यार्थ्यांची पूर्वतयारी पद्धतशीरपणे आणि वेळेआधीच करून घेतात, तसेच संपूर्ण प्रवासात विद्यार्थी आणि पालक दोघांनाही वेळेवर योग्य मार्गदर्शन करतात.\n\nमार्गदर्शक नेहमी हसतमुख आणि आपुलकीने स्वागत करणारे असतात, ज्यामुळे एक अतिशय अनुकूल वातावरण तयार होते जिथे मुले शिकण्याचा मनापासून आनंद घेतात. आम्ही आमच्या मुलाच्या सर्वांगीण प्रगतीबद्दल अत्यंत समाधानी असून अर्णव ॲबॅकस अकॅडमीची मनःपूर्वक शिफारस करतो.",
 
     news1Title: "आमचे पैरेंट-स्टूडेंट मोबाईल ॲप लवकरच उपलब्ध !",
     news1Date: "ऑक्टोबर २०२६ च्या शेवटी उपलब्ध",

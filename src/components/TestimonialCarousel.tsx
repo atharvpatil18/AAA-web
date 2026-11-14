@@ -16,8 +16,16 @@ export default function TestimonialCarousel() {
     trackTestimonialsView();
   }, []);
 
-  // 15 Latest Verified Google Reviews & Verbatim Parent Feedbacks (Chronological, Newest First)
+  // Verified Google Reviews & Verbatim Parent Feedbacks (Chronological, Newest First)
   const testimonials: Testimonial[] = [
+    {
+      id: "t27",
+      author: t("t27Author"),
+      role: t("t27Role"),
+      content: t("t27Content"),
+      rating: 5,
+      date: "Nov 2026",
+    },
     {
       id: "t25",
       author: t("t25Author"),

@@ -208,9 +208,9 @@ export default function Navbar() {
 
       {/* 2. Main Navbar */}
       <nav id="navbar-body" className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-3.5 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-3.5 flex justify-between items-center gap-4 xl:gap-6 2xl:gap-8">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-3 group shrink-0">
             <div className="w-10 h-10 md:w-11 md:h-11 bg-white rounded-full flex items-center justify-center overflow-hidden border border-slate-200 shadow-xs group-hover:scale-105 transition-transform shrink-0">
               {!logoFailed ? (
                 <img 
@@ -229,19 +229,19 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-            <div>
-              <span className="font-display font-black text-slate-900 text-sm md:text-lg tracking-tight block group-hover:text-orange-600 transition-colors leading-none">
+            <div className="shrink-0">
+              <span className="font-display font-black text-slate-900 text-sm md:text-base xl:text-lg tracking-tight block group-hover:text-orange-600 transition-colors leading-none whitespace-nowrap">
                 {t("navBrandTitle") || "ARNAV ABACUS ACADEMY"}
               </span>
-              <span className="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase tracking-widest block mt-0.5 leading-none">
+              <span className="text-[9px] md:text-[10px] text-slate-500 font-bold uppercase tracking-widest block mt-0.5 leading-none whitespace-nowrap">
                 {t("navBrandSubtitle") || "Wakad, Pune • Certified Mentorship"}
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center gap-4 xl:gap-6">
-            <ul className="flex items-center gap-3 xl:gap-5">
+          <div className="hidden xl:flex items-center gap-3 2xl:gap-6 shrink-0">
+            <ul className="flex items-center gap-2 xl:gap-2.5 2xl:gap-4">
               {primaryNavLinks.map((link) => {
                 if ((link as any).hasLabDropdown) {
                   const isAnyLabActive = currentPath === "/abacus-simulator" || currentPath === "/vedic-maths-sutras" || currentPath === "/speed-challenge";
@@ -456,7 +456,7 @@ export default function Navbar() {
                   handleBookDemoClick();
                   setIsDemoModalOpen(true);
                 }}
-                className="bg-orange-600 hover:bg-orange-700 text-white px-4 xl:px-5 py-2.5 rounded-full font-bold text-xs xl:text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+                className="bg-orange-600 hover:bg-orange-700 text-white px-3.5 2xl:px-5 py-2 2xl:py-2.5 rounded-full font-bold text-xs 2xl:text-sm shadow-xs hover:shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
               >
                 <span>{t("navBookDiscoveryCta")}</span>
                 <ArrowRight className="w-3.5 h-3.5 shrink-0" />
@@ -464,7 +464,7 @@ export default function Navbar() {
 
               <Link
                 to="/login"
-                className="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3.5 py-2 rounded-full font-bold text-xs shadow-xs active:scale-95 transition-all inline-flex items-center cursor-pointer whitespace-nowrap"
+                className="bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-2 rounded-full font-bold text-xs shadow-xs active:scale-95 transition-all inline-flex items-center cursor-pointer whitespace-nowrap"
               >
                 {t("navSignIn") || "Sign In"}
               </Link>
@@ -474,7 +474,7 @@ export default function Navbar() {
           {/* Mobile Menu Action Icon */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-slate-800 hover:text-orange-600 focus:outline-none p-1.5 cursor-pointer"
+            className="xl:hidden text-slate-800 hover:text-orange-600 focus:outline-none p-1.5 cursor-pointer"
             aria-label="Toggle Navigation Menu"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -483,7 +483,7 @@ export default function Navbar() {
 
         {/* 3. Mobile Expanded Drawer */}
         <div
-          className={`lg:hidden transition-all duration-300 overflow-hidden ${
+          className={`xl:hidden transition-all duration-300 overflow-hidden ${
             isOpen ? "max-h-screen opacity-100 border-b border-slate-200" : "max-h-0 opacity-0"
           }`}
         >
