@@ -1,4 +1,10 @@
 import { BlogPost } from "../types";
+import {
+  BLOG_1_CONTENT,
+  BLOG_2_CONTENT,
+  BLOG_3_CONTENT,
+  BLOG_4_CONTENT,
+} from "./blogContentTranslations";
 
 export const INITIAL_BLOG_POSTS: BlogPost[] = [
   {
@@ -734,7 +740,8 @@ export const POST_LOCALIZATIONS: Record<string, Record<"hi" | "mr", Partial<Blog
           { id: "opt-2", text: "7 - 9 वर्ष (प्राथमिक स्तर)", votes: 41 },
           { id: "opt-3", text: "10+ वर्ष (वैदिक गणित / उन्नत)", votes: 15 }
         ]
-      }
+      },
+      content: BLOG_1_CONTENT.hi
     },
     mr: {
       title: "ॲबॅकस शिक्षण लहान मुलांच्या संपूर्ण मेंदू विकासाला कशी चालना देते",
@@ -750,7 +757,8 @@ export const POST_LOCALIZATIONS: Record<string, Record<"hi" | "mr", Partial<Blog
           { id: "opt-2", text: "७ ते ९ वर्षे (प्राथमिक पातळी)", votes: 41 },
           { id: "opt-3", text: "१०+ वर्षे (वैदिक गणित / प्रगत)", votes: 15 }
         ]
-      }
+      },
+      content: BLOG_1_CONTENT.mr
     }
   },
   "blog-2": {
@@ -768,7 +776,8 @@ export const POST_LOCALIZATIONS: Record<string, Record<"hi" | "mr", Partial<Blog
           { id: "opt-2-2", text: "समय की कमी और गति का दबाव", votes: 32 },
           { id: "opt-2-3", text: "शाब्दिक प्रश्न और सूत्र", votes: 16 }
         ]
-      }
+      },
+      content: BLOG_2_CONTENT.hi
     },
     mr: {
       title: "५ सोपे वैदिक गणित सूत्र: कोणत्याही २-अंकी संख्यांचा सेकंदात गुणाकार करा",
@@ -784,7 +793,8 @@ export const POST_LOCALIZATIONS: Record<string, Record<"hi" | "mr", Partial<Blog
           { id: "opt-2-2", text: "वेळेची मर्यादा आणि स्पीड प्रेशर", votes: 32 },
           { id: "opt-2-3", text: "शाब्दिक उदाहरणे व सूत्रे", votes: 16 }
         ]
-      }
+      },
+      content: BLOG_2_CONTENT.mr
     }
   },
   "blog-3": {
@@ -792,13 +802,15 @@ export const POST_LOCALIZATIONS: Record<string, Record<"hi" | "mr", Partial<Blog
       title: "स्क्रीन टाइम बनाम ब्रेन जिम: 15 मिनट का मानसिक गणित डिजिटल थकान को कैसे दूर करता है",
       excerpt: "अपने बच्चे को निष्क्रिय डिजिटल स्क्रॉलिंग से सक्रिय डोपामाइन-बूस्टिंग मानसिक चुनौतियों में बदलने में मदद करें जो आत्मविश्वास बनाती हैं।",
       category: "पेरेंटिंग",
-      readTime: "6 मिनट पाठ"
+      readTime: "6 मिनट पाठ",
+      content: BLOG_3_CONTENT.hi
     },
     mr: {
       title: "स्क्रीन टाइम विरुद्ध ब्रेन जिम: १५ मिनिटांचा मेंटल मॅथ सराव कसा बदलतो मुलांचे अभ्यासातील लक्ष",
       excerpt: "मुलांना मोबाईल स्क्रोलिंगपासून दूर नेऊन मानसिक गणिताच्या आव्हानांमध्ये गुंतवून त्यांच्यात आत्मविश्वास निर्माण करा.",
       category: "पालकत्व",
-      readTime: "६ मि वाचन"
+      readTime: "६ मि वाचन",
+      content: BLOG_3_CONTENT.mr
     }
   },
   "blog-4": {
@@ -816,7 +828,8 @@ export const POST_LOCALIZATIONS: Record<string, Record<"hi" | "mr", Partial<Blog
           { id: "opt-champ-2", text: "100% सटीकता और गहरी एकाग्रता विकसित करना", votes: 64 },
           { id: "opt-champ-3", text: "परीक्षा में समय प्रबंधन में महारत हासिल करना", votes: 32 }
         ]
-      }
+      },
+      content: BLOG_4_CONTENT.hi
     },
     mr: {
       title: "पदके आणि गुणांच्या पलीकडे: ५६ विद्यार्थी, १५ स्तर, गणितीय प्रगतीचा एक सामायिक प्रवास",
@@ -832,7 +845,8 @@ export const POST_LOCALIZATIONS: Record<string, Record<"hi" | "mr", Partial<Blog
           { id: "opt-champ-2", text: "१००% अचूकता आणि एकाग्रता विकसित करणे", votes: 64 },
           { id: "opt-champ-3", text: "परीक्षेतील वेळेचे अचूक व्यवस्थापन शिकणे", votes: 32 }
         ]
-      }
+      },
+      content: BLOG_4_CONTENT.mr
     }
   }
 };

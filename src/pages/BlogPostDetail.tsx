@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { BlogPost, BlogComment } from "../types";
 import { INITIAL_BLOG_POSTS, getLocalizedBlogPost } from "../data/blogData";
+import { CHAMPIONSHIP_CHAPTER_GLANCES } from "../data/blogChapterGlances";
 import { useLanguage } from "../lib/LanguageContext";
 
 import { validateSanitizedName, validateSanitizedMessage } from "../lib/securitySanitizer";
@@ -514,20 +515,36 @@ export default function BlogPostDetail() {
                   return (
                     <div key={key} className="my-6 bg-gradient-to-r from-orange-500 via-amber-500 to-orange-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl text-center space-y-4">
                       <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider">
-                        ✨ Limited Free Assessment Seats Available in Wakad, Pune
+                        {language === "mr"
+                          ? "✨ वाकड, पुणे येथे मर्यादित मोफत चाचणी जागा उपलब्ध"
+                          : language === "hi"
+                          ? "✨ वाकड, पुणे में सीमित निःशुल्क मूल्यांकन सीटें उपलब्ध"
+                          : "✨ Limited Free Assessment Seats Available in Wakad, Pune"}
                       </div>
                       <h3 className="text-xl sm:text-2xl font-black text-white leading-tight">
-                        Ready to Unlock Your Child's Full Brain Potential?
+                        {language === "mr"
+                          ? "तुमच्या पाल्याच्या बौद्धिक क्षमतेला नवी गती देण्यासाठी सज्ज आहात?"
+                          : language === "hi"
+                          ? "क्या आप अपने बच्चे की पूर्ण मानसिक क्षमता को अनलॉक करने के लिए तैयार हैं?"
+                          : "Ready to Unlock Your Child's Full Brain Potential?"}
                       </h3>
                       <p className="text-sm text-amber-100 max-w-xl mx-auto">
-                        Book a 1-on-1 Free Abacus & Vedic Math Skill Assessment Session with {language === "mr" ? "नेहा पाटील आणि नितीन पाटील" : language === "hi" ? "नेहा पाटिल और नितिन पाटिल" : "Neha Patil & Nitin Patil"}.
+                        {language === "mr"
+                          ? "नेहा पाटील आणि नितीन पाटील यांच्यासोबत १-ऑन-१ मोफत ॲबॅकस आणि वैदिक गणित चाचणी सत्र बुक करा."
+                          : language === "hi"
+                          ? "नेहा पाटिल और नितिन पाटिल के साथ १-ऑन-१ निःशुल्क अबेकस एवं वैदिक गणित कौशल मूल्यांकन सत्र बुक करें।"
+                          : "Book a 1-on-1 Free Abacus & Vedic Math Skill Assessment Session with Neha Patil & Nitin Patil."}
                       </p>
                       <div className="pt-2">
                         <button
                           onClick={() => navigate("/contact")}
                           className="bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm uppercase tracking-wider px-8 py-4 rounded-2xl shadow-2xl hover:scale-105 transition-all cursor-pointer inline-flex items-center gap-2 border border-slate-700"
                         >
-                          🎁 Claim Free Demo & Math Assessment →
+                          {language === "mr"
+                            ? "🎁 मोफत डेमो आणि गणित चाचणी सत्र मिळवा →"
+                            : language === "hi"
+                            ? "🎁 निःशुल्क डेमो एवं गणित मूल्यांकन सत्र प्राप्त करें →"
+                            : "🎁 Claim Free Demo & Math Assessment →"}
                         </button>
                       </div>
                     </div>
@@ -554,14 +571,22 @@ export default function BlogPostDetail() {
                           <h4 className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center justify-center sm:justify-start gap-2">
                             <span>{language === "mr" ? "नेहा पाटील" : language === "hi" ? "नेहा पाटिल" : "Neha Patil"}</span>
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
-                              O+ Grade Certified
+                              {language === "mr" ? "O+ ग्रेड प्रमाणित" : language === "hi" ? "O+ ग्रेड प्रमाणित" : "O+ Grade Certified"}
                             </span>
                           </h4>
                           <p className="text-xs text-vibrant-orange font-bold">
-                            Founder & Director • Arnav Abacus Academy, Wakad, Pune, India
+                            {language === "mr"
+                              ? "संस्थापिका व संचालिका • अर्णव ॲबॅकस अकॅडमी, वाकड, पुणे"
+                              : language === "hi"
+                              ? "संस्थापिका एवं निदेशिका • अर्णव अबेकस एकेडमी, वाकड, पुणे"
+                              : "Founder & Director • Arnav Abacus Academy, Wakad, Pune, India"}
                           </p>
                           <p className="text-[11px] text-slate-500 font-medium">
-                            Certified Professional in Abacus, Vedic & Mental Math (IIVA)
+                            {language === "mr"
+                              ? "ॲबॅकस, वैदिक व मेंटल मॅथ्समधील प्रमाणित तज्ज्ञ (IIVA)"
+                              : language === "hi"
+                              ? "अबेकस, वैदिक एवं मेंटल मैथ में प्रमाणित विशेषज्ञ (IIVA)"
+                              : "Certified Professional in Abacus, Vedic & Mental Math (IIVA)"}
                           </p>
                         </div>
                       </div>
@@ -748,182 +773,35 @@ export default function BlogPostDetail() {
                 sections.push(currentSection);
               }
 
-              // Dynamic & Curated Glance Summaries for each Chapter
+              // Dynamic & Curated Glance Summaries for each Chapter (Supports EN, HI, MR)
               const getSectionGlance = (sec: SectionData) => {
-                const titleLower = sec.rawTitle.toLowerCase();
+                const activeLang = (language === "hi" || language === "mr") ? language : "en";
 
-                if (titleLower.includes("executive brief")) {
-                  return {
-                    badgeText: "5 Core Highlights",
-                    readTime: "2 min",
-                    highlights: [
-                      { icon: "🎯", label: "Core Philosophy", text: "Zero exam anxiety & calm cognitive confidence over shallow medal races." },
-                      { icon: "💡", label: "AAA Learning Model™", text: "6-stage cognitive cycle converting repetitive drills into deep visual retention." },
-                      { icon: "🧮", label: "56 Personalized Paths", text: "Stage-specific mentoring across 15 developmental tiers from KG-1 to Senior Vedic." },
-                      { icon: "🚀", label: "40% Accuracy Benchmark", text: "40% of AAA champions solve 100 questions with 100% accuracy in <20 mins." },
-                      { icon: "👨‍👩‍👧", label: "Parent Reflection Kit", text: "5 transformative questions moving beyond 'What was your score?'." },
-                    ]
-                  };
+                // Check if this post is blog-4 (championship post) or has championship slug
+                const isChampionshipPost = displayPost.id === "blog-4" || displayPost.slug.includes("championship");
+                if (isChampionshipPost && CHAMPIONSHIP_CHAPTER_GLANCES[activeLang]?.[sec.chapterIndex]) {
+                  return CHAMPIONSHIP_CHAPTER_GLANCES[activeLang][sec.chapterIndex];
                 }
 
-                if (titleLower.includes("targeted value") || titleLower.includes("who is this for")) {
-                  return {
-                    badgeText: "3 Reader Tracks",
-                    readTime: "1 min",
-                    highlights: [
-                      { icon: "👨‍👩‍👧", label: "For Parents", text: "Practical ways to replace exam panic with calm confidence and home visualization." },
-                      { icon: "🎒", label: "For Students", text: "Owning your own rhythmic pace so peer page-turning never rattles your focus." },
-                      { icon: "🎓", label: "For Educators", text: "Child-centric blueprint for running high-stakes national competitions with dignity." },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("redefining success") || titleLower.includes("true mastery")) {
-                  return {
-                    badgeText: "Core Mindset",
-                    readTime: "1.5 min",
-                    highlights: [
-                      { icon: "⏱️", label: "Beyond Speed", text: "Speed without clarity is fragile; true mastery is calm, self-reliant execution." },
-                      { icon: "💡", label: "Breakthrough Moment", text: "When a student pauses with steady breath and knows: 'I can solve this myself.'" },
-                      { icon: "📍", label: "National Stage", text: "AAA Wakad serves as Official Offline Exam Center on Sunday, 18 Oct 2026." },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("56 champions") || titleLower.includes("15 distinct")) {
-                  return {
-                    badgeText: "15 Learning Levels",
-                    readTime: "2 min",
-                    highlights: [
-                      { icon: "🧮", label: "Abacus Soroban (KG-1 to SR-3)", text: "Tactile bead mechanics & 2-hand bilateral brain activation." },
-                      { icon: "✨", label: "Vedic Maths (JVM-0 to VM)", text: "16 Sanskrit Sutras, lightning vertical & crosswise mental multiplication." },
-                      { icon: "🌟", label: "56 Individual Stories", text: "Tailored milestones honoring each child's cognitive fingerprint." },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("mock-diagnostic") || titleLower.includes("precision over speed")) {
-                  return {
-                    badgeText: "Diagnostic Milestone",
-                    readTime: "1.5 min",
-                    highlights: [
-                      { icon: "📊", label: "The 40% Milestone", text: "Approximately 40% of students completed 100 questions with 100% accuracy in <20 mins." },
-                      { icon: "🔍", label: "Mistakes as Data", text: "Errors are treated as diagnostic clues to calibrate concepts, not failures." },
-                      { icon: "💭", label: "Growth Reflection", text: "'What did this attempt teach you, and what will you try differently next time?'" },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("5 superpowers")) {
-                  return {
-                    badgeText: "5 Lifelong Habits",
-                    readTime: "2 min",
-                    highlights: [
-                      { icon: "🎯", label: "1. Laser Precision", text: "Deliberate calculation and accuracy before rushing to write." },
-                      { icon: "👁️", label: "2. Deep Focus", text: "Sustained concentration locked across 100 consecutive problems." },
-                      { icon: "⏱️", label: "3. Pacing Mastery", text: "Steady rhythm immune to surrounding peer distractions." },
-                      { icon: "💡", label: "4. Autonomous Execution", text: "Self-reliant mental arithmetic without waiting for hints." },
-                      { icon: "🦁", label: "5. Exam Fearlessness", text: "Curiosity and an eager smile over numerical panic." },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("learning model") || titleLower.includes("practice into progress")) {
-                  return {
-                    badgeText: "6-Stage Pedagogy",
-                    readTime: "1.5 min",
-                    highlights: [
-                      { icon: "🔁", label: "The Cognitive Cycle", text: "Inspire → Explore → Understand → Practice → Apply → Reflect." },
-                      { icon: "🧠", label: "Whole-Brain Balance", text: "Stimulating both analytical (left) and creative/visual (right) hemispheres." },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("mind-over-beads") || titleLower.includes("anzan")) {
-                  return {
-                    badgeText: "Neuroscience of Anzan",
-                    readTime: "1.5 min",
-                    highlights: [
-                      { icon: "🧠", label: "Photographic Soroban", text: "Transitioning from physical beads to an internal mental abacus." },
-                      { icon: "⚡", label: "High-Speed Calculation", text: "Sub-second mental arithmetic via spatial memory & tactile recall." },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("diagnostic mock") || titleLower.includes("insights, not labels")) {
-                  return {
-                    badgeText: "Mock Paper Strategy",
-                    readTime: "1.5 min",
-                    highlights: [
-                      { icon: "📈", label: "Error Heatmaps", text: "Pinpointing speed friction points rather than judging test marks." },
-                      { icon: "🛡️", label: "Stress-Free Simulation", text: "Familiarizing exam duration so championship day feels like home practice." },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("golden rules")) {
-                  return {
-                    badgeText: "4 Championship Rules",
-                    readTime: "1.5 min",
-                    highlights: [
-                      { icon: "🧘", label: "Rule 1 - The 10-Second Pause", text: "Deep belly breath before flipping the first page." },
-                      { icon: "🔇", label: "Rule 2 - Blindfold Your Ears", text: "Ignore how fast neighbors turn pages; stick to your own rhythm." },
-                      { icon: "🔍", label: "Rule 3 - The Checksum Habit", text: "Quick Vedic digit-sum sanity check on multi-digit problems." },
-                      { icon: "🏆", label: "Rule 4 - Post-Exam Celebration", text: "Celebrate effort and courage immediately after the exam." },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("parent reflection kit")) {
-                  return {
-                    badgeText: "Home Conversation Kit",
-                    readTime: "1.5 min",
-                    highlights: [
-                      { icon: "💬", label: "5 Reflective Questions", text: "'Which problem challenged you most?', 'How did your breathing feel?', 'What made you proud?'" },
-                      { icon: "🏡", label: "Intrinsic Motivation", text: "Building self-worth rooted in perseverance rather than exam ranks." },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("championship snapshot") || titleLower.includes("examination center")) {
-                  return {
-                    badgeText: "Event Snapshot",
-                    readTime: "1 min",
-                    highlights: [
-                      { icon: "🗓️", label: "Championship Date", text: "Sunday, 18 October 2026." },
-                      { icon: "📍", label: "Official Offline Center", text: "Arnav Abacus Academy, Wakad, Pune, Maharashtra." },
-                      { icon: "🏅", label: "Organisers & Accreditations", text: "Organised by AVAS & powered by IIVA Book of Records (NSDC Approved Partner)." },
-                    ]
-                  };
-                }
-
-                if (titleLower.includes("neha patil") || titleLower.includes("message to our 56")) {
-                  return {
-                    badgeText: "Founder's Address",
-                    readTime: "1.5 min",
-                    hasDirectorPhoto: true,
-                    highlights: [
-                      { icon: "💌", label: "Letter to 56 Champions", text: "'You have already won by daring to challenge yourself with courage.'" },
-                      { icon: "🎁", label: "Free Math Assessment", text: "Book 1-on-1 Free Abacus & Vedic Math Assessment Session at AAA Wakad." },
-                    ]
-                  };
-                }
-
-                // Dynamic Fallback Generator for other blog posts / arbitrary sections
+                // Dynamic Multilingual Fallback Generator for any blog post / section
                 const firstTable = sec.blocks.find(b => b.includes("|"));
                 if (firstTable) {
                   const rows = firstTable.split("\n").filter(r => !r.includes(":---") && r.includes("|"));
                   const dataRows = rows.slice(1, 4);
                   const highlights = dataRows.map((r, i) => {
                     const cols = r.split("|").filter(c => c.trim());
-                    const label = cols[0]?.replace(/\*\*/g, "").trim() || `Item ${i + 1}`;
+                    const label = cols[0]?.replace(/\*\*/g, "").trim() || (language === "mr" ? `मुद्दा ${formatNumber(i + 1)}` : language === "hi" ? `बिंदु ${formatNumber(i + 1)}` : `Item ${i + 1}`);
                     const text = cols[1]?.replace(/\*\*/g, "").trim() || cols[0]?.replace(/\*\*/g, "").trim();
                     return { icon: "📊", label, text };
                   });
                   return {
-                    badgeText: "Table Highlights",
-                    readTime: "1 min",
-                    highlights: highlights.length > 0 ? highlights : [{ icon: "📌", label: "Overview", text: "Key analytical comparison and structured guidance inside." }]
+                    badgeText: language === "mr" ? "तक्त्यातील ठळक मुद्दे" : language === "hi" ? "तालिका मुख्य बिंदु" : "Table Highlights",
+                    readTime: language === "mr" ? "१ मि" : language === "hi" ? "१ मिनट" : "1 min",
+                    highlights: highlights.length > 0 ? highlights : [{
+                      icon: "📌",
+                      label: language === "mr" ? "थोडक्यात" : language === "hi" ? "संक्षिप्त" : "Overview",
+                      text: language === "mr" ? "प्रकरणातील मुख्य विश्लेषणात्मक मुद्दे." : language === "hi" ? "अध्याय के मुख्य विश्लेषणात्मक बिंदु।" : "Key analytical comparison and structured guidance inside."
+                    }]
                   };
                 }
 
@@ -931,8 +809,8 @@ export default function BlogPostDetail() {
                 if (firstList) {
                   const items = (firstList.startsWith("- ") ? firstList.split("\n- ") : firstList.split(/(?=\d+\.\s)/)).slice(0, 3);
                   return {
-                    badgeText: `${items.length} Key Points`,
-                    readTime: "1 min",
+                    badgeText: language === "mr" ? `${formatNumber(items.length)} मुख्य मुद्दे` : language === "hi" ? `${formatNumber(items.length)} मुख्य बिंदु` : `${items.length} Key Points`,
+                    readTime: language === "mr" ? "१ मि" : language === "hi" ? "१ मिनट" : "1 min",
                     highlights: items.map(it => ({
                       icon: "✓",
                       label: "",
@@ -943,12 +821,12 @@ export default function BlogPostDetail() {
 
                 const firstPara = sec.blocks[0] || "";
                 return {
-                  badgeText: "Section Overview",
-                  readTime: "1 min",
+                  badgeText: language === "mr" ? "प्रकरणाचा गोषवारा" : language === "hi" ? "अध्याय अवलोकन" : "Section Overview",
+                  readTime: language === "mr" ? "१ मि" : language === "hi" ? "१ मिनट" : "1 min",
                   highlights: [
                     {
                       icon: "💡",
-                      label: "Summary",
+                      label: language === "mr" ? "सारांश" : language === "hi" ? "सारांश" : "Summary",
                       text: firstPara.replace(/\*\*/g, "").slice(0, 160) + (firstPara.length > 160 ? "..." : "")
                     }
                   ]
