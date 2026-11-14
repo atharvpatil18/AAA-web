@@ -83,16 +83,16 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
         const dateStr = s.eventDateFormatted ? ` • ${s.eventDateFormatted}` : "";
         const levelStr =
           s.eventLevel === "international"
-            ? "International Level"
+            ? t("showcaseTagInternational")
             : s.eventLevel === "national_state"
-            ? "National/State Level"
-            : "School & Academy Level";
+            ? t("showcaseTagNationalState")
+            : t("showcaseTagAcademy");
         return {
           id: s.id,
           type: s.storyType || "competition",
           title: s.highlight,
           studentName: s.studentName,
-          age: s.ageYears ? `${s.ageYears} Years` : undefined,
+          age: s.ageYears ? `${s.ageYears} ${t("showcaseYears")}` : undefined,
           grade: s.courseLevel,
           achievementText: s.aiGeneratedStory,
           beforeText: s.beforeText,
@@ -619,17 +619,17 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                     {/* Student metadata for story items */}
                     {item.studentName && (
                       <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-gray-550 bg-[#F8F9FA] border border-gray-200 px-4 py-2 rounded-full w-fit">
-                        <span>Student: {item.studentName}</span>
+                        <span>{t("showcaseStudent")} {item.studentName}</span>
                         {item.age && (
                           <>
                             <span className="text-gray-300">•</span>
-                            <span>Age: {item.age}</span>
+                            <span>{t("showcaseAge")} {item.age}</span>
                           </>
                         )}
                         {item.grade && (
                           <>
                             <span className="text-gray-300">•</span>
-                            <span>Level/Class: {item.grade}</span>
+                            <span>{t("showcaseLevelClass")} {item.grade}</span>
                           </>
                         )}
                       </div>
@@ -650,7 +650,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                               <div className="space-y-3.5">
                                 <div className="bg-[#FFF5F5] border border-red-100 rounded-2xl p-4">
                                   <span className="text-[10px] font-black uppercase text-red-500 tracking-wider block mb-1">
-                                    Before AAA Classes:
+                                    {t("showcaseBeforeClasses")}
                                   </span>
                                   <p className="text-xs text-gray-655 font-medium leading-relaxed">
                                     {item.beforeText}
@@ -658,7 +658,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                                 </div>
                                 <div className="bg-[#E0FAF5]/30 border border-vibrant-teal/20 rounded-2xl p-4">
                                   <span className="text-[10px] font-black uppercase text-vibrant-teal tracking-wider block mb-1">
-                                    After Mental Math:
+                                    {t("showcaseAfterClasses")}
                                   </span>
                                   <p className="text-xs text-vibrant-dark font-semibold leading-relaxed">
                                     {item.afterText}
@@ -715,9 +715,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                           }`}
                         >
                           {copiedId === item.id ? (
-                            <><Check className="w-3.5 h-3.5" /><span>Copied!</span></>
+                            <><Check className="w-3.5 h-3.5" /><span>{t("showcaseCopied")}</span></>
                           ) : (
-                            <><Share2 className="w-3.5 h-3.5" /><span>Share</span></>
+                            <><Share2 className="w-3.5 h-3.5" /><span>{t("showcaseShare")}</span></>
                           )}
                         </button>
 
@@ -726,7 +726,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                           type="button"
                           onClick={(e) => handleApplaud(item.id, e)}
                           disabled={!!applaudedItems[item.id]}
-                          title={applaudedItems[item.id] ? "You've already applauded!" : "Applaud this achievement!"}
+                          title={applaudedItems[item.id] ? t("showcaseAlreadyApplauded") : t("showcaseApplaudTitle")}
                           style={{ transform: popItem === item.id ? "scale(1.35)" : "scale(1)", transition: "transform 0.15s cubic-bezier(0.34,1.56,0.64,1), background 0.2s" }}
                           className={`px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 select-none ${
                             applaudedItems[item.id]
@@ -735,7 +735,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                           }`}
                         >
                           <Heart className={`w-3.5 h-3.5 transition-all duration-200 ${ popItem === item.id ? "scale-150" : "scale-100" } ${ applaudedItems[item.id] ? "fill-white text-white" : "fill-rose-400 text-rose-400" }`} />
-                          <span className="tabular-nums">{applaudCounts[item.id] || 0} Applauds</span>
+                          <span className="tabular-nums">{applaudCounts[item.id] || 0} {t("showcaseApplauds")}</span>
                         </button>
                       </div>
                     </div>
@@ -831,17 +831,17 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                   {/* Student details if available */}
                   {selectedItem.studentName && (
                     <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-gray-550 bg-[#F8F9FA] border border-gray-200 px-4 py-2 rounded-full w-fit">
-                      <span>Student: {selectedItem.studentName}</span>
+                      <span>{t("showcaseStudent")} {selectedItem.studentName}</span>
                       {selectedItem.age && (
                         <>
                           <span className="text-gray-300">•</span>
-                          <span>Age: {selectedItem.age}</span>
+                          <span>{t("showcaseAge")} {selectedItem.age}</span>
                         </>
                       )}
                       {selectedItem.grade && (
                         <>
                           <span className="text-gray-300">•</span>
-                          <span>Class: {selectedItem.grade}</span>
+                          <span>{t("showcaseClass")} {selectedItem.grade}</span>
                         </>
                       )}
                     </div>
@@ -853,7 +853,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                       <div className="space-y-4">
                         <div className="bg-[#FFF5F5] border border-red-100 rounded-2xl p-4">
                           <span className="text-[10px] font-black uppercase text-red-500 tracking-wider block mb-1">
-                            Before AAA Classes:
+                            {t("showcaseBeforeClasses")}
                           </span>
                           <p className="text-sm text-gray-750 font-medium leading-relaxed">
                             {selectedItem.beforeText}
@@ -861,7 +861,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                         </div>
                         <div className="bg-[#E0FAF5]/30 border border-vibrant-teal/20 rounded-2xl p-4">
                           <span className="text-[10px] font-black uppercase text-vibrant-teal tracking-wider block mb-1">
-                            After Mental Math:
+                            {t("showcaseAfterClasses")}
                           </span>
                           <p className="text-sm text-vibrant-dark font-semibold leading-relaxed">
                             {selectedItem.afterText}
@@ -905,9 +905,9 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                     }`}
                   >
                     {copiedId === selectedItem?.id ? (
-                      <><Check className="w-3.5 h-3.5" /> Copied!</>
+                      <><Check className="w-3.5 h-3.5" /> {t("showcaseCopied")}</>
                     ) : (
-                      <><Share2 className="w-3.5 h-3.5" /> Copy Link</>
+                      <><Share2 className="w-3.5 h-3.5" /> {t("showcaseCopyLink")}</>
                     )}
                   </button>
 
@@ -915,7 +915,7 @@ export default function Showcase({ defaultTab = "all" }: { defaultTab?: "all" | 
                     onClick={() => setSelectedItem(null)}
                     className="bg-vibrant-dark text-white px-5 py-2 rounded-xl text-xs font-black uppercase tracking-wider hover:bg-vibrant-dark/95 transition-all cursor-pointer"
                   >
-                    Close
+                    {t("showcaseClose")}
                   </button>
                 </div>
               </div>

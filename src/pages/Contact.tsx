@@ -142,7 +142,7 @@ export default function Contact() {
                     {t("footerGrievanceTitle")}
                   </h3>
                   <p className="text-xs text-gray-700 font-bold leading-relaxed">
-                    {t("footerGrievanceOfficer")} • {language === "mr" ? "ऑपरेशन्स आणि तक्रार निवारण प्रमुख" : language === "hi" ? "ऑपरेशंस और शिकायत निवारण प्रमुख" : "Operations & Grievance Lead"}
+                    {t("footerGrievanceOfficer")} • {t("contactGrievanceRole")}
                   </p>
                   <a
                     href="tel:+919021924968"

@@ -9,8 +9,10 @@ import { generateQuizWorksheetPDF } from "../lib/quizPdfGenerator";
 import { ABACUS_QUESTION_SETS, VEDIC_QUESTION_SETS } from "../data/practiceData";
 import { dispatchLeadToWebhook } from "../lib/leadWebhook";
 import { validateSanitizedName, validateSanitizedPhone, validateSanitizedEmail } from "../lib/securitySanitizer";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function WorksheetVault() {
+  const { language, t, formatNumber } = useLanguage();
   const [category, setCategory] = useState<"abacus" | "vedic">("abacus");
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
   const [userEmail, setUserEmail] = useState("");
@@ -51,7 +53,7 @@ export default function WorksheetVault() {
       if (includeAnswers || cleanName) {
         const nameVal = validateSanitizedName(cleanName || "Parent Lead");
         if (!nameVal.valid) {
-          setValidationError(nameVal.error || "Please enter a valid human name.");
+          setValidationError(nameVal.error || t("worksheetErrorName"));
           setShowGateModal(true);
           return;
         }
@@ -61,7 +63,7 @@ export default function WorksheetVault() {
       if (includeAnswers || cleanPhone) {
         const phoneVal = validateSanitizedPhone(cleanPhone);
         if (!phoneVal.valid) {
-          setValidationError(phoneVal.error || "Please enter a valid 10-digit WhatsApp phone number.");
+          setValidationError(phoneVal.error || t("worksheetErrorPhone"));
           setShowGateModal(true);
           return;
         }
@@ -71,7 +73,7 @@ export default function WorksheetVault() {
       if (cleanEmail) {
         const emailVal = validateSanitizedEmail(cleanEmail);
         if (!emailVal.valid) {
-          setValidationError(emailVal.error || "Please enter a valid personal email address.");
+          setValidationError(emailVal.error || t("worksheetErrorEmail"));
           setShowGateModal(true);
           return;
         }
@@ -150,7 +152,9 @@ export default function WorksheetVault() {
       );
 
       setDownloadSuccess(
-        `Generated "${targetSet.title}" ${includeAnswers ? "with Complete Answer Key" : "Practice Sheet"}! Check your downloads.`
+        includeAnswers
+          ? t("worksheetSuccessWithKey").replace("{title}", targetSet.title)
+          : t("worksheetSuccessPractice").replace("{title}", targetSet.title)
       );
       setTimeout(() => setDownloadSuccess(null), 5000);
     } catch (e) {
@@ -201,13 +205,16 @@ export default function WorksheetVault() {
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider mb-4 shadow-sm">
             <Sparkles className="w-4 h-4 text-amber-400" />
-            📚 100% Free Printable PDF Worksheet Vault
+            📚 {t("worksheetHeroBadge")}
           </div>
           <h1 className="text-3xl md:text-5xl font-black font-display tracking-tight text-white mb-3">
-            Abacus & Vedic Math <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-teal-300">Practice Worksheets</span>
+            {t("worksheetHeroTitlePrefix")}{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-teal-300">
+              {t("worksheetHeroTitleHighlight")}
+            </span>
           </h1>
           <p className="text-slate-300 max-w-2xl mx-auto text-sm md:text-base leading-relaxed font-medium">
-            Download high-quality printable practice sheets with full step-by-step answer keys. Perfect for daily speed drills, home practice, and exam readiness.
+            {t("worksheetHeroDesc")}
           </p>
         </div>
       </section>
@@ -218,34 +225,34 @@ export default function WorksheetVault() {
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
             <div className="space-y-1 text-center lg:text-left">
               <span className="text-xs font-black text-amber-600 uppercase tracking-wider flex items-center justify-center lg:justify-start gap-1">
-                <ShieldCheck className="w-4 h-4" /> Instantly Download PDF Sheets
+                <ShieldCheck className="w-4 h-4" /> {t("worksheetLeadBadge")}
               </span>
               <h3 className="text-xl font-extrabold text-slate-900">
-                Personalize & Download High-Quality Printable Worksheets
+                {t("worksheetLeadTitle")}
               </h3>
               <p className="text-xs text-slate-500 font-medium">
-                Enter your details to generate custom PDF worksheets with full answer keys for home drills and speed practice.
+                {t("worksheetLeadDesc")}
               </p>
             </div>
 
             <div className="w-full lg:w-auto flex flex-col sm:flex-row items-center gap-3">
               <input
                 type="text"
-                placeholder="Parent Name"
+                placeholder={t("worksheetInputParent")}
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 className="w-full sm:w-40 px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
               <input
                 type="email"
-                placeholder="Email Address"
+                placeholder={t("worksheetInputEmail")}
                 value={userEmail}
                 onChange={(e) => setUserEmail(e.target.value)}
                 className="w-full sm:w-48 px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
               <input
                 type="tel"
-                placeholder="WhatsApp No."
+                placeholder={t("worksheetInputPhone")}
                 value={userPhone}
                 onChange={(e) => setUserPhone(e.target.value)}
                 className="w-full sm:w-36 px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
@@ -272,7 +279,7 @@ export default function WorksheetVault() {
                   : "text-slate-700 hover:text-slate-900"
               }`}
             >
-              🧮 Abacus Worksheets
+              🧮 {t("worksheetTabAbacus")}
             </button>
             <button
               onClick={() => { setCategory("vedic"); setSelectedLevel("all"); }}
@@ -282,23 +289,23 @@ export default function WorksheetVault() {
                   : "text-slate-700 hover:text-slate-900"
               }`}
             >
-              ⚡ Vedic Math Worksheets
+              ⚡ {t("worksheetTabVedic")}
             </button>
           </div>
 
           {/* Level Filter Dropdown */}
           <div className="flex items-center gap-2 w-full md:w-auto">
             <Filter className="w-4 h-4 text-slate-500" />
-            <span className="text-xs font-bold text-slate-600">Filter Level:</span>
+            <span className="text-xs font-bold text-slate-600">{t("worksheetFilterLevel")}</span>
             <select
               value={selectedLevel}
               onChange={(e) => setSelectedLevel(e.target.value)}
               className="px-4 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer"
             >
-              <option value="all">All Levels ({activeSets.length} Sets)</option>
+              <option value="all">{t("worksheetAllLevels")} ({formatNumber(activeSets.length)})</option>
               {availableLevels.map((lvl) => (
                 <option key={lvl} value={lvl}>
-                  Level: {lvl}
+                  {t("worksheetLevel")}: {lvl}
                 </option>
               ))}
             </select>
@@ -315,10 +322,10 @@ export default function WorksheetVault() {
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <span className="px-2.5 py-1 bg-amber-100 text-amber-800 text-[10px] font-black rounded-md border border-amber-300 uppercase">
-                    Level {set.level}
+                    {t("worksheetLevel")} {set.level}
                   </span>
                   <span className="text-[11px] font-bold text-slate-500 flex items-center gap-1">
-                    <FileText className="w-3.5 h-3.5 text-slate-400" /> {set.questions.length} Questions
+                    <FileText className="w-3.5 h-3.5 text-slate-400" /> {formatNumber(set.questions.length)} {t("worksheetQuestions")}
                   </span>
                 </div>
 
@@ -326,7 +333,7 @@ export default function WorksheetVault() {
                   {set.title}
                 </h4>
                 <p className="text-xs text-slate-600 font-medium mb-4 line-clamp-2">
-                  {set.description || "Comprehensive mental calculation speed sheet for daily student practice."}
+                  {set.description || t("worksheetDefaultDesc")}
                 </p>
               </div>
 
@@ -337,16 +344,16 @@ export default function WorksheetVault() {
                   className="flex-1 py-2.5 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5 text-amber-400" />
-                  Print Worksheet
+                  {t("worksheetBtnPrint")}
                 </button>
                 <button
                   onClick={() => handleDownloadClick(set, true)}
                   disabled={isGenerating}
                   className="py-2.5 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-xl font-extrabold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
-                  title="Download Worksheet with Complete Answer Key"
+                  title={t("worksheetSubmitKey")}
                 >
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  Answer Key
+                  {t("worksheetBtnAnswerKey")}
                 </button>
               </div>
             </div>
@@ -365,7 +372,7 @@ export default function WorksheetVault() {
                 </span>
                 <div>
                   <h3 className="text-base font-extrabold text-slate-900">
-                    {pendingDownload.includeAnswers ? "Unlock Complete Answer Key" : "Personalize Your Worksheet"}
+                    {pendingDownload.includeAnswers ? t("worksheetModalTitleKey") : t("worksheetModalTitlePractice")}
                   </h3>
                   <p className="text-xs text-slate-500 font-medium">{pendingDownload.set.title}</p>
                 </div>
@@ -381,11 +388,11 @@ export default function WorksheetVault() {
             <p className="text-xs text-slate-600 mb-4 font-medium leading-relaxed">
               {pendingDownload.includeAnswers ? (
                 <span>
-                  Please enter your <strong>Parent / Student Name</strong> and <strong>WhatsApp Number</strong> to unlock and download the complete step-by-step solution and answer key.
+                  {t("worksheetModalDescKey")}
                 </span>
               ) : (
                 <span>
-                  Enter your details to customize the worksheet header with the student's name, or skip to download as a guest student.
+                  {t("worksheetModalDescPractice")}
                 </span>
               )}
             </p>
@@ -423,14 +430,14 @@ export default function WorksheetVault() {
               />
               <div>
                 <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                  Candidate / Parent Name <span className="text-rose-500">*</span>
+                  {t("worksheetCandidateNameLabel")} <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
                   <User className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Aarav Sharma"
+                    placeholder={t("worksheetCandidateNamePlaceholder")}
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                     className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
@@ -440,14 +447,14 @@ export default function WorksheetVault() {
 
               <div>
                 <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                  WhatsApp Number <span className="text-rose-500">*</span>
+                  {t("worksheetPhoneLabel")} <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
                   <Phone className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
                   <input
                     type="tel"
                     required
-                    placeholder="e.g. 9876543210"
+                    placeholder={t("worksheetPhonePlaceholder")}
                     value={userPhone}
                     onChange={(e) => setUserPhone(e.target.value)}
                     className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
@@ -457,13 +464,13 @@ export default function WorksheetVault() {
 
               <div>
                 <label className="block text-[11px] font-bold text-slate-700 mb-1">
-                  Email Address <span className="text-slate-400 font-normal">(Optional)</span>
+                  {t("worksheetEmailLabel")} <span className="text-slate-400 font-normal">{t("worksheetOptional")}</span>
                 </label>
                 <div className="relative">
                   <Mail className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
                   <input
                     type="email"
-                    placeholder="e.g. parent@gmail.com"
+                    placeholder={t("worksheetEmailPlaceholder")}
                     value={userEmail}
                     onChange={(e) => setUserEmail(e.target.value)}
                     className="w-full pl-9 pr-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500"
@@ -483,10 +490,10 @@ export default function WorksheetVault() {
                 >
                   <Download className="w-4 h-4" />
                   {isGenerating
-                    ? "Generating PDF..."
+                    ? t("worksheetGenerating")
                     : pendingDownload.includeAnswers
-                    ? "Unlock & Download Complete Answer Key"
-                    : "Download Printable Worksheet"}
+                    ? t("worksheetSubmitKey")
+                    : t("worksheetSubmitPractice")}
                 </button>
 
                 {!pendingDownload.includeAnswers && (
@@ -503,7 +510,7 @@ export default function WorksheetVault() {
                     }}
                     className="text-[11px] text-slate-500 hover:text-slate-800 text-center py-1 font-medium underline cursor-pointer"
                   >
-                    Skip & download as anonymous Guest Student
+                    {t("worksheetSkipGuest")}
                   </button>
                 )}
               </div>

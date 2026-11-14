@@ -6,6 +6,7 @@
 import { parentGuidesEn, parentGuidesHi, parentGuidesMr } from "./translations_parent_guides";
 import { interactiveLabsEn, interactiveLabsHi, interactiveLabsMr } from "./translations_interactive_labs";
 import { blogEn, blogHi, blogMr } from "./translations_blog";
+import { supportingPagesEn, supportingPagesHi, supportingPagesMr } from "./translations_supporting_pages";
 
 export type Language = "en" | "hi" | "mr";
 
@@ -1729,6 +1730,7 @@ export const translations = {
     ...parentGuidesEn,
     ...interactiveLabsEn,
     ...blogEn,
+    ...supportingPagesEn,
   },
   hi: {
     // Navbar
@@ -3449,6 +3451,7 @@ export const translations = {
     ...parentGuidesHi,
     ...interactiveLabsHi,
     ...blogHi,
+    ...supportingPagesHi,
   },
   mr: {
     // Navbar
@@ -3846,7 +3849,7 @@ export const translations = {
     progAbacusA4: "होय. सर्व वर्ग संस्थापिका नेहा पाटील यांच्या मार्गदर्शनाखाली चालवले जातात, ज्या प्रमाणित ॲबॅकस व वैदिक गणित प्रशिक्षक आहेत (MCA, अधिकृत केंद्र नोंदणी CI2023/100000455).",
     progAbacusTrustBadge: "प्रमाणित अकॅडमी विश्वास",
     progAbacusTrustTitle: "पुरस्कारप्राप्त वाकड अकॅडमीमध्ये शिका",
-    progAbacusTrustDesc: "अर्णव ॲबॅकस अकॅडमीच्या विद्यार्थ्यांनी आंतरराष्ट्रीय आणि राज्य स्तरावर प्रथम क्रमांकासह अनेक पुरस्कार जिंकले आहेत, ज्यात डॉ. किरण बेदी यांच्या हस्ते मिळालेल्या पुरस्कारांचा समावेश आहे.",
+    progAbacusTrustDesc: "अर्णव ॲबॅकस अकॅडमीच्या विद्यार्थ्यांनी आंतरराष्ट्रीय आणि राज्य स्तरावर प्रथम क्रमांकासह अनेक पुरस्कार जिंकले आहेत, ज्यात डॉ. किरण बेदी यांच्या हस्ते मिळालेल्या पुरस्कारांचा समावेश आहे. संस्थापिका नेहा पाटील प्रत्येक ऑफलाइन बॅचमध्ये प्रत्यक्ष आणि प्रेमळ मार्गदर्शन करतात.",
     progAbacusTrustPill1: "प्रमाणित शिक्षकांचे मार्गदर्शन",
     progAbacusTrustPill2: "लहान बॅचेस (जास्तीत जास्त ५ विद्यार्थी)",
     progAbacusTrustPill3: "स्क्रीन-मुक्त प्रत्यक्ष वर्ग",
@@ -5169,6 +5172,7 @@ export const translations = {
     ...parentGuidesMr,
     ...interactiveLabsMr,
     ...blogMr,
+    ...supportingPagesMr,
   }
 };
 
