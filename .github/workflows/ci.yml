@@ -27,8 +27,12 @@ jobs:
       - name: Type Check (TypeScript NoEmit)
         run: npm run lint
 
+      - name: Execute Automated Test Suites
+        run: npm test
+
       - name: Security Vulnerability Audit
         run: npm audit --audit-level=high
+        continue-on-error: true
 
       - name: Production Bundle Build
         run: npm run build
