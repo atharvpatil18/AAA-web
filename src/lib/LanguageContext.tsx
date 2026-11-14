@@ -38,6 +38,11 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     localStorage.setItem("aaa_lang", lang);
   };
 
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.documentElement.dir = "ltr";
+  }, [language]);
+
   const formatNumberWrapped = (num: number | string): string => {
     return formatNumber(num, language);
   };
